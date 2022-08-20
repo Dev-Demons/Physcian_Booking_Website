@@ -1,0 +1,370 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.DiaSymReader.Native.1.7.0\build\Microsoft.DiaSymReader.Native.props" Condition="Exists('..\packages\Microsoft.DiaSymReader.Native.1.7.0\build\Microsoft.DiaSymReader.Native.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0B51DCEA-FE38-4478-9203-ECB24F565F46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Binke.Model</RootNamespace>
+    <AssemblyName>Binke.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="AgeGroup.cs" />
+    <Compile Include="ViewModels\AppointmentViewModel.cs" />
+    <Compile Include="BaseModel.cs" />
+    <Compile Include="BoardCertification.cs" />
+    <Compile Include="City.cs" />
+    <Compile Include="DBContext\BinkeDbContext.cs" />
+    <Compile Include="DBContext\IdentityModel.cs" />
+    <Compile Include="Doctor.cs" />
+    <Compile Include="DoctorFacilityAffiliation.cs" />
+    <Compile Include="DoctorImage.cs" />
+    <Compile Include="DrugDetail.cs" />
+    <Compile Include="DrugManufacturer.cs" />
+    <Compile Include="DrugPharmacyDetail.cs" />
+    <Compile Include="DrugQuantity.cs" />
+    <Compile Include="DrugType.cs" />
+    <Compile Include="GraphViewModel.cs" />
+    <Compile Include="InsuranceAccepted.cs" />
+    <Compile Include="Migrations\201906150652334_AddSeniorCareTables.cs" />
+    <Compile Include="Migrations\201906150652334_AddSeniorCareTables.Designer.cs">
+      <DependentUpon>201906150652334_AddSeniorCareTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906160731102_UpdateSeniorCareTable.cs" />
+    <Compile Include="Migrations\201906160731102_UpdateSeniorCareTable.Designer.cs">
+      <DependentUpon>201906160731102_UpdateSeniorCareTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906171756163_AddTempSlotBookingTable.cs" />
+    <Compile Include="Migrations\201906171756163_AddTempSlotBookingTable.Designer.cs">
+      <DependentUpon>201906171756163_AddTempSlotBookingTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906181359599_UpdateAspUserTable.cs" />
+    <Compile Include="Migrations\201906181359599_UpdateAspUserTable.Designer.cs">
+      <DependentUpon>201906181359599_UpdateAspUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909161432047_InitialCreate.cs" />
+    <Compile Include="Migrations\201909161432047_InitialCreate.Designer.cs">
+      <DependentUpon>201909161432047_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910141742117_BinkAppDB-AddInsuranceAccepted.cs" />
+    <Compile Include="Migrations\201910141742117_BinkAppDB-AddInsuranceAccepted.Designer.cs">
+      <DependentUpon>201910141742117_BinkAppDB-AddInsuranceAccepted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910151810020_primarycare.cs" />
+    <Compile Include="Migrations\201910151810020_primarycare.Designer.cs">
+      <DependentUpon>201910151810020_primarycare.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910161647418_AddDoctorSpeciality.cs" />
+    <Compile Include="Migrations\201910161647418_AddDoctorSpeciality.Designer.cs">
+      <DependentUpon>201910161647418_AddDoctorSpeciality.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910191945489_agegroup.cs" />
+    <Compile Include="Migrations\201910191945489_agegroup.Designer.cs">
+      <DependentUpon>201910191945489_agegroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910211557508_multipleagegroup.cs" />
+    <Compile Include="Migrations\201910211557508_multipleagegroup.Designer.cs">
+      <DependentUpon>201910211557508_multipleagegroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SeniorCare.cs" />
+    <Compile Include="Migrations\201906111450590_AddPharmacyTable.cs" />
+    <Compile Include="Migrations\201906111450590_AddPharmacyTable.Designer.cs">
+      <DependentUpon>201906111450590_AddPharmacyTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906121656225_adddrugtable.cs" />
+    <Compile Include="Migrations\201906121656225_adddrugtable.Designer.cs">
+      <DependentUpon>201906121656225_adddrugtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906131330080_UpdateReviewTable.cs" />
+    <Compile Include="Migrations\201906131330080_UpdateReviewTable.Designer.cs">
+      <DependentUpon>201906131330080_UpdateReviewTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pharmacy.cs" />
+    <Compile Include="ErrorLog.cs" />
+    <Compile Include="Experience.cs" />
+    <Compile Include="Facility.cs" />
+    <Compile Include="FacilityOption.cs" />
+    <Compile Include="FeaturedSpeciality.cs" />
+    <Compile Include="FeaturedDoctor.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Migrations\201905031555476_SetupDatabase.cs" />
+    <Compile Include="Migrations\201905031555476_SetupDatabase.Designer.cs">
+      <DependentUpon>201905031555476_SetupDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905130715043_AddColumnNullableInFacility.cs" />
+    <Compile Include="Migrations\201905130715043_AddColumnNullableInFacility.Designer.cs">
+      <DependentUpon>201905130715043_AddColumnNullableInFacility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905131016135_AddBaseModelInPatient.cs" />
+    <Compile Include="Migrations\201905131016135_AddBaseModelInPatient.Designer.cs">
+      <DependentUpon>201905131016135_AddBaseModelInPatient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905141504469_UpdatePhoneNumberField.cs" />
+    <Compile Include="Migrations\201905141504469_UpdatePhoneNumberField.Designer.cs">
+      <DependentUpon>201905141504469_UpdatePhoneNumberField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905151434466_UpdateOpeningHoursTable.cs" />
+    <Compile Include="Migrations\201905151434466_UpdateOpeningHoursTable.Designer.cs">
+      <DependentUpon>201905151434466_UpdateOpeningHoursTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905151614038_UpdateSlotTable.cs" />
+    <Compile Include="Migrations\201905151614038_UpdateSlotTable.Designer.cs">
+      <DependentUpon>201905151614038_UpdateSlotTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905161805398_UpdateExperienceTable.cs" />
+    <Compile Include="Migrations\201905161805398_UpdateExperienceTable.Designer.cs">
+      <DependentUpon>201905161805398_UpdateExperienceTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905180613585_UpdatePatientTable.cs" />
+    <Compile Include="Migrations\201905180613585_UpdatePatientTable.Designer.cs">
+      <DependentUpon>201905180613585_UpdatePatientTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905181021129_UpdateFacilityTable.cs" />
+    <Compile Include="Migrations\201905181021129_UpdateFacilityTable.Designer.cs">
+      <DependentUpon>201905181021129_UpdateFacilityTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905221426203_AddFeaturedDoctorTable.cs" />
+    <Compile Include="Migrations\201905221426203_AddFeaturedDoctorTable.Designer.cs">
+      <DependentUpon>201905221426203_AddFeaturedDoctorTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905221807472_AddFeaturedSpecialityTable.cs" />
+    <Compile Include="Migrations\201905221807472_AddFeaturedSpecialityTable.Designer.cs">
+      <DependentUpon>201905221807472_AddFeaturedSpecialityTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905290634408_UpdateDoctorTable.cs" />
+    <Compile Include="Migrations\201905290634408_UpdateDoctorTable.Designer.cs">
+      <DependentUpon>201905290634408_UpdateDoctorTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905301521495_UpdateUserTable.cs" />
+    <Compile Include="Migrations\201905301521495_UpdateUserTable.Designer.cs">
+      <DependentUpon>201905301521495_UpdateUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906020613238_AddDoctorImageTable.cs" />
+    <Compile Include="Migrations\201906020613238_AddDoctorImageTable.Designer.cs">
+      <DependentUpon>201906020613238_AddDoctorImageTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906031716386_UpdateOpeningHourTable.cs" />
+    <Compile Include="Migrations\201906031716386_UpdateOpeningHourTable.Designer.cs">
+      <DependentUpon>201906031716386_UpdateOpeningHourTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906031805050_AddFacilityOptionTable.cs" />
+    <Compile Include="Migrations\201906031805050_AddFacilityOptionTable.Designer.cs">
+      <DependentUpon>201906031805050_AddFacilityOptionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906040350501_AddAgainOpeningHoursTbl.cs" />
+    <Compile Include="Migrations\201906040350501_AddAgainOpeningHoursTbl.Designer.cs">
+      <DependentUpon>201906040350501_AddAgainOpeningHoursTbl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906061223250_AddReviewTable.cs" />
+    <Compile Include="Migrations\201906061223250_AddReviewTable.Designer.cs">
+      <DependentUpon>201906061223250_AddReviewTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906061704065_AddSlotDate.cs" />
+    <Compile Include="Migrations\201906061704065_AddSlotDate.Designer.cs">
+      <DependentUpon>201906061704065_AddSlotDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906061746547_AddSlotBookingTable.cs" />
+    <Compile Include="Migrations\201906061746547_AddSlotBookingTable.Designer.cs">
+      <DependentUpon>201906061746547_AddSlotBookingTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906091158122_AddIsDefaultInAddress.cs" />
+    <Compile Include="Migrations\201906091158122_AddIsDefaultInAddress.Designer.cs">
+      <DependentUpon>201906091158122_AddIsDefaultInAddress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="OpeningHour.cs" />
+    <Compile Include="Patient.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Qualification.cs" />
+    <Compile Include="Review.cs" />
+    <Compile Include="SeedData\UserSeedData.cs" />
+    <Compile Include="Drug.cs" />
+    <Compile Include="Tablet.cs" />
+    <Compile Include="TempSlotBooking.cs" />
+    <Compile Include="SlotBooking.cs" />
+    <Compile Include="Slot.cs" />
+    <Compile Include="SocialMedia.cs" />
+    <Compile Include="Speciality.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="Utility\CompareHelper.cs" />
+    <Compile Include="Utility\DbContextExtensions.cs" />
+    <Compile Include="Utility\Extension.cs" />
+    <Compile Include="ViewModels\PatientViewModel.cs" />
+    <Compile Include="ViewModels\DoctorSearchList.cs" />
+    <Compile Include="ViewModels\DrugDetailViewModel.cs" />
+    <Compile Include="ViewModels\DrugSearchList.cs" />
+    <Compile Include="ViewModels\Records.cs" />
+    <Compile Include="ViewModels\SpAllTypeViewModel.cs" />
+    <Compile Include="ViewModels\SpSlotViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201905031555476_SetupDatabase.resx">
+      <DependentUpon>201905031555476_SetupDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905130715043_AddColumnNullableInFacility.resx">
+      <DependentUpon>201905130715043_AddColumnNullableInFacility.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905131016135_AddBaseModelInPatient.resx">
+      <DependentUpon>201905131016135_AddBaseModelInPatient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905141504469_UpdatePhoneNumberField.resx">
+      <DependentUpon>201905141504469_UpdatePhoneNumberField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905151434466_UpdateOpeningHoursTable.resx">
+      <DependentUpon>201905151434466_UpdateOpeningHoursTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905151614038_UpdateSlotTable.resx">
+      <DependentUpon>201905151614038_UpdateSlotTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905161805398_UpdateExperienceTable.resx">
+      <DependentUpon>201905161805398_UpdateExperienceTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905180613585_UpdatePatientTable.resx">
+      <DependentUpon>201905180613585_UpdatePatientTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905181021129_UpdateFacilityTable.resx">
+      <DependentUpon>201905181021129_UpdateFacilityTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221426203_AddFeaturedDoctorTable.resx">
+      <DependentUpon>201905221426203_AddFeaturedDoctorTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221807472_AddFeaturedSpecialityTable.resx">
+      <DependentUpon>201905221807472_AddFeaturedSpecialityTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905290634408_UpdateDoctorTable.resx">
+      <DependentUpon>201905290634408_UpdateDoctorTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905301521495_UpdateUserTable.resx">
+      <DependentUpon>201905301521495_UpdateUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906020613238_AddDoctorImageTable.resx">
+      <DependentUpon>201906020613238_AddDoctorImageTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906031716386_UpdateOpeningHourTable.resx">
+      <DependentUpon>201906031716386_UpdateOpeningHourTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906031805050_AddFacilityOptionTable.resx">
+      <DependentUpon>201906031805050_AddFacilityOptionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906040350501_AddAgainOpeningHoursTbl.resx">
+      <DependentUpon>201906040350501_AddAgainOpeningHoursTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906061223250_AddReviewTable.resx">
+      <DependentUpon>201906061223250_AddReviewTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906061704065_AddSlotDate.resx">
+      <DependentUpon>201906061704065_AddSlotDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906061746547_AddSlotBookingTable.resx">
+      <DependentUpon>201906061746547_AddSlotBookingTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906091158122_AddIsDefaultInAddress.resx">
+      <DependentUpon>201906091158122_AddIsDefaultInAddress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906111450590_AddPharmacyTable.resx">
+      <DependentUpon>201906111450590_AddPharmacyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906121656225_adddrugtable.resx">
+      <DependentUpon>201906121656225_adddrugtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906131330080_UpdateReviewTable.resx">
+      <DependentUpon>201906131330080_UpdateReviewTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906150652334_AddSeniorCareTables.resx">
+      <DependentUpon>201906150652334_AddSeniorCareTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906160731102_UpdateSeniorCareTable.resx">
+      <DependentUpon>201906160731102_UpdateSeniorCareTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906171756163_AddTempSlotBookingTable.resx">
+      <DependentUpon>201906171756163_AddTempSlotBookingTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906181359599_UpdateAspUserTable.resx">
+      <DependentUpon>201906181359599_UpdateAspUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909161432047_InitialCreate.resx">
+      <DependentUpon>201909161432047_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910141742117_BinkAppDB-AddInsuranceAccepted.resx">
+      <DependentUpon>201910141742117_BinkAppDB-AddInsuranceAccepted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910151810020_primarycare.resx">
+      <DependentUpon>201910151810020_primarycare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910161647418_AddDoctorSpeciality.resx">
+      <DependentUpon>201910161647418_AddDoctorSpeciality.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910191945489_agegroup.resx">
+      <DependentUpon>201910191945489_agegroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910211557508_multipleagegroup.resx">
+      <DependentUpon>201910211557508_multipleagegroup.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.DiaSymReader.Native.1.7.0\build\Microsoft.DiaSymReader.Native.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.DiaSymReader.Native.1.7.0\build\Microsoft.DiaSymReader.Native.props'))" />
+  </Target>
+</Project>

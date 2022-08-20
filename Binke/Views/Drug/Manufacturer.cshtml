@@ -1,0 +1,262 @@
+﻿
+@{
+    ViewBag.Title = "Manufacturer";
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Manufacturer";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Manufacturer </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Manufacturer/"> Manufacturer </a></li>
+            <li class="active"> Manufacturer Directory </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="IsActiveManufacturer(true)">
+                    <a data-toggle="tab" href="#activeManufacturer"> Active Manufacturer</a>
+                </li>
+                @*<li onclick="IsActiveManufacturer(false)">
+                        <a data-toggle="tab" href="#deActivetManufacturer">Deactive Manufacturer</a>
+                    </li>*@
+                <li class="pull-right">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddManufacturer">Add Manufacturer</button>
+                    @*<a id="AddManufacturer" href="javascript:;"> <i class="fa fa-edit"></i>Add Manufacturer</a>*@
+                </li>
+            </ul>
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="activeManufacturer" class="tab-pane fade active in">
+                    <table id="dtActiveManufacturer" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Manufacturer Name</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="deActivetManufacturer" class="tab-pane fade">
+                    <table id="dtDeActivetManufacturer" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Manufacturer Name</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="modalTitle" class="modal-title">Edit Manufacturer Name</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label id="labelName" class="control-label"><b>Manufacturer Name</b></label>
+                        <div class="form-group">
+                            <input class="form-control" id="manufacturerName" name="Name" placeholder="Enter Manufacturer Name" type="text">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                            <input type="hidden" id="hiddenId" value="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="saveManufacturar" onclick="updateData()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        var addLabel = "Add Manufacturer Name";
+        var editLabel = "Edit Manufacturer Name";
+        var flag = true;
+        var deactiveTable = "dtDeActivetManufacturer";
+        var tableId = "dtActiveManufacturer";
+        var toolTip = "DeActivate";
+        var atoolTip = "Activate";
+        var isAdd = false;
+        var currentable = ''
+        var request = {
+            "DrugManufacturerId": 0,
+            "Manufacturer": "",
+            "IsActive": true
+        };
+
+        $(function () {
+            bindTable(flag);
+        });
+
+        function IsActiveManufacturer(value) {
+            flag = value;
+            tableId = deactiveTable;
+            toolTip = value ? toolTip : atoolTip;
+            bindTable(flag);
+        }
+
+        function bindTable(flag) {
+            if ($.fn.DataTable.isDataTable("#" + tableId)) {
+                $('#' + tableId).DataTable().destroy();
+            }
+            var table = $('#' + tableId)
+                .DataTable({
+                    "sAjaxSource": "/Drug/GetDrugManufacturer?isActive=" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "Manufacturer",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugManufacturerId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) { return '---' };
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) { return '---' };
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "DrugManufacturerId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            //"orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a onclick="action(' + row.DrugManufacturerId + ')" data-toggle="tooltip" data-original-title="Edit" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a onclick="actionOnDB(' + row.DrugManufacturerId + ')" href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-close"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function action(actionId) {
+            isAdd = false;
+            var fullName = $("#" + actionId).text();
+            createModal(editLabel, fullName);
+            $("#hiddenId").val(actionId);
+            $("#myModal").modal('show');
+            request.IsActive = true;
+        };
+
+        function actionOnDB(actionId) {
+            request.DrugManufacturerId = parseInt(actionId);
+            if (isAdd) {
+                request.IsActive = true;
+            }
+            else {
+                request.IsActive = false;
+            }
+
+            AddOrUpdateDrugManufacturer();
+        }
+
+        function updateData() {
+            var currentCellId = $("#hiddenId").val();
+            $("#" + currentCellId).text($("#manufacturerName").val());
+
+            if (isAdd) {
+                request.DrugManufacturerId = 0;
+            } else {
+                request.DrugManufacturerId = currentCellId;
+            }
+            request.IsActive = true;
+            request.Manufacturer = $("#manufacturerName").val();
+            AddOrUpdateDrugManufacturer();
+        }
+
+        function createModal(Title, textValue) {
+            $("#modalTitle").val(Title);
+            $("#manufacturerName").val(textValue);
+        }
+
+        $("#AddManufacturer").click(function () {
+            isAdd = true;
+            $("#hiddenId").val(0);
+            createModal(addLabel, '');
+            $("#myModal").modal('show');
+        });
+
+        function AddOrUpdateDrugManufacturer() {
+            $.ajax({
+                url: "/Drug/AddOrUpdateDrugManufacturer",
+                type: "POST",
+                data: request,
+                cache: false,
+                success: function (response) {
+                    if (response && response.Status == 200) {
+                        bindTable(flag);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+    </script>
+}

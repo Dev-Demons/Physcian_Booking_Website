@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewBag.Title = "About Us With Questions, Concerns, and Feedback";
+}
+@{
+    ViewBag.Title = "About Us With Questions, Concerns, and Feedback";
+    List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "description",
+        Content = "Use our easy form to about us and give us feedback or ask questions. Media inquiries welcome."
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "keywords",
+        Content = "about us, doctyme, health care, feedback, questions"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site",
+        Content = "@DocTymeInc"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:card",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:description",
+        Content = "Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:image",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:url",
+        Content = "https://www.doctyme.com/contact-us"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:title",
+        Content = "Contact Us With Questions, Concerns, and Feedback"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:description",
+        Content = "Use our easy form to contact us and give us feedback or ask questions. Media inquiries welcome."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:type",
+        Content = "website"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "image",
+        Content = "https://assets.doctyme.com/site/doctyme-default-image.jpg"
+    });
+
+
+    TempData["metaInfo"] = meta;
+}
+@section SliderContent{
+}
+<style>
+    .stripborderspecialities {
+        margin: 0 !important;
+    }
+
+    /*.stats-label {
+        float: left;
+        width: 100%;
+        text-align: center;
+        font-family: 'Open Sans';
+        font-size: 26px;
+        color: #076285;
+        letter-spacing: 1px;
+    }*/
+</style>
+<!-- About Page Content -->
+<section class="pg-about-content-area section-padding-top-lg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="pg-about-content text-center">
+                    <h2>About Us</h2>
+                    <div class="doctorstrip marginbtm40">
+                        <img class="stripborderspecialities" src="~/Content/client/images/logo/borderstrip-grey.png" alt="logo" />
+                    </div>
+                    <p>
+                        The hustle and bustle of life makes it increasingly difficult to maintain a healthy lifestyle, this includes maintaining healthcare and making and managing doctor appointments. This is emphasised especially through there being so many doctors or healthcare professionals to choose from. But with Doctyme this is made easier with our patient focussed database where you are able to make unbiased timely decisions about your health and wellness and rest assured that your health is in good hands.
+                        <br />
+                        Doctyme’s platform doesn’t only represent doctors and healthcare professionals, but it also includes facilities such as hospitals, senior care facilities and pharmacies. Patients also have the opportunity to obtain unbiased opinions about certain medicines through ratings and reviews done by other patients. All healthcare bases are covered by Doctyme’s database.
+                        <br />
+                        Doctyme aims to provide a transparent and trustworthy solution for patients by creating a platform where they can search for anything healthcare related, from verified doctors and facilities to medicine, in their area. From this platform patients can then also compare different services or facilities and their respective prices to find what is best suited to their needs.
+                        <br />
+                        All patients of Doctyme can rate their experience with the care they received from either a doctor or the facility and in doing so patient to patient transparency is created. Patients can also honestly and plainly review the care they received which adds to the trust that Doctyme aims to cultivate through this platform.
+                        <br />
+                        Doctyme is user friendly and allows patients to make contact with a doctor or facility directly in order to set up an appointment, research facilities or even receive a diagnosis and prescription online. Doctyme also aims to make locating and contacting reliable, trustworthy care and facilities accessible to all patients.
+                        <br />
+                        All doctors and facilities that are registered with Doctyme are verified and the qualifications, experience and area of expertise are available to patients, it is through this platform that
+                        Doctyme creates an outstanding customer experience and enable patients to find the best doctor, the best diagnoses and the best care.
+                        <br />
+
+                    </p>
+                    <img src="~/Content/client/images/others/pg-about-image.jpg" alt="pg about">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--// About Page Content -->
+<!-- Funfact Area -->
+<div class="funfact-area">
+    <div class="row no-gutters funfact-wrap funfact-wrap-grey">
+
+        <!-- Single Funfact -->
+        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="funfact">
+                <div class="funfact-inner">
+                    <img src="~/Content/client/images/icons/icon_doctor.png" alt="My doctor time">
+                    <span class="odometer" data-count-to="2169">@ViewBag.DoctorsCount</span>
+                    <p class="stats-label">VERIFIED DOCTORS</p>
+                </div>
+            </div>
+        </div>
+        <!--// Single Funfact -->
+        <!-- Single Funfact -->
+        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="funfact">
+                <div class="funfact-inner">
+                    <img src="~/Content/client/images/icons/care_home.png" alt="My doctor time">
+                    <span class="odometer" data-count-to="789">@ViewBag.SpecialitiesCount</span>
+                    <p class="stats-label">SPECIALITIES</p>
+                </div>
+            </div>
+        </div>
+        <!--// Single Funfact -->
+        <!-- Single Funfact -->
+        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="funfact">
+                <div class="funfact-inner">
+                    <img src="~/Content/client/images/icons/eqp.png" alt="My doctor time">
+                    <span class="odometer" data-count-to="869">@ViewBag.HospitalsCount</span>
+                    <p class="stats-label">HOSPITALS</p>
+                </div>
+            </div>
+        </div>
+        <!--// Single Funfact -->
+    </div>
+</div>
+<!--// Funfact Area -->

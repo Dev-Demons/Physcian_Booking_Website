@@ -1,0 +1,598 @@
+﻿@using Binke.Utility;
+@using Doctyme.Repository.Enumerable;
+@model Binke.ViewModels.DoctorProfileViewModel
+@{
+    /**/
+
+    ViewBag.Title = Model.FullForDoctor + " | Doctor-Profile";
+}
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<style type="text/css">
+    .single-comment {
+        margin-top: inherit;
+        margin-bottom: 8px;
+    }
+
+        .single-comment img {
+            height: 60px;
+        }
+
+    *:focus {
+        outline: none;
+    }
+
+    .owl-theme .owl-controls {
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        cursor: e-resize
+    }
+
+        .owl-theme .owl-controls .owl-nav [class*=owl-] {
+            color: #fff;
+            font-size: 14px;
+            font-family: 'KeplerStd-Regular';
+            display: block;
+            cursor: e-resize;
+        }
+
+    .owl-prev {
+        left: 0;
+        text-align: left;
+        position: absolute;
+        z-index: 999999;
+        cursor: e-resize;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-next {
+        text-align: right;
+        position: absolute;
+        z-index: 999999;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: e-resize;
+        right: 0;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-theme .owl-controls .owl-nav [class*=owl-]:hover {
+        background-color: #1f1f1f;
+        transition: 0.5s all;
+        cursor: e-resize
+    }
+
+    .owl-theme .owl-controls .owl-nav .disabled {
+        opacity: .5;
+        cursor: e-resize
+    }
+
+    #owl-demo .owl-item > div img {
+        display: block;
+        width: 100%;
+        height: auto;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin-bottom: 4px;
+    }
+
+    #owl-demo .owl-item > div {
+        padding: 0px 2px
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-prev {
+        opacity: 1 !important;
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-next {
+        opacity: 1 !important;
+    }
+
+    .mrg-tb {
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    i.fa.fa-star {
+        color: yellow;
+    }
+
+    button#btnSubmit {
+        width: auto;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 1%;
+        color: white;
+    }
+
+    .text-white:hover {
+        border-bottom: 2px solid red;
+    }
+
+    a.btn.btn-sm.btn-primary.text-white.active {
+        border-bottom: 2px solid red;
+    }
+
+
+    .image {
+        height: 25% !important;
+        width: 100%;
+    }
+
+    .image-map {
+        height: 40%;
+        width: 100%;
+    }
+
+    hr {
+        border-top: 1px solid black;
+    }
+
+    .header-title {
+        color: #3498db;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .header-top-inner .header-support-info li span.icon {
+        padding: 5px !important;
+        line-height: 15px;
+    }
+
+    .glyphicon-star {
+        color: yellow;
+        font-size: 15px;
+    }
+
+    .active > a {
+        background-color: #3498db !important;
+    }
+
+    .a {
+        cursor: pointer;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    summary {
+        font-weight: bold;
+        font-size: 15px;
+        background: #3498db;
+        padding: 5px 5px 5px 10px;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+        summary:hover {
+            cursor: pointer;
+        }
+
+    details[open] {
+        padding-bottom: 1px !important;
+    }
+
+    details {
+        max-width: 600px;
+        margin: 0 auto 5px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(55,92,192,.08),0 0 1px 0 rgba(18,32,73,.08);
+    }
+
+        details p {
+            padding: 0px 10px 0px 10px;
+            margin-bottom: 5px !important;
+        }
+
+        details ul {
+            position: relative;
+            bottom: 25px;
+            right: 20px;
+        }
+
+            details ul li {
+                display: inline-block;
+                float: right;
+            }
+
+
+
+    .nav {
+        display: inherit;
+    }
+
+    .social-icon {
+        position: inherit;
+    }
+
+    .favSocialIcon {
+        margin-left: 10%;
+        margin-bottom: 8%;
+    }
+
+        .favSocialIcon li {
+            list-style: none;
+            float: left;
+        }
+
+        .favSocialIcon .fa-change {
+            padding: 5px;
+            font-size: 30px;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            text-decoration: none;
+            margin: 5px 2px;
+            border-radius: 36px;
+        }
+
+    .fa-change:hover {
+        opacity: 0.7;
+    }
+
+    .fa-change-facebook {
+        background: #3B5998;
+        color: white;
+    }
+
+    .fa-change-twitter {
+        background: #55ACEE;
+        color: white;
+    }
+
+    .fa-change-google {
+        background: #dd4b39;
+        color: white;
+    }
+
+    .fa-change-linkedin {
+        background: #007bb5;
+        color: white;
+    }
+
+    .fa-change-youtube {
+        background: #bb0000;
+        color: white;
+    }
+
+    .fa-change-instagram {
+        background: #125688;
+        color: white;
+    }
+
+    button.owl-prev, button.owl-next span {
+        height: 40px;
+        width: 10px;
+    }
+
+        button.owl-prev span, button.owl-next span {
+            font-size: 35px;
+        }
+</style>
+@section SliderContent{}
+
+<div class="bk-section doctors-profile-area section-padding-top-sm section-padding-bottom-sm" data-id="@Model.DoctorId">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="panel panel-default text-center">
+                    <div class="panel-body border">
+                        <div class="owl-carousel owl-theme">
+                            <div class="item">
+                                <img src="@Model.ProfilePicture" alt="@Model.ProfilePicture">
+                            </div>
+                            @if (Model.DoctorImages.Any())
+                            {
+                                foreach (var item in Model.DoctorImages)
+                                {
+                                    <div class="item">
+                                        <img src="@(FilePathList.Doctor + item.ImagePath)" alt="@item.ImagePath">
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div>
+                            <p>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i><a>(@Model.Reviews.Count() Reviews)</a></i>
+                            </p>
+                            <p class="parared">Been in practice for 23 years</p>
+                        </div>
+                    </div>
+                    <div class="panel-footer mrg-tb">
+                        <div class="nav nav-tabs">
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white active" href="#AboutMe">About Me</a>
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white" href="#PraticeInformation">Pratice Information</a>
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white" href="#ActiveHospital">Active Hospital Affiliations*</a>
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white" href="#Qualifications">Qualifications</a>
+                            <hr />
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white" href="#Experience">Experience</a>
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white" href="#BoardCertification">Board Certification</a>
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white" href="#Languages">Languages</a>
+                            <a data-toggle="tab" class="btn btn-sm btn-primary text-white" href="#Reviews">Reviews</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 border">
+                <h3 class="header-title">@Model.FullForDoctor <small>(@Model.Education)</small></h3>
+                <hr />
+                <div>
+                    <div id="accordion">
+                        <div>
+                            <p class="parared">@Model.LongDescription</p>
+                        </div>
+                        <details open>
+                            <summary>Address</summary>
+                            @{
+                                var fullAddress = Model.Address1 + " " + Model.Address2 + " " + Model.City + " " + Model.State + " " + Model.Country + " " + Model.ZipCode;
+                            }
+                            <p>@Model.Address1 , @Model.Address2</p>
+                            <p>@Model.City, @Model.State, @Model.Country  @Model.ZipCode</p>
+                            <p>@Model.PhoneNumber</p>
+                            <ul>
+                                <li> <i class="fa fa-wheelchair"></i></li>
+                                <li><i class="fa fa-wifi"></i></li>
+                            </ul>
+                        </details>
+                    </div>
+                </div>
+                <br />
+                <div class="tab-content">
+                    <div id="AboutMe" class="tab-pane in active">
+                        <h3 class="header-title">About Me</h3>
+                        <hr />
+                        <p>@Model.LongDescription</p>
+                    </div>
+                    <div id="PraticeInformation" class="tab-pane">
+                        <h3 class="header-title">Pratice Information</h3>
+                        <hr />
+                    </div>
+                    <div id="ActiveHospital" class="tab-pane">
+                        <h3 class="header-title">Active Hospital Affiliations*</h3>
+                        <hr />
+                    </div>
+                    <div id="Qualifications" class="tab-pane">
+                        <h3 class="header-title">Qualifications</h3>
+                        <hr />
+                        @if (Model.Qualifications.Any())
+                        {
+                            <ul>
+                                @foreach (var item in Model.Qualifications.Where(x => x.IsActive && !x.IsDeleted))
+                                {
+                                    <li>@item.Degree in @item.PassingYear from @item.Institute</li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                    <div id="Experience" class="tab-pane">
+                        <h3 class="header-title">Experience</h3>
+                        <hr />
+                        @if (Model.Experiences.Any())
+                        {
+                            <ul>
+                                @foreach (var item in Model.Experiences.Where(x => x.IsActive && !x.IsDeleted))
+                                {
+                                    <li>
+                                        <div>@item.Designation At @item.Organization</div>
+                                        <div> from @item.StartDate.ToDefaultFormate() to @item.EndDate.Value.ToDefaultFormate()</div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                    <div id="BoardCertification" class="tab-pane">
+                        <h3 class="header-title">Board Certification</h3>
+                        <hr />
+                        @if (Model.DoctorBoardCertifications.Any())
+                        {
+                            <ul>
+                                @foreach (var item in Model.DoctorBoardCertifications.Where(x => x.BoardCertification != null && x.IsActive && !x.IsDeleted))
+                                {
+                                    <li>@item.BoardCertification.CertificationName</li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                    <div id="Languages" class="tab-pane">
+                        <h3 class="header-title">Languages</h3>
+                        <hr />
+                        @if (Model.DoctorLanguages.Any())
+                        {
+                            <ul>
+                                @foreach (var item in Model.DoctorLanguages.Where(x => x.Language != null && x.IsActive && !x.IsDeleted))
+                                {
+                                    <li>@item.Language.LanguageName</li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                    <div id="Reviews" class="tab-pane">
+                        <h3 class="header-title">Reviews</h3>
+                        <hr />
+                        <!-- Single Comment -->
+                        @if (Model.Reviews.Any())
+                        {
+                            foreach (var item in Model.Reviews.Where(x => x.IsActive && !x.IsDeleted))
+                            {
+                                <!-- Single Comment -->
+                                <div class="single-comment">
+                                    @*<img src="@item.ReviewBy.ProfilePicture" alt="commenter thumb">
+                                        <h6>@item.Title</h6>
+                                        <span>By. @item.ReviewBy.FullName</span>
+                                        <p>@item.ReviewText</p>*@
+                                    <p>@item.Description</p>
+                                    <a href="javascript:;" class="reply-button"><span>@item.CreatedDate.ToDefaultFormate("MMM dd, yyyy at hh:mm tt")</span></a>
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div id="googleMap" class="image-map"></div>
+                <div class="panel panel-default">
+                    <div class="panel-body ">
+                        <div>
+                            <div class="col-xs-12 col-sm-12">
+                                <ul class="favSocialIcon">
+                                    @{
+                                        Doctyme.Model.SocialMedia socialMedias = new Doctyme.Model.SocialMedia();
+                                        if (Model.SocialMediaLinks.Count > 0)
+                                        {
+                                            socialMedias = Model.SocialMediaLinks.FirstOrDefault();
+                                        }
+                                    }
+                                    <li><a target="_blank" href="@(string.IsNullOrEmpty(socialMedias.Facebook)?"javascript:;":socialMedias.Facebook)"><i class="fa fa-change fa-change-facebook fa-facebook"></i></a></li>
+                                    <li><a target="_blank" href="@(string.IsNullOrEmpty(socialMedias.Twitter)?"javascript:;":socialMedias.Twitter)"><i class="fa fa-change fa-change-twitter fa-twitter"></i></a></li>
+                                    <li><a target="_blank" href="@(string.IsNullOrEmpty(socialMedias.LinkedIn)?"javascript:;":socialMedias.LinkedIn)"><i class="fa fa-change fa-change-linkedin fa-linkedin"></i></a></li>
+                                    <li><a target="_blank" href="@(string.IsNullOrEmpty(socialMedias.Instagram)?"javascript:;":socialMedias.Instagram)"><i class="fa fa-change fa-change-instagram fa-instagram"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mar-rgt social-icon">
+                                <p>
+                                    <a class="btn btn-sm btn-success mrg-tb text-white action" data-flag="RequestAppointment">Book an Appointment</a>
+                                </p>
+                                <p>
+                                    <a class="btn btn-sm btn-primary mrg-tb text-white">Opening Hours</a>
+                                    @if (Model.OpeningHours.Any())
+                                    {
+                                        <div class="text-center">
+                                            @foreach (var item in Model.OpeningHours)
+                                            {
+                                                string time = string.Format("{0} - {1}", item.StartDateTime, item.EndDateTime);
+                                                <b>@Common.GetDayofWeek((item.WeekDay ?? 0), true)</b> @time <br />
+                                            }
+                                        </div>
+                                    }
+                                </p>
+                                <p><a class="btn btn-sm btn-primary mrg-tb text-white">Browse Similar Provider</a></p>
+                                <p><a class="btn btn-sm btn-primary mrg-tb text-white">Browse Similar Specialties</a></p>
+                                <p><a class="btn btn-sm btn-primary mrg-tb text-white" id="lnkAddReview">Add Review</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--// Doctors Profile Area -->
+@section scripts {
+    <script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript">
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            animateOut: 'slideOutDown',
+            animateIn: 'flipInX',
+            autoHeight: true,
+            dots: false,
+            items: 1,
+            loop: true,
+            nav: true,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 5000,
+            adaptiveHeight: true,
+        });
+
+        $(document).ready(function () {
+            loadLocation();
+        });
+        $(document).on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(".doctors-profile-area").data("id");
+            switch (flag) {
+                case "RequestAppointment":
+                    RequestAppointment(id);
+                default:
+            }
+        });
+        function RequestAppointment(id) {
+            $("#modalContent").load("/_RequestAppointment/" + id, function () {
+                $("#divModal .modal-dialog").addClass("modal-lg");
+                $("#divModal").modal('show');
+            });
+        }
+        $("#lnkAddReview").click(function (e) {
+            var id = $(".doctors-profile-area").data("id");
+            $("#modalContent").load("/_DoctorReview/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        });
+        function loadLocation() {
+            var geocoder;
+            var map;
+            var address = "@fullAddress";
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(-34.397, 150.644);
+                var myOptions = {
+                    zoom: 15,
+                    center: latlng,
+                    //mapTypeControl: true,
+                    //mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
+                    //navigationControl: true,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+                if (geocoder) {
+                    geocoder.geocode({ 'address': address }, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+                                map.setCenter(results[0].geometry.location);
+
+                                var infowindow = new google.maps.InfoWindow(
+                                    {
+                                        content: '<b>' + address + '</b>',
+                                        size: new google.maps.Size(150, 50)
+                                    });
+
+                                var marker = new google.maps.Marker({
+                                    position: results[0].geometry.location,
+                                    map: map,
+                                    title: address
+                                });
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    infowindow.open(map, marker);
+                                });
+
+                            }
+                        }
+                    });
+                }
+        }
+    </script>
+}

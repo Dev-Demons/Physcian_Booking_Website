@@ -1,0 +1,590 @@
+﻿@{
+    ViewBag.Title = "Search";
+    var entity = ViewBag.Entity;
+    var searchBox = ViewBag.SearchBox;
+    var OrgTypeId = ViewBag.OrgTypeId;
+    var searchLocation = ViewBag.SearchLocation.Replace("|", ", ");
+    var organisationType = ViewBag.OrganisationType;
+}
+<head>
+    @*<link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>*@
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+
+@{
+    ViewBag.Title = "DocTyme Pharmacy Directory - Find a Pharmacy in Your Area";
+    List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "description",
+        Content = "Find a Cheap Pharmacy with the DocTyme Pharmacy Directory and get information including the Special Promotions, Coupons and Online Ordering. Finding a cheap pharmacy has never been easier."
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "keywords",
+        Content = "pharmacy directory, find a pharmacy, pharmacy search, locate, find, drug store, pharmacy, medicine, DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:title",
+        Content = "DocTyme Pharmacy Directory - Find a Pharmacy in Your Area"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:description",
+        Content = "Find a cheap pharmacy with the DocTyme Pharmacy Directory and get information including special promotions, coupons and order online, affiliation, health insurance and contact information. Finding a pharmacy has never been easier."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "keywords",
+        Content = "Doctor Name - City Name, Doctor Name - City Name Doctor Name - City Name in City Name, State Name"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "twitter:image",
+        Content = "logo image url"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:url",
+        Content = "https://www.doctyme.com/"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:site_name",
+        Content = "DocTyme"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:type",
+        Content = "website"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:title",
+        Content = "Search & Review Doctors, Hospital, Senior Care, Pharmacy and Book an appointment online."
+    });
+    TempData["metaInfo"] = meta;
+}
+
+<link href="~/Content/client/custom/SearchPage.css" rel="stylesheet" />
+@*<script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>*@
+<style type="text/css">
+    .image-map {
+        margin-bottom: 8%;
+    }
+
+    .bg {
+        padding: 0px;
+    }
+
+    .within-section {
+        background-color: #eee;
+        padding: 15px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .input-set {
+        width: 85%;
+        float: left;
+    }
+
+    .btn-set {
+        width: calc(100% - 85%);
+        float: left;
+        margin-top: 0px;
+    }
+
+    .ui-autocomplete {
+        max-height: 20%;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        text-transform: capitalize;
+    }
+    /* IE 6 doesn't support max-height
+    * we use height instead, but this forces the menu to always be this tall
+    */
+    * html .ui-autocomplete {
+        height: 150px;
+        text-transform: capitalize;
+    }
+
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+        text-transform: capitalize;
+    }
+
+    .ui-autocomplete.ui-widget {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+</style>
+
+@section SliderContent{
+}
+<!-- Blog Page Area -->
+<div class="cr-section blog-page-area bg-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-9 col-12 order-1 order-xl-2">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <label><span id="countpharmacy"></span></label>
+                        <select id="PageSelection" name="PageSelection">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="map-toggle-button" style="display: none;">
+                            <div class="btn-group btn-group-toggle pull-right mb-10" data-toggle="buttons">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" class="filter-buttons" onchange="refreshFilterButton(this)" value="list" name="filter-button" id="filter-button-list" autocomplete="off" checked> <i class="fa fa-list"></i> List View
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" class="filter-buttons" onchange="refreshFilterButton(this)" value="map" name="filter-button" id="filter-button-map" autocomplete="off"> <i class="fa fa-map-marker"></i> Map View
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="googleMapTop" style="width: 100%; min-height:300px; position: relative;margin-bottom: 10px;" data-gmap-zoom="12" data-gmap-src="xml/gmap/pins.xml"></div>
+                <div id="ResultArea"></div>
+
+            </div>
+            <div class="col-xl-3 col-12 order-2 order-xl-1 sticky-sidebar-active">
+                <div class="widgets right-sidebar">
+                    <div class="single-widget widget-archives" data-block="Distance">
+                        <div class="single-widget widget-archives" data-block="FreeSearch">
+                            <h5 class="widget-title">
+                                Location
+                            </h5>
+                            <div class="filter-card">
+                                <div class="form-group">
+                                    <div id="divSearchBoxZipcodeAutocmeplete" class="autocomplete" style="width:99% ; text-transform: capitalize;">
+                                        <input type="text" id="searchBoxZipcode" class="form-control" placeholder="Location" value="@ViewBag.SearchLocation.Replace("|", " ,")" /><hr />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-widget widget-archives" data-block="FreeSearch">
+                            <h5 class="widget-title">
+                                Search
+                                <small>
+                                    <lable class="pull-right"><a href="javascript:clearSearch('masterSearch');" class="clearFilter">Clear Filter</a></lable>
+                                </small>
+                            </h5>
+                            <div class="filter-card">
+                                <div class="form-group">
+                                    <div id="divMasterSearchAutocmeplete" class="autocomplete" style="width:99%; text-transform: capitalize;">
+                                        <table>
+                                            <tr>
+                                                <td width="95%"><input type="text" id="masterSearch" class="form-control" placeholder="Name" value="@ViewBag.SearchBox" /></td>
+                                                <td width="5%"><i id="btnSearch" class="fa fa-search" style=" font-size:2vw; cursor:pointer"></i></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<h5 class="widget-title">
+                                Distance
+                            </h5>
+                            <div  class="widget-archives-inner">
+                                <div class="within-section mb-3">
+                                    <label>Within &nbsp;</label>
+                                    @Html.DropDownList("DistanceType", ViewBag.DistanceList as IEnumerable<SelectListItem>, "-- Select Distance --", new { @class = "otherControl" })
+                                </div>*@
+
+                        @*<div class="widget-archives-inner">
+                                <div class="form-group">
+                                    <input id"searchBox" type="text" class="input-set otherControl" placeholder="Keyword, Name, Location"><button type="button" class="btn btn-primary btn-set"><i class="fa fa-search"></i></button>
+
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+                @*<div class="single-widget widget-archives">
+                        <h5 class="widget-title">Pharmacy Advertisement</h5>
+                        <div class="widget-archives-inner">
+                        </div>
+                    </div>
+                    <div class="single-widget widget-archives">
+                        <h5 class="widget-title">Pharmacy Advertisement</h5>
+                        <div class="widget-archives-inner">
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <div id="dvAdSlider">
+        @* @Html.Partial("_Advertisement", new ViewDataDictionary { { "AddTypeId", "1" }, { "OrgTypeId", "1005" }, { "UserTypeIds", "2" } })*@
+    </div>
+</div>
+
+<!--// Blog Page Area -->
+@section scripts {
+    <script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+    <script>
+        $jq(function () {
+            $jq("#searchBoxZipcode").autocomplete({
+                source: function (request, response) {
+                    $jq.ajax({
+                        url: '/GetZipCityStateList/' + request.term.toString().trim(),
+                        method: "GET",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (JSON.stringify(data.length) > 0) {
+                                response(data);
+                            } else {
+                                response(["Data not found"]);
+                            }
+
+
+                        },
+                        error: function (result) {
+                            //alert('Error');
+                            console.log(result);
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    if (ui.item.value.trim() !== "Data not found") {
+                        //alert(ui.item.value);
+                        $jq("#searchBoxZipcode").val(ui.item.value);
+                    }
+                    else {
+                        ui.item.value = '';
+                        $jq("#searchBoxZipcode").empty();
+                    }
+                    return false;
+                    //console.log("Selected value: " + ui.item.value );
+                }
+            });
+
+            $jq("#masterSearch").autocomplete({
+                source: function (request, response) {
+                    var redirectUrl = '@Url.Action("GetAllOrgName", "Home")';
+                        $jq.ajax({
+                            url: redirectUrl,
+                            type: "POST",
+                            cache: false,
+                            data: { 'searchText': encodeURI(request.term), 'OrgType': '@organisationType'  },
+                            success: function (result) {
+                                if (JSON.stringify(result.length) > 0) {
+                                    //result.forEach(function (item) {
+                                    //    item.substr(0, 1).toUpperCase() + item.substr(1);
+                                    //});
+                                    response(result);
+
+                                } else {
+                                    response(["Data not found"]);
+                                }
+                            },
+                            error: function (result) {
+                                //alert('Error');
+                                console.log(result);
+                            }
+                        });
+                    },
+                    minLength: 3,
+                    select: function (event, ui) {
+                        if (ui.item.value.trim() !== "Data not found") {
+                            var selectedText = ui.item.value.charAt(0).toUpperCase() + ui.item.value.substr(1);
+                            //alert(selectedText);
+                            $jq("#masterSearch").val(selectedText);
+                            $jq("#masterSearch").addClass('capitalise');
+                        }
+                        else {
+                            ui.item.value = '';
+                            $jq("#masterSearch").empty();
+                        }
+                        //console.log("Selected value: " + ui.item.value );
+                    }
+                });
+
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        var arrLocation = ["", "", ""];
+        function LoadAds() {
+            $("#dvAdSlider").html('');
+            if ($("#searchBoxZipcode").val() && $("#searchBoxZipcode").val().split(',').length >= 3) {
+                        arrLocation = $("#searchBoxZipcode").val().split(',');
+                    }
+            $.ajax({
+                url: '@Url.Action("AdsView", "Search" )?AddsPerPage=7&AddTypeId=1&OrgTypeId=1005&UserTypeIds=2&City=' + arrLocation[0] + '&Zipcode=' + arrLocation[2],
+                    type: 'GET',
+                    cache: false,
+                    data: { }
+            }).done(function (result) {
+                
+                $("#dvAdSlider").append(result);
+            });
+        }
+        
+        $("#btnSearch").click(function (e) {
+            fetchResults();
+        });
+
+        blockPage();
+        var model;
+        var sortingTypevalue = "";
+        var isMapInitialize = false;
+        var isListLoaded = true;
+
+        $(document).ready(function () {
+            isListView(true);
+            //pagefunction();
+            //fetchResults('@searchBox');
+
+            //$('#DistanceType').change(function (e) {
+            //    //alert(this.value);
+            //    model = UpdateSearchModel();
+            //    loadResultArea(model);
+            //});
+            refreshFilterButton();
+            getCurrentLatLong();
+            LoadAds();
+        });
+
+        $(document).on("click", ".sorting", function (e) {
+            sortingTypevalue = $(e.currentTarget).data("item");
+            model = UpdateSearchModel();
+            loadResultArea(model);
+        });
+
+        function refreshFilterButton(This) {
+       
+            if (This && $(This).val() == "map") {
+                isListView(false);
+                if (!isMapInitialize) {
+                    // Intialize the map
+                    initializeMap("googleMapTop", $("#ResultArea"));
+                    isMapInitialize = true;
+                }
+
+                refreshMapResults();
+            } else {
+                isListView(true);
+                fetchResults();
+            }
+
+        }
+
+        function isListView(flag) {
+            if (flag) {
+                $("#ResultArea").css("display", "block");
+                $("#googleMapTop").css("display", "none");
+                isListLoaded = true;
+            } else {
+                $("#googleMapTop").css("display", "block");
+                $("#ResultArea").css("display", "none");
+                isListLoaded = false;
+
+            }
+
+        }
+
+        function getTotalRecords() {
+            var totalRecords = $("#ResultArea").find("#Pharmacytotalcount").val();
+            if (parseInt(totalRecords) > 0)
+                return parseInt(totalRecords);
+            else
+                return 0;
+        }
+
+        function refreshMapResults() {
+            //alert('refreshMapResults');
+            loadMapResults($("#ResultArea"));
+        }
+
+        function refreshResults() {
+            fetchResults();
+        }
+
+        function fetchResults() {
+            model = UpdateSearchModel();
+            loadResultArea(model);
+            LoadAds();
+        }
+
+        function UpdateSearchModel() {
+            var distanceModel = {};
+            if (myLocation) {
+                distanceModel = {
+                    DistanceType:"" ,// $("#DistanceType option:selected").val(),
+                    Latitude: myLocation.lat,
+                    Longitude: myLocation.lng
+                }
+            } else {
+                distanceModel = {
+                    DistanceType:"",// $("#DistanceType option:selected").val()
+                }
+            }
+
+            return {
+                Distance: distanceModel,
+                SearchBox: $("#masterSearch").val(),
+                SearchLocation: $("#searchBoxZipcode").val(),
+                Id: 0,
+                Sorting: (sortingTypevalue == "") ? "" : sortingTypevalue
+
+            };
+        }
+
+        function loadResultArea(searchModel) {
+            var url = "/_SearchPharmacy";
+            $.post(url, searchModel, function (response) {
+                $("#ResultArea").html(response);
+                if (getTotalRecords() > 0)
+                    $("#countpharmacy").text(getTotalRecords() + " Pharmacy found");
+                else
+                    $("#countpharmacy").text("No Records Found");
+                
+                $(".map-toggle-button").css("display", "block");
+
+                if (!isListLoaded) {
+                    refreshMapResults();
+                }
+            }).fail(function () {
+                $("#ResultArea").html('No Results Found!');
+                console.log("Unable to fetch search results");
+            });
+        }
+
+        function clearSearch(searchCtrlId) {
+            $('#' + searchCtrlId).val('');
+            $('select').prop('selectedIndex', 0);
+            fetchResults('');
+        }
+
+        function initializePageSizeDropDown() {
+            $("#PageSelection").on("change", function () {
+                var pageSize = $(this).val();
+                model = UpdateSearchModel();
+                model.PageSize = pageSize == undefined ? 20 : pageSize;
+                loadResultArea(model);
+            });
+        }
+
+        function loadMapResults(resultArea) {
+            var sectionDiv = $(resultArea).find("div.section");
+             clearMarkers();
+            if (sectionDiv.length > 0) {
+                sectionDiv.each(function (index, data) {
+                    var referenceId = $(this).data("organisationid");
+                    //alert((this).data("latitude"));
+                    var mapModel = {
+                        isAcceptButton: false,
+                        referenceId: referenceId,
+                        name: $(this).data("organisationname"),
+                        fullAddress: $(this).data("fulladdress"),
+                        latitude: $(this).data("latitude"),
+                        longitude: $(this).data("longitude"),
+                        reviewCount: $(this).data("reviewcount"),
+                        rating: $(this).data("rating"),
+                        profileImage: $(this).find(".profile > a >  img").attr("src"),
+                        profileUrl: "/Profile/Pharmacy/" + $(this).data("organisationname").split(' ').join('').split('&').join('') + "-" + referenceId,
+                        // profileUrl: "",
+                        reviewHtml: $(this).find(".star-section").html()
+                    };
+
+                    setMarkerByAddress(mapModel);
+
+                });
+            }
+
+            //$.post("/OrganisationMapSearch", { searchModel: searchModel, userTypeId: 3 }, function (response) {
+            //    if (response && response.result.length > 0) {
+            //        //display result places on the map (they have Address1, Address2, City, State, Country, or ZipCode)
+            //        var doctorsSearchRequests = buildMapSearchRequest(response.result);
+
+            //        for (var i = 0; i < doctorsSearchRequests.SearchAddressRequests.length; i++) {
+            //            searchPlace_AddMarker(doctorsSearchRequests.SearchAddressRequests[i].requestInfo, doctorsSearchRequests.SearchAddressRequests[i].doctorInfo);
+            //        }
+            //        for (var i = 0; i < doctorsSearchRequests.SearchZipCodeRequests.length; i++) {
+            //            searchZipCode_AddMarker(doctorsSearchRequests.SearchZipCodeRequests[i].requestInfo, doctorsSearchRequests.SearchZipCodeRequests[i].doctorInfo);
+            //        }
+            //    }
+            //});
+        };
+
+        // Build array of reuests objects will be sent to google places service for search and add markers
+        function buildMapSearchRequest(doctorsResult) {
+            var searchRequestsObj = {};
+            var searchAddressRequests = [];
+            var searchZipCodeRequests = [];
+            if (doctorsResult && doctorsResult.length > 0) {
+                $.each(doctorsResult, function (index, item) {
+                    var queryInfo = '';
+                    // Check to separate ZipCode from the other address data, because if it's not valid will cause no result found
+                    // So we use it ONLY in case of no addres info
+                    if ((item.address1 || item.address2 || item.City || item.State || item.Country) && !item.ZipCode) {
+                        queryInfo = (item.Address1 ? item.Address1 + ',' : '') + (item.Address2 ? item.Address2 + ',' : '') + (item.City ? item.City + ',' : '') + (item.State ? item.State + ',' : '') + (item.Country ? item.Country + ',' : '');
+                        searchAddressRequests.push({
+                            requestInfo: {
+                                query: queryInfo,
+                                fields: ['name', 'geometry'],
+                            },
+                            doctorInfo: {
+                                fullName: item.FullName,
+                                phoneNumber: item.PhoneNumber
+                            }
+                        });
+                    } else if (item.ZipCode) {
+                        queryInfo = item.ZipCode;
+                        searchZipCodeRequests.push({
+                            requestInfo: {
+                                componentRestrictions: { postalCode: queryInfo },
+                            },
+                            doctorInfo: {
+                                fullName: item.FullName,
+                                phoneNumber: item.PhoneNumber
+                            }
+                        });
+                    }
+                });
+            }
+            searchRequestsObj = {
+                SearchAddressRequests: searchAddressRequests,
+                SearchZipCodeRequests: searchZipCodeRequests
+            };
+            return searchRequestsObj;
+        };
+    </script>
+    @*<script src="~/Scripts/custom/gmap.js"></script>
+        <script src="~/Scripts/custom/gmap_large.js"></script>*@
+    <script src="~/Scripts/custom/GoogleMapsFunctions.js"></script>
+
+}

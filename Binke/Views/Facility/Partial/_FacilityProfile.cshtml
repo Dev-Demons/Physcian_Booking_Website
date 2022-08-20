@@ -1,0 +1,157 @@
+﻿@using Doctyme.Repository.Enumerable;
+@model Doctyme.Model.Organisation
+@{
+    ViewBag.Title = "Facility Profile";
+}
+
+<div class="box-header">
+    <h4 class="title">
+        @(Model.OrganisationId == 0 ? "Add Facility Profile" : "Edit Facility Profile")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("BasicInformation", "Facility", FormMethod.Post, new { id = "frmBasicInfo", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizationTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        @Html.HiddenFor(model => model.UserId)
+        if (ViewBag.ID > 0)
+        {
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.CreatedBy)
+        }
+        @Html.HiddenFor(model => model.IsDeleted)
+        @Html.HiddenFor(model => model.ApplicationUser_Id)
+        @Html.HiddenFor(model => model.LogoFilePath)
+        @Html.HiddenFor(model => model.Status)
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Organisation Name</b></label>
+                        @Html.TextBoxFor(x => x.OrganisationName, new { @class = "form-control", placeholder = "Organisation Name" })
+                        @Html.ValidationMessageFor(x => x.OrganisationName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Organisation Subpart</b></label>
+                        @Html.TextBoxFor(x => x.OrganisationSubpart, new { @class = "form-control", placeholder = "Organisation Subpart" })
+                        @Html.ValidationMessageFor(x => x.OrganisationSubpart, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Alias Business Name</b></label>
+                        @Html.TextBoxFor(x => x.AliasBusinessName, new { @class = "form-control", placeholder = "Alias Business Name" })
+                        @Html.ValidationMessageFor(x => x.AliasBusinessName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Authorized Official First Name</b></label>
+                        @Html.TextBoxFor(x => x.AuthorizedOfficialFirstName, new { @class = "form-control", placeholder = "Authorized Official First Name" })
+                        @Html.ValidationMessageFor(x => x.AuthorizedOfficialFirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Authorized Official Last Name</b></label>
+                        @Html.TextBoxFor(x => x.AuthorizedOfficialLastName, new { @class = "form-control", placeholder = "Authorized Official Last Name" })
+                        @Html.ValidationMessageFor(x => x.AuthorizedOfficialLastName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Authorized Official Name Prefix</b></label>
+                        @Html.TextBoxFor(x => x.AuthorizedOfficialNamePrefix, new { @class = "form-control", placeholder = "Authorized Official Name Prefix" })
+                        @Html.ValidationMessageFor(x => x.AuthorizedOfficialNamePrefix, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Authorized Official Telephone Number</b></label>
+                        @Html.TextBoxFor(x => x.AuthorizedOfficialTelephoneNumber, new { @class = "form-control", placeholder = "Authorized Official Telephone Number" })
+                        @Html.ValidationMessageFor(x => x.AuthorizedOfficialTelephoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Authorized Official Title Or Position</b></label>
+                        @Html.TextBoxFor(x => x.AuthorizedOfficialTitleOrPosition, new { @class = "form-control", placeholder = "Authorized Official Title Or Position" })
+                        @Html.ValidationMessageFor(x => x.AuthorizedOfficialTitleOrPosition, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>NPI</b></label>
+                        @Html.TextBoxFor(x => x.NPI, new { @class = "form-control", placeholder = "NPI" })
+                        @Html.ValidationMessageFor(x => x.NPI, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Organisation EIN</b></label>
+                        @Html.TextBoxFor(x => x.OrganizatonEIN, new { @class = "form-control", placeholder = "Organisation EIN" })
+                        @Html.ValidationMessageFor(x => x.OrganizatonEIN, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Status</b></label>
+                        @Html.TextBoxFor(x => x.Status, new { @class = "form-control", placeholder = "Status" })
+                        @Html.ValidationMessageFor(x => x.Status, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Short Description</b></label>
+                        <textarea id="ShortDescription" name="ShortDescription" class="form-control editor" onupdated="$('#ShortDescription').summernote('code', this.data.value);" rows="4">@Model.ShortDescription</textarea>
+                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Long Description</b></label>
+                        <textarea id="LongDescription" name="LongDescription" class="form-control editor" onupdated="$('#LongDescription').summernote('code', this.data.value);" rows="4">@Model.LongDescription</textarea>
+
+                        @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 single-input">
+                        <label for="IsActive">Active</label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsActive" name="IsActive" @(Model.OrganisationId > 0 ? Model.IsActive == true ? "checked" : string.Empty : "checked") data-Id="IsActive" />&nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                    </div>
+                    @if (User.IsInRole(UserRoles.Admin))
+                    {
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="EnabledBooking">Enabled Booking</label>
+                            <label class="switch">
+                                <input type="checkbox" id="EnabledBooking" name="EnabledBooking" @(Model.OrganisationId > 0 ? Model.EnabledBooking == true ? "checked" : string.Empty : "checked") data-Id="EnabledBooking" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal-footer">
+    <button type="button" id="btnSaveFacility" class="btn btn-primary">Submit</button>
+</div>
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+
+    $(document).ready(function () {
+        $("#Status").val(' ');
+        $(".editor").summernote();
+    });
+
+    $("#btnSaveFacility").click(function() {
+        $.validator.unobtrusive.parse($('#frmBasicInfo'));
+        $('#ShortDescription').val(encodeURIComponent($("#ShortDescription").summernote('code')));
+        $('#LongDescription').val(encodeURIComponent($('#LongDescription').summernote('code')));
+        if ($("#frmBasicInfo").valid()) {
+            $.post("@Url.Action("BasicInformation", "Facility")", $("#frmBasicInfo").serialize(), function (response) {
+                if (response.Status) {
+                    HandleResponse(response);
+                }
+            });
+        }
+    });
+</script>
+

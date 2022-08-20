@@ -1,0 +1,44 @@
+﻿@model Binke.ViewModels.LanguageViewModel
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            @(Model.Id == 0 ? "Add Language" : "Edit Language")
+        </h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("AddEditLanguage", "Language", FormMethod.Post, new { id = "frmLanguage" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.LanguageName, new { @class = "form-control", placeholder = "Enter Language" })
+                        @Html.ValidationMessageFor(m => m.LanguageName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+    </div>
+    <script type="text/javascript">
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmLanguage'));
+        if ($("#frmLanguage").valid()) {
+            $.post("@Url.Action("AddEditLanguage")", $("#frmLanguage").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindLanguageList();
+                    closeModal();
+                }
+            });
+        }
+    });
+    </script>

@@ -1,0 +1,496 @@
+﻿@model Binke.ViewModels.PatientProfile
+@using Binke.Utility
+@{
+    if (!ViewBag.IsEdit)
+    {
+        ViewBag.Title = "View Profile";
+    }
+    else
+    {
+        ViewBag.Title = "Edit Profile";
+    }
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="~/Scripts/Patient/PatientMenu.js"></script>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> @ViewBag.Title </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Patient/"> Patient </a></li>
+            <li class="active"> @ViewBag.Title </li>
+        </ol>
+    </div>
+}
+<div class="row">
+    @if (!ViewBag.IsEdit)
+    {
+        <div class="col-sm-12 mb-3">
+            <div class="col-sm-2">
+                <label>Patient Name :</label>
+            </div>
+            <div class="col-sm-5">
+                <label>@Model.FirstName&nbsp;@Model.LastName</label>
+            </div>
+        </div>
+        <div class="col-sm-12 mb-3">
+            <div class="col-sm-2">
+                <label>Address :</label>
+            </div>
+            <div class="col-sm-5">
+                @{
+                    string add = "";
+                    if (!string.IsNullOrWhiteSpace(Model.Address)) //Added by Reena
+                    {
+                        add = Model.Address + ", " + Model.City + ", " + Model.State + ", " + Model.ZipCode;
+                        add = add.Replace(", ,", ",");
+                    }
+                }
+                <label>@add</label>
+            </div>
+        </div>
+        <div class="col-sm-12 mb-3">
+            <div class="col-sm-2">
+                <label>DOB :</label>
+            </div>
+            <div class="col-sm-5">
+                <label>@Model.DateOfBirth</label>
+            </div>
+        </div>
+        <div class="col-sm-12 mb-3">
+            <div class="col-sm-2">
+                <label>Primary Doctor :</label>
+            </div>
+            <div class="col-sm-5">
+                <label>@Model.PrimaryDoctor</label>
+            </div>
+        </div>
+        <div class="col-sm-12 mb-3">
+            <div class="col-sm-2">
+                <label>Health Insurance :</label>
+            </div>
+            <div class="col-sm-5">
+                <label>@Model.HealthInsurance</label>
+            </div>
+        </div>
+        <div class="col-sm-12 mb-3">
+            <div class="col-sm-2">
+                <label>Phone :</label>
+            </div>
+            <div class="col-sm-5">
+                <label>@Model.PhoneNumber</label>
+            </div>
+        </div>
+        <div class="col-sm-12 mb-3">
+            <div class="col-sm-2">
+                <label>Email :</label>
+            </div>
+            <div class="col-sm-5">
+                <label>@Model.Email</label>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="col-sm-2">
+                <label>Profile Picture :</label>
+            </div>
+            <div class="col-sm-1">
+               @if (!string.IsNullOrEmpty(Model.ProfilePicture) && !Model.ProfilePicture.Contains("/Uploads"))
+                {
+                     <img src="~/Uploads/PatientSiteImages/@Model.ProfilePicture" alt="Patient picture"class="img-bordered img-responsive" />                   
+                }
+                else if (!string.IsNullOrEmpty(Model.ProfilePicture) && Model.ProfilePicture.Contains("/Uploads"))
+                {
+                 var trim = Model.ProfilePicture.Substring(1);
+                 <img src="@trim" alt="Patient-icon" class="img-bordered img-responsive" />
+
+                }
+                else
+                {                   
+                 <img src="\Uploads\ProfilePic\no_picture.png" class="img-bordered img-responsive"  />                   
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-12">
+            @using (Html.BeginForm("EditPatient", "Patient", FormMethod.Post, new { id = "frmEditPatient", @class = "form-horizontal form-bordered" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.UserId)
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.PatientId)
+
+                <div class="form-group">
+                    @*<div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>NPI</b></label>
+                            @Html.TextBoxFor(model => model.Uniquekey, new { @class = "form-control", placeholder = "NPI", @readonly = "readonly" })
+                        </div>
+                        <div class="clearfix"></div>*@
+                    <div class="row">
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>Profile Picture</b></label>
+                            <input type="file" id="Image1" name="Image1" class="form-control" />
+                            @Html.HiddenFor(model => model.ProfilePicture)
+                            @Html.ValidationMessageFor(model => model.ProfilePicture, "", new { @class = "text-danger" })
+                        </div>
+                       @if (!string.IsNullOrEmpty(Model.ProfilePicture) && !Model.ProfilePicture.Contains("/Uploads"))
+                            {
+                            <div class="col-md-9 mar-btm">
+                                <img src="~/Uploads/PatientSiteImages/@Model.ProfilePicture" alt="Patient-icon" class="img img-responsive" style="width:100px;height:100px" />
+                            </div>
+                                }
+                                else if(!string.IsNullOrEmpty(Model.ProfilePicture) && Model.ProfilePicture.Contains("/Uploads"))
+                                {
+                             var trim = Model.ProfilePicture.Substring(1);
+                            <div class="col-md-9 mar-btm">
+                                <img src="@trim" alt="Patient-icon" class="img img-responsive" style="width:100px;height:100px" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-9 mar-btm">
+                                <img src="~/Uploads/PatientSiteImages/Patient-637310592000000000.png" alt="Patient-icon" class="img img-responsive" style="width:100px;height:100px" />
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>First Name</b></label>
+                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "First Name" })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <!--<div class="col-md-4 mar-btm">
+                    <label class="control-label"><b>Middle Name</b></label>
+                    @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })-->
+                    @*@Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })*@
+                    <!--</div>-->
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Last Name</b></label>
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Last Name" })
+                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Address</b></label>
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", placeholder = "Address" })
+                        @Html.HiddenFor(model => model.AddressId)
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Zip Code</b></label>
+                        @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control", placeholder = "Zip Code" })
+                        @Html.HiddenFor(model => model.CityStateZipCodeID)
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>City</b></label>
+                        @Html.TextBoxFor(model => model.City, new { @class = "form-control", placeholder = "City" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>State</b></label>
+                        @Html.TextBoxFor(model => model.State, new { @class = "form-control", placeholder = "State" })
+                        @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Date Of Birth</b></label>
+                        @Html.TextBoxFor(model => model.DateOfBirth, "{0:MM/dd/yyyy}", new { @class = "form-control", placeholder = "Date Of Birth" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Phone Number</b></label>
+                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Email</b></label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Primary Doctor</b></label>
+                        @Html.HiddenFor(model => model.DoctorId)
+                        @Html.TextBoxFor(model => model.PrimaryDoctor, new { @class = "form-control", placeholder = "Primary Doctor" })
+
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Insurance Type</b></label>
+                        @Html.DropDownListFor(model => model.InsuranceTypeId, ViewBag.InsuranceType as IEnumerable<SelectListItem>, "Insurance Type",
+                                                                    new { @class = "form-control", placeholder = "Insurance Type" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Health Insurance</b></label>
+                        @Html.HiddenFor(model => model.InsurancePlanID)
+                        @Html.TextBoxFor(model => model.HealthInsurance, new { @class = "form-control", placeholder = "Health Insurance" })
+                    </div>
+                    @*<div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Email</b></label>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>*@
+                    <div class="col-md-4 mar-btm">
+                        <label for="Password">
+                            Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="
+
+&#8226;Passwords must be at least eight characters in length.
+&#8226;Passwords must contain at least one lowercase letter, one uppercase letter, and one number.
+&#8226;The word 'Doctyme' cannot be used.
+&#8226;The name appearing before the@in your login email cannot be used. For example
+&#8226;No more than three consecutive numbers or characters can be used (123 can be used, but not 1234; abc can be used, but not abcd).
+&#8226;No number or letter can be used 4 or more times in a row (5555 cannot be used).
+
+
+
+                                                                                                                      "><i class="fa fa-question-circle text-blue"></i></a>
+                        </label>
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label for="ConfirmPassword">
+                            Confirm Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Confirm password must be equal to password"><i class="fa fa-question-circle text-blue"></i></a>
+                        </label>
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                    @*<div class="clearfix"></div>
+                        <div class="col-lg-4 col-md-4">
+                            <label for="ConfirmPassword">
+                                Confirm Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Confirm password must be equal to password"><i class="fa fa-question-circle text-blue"></i></a>
+                            </label>
+                            @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>*@
+                    <div class="clearfix"></div>
+                    <hr />
+                    <div class="col-md-12 mar-btm ">
+                        <button type="button" id="btnSave" class="btn btn-primary pull-right">Submit</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+@*Changes made against Issue#25*@
+<input type="hidden" id="hdAddress" value="@Model.Address" />
+<script type="text/javascript">
+    //AddPatientSubMenu("Profile")
+    $("#MnuPatient").addClass('menu-open');
+    $("#MnuPatient ul li a p").each(function () {
+        var text = $(this).text();
+        if (text == "Profile") {
+            $(this).parent().addClass('active-sub-menu-item');
+            $(this).parent().find('i').removeClass('far fa-circle');
+            $(this).parent().find('i').addClass('far fa-dot-circle-o');
+        }
+        else {
+            $(this).parent().removeClass('active-sub-menu-item');
+            $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+            $(this).parent().find('i').addClass('far fa-circle');
+        }
+    });
+    $("#btnSave").click(function () {
+        $("#AddressId").rules("remove", "required");
+        $("#CityStateZipCodeID").rules("remove", "required");
+        $("#DoctorId").rules("remove", "required");
+        $("#InsurancePlanID").rules("remove", "required");
+        $.validator.unobtrusive.parse($('#frmEditPatient'));
+        if ($("#frmEditPatient").valid()) {
+            var email = $('#Email').val();
+            var userName = email.substring(0, email.indexOf("@@"));
+            var password = $('#Password').val();
+            if (password.includes(userName)) {
+                alert("Password Cannot be email!")
+                return;
+            }
+            var form = $('#frmEditPatient')[0];
+            var formData = new FormData(form);
+
+            var fileUpload = $("#Image1").get(0);
+            var files = fileUpload.files;
+
+            // Create FormData object
+            var fileData = new FormData();
+
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            $.post("@Url.Action("EditPatient","Patient")/" + $('DateOfBirth').val(), $("#frmEditPatient").serialize(), function (response) {
+                HandleResponse(response);
+                //Changes made against Issue#25
+                //alert(response.Message);
+                if (response.Status == 0)
+                    return false;
+            });
+            setTimeout(function () {                
+                PatientProfileImageSave();
+            },10000);
+        }
+        else {
+            alert('Please Fill Up Required Field');
+        }
+    });
+
+    $('input[type="file"]').change(function (e) {
+        var imageX = e.target.files[0];
+        var imgesize = imageX.size;
+        var fileName = e.target.files[0].name;
+
+        if (imgesize < 5242880) {
+            let img = new Image()
+            img.src = window.URL.createObjectURL(imageX)
+
+            img.onload = () => {
+                w = img.width;
+                h = img.height;
+                $("#ProfilePicture").val(fileName);
+                //if (w <= 50 && h <= 50) {
+                //    $("#ProfilePicture").val(fileName);
+                //}
+                //else {
+                //    alert("Image width and height should be less than or equal 50px");
+                //    $("#ProfilePicture").val('');
+                //}
+            }
+        }
+        else {
+            alert("Image size should be less than 5MB");
+            $("#ProfilePicture").val('');
+        }
+
+    });
+
+    $jq(document).ready(function () {
+        $('#DateOfBirth').datepicker({
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        var dataArray = [];
+        $jq("#ZipCode").autocomplete({
+            source: function (request, response) {
+                $jq.ajax({
+                    url: 'GetZipCityStateList/' + request.term,
+                    method: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (JSON.stringify(data.length) > 0) {
+                            response(data);
+                        } else {
+                            response(["Data not found"]);
+                        }
+                    },
+                    error: function (result) {
+                        //alert('Error');
+                        console.log(result);
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                if (ui.item.value.trim() !== "Data not found") {
+                    dataArray = ui.item.value.split(',');
+                    $jq("#City").val(dataArray[0]);
+                    $jq("#State").val(dataArray[1]);
+                    $jq("#ZipCode").val(dataArray[2]);
+                }
+                else {
+                    ui.item.value = '';
+                    $jq("#ZipCode").empty();
+                }
+                return false;
+            }
+        });
+
+        //DoctorList Auto Populate
+        $jq("#PrimaryDoctor").autocomplete({
+            source: function (request, response) {
+                $jq.ajax({
+                    url: 'GetDoctorList/' + request.term,
+                    method: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (JSON.stringify(data.length) > 0) {
+                            response(data);
+                        } else {
+                            response(["Data not found"]);
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+            },
+            max: 10,
+            minLength: 3,
+            delay: 200,
+            select: function (event, ui) {
+                if (ui.item.value.trim() !== "Data not found") {
+                    dataArray = ui.item.value.split(',');
+                    $jq("#PrimaryDoctor").val(dataArray[0]);
+                    $jq("#DoctorId").val(dataArray[1]);
+                }
+                else {
+                    ui.item.value = '';
+                    $jq("#PrimaryDoctor").empty();
+                }
+                return false;
+            }
+        });
+
+        //Insurance Plan auto populate
+        $jq("#HealthInsurance").autocomplete({
+            source: function (request, response) {
+                $jq.ajax({
+                    url: 'InsurancePlanList/' + $jq('#InsuranceTypeId').val(),
+                    method: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (JSON.stringify(data.length) > 0) {
+                            response(data);
+                        } else {
+                            response(["Data not found"]);
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+            },
+            max: 10,
+            minLength: 3,
+            delay: 200,
+            select: function (event, ui) {
+                if (ui.item.value.trim() !== "Data not found") {
+                    dataArray = ui.item.value.split(',');
+                    $jq("#HealthInsurance").val(dataArray[0]);
+                    $jq("#InsurancePlanID").val(dataArray[1]);
+                }
+                else {
+                    ui.item.value = '';
+                    $jq("#HealthInsurance").empty();
+                }
+                return false;
+            }
+        });
+
+    });
+    function PatientProfileImageSave()
+    {
+        $.ajax({
+            url: '@Url.Action("PatientProfileImageSave", "Patient")',
+            type: "POST",                       
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response == 'File Uploaded Successfully!') {
+                    HandleResponse(response);
+                }
+                window.location.reload();
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+

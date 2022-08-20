@@ -1,0 +1,46 @@
+td {
+    padding: 2px;
+}
+
+.logo {
+    height: 40px;
+    padding: 5px;
+    color: rgb(243, 237, 237);
+}
+
+#filter-container {
+    display: none;
+}
+
+#navListItem {
+    /*border-bottom: 2px solid dodgerblue;*/
+    position: relative;
+    transition-duration: .5s;
+}
+
+#more_less {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+}
+
+@media screen and (max-width:576px) {
+    .logo {
+        height: 40px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+}
+/* @media (min-width: 576px)
+{
+    .modal-dialog {
+    width:50%;
+    }
+} */
+@media (min-width: 576px) {
+    .modal-content {
+        width: 40vw;
+    }
+}

@@ -1,0 +1,84 @@
+/* Anohter Color */
+
+.header-top-area-dark .header-top-inner .header-support-info li a:hover,
+.header-top-area-dark .header-top-inner .header-social li a:hover,
+.header-top-area-dark .header-top-inner .header-search button[type="submit"]:hover, 
+.header-top-area-dark .header-top-inner .header-search input[type="submit"]:hover,
+.bk-service-3 span.icon,
+.team-member-2 .team-member-2-content > span,
+.social-icons ul li:hover a,
+.blog-item .blog-item-meta span a:hover,
+.blog-item > h6 a:hover,
+.footer-social-icons li:hover a,
+.widgets.footer-widgets .widget-about p a,
+.widgets.footer-widgets .widget-quick-links ul li a:hover,
+.widgets.footer-widgets .widget-contact ul li a:hover,
+.footer-copyright a:hover,
+.team-member-2 .team-member-2-content h5 a:hover,
+.footer-copyright a,
+.bk-navigation ul li.bk-dropdown ul li:hover > a{
+    color: #3498db;
+}
+
+
+.bk-navigation ul li:hover > a,
+.banner-text2-inner,
+.cr-navigation-holder button:hover,
+.appointment-form input[type="submit"]:hover, .appointment-form button[type="submit"]:hover,
+.bk-service-3:hover span.icon,
+.bk-service-2,
+.section-title h2::before, 
+.section-title h3::before,
+.bk-readmore-2:hover, a.bk-readmore-2:hover, button.bk-readmore-2:hover,
+.blog-item .blog-item-meta .blog-item-meta-date,
+.slider-navigation-style-1 .slider-navigation:hover,
+.blog-item > .bk-readmore:hover,
+.slider-dots-style-2 .cr-slider-dots li.slick-active, .slider-dots-style-2 .cr-slider-dots li:hover,
+.widgets.footer-widgets .widget-title::after,
+#scrollUp,
+.mean-container .mean-nav ul li a{
+    background: #3498db;
+}
+.bg-theme{
+    background: #3498db !important;
+}
+.bg-secondary{
+    background: #13bfb1 !important;
+}
+
+
+input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active,
+.nice-select:active, .nice-select.open, .nice-select:focus,
+.appointment-form input[type="submit"]:hover, .appointment-form button[type="submit"]:hover,
+.bk-service-3 span.icon,
+.team-member-2:hover .team-member-2-thumb,
+.bk-readmore-2:hover, a.bk-readmore-2:hover, button.bk-readmore-2:hover,
+.slider-navigation-style-1 .slider-navigation:hover,
+.slider-dots-style-2 .cr-slider-dots li.slick-active, .slider-dots-style-2 .cr-slider-dots li:hover,
+#scrollUp,
+.bk-navigation ul li.bk-dropdown ul{
+    border-color: #3498db;
+}
+
+.footer-newsletter-form input[type="submit"]:hover, .footer-newsletter-form button:hover {
+    background: rgba(52, 152, 219, 0.9);
+    border-color: rgba(52, 152, 219, 0.9);
+}
+
+.mean-container .mean-nav > ul{
+    border-color: rgba(52, 152, 219, 0.9);
+}
+
+.bk-service-2:hover,
+.mean-container .mean-nav ul li a:hover{
+    background: #258cd1;
+}
+
+.banner-text2-buttons .bk-button, .banner-text2-buttons a.bk-button, .banner-text2-buttons button.bk-button{
+    background: #5faee3;
+    border-color: #5faee3;
+}
+
+.header-top-inner .header-support-info{
+    border-color: #70747c;
+}

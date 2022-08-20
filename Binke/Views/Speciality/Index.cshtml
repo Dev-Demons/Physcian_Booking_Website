@@ -1,0 +1,159 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Specialitys";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+    <style>
+     
+        #dtSpeciality_length {
+            float: left;
+        }
+        #addSpeciality {           
+            position: relative;
+            top: 15px;
+            right: 15px;
+        }
+    </style>
+</head>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Specialitys </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Speciality/"> Speciality </a></li>
+            <li class="active"> Speciality List </li>
+        </ol>
+    </div>
+}
+
+<div class="panel">
+   
+        <div class="">
+            <button href="javascript:;" class="float-right btn btn-sm btn-primary" id="addSpeciality">Add Speciality</button>
+        </div>
+        @*<h3 class="panel-title">Specialitys</h3>*@
+   
+    <div class="panel-body">
+        <table id="dtSpeciality" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Speciality Name</th>
+                    <th># Board</th>
+                    @*<th>Date Created</th>
+                    <th>Date Modified</th>*@
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT -->
+@section pagespecific {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindSpecialityList();
+        });
+
+        $(document).on("click", "#addSpeciality", function () {
+            AddEditSpeciality(0);
+        });
+
+        function AddEditSpeciality(id) {
+            $("#modalContent").load("/_Speciality/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        function bindSpecialityList() {
+            if ($.fn.DataTable.isDataTable("#dtSpeciality")) {
+                $('#dtSpeciality').DataTable().destroy();
+            }
+            var table = $('#dtSpeciality')
+                .DataTable({
+                    "sAjaxSource": "/Speciality/GetSpecialityList/",
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "SpecialityName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "BoardCertification",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        //{
+                        //    "data": "CreatedDate",
+                        //    "autoWidth": false,
+                        //    "searchable": true
+                        //},
+                        //{
+                        //    "data": "UpdatedDate",
+                        //    "width": "20%",
+                        //    "searchable": true
+                        //},
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data) {
+                                var content = '<a href="javascript:;" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="/BoardCertification/' + data + '" data-toggle="tooltip" data-original-title="Board Certification" class="btn btn-info btn-sm action"><i class="fa fa-graduation-cap"></i></a> &nbsp;'
+                                content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        $('#dtSpeciality').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).attr("data-flag");
+            var id = $(e.currentTarget).attr("data-Id");
+            switch (flag) {
+                case "edit":
+                    AddEditSpeciality(id);
+                    break;
+                case "delete":
+                    DeleteSpeciality(id);
+                    break;
+                default:
+            }
+        });
+
+        function DeleteSpeciality(id) {
+            BinkeDialog.Confirmation("Delete",
+                "Are you sure you want to delete this ?",
+                function () {
+                    $.ajax({
+                        url: "/RemoveSpeciality/" + parseInt(id),
+                        type: "POST",
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            HandleResponse(data);
+                            bindSpecialityList();
+                        },
+                        error: function (data) {
+                            HandleResponse(data);
+                        }
+                    });
+                });
+        }
+    </script>
+}

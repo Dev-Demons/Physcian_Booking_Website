@@ -1,0 +1,217 @@
+﻿@{
+    ViewBag.Title = "ContactUs";
+}
+@model Binke.ViewModels.ContactUsViewModel
+@{
+    ViewBag.Title = "Contact Us With Questions, Concerns, and Feedback";
+    List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "description",
+        Content = "Use our easy form to contact us and give us feedback or ask questions. Media inquiries welcome."
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "keywords",
+        Content = "contact us, doctyme, health care, feedback, questions"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site",
+        Content = "@DocTymeInc"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:card",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:description",
+        Content = "Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:image",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:url",
+        Content = "https://www.doctyme.com/contact-us"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:title",
+        Content = "Contact Us With Questions, Concerns, and Feedback"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:description",
+        Content = "Use our easy form to contact us and give us feedback or ask questions. Media inquiries welcome."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:type",
+        Content = "website"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "image",
+        Content = "https://assets.doctyme.com/site/doctyme-default-image.jpg"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:title",
+        Content = "Search & Review Doctors, Hospital, Senior Care, Pharmacy and Book an appointment online."
+    });
+
+    TempData["metaInfo"] = meta;
+}
+@*<head>
+    <title>Contact Us With Questions, Concerns, and Feedback | DocTyme</title>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <meta name="description" content="Use our easy form to contact us and give us feedback or ask questions. Media inquiries welcome.">
+    <meta name="keywords" content="contact us, doctyme, health care, feedback, questions">
+    <meta name="twitter:site_name" content="DocTyme">
+    <meta name="twitter:site" content="https://www.doctyme.com/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="Use our easy form to contact us and give us feedback or ask questions. Media inquiries welcome.">
+    <meta name="twitter:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+    <meta property="og:url" content="https://www.doctyme.com/contact-us">
+    <meta property="og:site_name" content="DocTyme">
+    <meta property="og:title" content="Contact Us With Questions, Concerns, and Feedback">
+    <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+    <meta property="og:description" content="Use our easy form to contact us and give us feedback or ask questions. Media inquiries welcome.">
+    <meta property="og:type" content="website">
+    <meta name="image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>*@
+<head>
+    <link rel='canonical' href='https://www.doctyme.com/Home/ContactUs'>
+</head>
+<div class="bk-section contact-area p-5">
+    @*section-padding-lg*@
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 pr-5">
+                <div class="contact-leftside">
+                    <h3>TELL US YOUR PROJECT</h3>
+                    <form id="contactform" class="contact-form" method="POST">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                @*<input name="name" class="form-control" type="text" placeholder="Your Name">*@
+                                @Html.TextBoxFor(c => c.Name, new { @class = "form-control", @placeholder = "Your Name" })
+                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6 col-12">
+                                @*<input name="email" class="form-control" type="email" placeholder="Your Email">*@
+                                @Html.TextBoxFor(c => c.Department, new { @class = "form-control", @placeholder = "Department" })
+                                @Html.ValidationMessageFor(m => m.Department, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6 col-12">
+                                @*<input name="subject" class="form-control" type="text" placeholder="Subject">*@
+                                @Html.TextBoxFor(c => c.Email, new { @class = "form-control", @placeholder = "Email" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6 col-12">
+                                @*<input name="subject" class="form-control" type="text" placeholder="Subject">*@
+                                @Html.TextBoxFor(c => c.Subject, new { @class = "form-control", @placeholder = "Subject" })
+                                @Html.ValidationMessageFor(m => m.Subject, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-12">
+                                @*<textarea name="message" class="form-control" id="" cols="10" rows="7" placeholder="Message"></textarea>*@
+                                @Html.TextAreaFor(c => c.Message, new { @class = "form-control", @placeholder = "Message" })
+                                @Html.ValidationMessageFor(m => m.Message, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-12">
+                                <button id="btnContactus" type="button">
+                                    <span>Send Message <i class="fa fa-angle-right"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="form-message"></p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-rightside">
+                    <h3>CONTACT US</h3>
+                    <div class="contact-information">
+                        <p>Our believes that a human touch to healthcare is the key differentiator which makes patients feel comfortable and recover faster from their ailments. <br />If you have any feedback or need to get in touch with us, we want to hear from you.</p>
+                        <h5>JOIN US</h5>
+                        <div class="social_square_icons">
+                            <ul>
+                                <li><a href="https://www.facebook.com/DocTymes/" class="f_facebook gap" > <i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://twitter.com/doctymeinc" class="twitter gap" ><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://www.linkedin.com/company/65457911"  class="linkedin gap" ><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="https://www.pinterest.com/doctyme/" class="pinterest gap" ><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="https://www.instagram.com/doctymes/" class="instagram gap"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#btnContactus").click(function () {
+            return ContactUs();
+        });
+    });
+
+    function ContactUs() {
+        $.validator.unobtrusive.parse($('#contactform'));
+        var url = '@Url.Action("ContactUs", "Home")';
+        var isValid = $("#contactform").valid();
+        if (isValid) {
+            $.post("@Url.Action("ContactUs", "Home")",
+             $("#contactform").serialize(),
+                function(response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        ClearContactUs();
+                    }
+            });
+        }
+        return false;
+    }
+
+    function ClearContactUs() {
+        $("#Name").val("");
+        $("#Department").val("");
+        $("#Subject").val("");
+        $("#Message").val("");
+        $("#Email").val("");
+    }
+
+    function validateEmail($email) {
+        var emailReg = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        return emailReg.test($email);
+    }
+</script>

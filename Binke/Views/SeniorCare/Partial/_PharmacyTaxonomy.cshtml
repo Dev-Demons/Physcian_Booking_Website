@@ -1,0 +1,170 @@
+﻿@model  Binke.ViewModels.OrganisationTaxonomyUpdateViewModel
+@{
+    ViewBag.Title = "SeniorCare Taxonomy";
+}
+ 
+<div class="box-header">
+    <h4 class="title" id="headerTitle">
+        @(Model.DocOrgTaxonomyID == 0 ? "Add SeniorCare Taxonomy" : "Edit SeniorCare Taxonomy")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditSeniorCareTaxonomy", "SeniorCare", FormMethod.Post, new { id = "frmSeniorCareTaxonomy", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.DocOrgTaxonomyID)
+        @Html.HiddenFor(model => model.TaxonomyID)
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizationTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        @Html.HiddenFor(model => model.IsDeleted)
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+
+                    <div class="col-md-3 mar-btm">
+                        <label class="control-label"><b>Taxonomy Code</b></label>
+                        @Html.TextBoxFor(model => model.Taxonomy_Code, new { @class = "form-control", placeholder = "Enter Taxonomy Code" })
+                        @Html.ValidationMessageFor(model => model.Taxonomy_Code, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.TaxonomyID, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-5 mar-btm">
+                        <label class="control-label"><b>Taxonomy Name</b></label>
+                        @Html.TextBoxFor(model => model.Specialization, new { @class = "form-control disable" })
+                        @Html.ValidationMessageFor(model => model.Specialization, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-2 mar-btm" style="margin-top:30px;">
+                        <label class="control-label"><b>Is Active</b></label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2 mar-btm" style="text-align:right; margin-top:30px;">
+                        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+    $(document).ready(function () {
+
+    $("#OrganisationId").val('@ViewBag.SeniorCareID');
+    $("#OrganizationTypeID").val('1005');
+    $("#UserTypeID").val('3');
+
+        var ID = "@ViewBag.ID";
+
+    if (ID > 0) {
+
+        if ("@Model.IsActive" == 'True') {
+            $("#IsActive").prop('checked', true);
+            $("#IsActive").val(true);
+        }
+        else {
+            $("#IsActive").prop('checked', false);
+            $("#IsActive").val(false);
+        }
+
+    }
+
+    $(document).on('click', '.slider',function () {
+        var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+        if (chekedstatus == false)
+            $(this).parent().find(":checkbox").val(true);
+        else
+            $(this).parent().find(":checkbox").val(false);
+    });
+
+        $(".disable").prop("disabled", true);
+
+
+
+        $("#Taxonomy_Code").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/SeniorCare/GetTaxonomy",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.Taxonomy_Code + " | " + item.Specialization, value: item.Taxonomy_Code, dataId: item.TaxonomyID, dataText: item.Specialization };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                $(this).val(ui.item.label);
+                $("#TaxonomyID").val(ui.item.dataId);
+                $("#Specialization").val(ui.item.dataText);
+            }
+        });
+
+
+
+        $("#Taxonomy_Code").keyup(function () {
+            if ($.trim($(this).val()) == "")
+                $("#Specialization").val('');
+            $("#TaxonomyID").val('');
+        });
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmSeniorCareTaxonomy'));
+                if ($("#frmSeniorCareTaxonomy").valid()) {
+                    $.post("@Url.Action("AddEditSeniorCareTaxonomy")", $("#frmSeniorCareTaxonomy").serialize(), function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            if (response.Status == 1) {
+                                bindSeniorCareTaxonomyList(true, CurrentPageStart());
+                                //location.reload();
+                                $("#frmSeniorCareTaxonomy")[0].reset();
+                                //$('#TopFormBlock').load('@Url.Action("SeniorCareTaxonomy", "SeniorCare")' + '?seniorCareId=' + localStorage.getItem("SeniorcareOrganisationId"));
+                                closeModal();
+                            } else {
+                                //location.reload();
+                            }
+                        }
+                        location.reload();
+                    });
+                }
+            });
+
+    });
+</script>

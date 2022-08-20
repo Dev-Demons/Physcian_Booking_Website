@@ -1,0 +1,392 @@
+﻿@using Doctyme.Repository.Enumerable;
+@{
+    ViewBag.Title = "Cost";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+
+@*<script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>*@
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Cost</h3>
+        </div>
+        <div class="col-lg-7 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-3">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Facility/"> Facility</a></li>
+                    <li class="active"> Cost </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+
+    }
+    <style>
+        #dtSeniorCareCosts_length select {
+            margin: 0px 10px;
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
+
+        #dtSeniorCareCosts_length {
+            float: left;
+        }
+
+        #page-content {
+            padding: 0px 20px 0 !important;
+        }
+
+        .panel-default .panel-heading {
+            background-color: #e0e5ec;
+            border-color: #f0f2f6;
+        }
+
+        .panel-default > .panel-heading {
+            color: #797979;
+            background-color: #fafafa;
+            border-bottom: none;
+        }
+        .panel-default .panel-heading {
+            background-color: #e0e5ec;
+            border-color: #f0f2f6;
+        }
+    </style>
+    <script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Add/Edit Facility Cost</h4>
+        </div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <form id="frmCosts">
+                        <input type="hidden" name="CostID" id="CostID" />
+                        <input type="hidden" name="ReferenceID" id="ReferenceID" value="@Context.Request.QueryString["id"]" />
+
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="Description">Name</label>
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" />
+                        </div>
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="Description" name="Description" placeholder="Description"></textarea>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="Rating">Price</label>
+                            <input type="text" class="form-control numbers" id="Price" name="Price" placeholder="Price" maxlength="8" />
+                        </div>
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="IsActive">Is Active</label><br />
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActive" checked />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="col-lg-12">
+                            <button type="reset" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="btnSubmit" class="btn btn-primary pull-right mr-2">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-12">&nbsp;</div>
+
+            <div class="row">
+                
+                <div class="col-lg-12">
+                    <div class="tab-base">
+                        @*<div class="panel-heading">
+                    <div class="panel-control py-10px">
+                    </div>
+                </div>*@
+                        <!--Tabs Content-->
+                        <div class="tab-content">
+                            <div id="SeniorCareCosts" class="tab-pane fade active in">
+                                @*<button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddCost">Add Cost</button>*@
+                                <table id="dtSeniorCareCosts" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Price</th>
+                                            <th>Is Active</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!--End Default Tabs (Left Aligned)-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @section pagespecific{
+        <script type="text/javascript">
+        var id = 0;
+        $(document).ready(function () {
+            var isDashboardAdd = false;
+
+            AddSubmenuItems("Amenity", true);
+            id = localStorage.getItem("SeniorcareOrganisationId");
+            bindCostList(true);
+            $("#ReferenceID").val(id);
+            //AddSubmenuItems("Costs");
+
+            $('#lblSeniorcareOrganisationName').html(localStorage.getItem("SeniorcareOrganisationName"));
+
+            $('.numbers').keyup(function () {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            });
+
+        });
+
+             var isDashboardAdd = false;
+        if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+            isDashboardAdd = true;
+        $(document).ready(function () {
+
+            $("#ReferenceId").val(id);
+             if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+                 AddIndividualSubmenuItems("Cost");
+            else
+                AddSubmenuItems("Cost", isDashboardAdd);
+            $("#header").text(localStorage.getItem("SelectedOrgName"))
+        });
+
+
+
+            id = localStorage.getItem("SeniorcareOrganisationId");
+            id = $("#ReferenceId").val();
+        var dataList = [];
+    function bindCostList(flag) {
+
+            if ($.fn.DataTable.isDataTable("#dtSeniorCareCosts")) {
+                $('#dtSeniorCareCosts').DataTable().destroy();
+            }
+
+        dataList = []
+            var table = $('#dtSeniorCareCosts')
+                .DataTable({
+                    "sAjaxSource": "/Facility/GetSeniorCareCostList/" + id,
+                    "columns": [
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Price",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"  style="padding-left:15px;"> &nbsp;';
+                                content += '<label class="switch">&nbsp;';
+                                content += '<input disabled="disabled" type="checkbox" ' + value + ' data-Id= "IsActive" />&nbsp;';
+                                content += '<span class="slider round"style="width:35px;"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+
+                        {
+                            "data": "CostID",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                console.log(row)
+                                dataList.push(row);
+                                //var content = '<a href="/SeniorCareProfile/' + data + '" data-toggle="tooltip" data-original-title="View Profile" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                var content = '<a href="javascript:;" onclick="EditCosts(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                //content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+                                content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action viewInfo"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="Delete" data-flag="Delete" data-Id="' + data + '" class="btn btn-danger btn-sm action removeInfo"><i class="fa fa-trash"></i></a> &nbsp;</div>';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function EditCosts(row) {
+            $("#frmCosts").find('input, textarea, button, select').attr("disabled", false);
+            var CostsObj = jQuery.grep(dataList, function (a) {
+                return a.CostID == row;
+            });
+
+            $("#CostID").val(CostsObj[0].CostID)
+            $("#ReferenceID").val(CostsObj[0].ReferenceID)
+            $("#Name").val(CostsObj[0].Name)
+            $("#Description").val(CostsObj[0].Description)
+            $("#Price").val(CostsObj[0].Price)
+            if (CostsObj[0].IsActive == true)
+                $("#IsActive").attr("checked", "checked");
+            else
+                $("#IsActive").removeAttr("checked");
+        }
+
+        $(document).on('click', '.viewInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $("#frmCosts").find('input, textarea, button, select').attr("disabled", true);
+            var CostsObj = jQuery.grep(dataList, function (a) {
+                return a.CostID == ItemId;
+            });
+
+            $("#CostID").val(CostsObj[0].CostID)
+            $("#ReferenceID").val(CostsObj[0].ReferenceID)
+            $("#Name").val(CostsObj[0].Name)
+            $("#Description").val(CostsObj[0].Description)
+            $("#Price").val(CostsObj[0].Price)
+            if (CostsObj[0].IsActive == true)
+                $("#IsActive").attr("checked", "checked");
+            else
+                $("#IsActive").removeAttr("checked");
+
+        });
+
+
+            $("#btnSubmit").click(function () {
+
+                var frmerr = true;
+                $('#Name').css("border-color", "");
+                $('#Price').css("border-color", "");
+                if ($('#Name').val() == "") {
+                    $('#Name').css("border-color", "red");
+                    if (frmerr == true) {
+                        frmerr = false;
+                    }
+                }
+                if ($('#Price').val() == "") {
+                    $('#Price').css("border-color", "red");
+                    if (frmerr == true) {
+                        frmerr = false;
+                    }
+                }
+
+                if (frmerr) {
+                    $("#ReferenceID").val(id);
+                    if ($('#IsActive').is(':checked')) {
+                        $('#IsActive').val('True');
+                    }
+                    else {
+                        $('#IsActive').val('False');
+                    }
+                    var data = $("#frmCosts").serialize();
+                    //if (!$("#CostId").val()) {
+                        $.post("@Url.Action("AddEditSeniorCareCost", "Facility")",
+                            data,
+                            function (response) {
+
+                                HandleResponse(response);
+                                if (response.Status == 1) {
+                                    $("#CostID").val("");
+                                    $("#ReferenceID").val(id);
+                                    $("#Name").val('');
+                                    $("#Description").val("");
+                                    $("#Price").val("");
+                                    $("#IsActive").attr("checked", "checked");
+                                    bindCostList(true);
+                                }
+                                $("#frmCosts").find('input, textarea, button, select').attr("disabled", false);
+                            });
+                    @*}
+                    else {
+
+                        $.post("@Url.Action("UpdateCosts", "Facility")",
+                            data,
+                            function (response) {
+                                HandleResponse(response);
+                                if (response.Status == 1) {
+                                    $("#CostId").val("");
+                                    $("#ReferenceID").val(id);
+                                    $("#Description").val("");
+                                    $("#Rating").val("0");
+                                    $("#IsActive").attr("checked", "checked");
+                                    bindCostList(true);
+                                }
+                            });
+                    }*@
+                }
+        });
+
+       $("#MnuSeniorCare").click(function () {
+            window.location.href = '/Facility/';
+        });
+        $(document).on('click', '.removeInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            DeleteCost(ItemId);
+        });
+
+        function DeleteCost(id) {
+            var title = "Delete ?"
+            var message = "Are you sure you want to <b> Delete </b> this Cost info";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/Facility/DeleteSeniorCareCost/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        $("#CostID").val("");
+                        $("#ReferenceID").val(id);
+                        $("#Name").val('');
+                        $("#Description").val("");
+                        $("#Price").val("");
+                        $("#IsActive").attr("checked", "checked");
+                        bindCostList(true);
+                        $("#frmCosts").find('input, textarea, button, select').attr("disabled", false);
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+    }
+
+        </script>
+    }
+
+
+

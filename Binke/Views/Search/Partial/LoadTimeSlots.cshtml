@@ -1,0 +1,131 @@
+﻿@using Newtonsoft.Json;
+@model List<Binke.ViewModels.DateSlotModel>
+
+@*@if (Model.Any())
+    {
+        int i = 0;
+
+
+        foreach (var item in Model)
+        {
+
+            <div class="col-md-2 py-10px">
+                <button type="button" onclick="SetTimeSlot(@item.Id)" id="btn@(item.Id)" class="btn btn-sm btn-primary">
+                    <i class="fa fa-clock-o"></i> @item.Time
+                </button>
+            </div>
+            if (i == 5)
+            {
+                <div class="clearfix"></div>
+            }
+            i = i + 1;
+        }
+    }*@
+<style>
+    .appoint-btn {
+        background-color: #5cb85c;
+        color: white;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border-radius: 6px;
+    }
+
+    .appoint-btn-disabled {
+        background-color: white;
+        color: #5cb85c;
+    }
+
+    .appoint-box {
+        border: 1px solid #cccccc;
+    }
+</style>
+<div class="col-lg-10 col-md-10 appoint-box" style="margin-left:15px; text-align:center;border-bottom-style:unset;margin-top:10px">
+    <div id="goBack" class="col-md-1 col-lg-1">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+    </div>
+    <div class="col-md-3" style="text-align:center">
+        <span id="weekday1"></span><br />
+        <span id="day1"></span>
+        <div id="slotCol1" style="text-align:center">
+        </div>
+    </div>
+    <div class="col-md-3" style="text-align:center">
+        <span id="weekday2"><b>Friday</b></span><br />
+        <span id="day2"></span>
+        <div id="slotCol2" style="text-align:center;">
+        </div>
+    </div>
+    <div class="col-md-3" style="text-align:center">
+        <span id="weekday3"><b>Saturday</b></span><br />
+        <span id="day3"></span>
+        <div id="slotCol3" style="text-align:center">
+        </div>
+    </div>
+    <div id="goForward" class="col-md-1 col-lg-1">
+        <span class="glyphicon glyphicon-arrow-right"></span>
+    </div>
+</div>
+@*<div class="col-lg-10 col-md-10 appoint-box" style="margin-left:15px; overflow-y:auto;">
+    <div class="col-md-1 col-lg-1"></div>
+    <div id="slotCol1" class="col-md-3" style="text-align:center">
+    </div>
+    <div id="slotCol2" class="col-md-3 appoint-box" style="text-align:center;height:100%;border-top-style:unset;border-bottom-style:unset">
+    </div>
+    <div id="slotCol3" class="col-md-3" style="text-align:center">
+    </div>
+    <div class="col-md-1 col-lg-1"></div>
+</div>*@
+<script>
+    var viewModel;
+    var start_date;
+
+    $(document).ready(function () {
+        viewModel = @Html.Raw(JsonConvert.SerializeObject(Model));
+
+        start_date = moment();
+        populateSlots();
+
+        $('#goBack').on('click', function () {
+            start_date.subtract(6, 'days');
+            if (moment().isAfter(start_date))
+                start_date = moment();
+            populateSlots();
+        });
+
+        $('#goForward').on('click', function () {
+            populateSlots();
+        });
+    });
+
+    function populateSlots() {
+        var dateString = '';
+        var i = 1;
+        while (i <= 3) {
+            $('#weekday' + i).text(start_date.format("dddd"));
+
+            dateString = start_date.format("MM/DD/YYYY");
+            $('#day' + i).text(dateString);
+
+            $('#slotCol' + i).text('');
+            $.each(viewModel, function (index, val) {
+                if (val.Date == dateString) {
+                    $.each(val.TimeSlots, function (ix, v) {
+                        if (v.IsBook)
+                            $('#slotCol' + i).append('<input id="slot_' + v.Id + '" onclick="SetTimeSlot(' + v.Id + ')" class="appoint-btn" type="button" value="' + v.Time + '" />');
+                        else {
+                            $('#slotCol' + i).append('<input id="slot_' + v.Id + '" class="appoint-btn appoint-btn-disabled" type="button" disabled value="' + v.Time + '" />');
+                        }
+                    });
+                    return;
+                }
+            });
+
+            if ($('#slotCol' + i).find($("input")).length == 0)
+                $('#slotCol' + i).append('<b>No Times Available</b>');
+
+            start_date.add(1, 'days');
+            i++;
+        }
+    }
+
+</script>

@@ -1,0 +1,161 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Featured Specialitys";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+    <style>
+      
+
+        #dtFeaturedSpeciality_length { 
+            float: left;
+        }
+
+        #addFeatured { 
+            position: relative;
+            top: 15px;
+            right: 15px;
+        }
+    </style>
+</head>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Featured Speciality </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Speciality/"> Speciality </a></li>
+            <li class="active"> Featured Speciality </li>
+        </ol>
+    </div>
+}
+<div class="panel">
+    
+        <div class="">
+            <button href="javascript:;" class="float-right btn btn-sm btn-primary" id="addFeatured">Add Featured</button>
+        </div>
+        @*<h3 class="panel-title">Featured Speciality</h3>*@
+    
+    <div class="panel-body">
+        <table id="dtFeaturedSpeciality" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Speciality</th>
+                    <th>Profile Pic</th>
+                    <th>Date Created</th>
+                    <th>Date Modified</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindFeaturedSpecialityList();
+        });
+
+        $(document).on("click", "#addFeatured", function () {
+            AddEditFeaturedSpeciality(0);
+        });
+
+        function AddEditFeaturedSpeciality(id) {
+            $("#modalContent").load("/_FeaturedSpeciality/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        function bindFeaturedSpecialityList() {
+            if ($.fn.DataTable.isDataTable("#dtFeaturedSpeciality")) {
+                $('#dtFeaturedSpeciality').DataTable().destroy();
+            }
+            var table = $('#dtFeaturedSpeciality')
+                .DataTable({
+                    "sAjaxSource": "/GetFeaturedSpecialityList/",
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "SpecialityName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ProfilePicture",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div><img class="profile-img img-center" src="' + data + '" /></div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a href="javascript:;" data-toggle="tooltip" data-original-title="Remove" data-flag="remove" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        $('#dtFeaturedSpeciality').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "edit":
+                    AddEditFeaturedSpeciality(id);
+                    break;
+                case "remove":
+                    RemoveFeaturedSpeciality(id);
+                    break;
+            }
+        });
+
+        function RemoveFeaturedSpeciality(id) {
+            var message = "Are you sure you want to <b> Remove Featured Speciality </b> this";
+            BinkeDialog.Confirmation("Remove Featured Speciality", message, function () {
+                $.ajax({
+                    url: "/RemoveFeaturedSpeciality/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindFeaturedSpecialityList();
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+    </script>
+}

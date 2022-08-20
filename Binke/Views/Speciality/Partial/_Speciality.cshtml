@@ -1,0 +1,44 @@
+﻿@model Binke.ViewModels.SpecialityViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.Id == 0 ? "Add Speciality" : "Edit Speciality")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditSpeciality", "Speciality", FormMethod.Post, new { id = "frmSpeciality" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.SpecialityName, new { @class = "form-control", placeholder = "Enter Speciality" })
+                    @Html.ValidationMessageFor(m => m.SpecialityName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+<script type="text/javascript">
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmSpeciality'));
+        if ($("#frmSpeciality").valid()) {
+            $.post("@Url.Action("AddEditSpeciality")", $("#frmSpeciality").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindSpecialityList();
+                    closeModal();
+                }
+            });
+        }
+    });
+</script>

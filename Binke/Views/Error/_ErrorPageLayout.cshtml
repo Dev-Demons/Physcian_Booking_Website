@@ -1,0 +1,373 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <script data-ad-client="ca-pub-2294893271577335" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-173346889-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-173346889-1');
+    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+    <link rel='canonical' href='https://www.doctyme.xn--com-9o0a'>
+    <title>DocTyme Pharmacy Directory - Find a Pharmacy in Your Area - Doctyme</title>
+
+
+    <meta name="description" content="Find a Cheap Pharmacy with the DocTyme Pharmacy Directory and get information including the Special Promotions, Coupons and Online Ordering. Finding a cheap pharmacy has never been easier." />
+    <meta name="keywords" content="pharmacy directory, find a pharmacy, pharmacy search, locate, find, drug store, pharmacy, medicine, DocTyme" />
+    <meta property="og:title" content="DocTyme Pharmacy Directory - Find a Pharmacy in Your Area" />
+    <meta property="og:description" content="Find a cheap pharmacy with the DocTyme Pharmacy Directory and get information including special promotions, coupons and order online, affiliation, health insurance and contact information. Finding a pharmacy has never been easier." />
+    <meta property="keywords" content="Doctor Name - City Name, Doctor Name - City Name Doctor Name - City Name in City Name, State Name" />
+    <meta property="twitter:image" content="logo image url" />
+    <meta property="og:url" content="https://www.doctyme.com/" />
+    <meta property="og:site_name" content="DocTyme" />
+    <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:title" content="Search &amp; Review Doctors, Hospital, Senior Care, Pharmacy and Book an appointment online." />
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/Content/client/images/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Content/client/images/icon.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <link href="~/Content/client/css/plugins.css" rel="stylesheet" />
+    <link href="~/Content/layout?v=Y9Hq0BVeZYGVf58fMVk-BlWXrXeGz9QGqjjk1YWIcgs1" rel="stylesheet" />
+
+    @*<!-- Google font (font-family: 'Lato', sans-serif;) -->
+        <link href="//fonts.googleapis.com/css?family=Lato:300,400,400i,500,700,900" rel="stylesheet">
+        <!-- Google font (font-family: 'Raleway', sans-serif;) -->
+        <link href="//fonts.googleapis.com/css?family=Raleway:300,400,700,800" rel="stylesheet">
+        <link href="~/Content/custom/toastr.min.css" rel="stylesheet" />
+        <link href="~/Content/toastr" rel="stylesheet" />*@
+
+    <style>
+        .appoint {
+            float: right;
+        }
+        /* switch */
+        label.switch {
+            position: relative;
+            display: inline-block;
+            height: 23px;
+            padding-left: 3.8em;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        /*li:nth-child(2) a,*/
+        label.switch {
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 4px;
+            width: 18%;
+            background-color: #d3d5d7;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 10px;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 10px;
+                width: 10px;
+                left: 4px;
+                bottom: 5px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: red;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #00ba9d;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(18px);
+            -ms-transform: translateX(18px);
+            transform: translateX(18px);
+        }
+
+        /* Rounded sliders */
+
+        .slider.round:before {
+            border-radius: 0%;
+            border-radius: 10px;
+        }
+
+        /* //switch */
+
+        #page-title {
+            display: none;
+        }
+
+        #back2Top {
+            display: inline-block;
+            background-color: #3498db;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            border-radius: 4px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            transition: background-color .3s, opacity .5s, visibility .5s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+            #back2Top::after {
+                content: "\f077";
+                font-family: FontAwesome;
+                font-weight: normal;
+                font-style: normal;
+                font-size: 2em;
+                line-height: 50px;
+                color: #fff;
+            }
+
+            #back2Top:hover {
+                cursor: pointer;
+                background-color: #333;
+            }
+
+            #back2Top:active {
+                background-color: #555;
+            }
+
+            #back2Top.show {
+                opacity: 1;
+                visibility: visible;
+            }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $jq = $.noConflict();
+    </script>
+    <script src="/scripts/layoutheader?v=oc-ZGLKwSNEnwDQjjQ7-GJcRNsoqh2yr0i-IxdwGiPM1"></script>
+
+    <style type="text/css">
+        .error-container-space {
+            background-image: url(/Content/client/images/bg/errorpagetypobg.jpg);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .error-text-space {
+            font-size: 150pt;
+            font-family: Arial;
+            font-weight: 900;
+            color: transparent;
+        }
+
+        .error-text-2 {
+            text-align: center;
+            font-size: 700%;
+            font-weight: bold;
+            font-weight: 100;
+            color: #333;
+            line-height: 1;
+            letter-spacing: -.05em;
+            background-image: -webkit-linear-gradient(92deg,#333,#ed1c24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-middle-area d-none d-lg-block" style="box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);">
+        <div class="container">
+            <div class="header-middle-inner">
+                <a href="/" class="header-logo">
+                    <img src="~/Content/client/images/logo/logo-secondary-dark.png" alt="Doctyme logo">
+                </a>
+
+                <!-- Main Navigation -->
+                <nav class="bk-navigation pull-right">
+                    <ul>
+
+                        <li class="bk-dropdown">
+                            <a href="/">Home</a>
+                            <ul>
+                                <li><a href="/AboutUs">About Us</a></li>
+                            </ul>
+                        </li>
+                        <li class="bk-dropdown">
+                            <a href="#">Provider</a>
+                            <ul>
+                                <li><a href="/search/Doctor">Doctors</a></li>
+                                <li><a href="/Filter/Pharmacy">Pharmacy</a></li>
+                                <li><a href="/Filter/Facility">Facility</a></li>
+                                <li><a href="/Filter/SeniorCare">Senior Care</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/SearchDrug">Drugs</a></li>
+                        <li class="bk-dropdown">
+                            <a href="/Blogs">Blog</a>
+                            <ul style="width: 300px;">
+                                <li><a href="/Blog">Manage Blog</a></li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/SubCategory/HealthCare-Basics">HealthCare Basics</a>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/SubCategory/HealthCare-Lists">HealthCare Lists</a>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/SubCategory/How-to-Guide">How to Guide</a>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/Category/Infographics">Infographics</a>
+                                    <ul style="width: 300px;padding: 3px">
+                                        <li>
+                                            <a href="/Blog/SubCategory/Statistical-">Statistical </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Timeline">Timeline</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Process">Process</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Comparison">Comparison</a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/SubCategory/Expert-Interviews">Expert Interviews</a>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/Category/Testimonials">Testimonials</a>
+                                    <ul style="width: 300px;padding: 3px">
+                                        <li>
+                                            <a href="/Blog/SubCategory/Quote-Testimonials">Quote Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Peer-Testimonials">Peer Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Social-Testimonials">Social Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Influencer-Testimonials">Influencer Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Video-Testimonials">Video Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Success-Story-Testimonials">Success Story Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Interview-Testimonials">Interview Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Long-Form-Testimonials">Long-Form Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Mashup-Testimonials">Mashup Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Documentary-Series-Testimonials">Documentary Series Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/How-to-Start-Getting-More-Testimonials">How to Start Getting More Testimonials</a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/SubCategory/Events---Seasons">Events &amp; Seasons</a>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/SubCategory/Latest-Research">Latest Research</a>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/Category/PodCast">PodCast</a>
+                                    <ul style="width: 300px;padding: 3px">
+                                        <li>
+                                            <a href="/Blog/SubCategory/Nonfiction-Narrative-Storytelling">Nonfiction Narrative Storytelling</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Hybrid">Hybrid</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Interviews-and-Panel-Discussion">Interviews and Panel Discussion</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Blog/SubCategory/Repurposed-Content">Repurposed Content</a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                                <li style="width: 250px; ">
+
+                                    <a href="/Blog/SubCategory/Trending-Now">Trending Now</a>
+
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+                    </ul>
+                </nav>
+                <!--// Main Navigation -->
+
+            </div>
+        </div>
+    </div>
+    <!-- MAIN PANEL -->
+    <div id="content">
+        <!-- row -->
+       @RenderBody()
+    </div>
+</body>
+</html>

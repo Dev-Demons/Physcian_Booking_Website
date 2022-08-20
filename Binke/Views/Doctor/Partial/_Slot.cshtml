@@ -1,0 +1,105 @@
+﻿@using Binke.Utility;
+@model Binke.ViewModels.SlotViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.SlotId == 0 ? "Add Slot" : "Edit Slot")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditSlot", "Doctor", FormMethod.Post, new { id = "frmSlot" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.SlotId)
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label"><b> Start Date:</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", placeholder = "Enter slot time" })
+                    @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b> End Date:</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", placeholder = "Enter slot time" })
+                    @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="control-label"><b> Time Size:</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.SlotSize, ViewBag.SlotSizeList as IEnumerable<SelectListItem>, "-- Select SlotSize --", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.SlotSize, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label"><b> Time From:</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.FromTime, Common.GetTimeHoursList(), "-- Select From --", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.FromTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label"><b> Time To:</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.ToTime, Common.GetTimeHoursList(), "-- Select To --", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.ToTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+<script type="text/javascript">
+
+    var startDate = new Date();
+    var FromEndDate = new Date();
+    var ToEndDate = new Date();
+
+    $('#StartDate').datepicker({
+        format: 'dd-M-yyyy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true,
+        startDate: '-0m'
+    }).on('changeDate', function (selected) {
+        startDate = new Date(selected.date.valueOf());
+        startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        $('#EndDate').datepicker('setStartDate', startDate);
+    });
+
+    $('#EndDate').datepicker({
+        format: 'dd-M-yyyy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+    
+     $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmSlot'));
+        if ($("#frmSlot").valid()) {
+            $.post("@Url.Action("AddEditSlot")", $("#frmSlot").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindSlotList();
+                    closeModal();
+                }
+            });
+        }
+    });
+</script>

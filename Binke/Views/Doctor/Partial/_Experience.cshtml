@@ -1,0 +1,155 @@
+﻿@model Binke.ViewModels.ExperienceViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.ExperienceId == 0 ? "Add Experience" : "Edit Experience")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditExperience", "Doctor", FormMethod.Post, new { id = "frmExperience" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ExperienceId)
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Designation</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", placeholder = "Enter Designation" })
+                    @Html.ValidationMessageFor(m => m.Designation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Organization</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Organization, new { @class = "form-control", placeholder = "Enter Organization" })
+                    @Html.ValidationMessageFor(m => m.Organization, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b>Start Date</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", placeholder = "Enter Start Date" })
+                    <input type="hidden" id="hdnStartDate" value="@Model.StartDate" />
+                    @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+                </div>
+                <label class="control-label"><b>End Date</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", placeholder = "Enter End Date" })
+                    @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+                    <input type="hidden" id="hdnEndDate" value="@Model.EndDate" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b>State</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.StateId, ViewBag.StateList as IEnumerable<SelectListItem>, "-- Select State --",
+                                        new {@class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.StateId, "", new { @class = "text-danger" })
+                </div>
+                <label class="control-label"><b>City</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.CityId, Enumerable.Empty<SelectListItem>(), "-- Select City --", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.CityId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+@Scripts.Render("~/scripts/full-calendar")
+
+<script type="text/javascript">
+    var currentDate = window.moment().toDate();
+    var startDate = $("#hdnStartDate").val();
+    var endDate = $("#hdnEndDate").val();
+
+
+    $('#StartDate').datepicker({
+        format: 'dd-MM-yy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+    $('#EndDate').datepicker({
+        format: 'dd-MM-yy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+    $(document).ready(function () {
+        @if (Model.ExperienceId != 0)
+        {
+            <text>
+                startDate = window.moment(startDate, 'DD-MM-YYYY').toDate();
+                $("#StartDate").datepicker("setDate", startDate);
+
+                if (endDate!=="") {
+                    endDate = window.moment(endDate, 'DD-MM-YYYY').toDate();
+                    $("#EndDate").datepicker("setDate", endDate);
+                }
+            </text>
+        }
+        var stateId = @(Model.StateId??0);
+        stateId = (isNaN(stateId) ? 0 : stateId);
+        var cityId = @(Model.CityId??0);
+        cityId = (isNaN(cityId) ? 0 : cityId);
+        if (stateId!==0 ) {
+            SetCityOnEdit(stateId, cityId);
+        }
+    });
+
+    $(document).on("change", "#StateId", function () {
+        var id = parseInt($(this).val());
+        id = (isNaN(id) ? 0 : id);
+        if (id!==0 ) {
+            var cityId = parseInt($("#CityId").val());
+            cityId = (isNaN(cityId) ? 0 : cityId);
+            SetCityOnEdit(id, cityId);
+        }
+    });
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmExperience'));
+        if ($("#frmExperience").valid()) {
+            $.post("@Url.Action("AddEditExperience")", $("#frmExperience").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "Doctor") {
+                        bindExperienceList();
+                        closeModal();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+    function SetCityOnEdit(stateId, cityId) {
+        GetCityList(stateId).done(function (response) {
+            if (response.Status) {
+                var data = response.Data;
+                $("#CityId").empty();
+                $("<option>", { text: "City", value: 0 }).html("-- Select City --").appendTo("#CityId");
+                $.each(data, function (key, val) {
+                    $("<option>", { text: val.Text, value: val.Value }).html(val.Text).appendTo("#CityId");
+                });
+                $("#CityId").val(cityId).trigger("change.selectpicker");
+            }
+        });
+    }
+
+</script>

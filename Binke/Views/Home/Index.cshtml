@@ -1,0 +1,1218 @@
+﻿@model Binke.ViewModels.HomeViewModel
+@using Binke.Utility
+@{
+    ViewBag.Title = "Doctyme";
+}
+
+@*
+    <head>
+        <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>
+        <link rel='icon' href='favicon.ico' type='image/x-icon' />
+    </head>
+*@
+
+@{
+    ViewBag.Title = "Read Physician Reviews, Compare Physician &amp; Book Appointments";
+    List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "description",
+        Content = "Find a Physician, pharmacy,hospitals, urgent care, imaging and radiology centers, ambulatory surgical centers, blood banks, clinics and medical offices, dialysis centers, orthopedic and other rehabilitation centers, senior care, Independent living, Assisted living, Skilled Nursing Facility, ContinuousCare, Retirement Community. Compare and review on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "keywords",
+        Content = "Physician reviews, patient reviews of Physician, Physician ratings, Physician reviews near me, website for Physician reviews, find a Physician, Physician reviews by patients, trusted Physician, primary care physicians, find cheap pharmacy, pharmacy coupon, pharmacy reviews, hospital reviews, Best Senior Care near me, Labs reviews, Labs neare me, dialysis reviews, dialysis near me."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site",
+        Content = "@DocTymeInc"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:card",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:description",
+        Content = "Compare and review Physician and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:image",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:url",
+        Content = "https://www.doctyme.com/"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:title",
+        Content = "Read Physician Reviews, Compare Physician &amp; Book Appointments"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:description",
+        Content = "Compare and review Physician and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:type",
+        Content = "website"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "image",
+        Content = "https://assets.doctyme.com/site/doctyme-default-image.jpg"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:title",
+        Content = "Search & Review Physician, Hospital, Senior Care, Pharmacy and Book an appointment online."
+    });
+
+    TempData["metaInfo"] = meta;
+}
+<style type="text/css" rel="stylesheet" media="all">
+    .example {
+        display: grid;
+        grid-template-columns: 2fr 2fr 2fr;
+        grid-template-rows: 100px 100px;
+        grid-gap: 10px;
+        background-color: #fff;
+        color: #444;
+    }
+</style>
+<style type="text/css">
+    .zoom {
+    }
+
+        .zoom:hover {
+            transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+
+    .selected-search {
+        border-bottom-color: red !important;
+    }
+
+    .add-padding {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .section-title {
+        margin-bottom: 10px;
+        padding-left: 25px;
+    }
+
+    .navbar {
+        display: block;
+        padding: 0px;
+    }
+
+    .helthcare {
+        background: #3598db;
+        color: #fff;
+        padding: 10px 20px;
+        width: 100%;
+        float: left;
+    }
+
+    .mtb-20 {
+        margin-bottom: 20px;
+    }
+
+    .banner-single {
+        min-height: 500px !important;
+    }
+
+    .prt-5 {
+        padding-top: 5%;
+    }
+
+    .pl-15 {
+        padding-left: 15%;
+    }
+
+    .slide-content {
+        width: 60%;
+    }
+
+    .btn.focus, .btn:focus {
+        box-shadow: inherit;
+    }
+
+    .input-group {
+        width: 61.5% !important;
+    }
+
+    .radio-btn-list ul > li {
+        border-right: 1px solid #fff;
+    }
+
+    .radio-btn-list > ul li:last-child {
+        border-right: 0;
+    }
+
+    .radio-btn-list > ul li a {
+        background: #3498db;
+        color: #fff;
+        border-radius: 0px !important;
+        padding: 8px 16px;
+        text-transform: uppercase;
+        padding-left: 30px;
+        padding-right: 30px;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        padding-top: 19.5px;
+        padding-bottom: 19.5px;
+        border-bottom: 6px solid transparent;
+    }
+
+        .radio-btn-list > ul li a.active {
+            /*background: #444444;*/
+            border-bottom-color: red;
+        }
+
+    .custom-search-input {
+        border-radius: 6px !important;
+        padding: 20px 15px;
+    }
+
+    .input-group-append {
+        margin-left: 15px;
+    }
+
+    .custom-search {
+        color: #fff;
+        border-radius: 4px !important;
+        background: #db3737;
+        border: 1px solid #db3737;
+        padding: 7px 15px;
+    }
+
+    .slide-content p {
+        font-size: 15px;
+    }
+
+    /** {
+         box-sizing: border-box;
+     }
+
+     body {
+         font: 16px Arial;
+     }*/
+
+    /*when navigating through the items using the arrow keys:*/
+    .ui-autocomplete {
+        max-height: 20%;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        text-transform: capitalize;
+    }
+    /* IE 6 doesn't support max-height
+    * we use height instead, but this forces the menu to always be this tall
+    */
+    * html .ui-autocomplete {
+        height: 150px;
+        text-transform: capitalize;
+    }
+
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+        text-transform: capitalize;
+    }
+
+    .ui-autocomplete.ui-widget {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+
+    .capitalise {
+        text-transform: capitalize;
+    }
+    /*input:-webkit-autofill::first-line {
+        font-size: 10px
+    }*/
+</style>
+
+@section SliderContent{
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->        
+        <ol class="carousel-indicators"></ol>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <!-- Single Slide -->
+                <div class="banner-single" style="background-image: url(/Content/client/images/banner/banner-image-1.jpg);">
+                    <div class="container">
+                        <div class="row">
+                            <div class="main_menu">
+                                <div class="row">
+                                    <div id="divDOCTOR" class="col-md-offset-2 col-md-6 col-sm-offset-1 col-xs-offset-0 section-title ">
+                                        <h3>DISCOVER PERFECT<span class="spnWebDocHeader"> DOCTOR</span></h3>
+                                        <p>
+                                            <span class="spnWebDocBody">
+                                                Find best doctors in your area like
+                                                Family Physician, Surgeon, Specialist etc.
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div id="divPHARMACY" class="col-md-offset-2 col-md-6 col-sm-offset-1 col-xs-offset-0 section-title " style="display:none">
+                                        <h3>DISCOVER PERFECT<span class="spnWebDocHeader"> PHARMACY</span></h3>
+                                        <p>
+                                            <span class="spnWebDocBody">
+                                                Pharmacy Search for nearest and best
+                                                pharmacy in your area.
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div id="divFACILITY" class="col-md-offset-2 col-md-6 col-sm-offset-1 col-xs-offset-0 section-title " style="display:none">
+                                        <h3>DISCOVER PERFECT<span class="spnWebDocHeader"> FACILITY</span></h3>
+                                        <p>
+                                            <span class="spnWebDocBody">
+                                                Facility Hospitals,Urgent care, Imaging and radiology centers, Ambulatory Surgical Centers, Blood banks,
+                                                Clinics and medical offices, Dialysis Centers, Orthopedic and other rehabilitation centers and so much more...
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div id="divSENIORCARE" class="col-md-offset-2 col-md-6 col-sm-offset-1 col-xs-offset-0 section-title " style="display:none">
+                                        <h3>DISCOVER PERFECT<span class="spnWebDocHeader"> SENIOR CARE</span></h3>
+                                        <p>
+                                            <span class="spnWebDocBody">
+                                                Independent living, Assisted living, Skilled Nursing Facility,
+                                                Continues Care, Retirement Community
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div id="divDRUGS" class="col-md-offset-2 col-md-6 col-sm-offset-1 col-xs-offset-0 section-title " style="display:none">
+                                        <h3>
+                                            FIND LOWEST PRICE FOR YOUR<span class="spnWebDocHeader"> DRUGS</span>
+                                        </h3>
+                                        <p>
+                                            <a class="spnWebDocBody">
+                                                Stop paying too much for your prescriptions
+                                                <a href="#" class="drug">Amlodipine</a>,
+                                                <a href="#" class="drug">Atorvastatin</a>,
+                                                <a href="#" class="drug">Sildenafil</a>,
+                                                <a href="#" class="drug">Zoloft</a>,
+                                                <a href="#" class="drug">Leapro</a>,
+                                                <a href="#" class="drug">Losartan</a>,
+                                                <a href="#" class="drug">Cymbalta</a>,
+                                                <a href="#" class="drug">Azithromycin</a>,
+                                                <a href="#" class="drug">Pantoprazole</a>,
+                                                <a href="#" class="drug">Omeprazole</a>
+                                                </span>
+                                        </p>
+                                    </div>
+
+                                </div>
+                                <nav class="row navbar">
+                                    <ul class="nav">
+                                        <li><a class="selected-search add-padding" href="#" onclick="UserType('DOCTOR', this)">DOCTOR</a></li>
+                                        <li><a class="search add-padding" href="#" onclick="UserType('PHARMACY', this)">PHARMACY</a></li>
+                                        <li><a class="search add-padding" href="#" onclick="UserType('FACILITY', this)">FACILITY</a></li>
+                                        <li><a class="search add-padding" href="#" onclick="UserType('SENIOR CARE', this)">SENIOR CARE</a></li>
+                                        <li><a class="search add-padding" href="#" onclick="UserType('DRUGS', this)">DRUGS</a></li>
+                                    </ul>
+                                </nav>
+                                <div class="main_form  col-md-offset-2 col-sm-offset-1 col-xs-offset-0">
+                                    <div class="form-inline" style="width: 100%">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12" id="PlaceHole" style="padding-right: 0px;padding-left: 10px;">
+                                            <div id="divSearchBoxAutocmeplete" class="autocomplete" style="padding-left:1% ;padding-right:1%; width:50%">
+                                                <input type="text" class="form-control" style="width:100%" id="searchBox" placeholder="Speciality" name="searchBox">
+                                                <input type="text" class="form-control" style="width:100%;display:none;" id="searchDrugBox" placeholder="Drug Name" name="searchDrugBox">
+                                            </div>
+                                            <div id="divSearchBoxZipcodeAutocmeplete" class="autocomplete" style=" width:50%;">
+                                                <input type="text" class="form-control" style="width:98% ; text-transform: capitalize;" id="searchBoxZipcode" placeholder="City,Zipcode" name="searchBoxZipcode">
+                                            </div>
+                                        </div>
+                                        <button type="submit" id="btnSearch" class="btn btn-default form-control" style="cursor:not-allowed" disabled><span class="glyphicon glyphicon-search"></span> Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--// Single Slide -->
+            </div>
+        </div>
+        <!-- Left and right controls -->
+    </div>
+}
+
+<script>
+    var arrOrgType = [{
+        id: "1005",
+        tabName: "PHARMACY"
+    }, {
+        id: "1006",
+        tabName: "FACILITY"
+    }, {
+            id: "1007",
+            tabName: "SENIOR CARE"
+    }];
+
+    $jq(document).ready(function () {
+        $jq("#searchBoxZipcode").autocomplete({
+            source: function (request, response) {
+                 //alert(encodeURI(request.term));
+                $jq.ajax({
+                    url: '/GetZipCityStateList/' + encodeURI(request.term),
+                    method: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (JSON.stringify(data.length) > 0) {
+                            response(data);
+                        } else {
+                            response(["Data not found"]);
+                        }
+                    },
+                    error: function (result) {
+                        //alert('Error');
+                        console.log(result);
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                if (ui.item.value.trim() !== "Data not found") {
+                    //alert(ui.item.value);
+                    $jq("#searchBoxZipcode").val(ui.item.value);
+                }
+                else {
+                    ui.item.value = '';
+                    $jq("#searchBoxZipcode").empty();
+                }
+                //console.log("Selected value: " + ui.item.value );
+            }
+        });
+        $jq("#searchBox").focusin(function () {
+            if (search_type === 'DOCTOR') {
+                $jq("#searchBox").autocomplete({
+                    source: function (request, response) {
+                        var redirectUrl = '@Url.Action("GetAllSpecialization", "Home")';
+                        $jq.ajax({
+                            url: redirectUrl,
+                            type: "POST",
+                            cache: false,
+                            data: { 'specialization': encodeURI(request.term) },
+                            success: function (result) {
+                                if (JSON.stringify(result.length) > 0) {
+                                    response(result);
+                                } else {
+                                    response(["Data not found"]);
+                                }
+                            },
+                            error: function (result) {
+                                //alert('Error');
+                                console.log(result);
+                            }
+                        });
+                    },
+                    minLength: 3,
+                    select: function (event, ui) {
+                        if (ui.item.value.trim() !== "Data not found") {
+                            //alert(ui.item.value);
+                            $jq("#searchBox").val(ui.item.value);
+                        }
+                        else {
+                            ui.item.value = '';
+                            $jq("#searchBox").empty();
+                        }
+                        //console.log("Selected value: " + ui.item.value );
+                    }
+                });
+            }
+            else
+            {
+                $jq("#searchBox").autocomplete({
+                    source: function (request, response) {
+                        var redirectUrl = '@Url.Action("GetAllOrgName", "Home")';
+                        var OrgTypeId = "";
+                        arrOrgType.forEach(function (e) {
+                            if (search_type == e.tabName) OrgTypeId=e.id;
+                        });
+                        $jq.ajax({
+                            url: redirectUrl,
+                            type: "POST",
+                            cache: false,
+                            data: { 'searchText': encodeURI(request.term), 'OrgType': OrgTypeId   },
+                            success: function (result) {
+                                if (JSON.stringify(result.length) > 0) {
+                                    //result.forEach(function (item) {
+                                    //    item.substr(0, 1).toUpperCase() + item.substr(1);
+                                    //});
+                                    response(result);
+
+                                } else {
+                                    response(["Data not found"]);
+                                }
+                            },
+                            error: function (result) {
+                                //alert('Error');
+                                console.log(result);
+                            }
+                        });
+                    },
+                    minLength: 3,
+                    select: function (event, ui) {
+                        if (ui.item.value.trim() !== "Data not found") {
+                            var selectedText = ui.item.value.charAt(0).toUpperCase() + ui.item.value.substr(1);
+                            //alert(selectedText);
+                            $jq("#searchBox").val(selectedText);
+                            $jq("#searchBox").addClass('capitalise');
+                        }
+                        else {
+                            ui.item.value = '';
+                            $jq("#searchBox").empty();
+                        }
+                        //console.log("Selected value: " + ui.item.value );
+                    }
+                });
+
+            }
+        });
+
+        $jq("#searchDrugBox").autocomplete({
+            source: function (request, response) {
+                    var redirectUrl = '@Url.Action("GetAllDrugName", "Home")';
+                    $jq.ajax({
+                        url: redirectUrl,
+                        type: "POST",
+                        cache: false,
+                        data: { 'drugname': encodeURI(request.term) },
+                        success: function (result) {
+                            if (JSON.stringify(result.length) > 0) {
+                                response(result);
+                            } else {
+                                response(["Data not found"]);
+                            }
+                        },
+                        error: function (result) {
+                            //alert('Error');
+                            console.log(result);
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    if (ui.item.value.trim() !== "Data not found") {
+                        //alert(ui.item.value);
+                        $jq("#searchDrugBox").val(ui.item.value);
+                    }
+                    else {
+                        ui.item.value = '';
+                        $jq("#searchDrugBox").empty();
+                    }
+                    //console.log("Selected value: " + ui.item.value );
+                }
+            });
+
+      $jq("#searchBox").on("focus", function () {
+            if (search_type === 'DRUGS') {
+             $jq("#searchBox").autocomplete({
+                disabled: true
+            });
+            }
+            else {
+                $jq("#searchBox").autocomplete({
+                    disabled: false
+                });
+            }
+
+      });
+    });
+
+</script>
+<!-- Number Table-->
+<div class="bk-section timetable-area " style="background-color:azure;">
+    <div class="container">
+        <div class="row no-gutters">
+            <!-- Timetable Block -->
+            <div class="col-lg-3 col-xs-6" style="padding-left:0px;padding-right:0px;">
+                <a style="text-decoration:none;">
+                    <div class="timetable-block opening-hours bg-dark-light" style="text-align: center; height: 247px;">
+                        <h2 style="margin-bottom: 0px">@Model.DoctorCount</h2>
+                        <img style="padding:10px;border-radius: 100px;" src="~/Content/client/images/others/1n.png" alt="Doctor-icon" width="60px" height="60px">
+                        <h5>DOCTOR</h5>
+                    </div>
+                </a>
+            </div>
+            <!--// Timetable Block -->
+            <!-- Timetable Block -->
+            <div class="col-lg-3 col-xs-6" style="padding-left:0px;padding-right:0px;">
+                <a style="text-decoration:none;">
+                    <div class="timetable-block doctors-timetable bg-theme" style="text-align: center; height: 247px;">
+                        <h2 style="margin-bottom: 0px">@Model.PharmacyCount</h2>
+                        <img style="padding:10px;border-radius: 100px;" src="~/Content/client/images/others/3n.png" alt="Pharmacy-icon" width="60px" height="60px">
+                        <h4>PHARMACY</h4>
+                    </div>
+                </a>
+            </div>
+
+            <!--// Timetable Block -->
+            <!-- Timetable Block -->
+            <div class="col-lg-3 " style="padding-left:0px;padding-right:0px;">
+                <a style="text-decoration:none;">
+                    <div class="timetable-block opening-hours bg-dark-light" style="text-align: center; height: 247px;">
+                        <h2 style="margin-bottom: 0px">@Model.FacilityCount</h2>
+                        <img style="padding:10px;border-radius: 100px;" src="~/Content/client/images/others/2n.png" alt="Facility-icon" width="60px" height="60px">
+                        <h5>FACILITIES</h5>
+                    </div>
+                </a>
+            </div>
+            <!--// Timetable Block -->
+            <!-- Timetable Block -->
+            <div class="col-lg-3 " style="padding-left:0px;padding-right:0px;">
+                <a style="text-decoration:none;">
+                    <div class="timetable-block contact-info bg-theme" style="text-align: center; height: 247px;">
+                        <h2 style="margin-bottom: 0px">@Model.SeniorcareCount</h2>
+                        <img style="padding:10px;border-radius: 100px;" src="~/Content/client/images/others/4n.png" alt="Seniorcare-icon" width="60px" height="60px">
+                        <h5>SENIOR CARE</h5>
+                    </div>
+                </a>
+            </div>
+            <!--// Timetable Block -->
+        </div>
+    </div>
+</div>
+<!-- // Number Table -->
+<!-- Appointment & Services -->
+<div class="bk-section appointment-area section-padding-lg bg-grey">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-4 pull-right">
+                <img src="/Uploads/Facility/amb.gif" alt="Facility-icon" style="height:274px;" class="pull-right">
+            </div>
+            <!-- Appointment Form -->
+
+            <div class="col-lg-4 zoom">
+                <div class="appointment-box">
+                    <h3>MAKE AN <span>APPOINTMENT</span></h3>
+                    <p>
+                        Patients are looking at  ways to connect with doctors, healthcare facilities and manage their appointments online.
+                        Whether you are doctors, or any other healthcare providers, let your patients book their appointment online join us today to provide your patients more flexibility, fast on Sitename.
+                    </p>
+                    <div class="row">
+                        <div class="col-12 single-input text-center">
+                            <a class="btn btn-danger text-white" href="/Account/Register">REGISTER TODAY</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 pull-left">
+                <img src="/Uploads/Facility/amb.gif" alt="Facility-icon" style="height:274px; -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);">
+            </div>
+            <!--// Appointment Form -->
+
+        </div>
+    </div>
+    <br />
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="container">
+                <div class="appointment-box zoom">
+                    <div class="bk-service-3">
+                        <span class="icon"><i class="fa fa-hourglass-end"></i></span>
+                        <div class="bk-service-3-content">
+                            <h5>Are you an Exceptional Doctor?</h5>
+                            <p>DocTyme allows you to imрrоvе thе ѕtаndаrd оf уоur ѕеrvісеѕ аnd сut dоwn thе соmmunісаtіоn соѕtѕ with ѕtrеаmlіnеd сооrdіnаtіоn. Fасіlіtаtе rеmоtе арроіntmеntѕ, ѕtrеаmlіnе раtіеnt rеfеrrаlѕ, rеtаіn еxіѕtіng раtіеntѕ, аnd асԛuіrе nеw оnеѕ.</p>
+                        </div>
+                    </div>
+                    <div class="bk-service-3">
+                        <span class="icon"><i class="fa fa-heartbeat"></i></span>
+                        <div class="bk-service-3-content">
+                            <h5>Facility - Offering hope and healing</h5>
+                            <p>Thе сhаllеngеѕ аnd соmрlеxіtіеѕ fасеd bу thе hеаlthсаrе dоmаіn аrе іmmеnѕе. At thе ѕаmе tіmе, thеrе іѕ a nееd tо rеѕоlvе them ѕо thаt thе раtіеntѕ саn bе gіvеn thе bеѕt ѕеrvісеѕ аt аll роіntѕ іn tіmе. Rоbuѕt аnd соnnесtеd tесhnоlоgу ѕоlutіоnѕ thаt аrе drіvеn tо іmрrоvе thе ԛuаlіtу оf раtіеnt саrе аrе thе futurе оf the hеаlthсаrе industry. </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="container">
+                <div class="appointment-box zoom">
+
+                    <div class="bk-service-3">
+                        <span class="icon"><i class="fa fa-user-plus"></i></span>
+                        <div class="bk-service-3-content">
+                            <h5>With Us expect more than just a Pharmacy</h5>
+                            <p>Are you paying too much for prescriptions? DocTyme can help to find discounted prices near you and free prescription coupons & save at your local Pharmacies.</p>
+                        </div>
+                    </div>
+                    <div class="bk-service-3">
+                        <span class="icon"><i class="fa fa-shopping-basket"></i></span>
+                        <div class="bk-service-3-content">
+                            <h5>Home to Exceptional Senior Living</h5>
+                            <p>Search for exceptional Senior living communities, which offers not only best in class services, but also different levels of luxury and Independent Living, Assisted Living, Memory Care, Skilled Nursing etc. Your retirement years will be among the best in your life!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--// Appointment & Services -->
+<!-- Services Area -->
+<div class="bk-section services-area bg-white section-padding-lg">
+    <div class="contact">
+        <div class="row justify-content-center mtb-20">
+            <div class="col-xl-7 col-lg-9 col-md-10 col-12">
+                <div class="section-title text-center">
+                    <h2>MOSTLY SEARCHED <span>SPECIALITIES</span></h2>
+                    <p>
+                        <span>
+                            @*Do you want to present posts in the best way to highlight interesting moments of your blog? focus on the latest news!*@
+                            Are you looking for specialized type of care, requiring a specific doctor or field? Take a look at our mostly searched specialities!
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row no-gutters" style="padding:10px;">
+
+
+            @if (Model.FeaturedSpecialities != null)
+            {
+                int loopcount = 0;
+
+                foreach (var item in Model.FeaturedSpecialities)
+                {
+                    //if (loopcount >= 4 && Model.FeaturedSpecialities.Count > 4)
+                    if (loopcount % 2 == 0)
+                    {
+
+                        <!-- Single1 Service -->
+                        <div class="col-custom-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12"
+                             style="padding-left:0px;padding-right:0px; float:none; margin-left:auto">
+                            <div class="bk-service text-center" style="padding: 0px;">
+                                @if (Common.IsFileExists(item.ProfilePicture))
+                                {
+                                    <img src="@item.ProfilePicture" alt="best service">
+                                }
+                                else
+                                {
+                                    <img src="~\Uploads\ProfilePic\no_picture.png" />
+                                }
+                                <a href="/Search/Doctor/?skey=@item.SpecialityName">
+                                    <div class="bk-service content" style="min-height: 195px;">
+                                        <h3>@item.SpecialityName</h3>
+                                        <span>SEE MORE</span>
+                                        <p style="display:none">@item.Description</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--// Single1 Service -->
+                    }
+                    else
+                    {
+                        <!-- Single Service -->
+                        <div class="col-custom-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12"
+                             style="padding-left:0px;padding-right:0px; float:none; margin-right:auto">
+                            <div class="bk-service text-center" style="padding: 0px;">
+                                @if (Common.IsFileExists(item.ProfilePicture))
+                                {
+                                    <img src="@item.ProfilePicture" alt="best service">
+                                }
+                                else
+                                {
+                                    <img src="~\Uploads\ProfilePic\no_picture.png" />
+                                }
+                                <a href="/Search/Doctor/@item.SpecialityName">
+                                    <div class="bk-service content" style="min-height: 195px;">
+                                        <h3>@item.SpecialityName</h3>
+                                        <span>SEE MORE</span>
+                                        <p style="display:none">@item.Description</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--// Single Service -->
+                    }
+                    loopcount++;
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
+
+    <div id="Advertiesment" class="bk-section bg-white cr-border cr-border-top" style="padding:40px 0 40px 0">
+
+    </div>
+    <!--// Services Area -->
+    <!-- // Our Feature-->
+    <!-- Latest Blogs -->
+    <div class="bk-section latest-blogs-area bg-white section-padding-lg cr-border cr-border-top" style="padding: 70px 0px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+                    <div class="section-title text-center">
+                        <h2>LATEST <span>BLOG POSTS</span></h2>
+                        <p>@*Do you want to present posts in the best way to highlight interesting moments of your blog? Focus on the latest news!*@</p>
+                        <p>Do you want to view any interesting news or articles in the field of medicine? Look below for the latest news.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row blog-slider-active2 slider-navigation-style-1">
+
+                @if (Model.BlogItems != null && Model.BlogItems.Count > 1)
+                {
+                    var blogSiteUrl = "https://www.doctyme.com";
+                    foreach (var blogItem in Model.BlogItems)
+                    {
+                        var imgUrl = "";
+                        var articleNameForGetArticle = blogItem.ArticleName.Replace(" ", "-");
+                        if (blogItem.ImagePath.Contains(blogSiteUrl))
+                        {
+                            imgUrl = blogItem.ImagePath;
+                        }
+                        else
+                        {
+                            imgUrl = blogSiteUrl + blogItem.ImagePath;
+                        }
+                        <div class="col-lg-4">
+                            <div class="blog-item">
+                                <div class="blog-item-meta">
+                                    <span class="blog-item-meta-date">@blogItem.DateString @*21 Junly, 2016*@</span>
+                                    @*<span><a href="blog-details-rightsidebar.html"><i class="fa fa-comment-o"></i>2 Comment</a></span>*@
+                                    @if (!string.IsNullOrEmpty(blogItem.CreatedBy))
+                                    {
+                                        <span><a href="#"><i class="fa fa-edit"></i>@blogItem.CreatedBy</a></span>
+                                    }
+                                    else
+
+                                    {
+                                        <span><a href="#"><i class="fa fa-edit"></i>By Admin</a></span>
+                                    }
+                                </div>
+                                <a href="/Blog/BlogItem?ArticleName=@articleNameForGetArticle" class="blog-item-image" target="_blank">
+                                    @*<img src="~/Content/client/images/blog/blog-thumb-1.jpg" alt="blog item">*@
+
+                                    <img src="@blogItem.ImagePath" style="width:25vw;height:25vw;" alt="@blogItem.ImagePath">
+
+                                </a>
+                                <h6><a href="/Blog/BlogItem?ArticleName=@articleNameForGetArticle" target="_blank">@blogItem.ArticleName</a></h6>
+                                <p>@blogItem.ArticleSummary</p>
+                                <a href="/Blog/BlogItem?ArticleName=@articleNameForGetArticle" target="_blank" class="bk-readmore">Read More</a>
+                            </div>
+                        </div>
+
+                    }
+                }
+
+                @*<!-- Single Blog -->
+                    <div class="col-lg-4">
+                        <div class="blog-item">
+                            <div class="blog-item-meta">
+                                <span class="blog-item-meta-date">21 Junly, 2016</span>
+                                <span><a href="blog-details-rightsidebar.html"><i class="fa fa-comment-o"></i>2 Comment</a></span>
+                                <span><a href="blog-rightsidebar.html"><i class="fa fa-edit"></i> By Binke</a></span>
+                            </div>
+                            <a href="blog-details-rightsidebar.html" class="blog-item-image">
+                                <img src="~/Content/client/images/blog/blog-thumb-1.jpg" alt="blog item">
+                            </a>
+                            <h6><a href="blog-details-rightsidebar.html">Duis autem vel eum iriure dolor in hendrerit in vulputate velit </a></h6>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                            <a href="#" class="bk-readmore">Read More</a>
+                        </div>
+                    </div>
+                    <!--// Single Blog -->
+                    <!-- Single Blog -->
+                    <div class="col-lg-4">
+                        <div class="blog-item">
+                            <div class="blog-item-meta">
+                                <span class="blog-item-meta-date">21 Junly, 2016</span>
+                                <span><a href="blog-details-rightsidebar.html"><i class="fa fa-comment-o"></i>2 Comment</a></span>
+                                <span><a href="blog-rightsidebar.html"><i class="fa fa-edit"></i> By Binke</a></span>
+                            </div>
+                            <a href="blog-details-rightsidebar.html" class="blog-item-image">
+                                <img src="~/Content/client/images/blog/blog-thumb-2.jpg" alt="blog item">
+                            </a>
+                            <h6><a href="blog-details-rightsidebar.html">Feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim</a></h6>
+                            <p>Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius</p>
+                            <a href="#" class="bk-readmore">Read More</a>
+                        </div>
+                    </div>
+                    <!--// Single Blog -->
+                    <!-- Single Blog -->
+                    <div class="col-lg-4">
+                        <div class="blog-item">
+                            <div class="blog-item-meta">
+                                <span class="blog-item-meta-date">21 Junly, 2016</span>
+                                <span><a href="blog-details-rightsidebar.html"><i class="fa fa-comment-o"></i>2 Comment</a></span>
+                                <span><a href="blog-rightsidebar.html"><i class="fa fa-edit"></i> By Binke</a></span>
+                            </div>
+                            <a href="blog-details-rightsidebar.html" class="blog-item-image">
+                                <img src="~/Content/client/images/blog/blog-thumb-3.jpg" alt="blog item">
+                            </a>
+                            <h6><a href="blog-details-rightsidebar.html">Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit </a></h6>
+                            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</p>
+                            <a href="#" class="bk-readmore">Read More</a>
+                        </div>
+                    </div>
+                    <!--// Single Blog -->*@
+
+
+            </div>
+        </div>
+    </div>
+    <!--// Latest Blogs -->
+    <!-- Testimonial & Brand Logos Area -->
+    <div class="bk-section testimonial-brand-logo-area bg-grey section-padding-sm" style="padding: 70px 0px 35px 0px;">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-8 col-sm-10 col-12">
+                    <div class="section-title text-center">
+                        <h2>CLIENT <span>TESTIMONIALS</span></h2>
+                        <p>@*Review testimonials from our clients below. Please visit our Case Studies page for details examples of our work or contact us for more information.*@</p>
+                        <p>Take a look at our client testimonials for client reviews and first hand experiences.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row testimonial2-wrapper slider-dots-style-2 testimonial-2-items mt-4">
+                @if (Model.Testimonials != null && Model.Testimonials.Count > 0)
+                {
+                    foreach (var testimonial in Model.Testimonials)
+                    {
+                        <div class="col">
+                            <div class="testimonial2">
+                                <div class="testimonial2-text">
+                                    @Html.Raw(testimonial.Content)
+                                </div>
+                                <div class="testimonial2-author">
+                                    <div class="testimonial2-author-image">
+                                        @if (!string.IsNullOrEmpty(testimonial.ImagePath))
+                                        {
+                                            <img src="@testimonial.ImagePath" alt="author image">
+                                        }
+                                    </div>
+                                    <div class="testimonial2-author-content">
+                                        <h5>@testimonial.ClientName</h5>
+                                        @if (!string.IsNullOrEmpty(testimonial.Title))
+                                        {
+                                            <h6>@testimonial.Title</h6>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </div>
+    </div>
+    <!--// Testimonial & Brand Logos Area -->
+
+    @section scripts{
+        <script src="~/Scripts/admin/js/moment.js"></script>
+        <script src="~/Scripts/custom/GoogleMapsFunctions.js"></script>
+
+        <script type="text/javascript">
+
+            function LoadAds() {
+
+        $.getJSON("https://api.ipify.org/?format=json", function (e) {
+            IpAddress = e.ip;
+            console.log(IpAddress, "IpAddress");
+
+             $.ajax({
+                 url: '@Url.Action("AdsView", "Home")?IpAddress=' + IpAddress,
+                    type: 'GET',
+                    cache: false,
+                    data: { }
+            }).done(function (result) {
+                $('#Advertiesment').html(result);
+                        });
+        }).done(function (data) {
+
+        });
+    }
+        $(document).ready(function () {
+            var state = '@Model.IpInfo.Region'
+            var zip ='@Model.IpInfo.zip'
+            var city = '@Model.IpInfo.City'
+            if (city != undefined && city != null && city != "") {
+                $("#userLocation").text(city + ", " + state + "," + zip)
+            }
+            var $slider = $(".slider-track");
+
+            $slider.slick({
+                infinite: true,
+                autoplaySpeed: 2000,
+                autoplay: true,
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+            $slider.css('display', 'block');
+
+            LoadAds();
+
+        });
+
+        var search_type = 'DOCTOR';
+        var searchDrugUrl = "/SearchDrug/";
+        $(function () {
+            $(".drug").click(function () {
+                navigate(searchDrugUrl + $(this).text());
+            });
+
+            $("#searchBox").keyup(function (e) {
+                if (search_type === 'DRUGS') {
+                    if ($(this).val().trim())
+                        $("#btnSearch").removeAttr("disabled").css("cursor", "");
+                    else
+                        $("#btnSearch").attr("disabled", "disabled").css("cursor", "not-allowed");
+                }
+            });
+            $("#searchDrugBox").keyup(function (e) {
+                if ($(this).val().trim())
+                    $("#btnSearch").removeAttr("disabled").css("cursor", "");
+                else
+                    $("#btnSearch").attr("disabled", "disabled").css("cursor", "not-allowed");
+            });
+            $("#searchBoxZipcode").keyup(function (e) {
+                if (search_type !=  'DRUGS') {
+                    if ($(this).val().trim())
+                        $("#btnSearch").removeAttr("disabled").css("cursor", "");
+                    else
+                        $("#btnSearch").attr("disabled", "disabled").css("cursor", "not-allowed");
+                }
+            });
+        });
+
+       function checkLocation(location)
+       {
+            //regular expression for location
+           var pattern = new RegExp("[\\w\\W]+,\\s*[A-Z]*,\\s*\\d{5}");
+           if (pattern.test(location)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        $("#btnSearch").click(function () {
+            var searchBoxZipcode = "";
+            var searchBox = $("#searchBox").val();
+            if (search_type === 'DOCTOR' || search_type === 'FACILITY' || search_type === 'PHARMACY' || search_type === 'SENIOR CARE') {
+                if (checkLocation($("#searchBoxZipcode").val())==false) {
+                    $("#searchBoxZipcode").focus();
+                    $("#searchBoxZipcode").val('');
+                        return false;
+                }
+                    var arr = $("#searchBoxZipcode").val().replaceAll(", ", "|").split("|");
+                    if ((arr.length < 3) || (arr.length > 3)) {
+                        //alert(searchKey.length);
+                        $("#searchBoxZipcode").val('');
+                        $("#searchBoxZipcode").focus();
+                        return false;
+                    }
+                    searchBoxZipcode = $("#searchBoxZipcode").val().replaceAll(", ", "|");
+            }
+
+
+            //alert(encodeURIComponent(searchBox));
+            var searchBoxZipcode = $("#searchBoxZipcode").val().replaceAll(", ", "|");
+            var searchBox = $("#searchBox").val();
+            if (search_type == "DRUGS") {
+                searchBox = $("#searchDrugBox").val();
+            }
+            searchBox = (searchBox == null || searchBox === undefined || searchBox === "") ? "" : $.trim(searchBox);
+            var renderUrl;
+            switch (search_type) {
+                case "":
+                case "DOCTOR":
+                    renderUrl = "/Search/" + search_type + "/" + "?skey=" + encodeURIComponent(searchBox) +'&slocation='+ encodeURIComponent(searchBoxZipcode);
+                    break;
+                case "FACILITY":
+                    renderUrl = "/Filter/facility/" + "?skey=" + encodeURIComponent(searchBox) + '&slocation=' + encodeURIComponent(searchBoxZipcode);
+                    break;
+                case "PHARMACY":
+                    renderUrl = "/Filter/pharmacy/"  + "?skey=" + encodeURIComponent(searchBox) + '&slocation=' + encodeURIComponent(searchBoxZipcode);
+                    break;
+                case "SENIOR CARE":
+                    renderUrl = "/Filter/seniorcare/" + "?skey=" + encodeURIComponent(searchBox) + '&slocation=' + encodeURIComponent(searchBoxZipcode);
+                    break;
+                case "DRUGS":
+                    renderUrl = searchDrugUrl + encodeURI(searchBox)
+                    break;
+                default:
+                    break;
+            }
+            navigate(renderUrl);
+        });
+
+        function navigate(url) {
+            if (url)
+                window.location.href = url;
+        }
+
+        function changeContent(type, content, placeholder) {
+            $("#sectionType").html(type);
+            $("#sectionDesc").html(content);
+            $("#searchBox").attr("placeholder", placeholder)
+        }
+
+        function UserType(type, ele) {
+            search_type = type;
+            $('a.selected-search').removeClass('selected-search');
+            $(ele).addClass('selected-search');
+            $('#divDRUGS').hide();
+            $('#divDOCTOR').hide();
+            $('#divPHARMACY').hide();
+            $('#divFACILITY').hide();
+            $('#divSENIORCARE').hide();
+            switch (type) {
+                case 'DOCTOR':
+                    $('#divDOCTOR').show();
+                    $('#searchBox').attr("style", "width:50%");
+                    $('#searchBox').attr("placeholder", "Specialities");
+                    $('#searchBoxZipcode').attr("placeholder", "City, ZipCode");
+                    $('form').find("input[type=email]").each(function (ev) {
+                        if (!$(this).val()) {
+
+                        }
+                    });
+                    $('#searchBox').attr("style", "width:98%");
+                    $('#divSearchBoxAutocmeplete').attr("style", "width:49%");
+                    $('#searchBoxZipcode').show();
+                    $('#divSearchBoxZipcodeAutocmeplete').show();
+                    $('#searchDrugBox').hide();
+                    break;
+                case 'PHARMACY':
+                    $('#divPHARMACY').show();
+                    $('#searchBox').val('');
+                    $('#searchBox').attr("style", "width:98%");
+                    $('#searchBox').attr("placeholder", "Name");
+                    $('#searchBoxZipcode').attr("placeholder", "City, ZipCode");
+                    $('form').find("input[type=email]").each(function (ev) {
+                        if (!$(this).val()) {
+                            $(this).attr("placeholder", "Name, City, ZipCode");
+                        }
+                    });
+                    $('#searchBox').attr("style", "width:98%");
+                    $('#divSearchBoxAutocmeplete').attr("style", "width:49%");
+                    $('#searchBoxZipcode').show();
+                    $('#divSearchBoxZipcodeAutocmeplete').show();
+                    $('#searchDrugBox').hide();
+                    break;
+                case 'FACILITY':
+                    $('#divFACILITY').show();
+                    $('#searchBoxZipcode').show();
+                    $('#searchBox').attr("placeholder", "Name");
+                    $('#searchBoxZipcode').attr("placeholder", "City, ZipCode");
+                    $('form').find("input[type=email]").each(function (ev) {
+                        if (!$(this).val()) {
+                            $(this).attr("placeholder", "Name, City, State, ZipCode");
+                        }
+                    });
+                    $('#searchBox').attr("style", "width:98%");
+                    $('#divSearchBoxAutocmeplete').attr("style", "width:49%");
+                    $('#searchBoxZipcode').show();
+                    $('#divSearchBoxZipcodeAutocmeplete').show();
+                    $('#searchDrugBox').hide();
+                    break;
+                case 'SENIOR CARE':
+                    $('#divSENIORCARE').show();
+                    $('#searchBoxZipcode').show();
+                    $('#searchBox').attr("placeholder", "Name");
+                    $('#searchBoxZipcode').attr("placeholder", "City, ZipCode");
+                    $('form').find("input[type=email]").each(function (ev) {
+                        if (!$(this).val()) {
+                            $(this).attr("placeholder", "Name, City, State, ZipCode");
+                        }
+                    });
+
+                    $('#searchBox').attr("style", "width:98%");
+                    $('#divSearchBoxAutocmeplete').attr("style", "width:49%");
+                    $('#searchBoxZipcode').show();
+                    $('#divSearchBoxZipcodeAutocmeplete').show();
+                    $('#searchDrugBox').hide();
+                    break;
+                case 'DRUGS':
+                    //alert(search_type);
+                    $('#divDRUGS').show();
+                    $("#searchBox").hide();
+                    $("#searchBox").val('');
+                    $('#searchDrugBox').attr("placeholder", "Drug Name");
+                    $('#searchDrugBox').attr("style", "width:98%");
+                    $('#divSearchBoxAutocmeplete').attr("style", "width:100%");
+                    $('#searchBoxZipcode').hide();
+                    $('#divSearchBoxZipcodeAutocmeplete').hide();
+                    $('#searchDrugBox').show();
+                    $('form').find("input[type=email]").each(function (ev) {
+                        if (!$(this).val()) {
+                            $(this).attr("placeholder", "Name, City, State, ZipCode");
+                        }
+                    });
+                    break;
+            }
+        }
+        </script>
+    }

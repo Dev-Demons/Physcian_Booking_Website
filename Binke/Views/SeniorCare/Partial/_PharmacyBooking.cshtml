@@ -1,0 +1,449 @@
+﻿@model  Binke.ViewModels.OrgBookingUpdateViewModel
+@{
+    ViewBag.Title = "Booking";
+}
+
+@*@if (ViewBag.SeniorCareID > 0)
+    {<h4 style="text-align:center; background-color:#f4f6f9; color:#54abd9;">@Session["PharmacyName"]</h4>}*@
+
+<div class="box-header">
+    <h4 class="title" id="h4title">
+        @(Model.SlotId == 0 ? "Add Booking" : "Edit Booking")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditSeniorCareBooking", "SeniorCare", FormMethod.Post, new { id = "frmSeniorCareBooking", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.SlotId)
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizatonTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        @Html.HiddenFor(model => model.BookedFor)
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-12 row">
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>Patient Full Name</b></label>
+                            @Html.TextBoxFor(model => model.FullName, new { @class = "form-control", placeholder = "Enter on Patient firstname, lastname, email or phone no", Title = "Search patient name using first name, last name, email or phone number" })
+                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.BookedFor, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>Email</b></label>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control disable" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>Contact No</b></label>
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control disable" })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        @*<div class="col-md-6 mar-btm">
+                                <label class="control-label"><b>Doctor Name</b></label>
+                                @Html.DropDownListFor(model => model.DoctorId, ViewBag.doctorsList as SelectList, "Select Doctor", new { @class = "form-control  chosen-select" })
+                                @Html.ValidationMessageFor(model => model.DoctorId, "", new { @class = "text-danger" })
+                            </div>*@
+
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>SeniorCare Address</b></label>
+                            @Html.DropDownListFor(model => model.AddressId, ViewBag.addressList as SelectList, "Select Address", new { @class = "form-control  chosen-select" })
+                            @Html.ValidationMessageFor(model => model.AddressId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Slot Date</b></label>
+                            @Html.TextBoxFor(model => model.SlotDate, new { @class = "datefield form-control", placeholder = "Enter Booking Date" })
+                            @Html.ValidationMessageFor(model => model.SlotDate, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Slot Time</b></label>
+                            @Html.TextBoxFor(model => model.SlotTime, new { @class = "form-control", placeholder = "Enter Booking Time" })
+                            @Html.ValidationMessageFor(model => model.SlotTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Reason</b></label>
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control", placeholder = "Enter Booking Description" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>Insurance Type</b></label>
+                            @Html.DropDownListFor(model => model.InsuranceTypeId, ViewBag.typeList as SelectList, "Select Insurance Plan", new { @class = "form-control  chosen-select" })
+                            @Html.ValidationMessageFor(model => model.InsuranceTypeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>Insurance Plan</b></label>
+                            @Html.DropDownListFor(model => model.InsurancePlanId, ViewBag.planList as SelectList, "Select Insurance Plan", new { @class = "form-control  chosen-select" })
+                            @Html.ValidationMessageFor(model => model.InsurancePlanId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-3 mar-btm" style="margin-top:30px;padding-left:0 !important;padding-right:0!important;">
+                            <label class="control-label"><b>Is Booked</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsBooked" name="IsBooked" dataId="IsBooked" value="IsBooked" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsBooked, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3 mar-btm" style="margin-top:30px;padding-left:0 !important;padding-right:0!important;">
+                            <label class="control-label"><b>Email Reminder</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsEmailReminder" name="IsEmailReminder" dataId="IsEmailReminder" value="IsEmailReminder" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsEmailReminder, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3 mar-btm" style="margin-top:30px;padding-left:0 !important;padding-right:0!important;">
+                            <label class="control-label"><b>Text Reminder</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsTextReminder" name="IsTextReminder" dataId="IsTextReminder" value="IsTextReminder" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsTextReminder, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3 mar-btm" style="margin-top:30px;padding-left:0 !important;padding-right:0!important;">
+                            <label class="control-label"><b>Insurance Changed</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsInsuranceChanged" name="IsInsuranceChanged" dataId="IsInsuranceChanged" value="IsInsuranceChanged" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsInsuranceChanged, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-3 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Is Active</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-9 mar-btm" style="text-align:right; margin-top:30px;">
+                            <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+
+    //$(function () {
+    //    var date = new Date();
+    //    date.setDate(date.getDate());
+    //    $('#SlotDate').datepicker({
+    //        format: 'mm-dd-yyyy',
+    //        prevText: '<i class="fa fa-chevron-left"></i>',
+    //        nextText: '<i class="fa fa-chevron-right"></i>',
+    //        autoclose: true,
+    //        todayHighlight: true,
+    //        startDate: date
+    //    });
+    //});
+
+
+    var dateToday = new Date();
+    $(document).ready(function () {
+        
+        $("#OrganisationId").val('@ViewBag.SeniorCareID');
+        $("#OrganizatonTypeID").val('1005');
+        $("#UserTypeID").val('3');
+
+        $('#SlotDate').datepicker({
+            format: 'mm-dd-yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            autoclose: true,
+            todayHighlight: true,
+            startDate: dateToday,
+        });
+
+        $('#SlotDate').on('changeDate', function (ev) {
+            if (dateToday.toLocaleDateString() == ev.date.toLocaleDateString()) {
+                $('#SlotTime').val('');
+            }
+        });
+
+        function minFromMidnight(tm) {
+            if (tm) {
+                var ampm = tm.substr(-2)
+                var clk = tm.substr(0, 5);
+                var m = parseInt(clk.match(/\d+/g)[1])
+                var h = parseInt(clk.match(/\d+/g)[0])
+                h += (ampm.match(/pm/i)) ? 12 : 0;
+                return h * 60 + m;
+            }
+        }
+        function getCurrentTime(date) {
+            var hours = date.getHours(),
+                minutes = date.getMinutes(),
+                ampm = hours >= 12 ? 'PM' : 'AM';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+
+            return hours + ':' + minutes + ' ' + ampm;
+        }
+        function checkTime() {
+            var currentTime = getCurrentTime(new Date());
+            var selectedTime = $('#SlotTime').val();
+            var ct = minFromMidnight(currentTime);
+            var st = minFromMidnight(selectedTime);
+            console.log(moment())
+            if ($('#SlotDate').val() == moment().format("MM-DD-YYYY")) {
+                if (st < ct) {
+                    alert("you cannot select past time for selected date");
+                    $('#SlotTime').val('');
+                }
+            }
+        }
+
+
+        $("#InsuranceTypeId").chosen();
+        $("#InsuranceTypeId_chosen").css("width", "100%");
+
+        $("#InsurancePlanId").chosen();
+        $("#InsurancePlanId_chosen").css("width", "100%");
+
+        $('#SlotTime').timepicker({
+            'showMeridian': false,
+            change: checkTime
+        });
+
+        var ID = "@ViewBag.ID";
+
+        if (ID > 0) {
+
+            if ("@Model.IsBooked" == 'True') {
+                $("#IsBooked").prop('checked', true);
+                $("#IsBooked").val(true);
+            }
+            else {
+                $("#IsBooked").prop('checked', false);
+                $("#IsBooked").val(false);
+            }
+
+            if ("@Model.IsEmailReminder" == 'True') {
+                $("#IsEmailReminder").prop('checked', true);
+                $("#IsEmailReminder").val(true);
+            }
+            else {
+                $("#IsEmailReminder").prop('checked', false);
+                $("#IsEmailReminder").val(false);
+            }
+
+            if ("@Model.IsTextReminder" == 'True') {
+                $("#IsTextReminder").prop('checked', true);
+                $("#IsTextReminder").val(true);
+            }
+            else {
+                $("#IsTextReminder").prop('checked', false);
+                $("#IsTextReminder").val(false);
+            }
+
+            if ("@Model.IsInsuranceChanged" == 'True') {
+                $("#IsInsuranceChanged").prop('checked', true);
+                $("#IsInsuranceChanged").val(true);
+            }
+            else {
+                $("#IsInsuranceChanged").prop('checked', false);
+                $("#IsInsuranceChanged").val(false);
+            }
+
+            if ("@Model.IsActive" == 'True') {
+                $("#IsActive").prop('checked', true);
+                $("#IsActive").val(true);
+            }
+            else {
+                $("#IsActive").prop('checked', false);
+                $("#IsActive").val(false);
+            }
+
+            $("#AddressId").val("@Model.AddressId");
+
+            $("#InsuranceTypeId").val("@Model.InsuranceTypeId")
+            $("#InsuranceTypeId").trigger("chosen:updated");
+
+            getInsurancePlanByType("@Model.InsuranceTypeId", "@Model.InsurancePlanId");
+        }
+
+        $(document).on('click', '.slider', function () {
+            var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+            if (chekedstatus == false)
+                $(this).parent().find(":checkbox").val(true);
+            else
+                $(this).parent().find(":checkbox").val(false);
+        });
+
+        $(".disable").prop("disabled", true);
+
+
+        $("#FullName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/SeniorCare/GetPatientName",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.FullName + " | " + item.FullAddress, value: item.FullName, dataId: item.PatientId, dataEmail: item.Email, dataContact: item.PhoneNumber, dataAddressId: item.AddressId, dataAddress: item.FullAddress };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                $(this).val(ui.item.label);
+                $("#BookedFor").val(ui.item.dataId);
+                 $("#Email").val(ui.item.dataEmail);
+                $("#PhoneNumber").val(ui.item.dataContact);
+            }
+        });
+
+
+        //function getAddress(ReferenceId) {
+        //    $.ajax({
+        //        url: "/Pharmacy/GetReferenceAddress",
+        //        type: "POST",
+        //        dataType: "json",
+        //        data: { ReferenceId: ReferenceId, UserTypeId: 3 },
+        //        success: function (data) {
+        //            if (data.length > 0)
+        //            {
+        //                $("#AddressId option").remove();
+        //                var options = '';
+        //                options += '<option value="0">Select Address</option>';
+        //                for (var i = 0; i < data.length; i++) {
+        //                    options += '<option value="' + data[i].AddressId + '">' + data[i].Address1 + ' ' + data[i].Address2 + ' ' + data[i].ZipCode + ' ' + data[i].City + ' ' + data[i].State + ' ' + data[i].Country + '</option>';
+        //                }
+        //                $('#AddressId').html(options);
+        //            }
+
+        //        }
+        //    });
+        //}
+
+        $("#InsuranceTypeId").change(function () {
+                $("#InsurancePlanId option").remove();
+                $('#InsurancePlanId').html('<option value="">Select Plan</option>');
+                $("#InsurancePlanId").trigger("chosen:updated");
+            $.ajax({
+                url: "/SeniorCare/GetOrgInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { ReferenceId:"@ViewBag.SeniorCareID", TypeId: $(this).val() },
+                success: function (data) {
+
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        });
+
+        function getInsurancePlanByType(TypeId, PlanId) {
+            $.ajax({
+                url: "/SeniorCare/GetOrgInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { ReferenceId:"@ViewBag.SeniorCareID", TypeId: TypeId },
+                success: function (data) {
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+
+                    if (PlanId != "") {
+                        $('#InsurancePlanId').val(PlanId);
+                    }
+
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        }
+
+
+        $("#btnSave").click(function () {
+            
+            //var strDtTime = $('#SlotDate').val() + ' ' + $('#SlotTime').val();
+            //var d1 = new Date();
+            //var d2 = new Date(strDtTime);
+            //var same = d1.getTime() === d2.getTime();
+            //var notSame = d1.getTime() !== d2.getTime();
+            //if (d1 > d2) {
+            //    HandleResponse({ Status: -1, Message: "Booking Past DateTime Slot not Allow" });
+            //    return false;
+            //}
+
+            $.validator.unobtrusive.parse($('#frmSeniorCareBooking'));
+            if ($("#frmSeniorCareBooking").valid()) {
+                $.post("@Url.Action("AddEditSeniorCareBooking")", $("#frmSeniorCareBooking").serialize(), function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        if (response.Status == 1) {
+                            bindSeniorCareBookingList(true, CurrentPageStart());
+                            $("#frmSeniorCareBooking")[0].reset();
+                            closeModal();
+                        } else {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,116 @@
+﻿@model  Binke.ViewModels.OrgProcedureUpdateViewModel
+@{
+    ViewBag.Title = "Pharmacy Procedure";
+}
+@if (ViewBag.PharmacyID > 0)
+{<h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Session["PharmacyName"]</h4>}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.OrgProcedureId == 0 ? "Add Pharmacy Procedure" : "Edit Pharmacy Procedure")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditPharmacyProcedure", "Pharmacy", FormMethod.Post, new { id = "frmPharmacyProcedure", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.OrgProcedureId)
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizatonTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Name</b></label>
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter Procedure Name" })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-5 mar-btm">
+                        <label class="control-label"><b>Description</b></label>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Enter Procedure Description" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-2 mar-btm" style="margin-top:30px;">
+                        <label class="control-label"><b>Is Active</b></label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-1 mar-btm" style="text-align:right; margin-top:30px;">
+                        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: null });
+
+        $("#OrganisationId").val('@ViewBag.PharmacyID');
+        $("#OrganizatonTypeID").val('1005');
+    $("#UserTypeID").val('3');
+
+        var ID = "@ViewBag.ID";
+
+        if (ID > 0) {
+        
+        if ("@Model.IsActive" == 'True') {
+            $("#IsActive").prop('checked', true);
+            $("#IsActive").val(true);
+        }
+        else {
+            $("#IsActive").prop('checked', false);
+            $("#IsActive").val(false);
+        }
+       
+    }
+
+    $(document).on('click', '.slider',function () {
+        var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+        if (chekedstatus == false)
+            $(this).parent().find(":checkbox").val(true);
+        else
+            $(this).parent().find(":checkbox").val(false);
+    });
+
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmPharmacyProcedure'));
+                if ($("#frmPharmacyProcedure").valid()) {
+                    $.post("@Url.Action("AddEditPharmacyProcedure")", $("#frmPharmacyProcedure").serialize(), function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            if (response.Status == 1) {
+                               window.location.reload();
+                            } else {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+
+    });
+</script>

@@ -1,0 +1,53 @@
+﻿@model Binke.ViewModels.FacilityTypeViewModel
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            @(Model.Id == 0 ? "Add Facility Type" : "Edit Facility Type")
+        </h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("AddEditFacilityType", "FacilityType", FormMethod.Post, new { id = "frmFacilityType" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.DropDownListFor(x => x.FacilityOptionId, ViewBag.FacilityOption as IEnumerable<SelectListItem>, "-- Select Facility Option --",
+                                        new {@class = "form-control select2" })
+                        @Html.ValidationMessageFor(m => m.FacilityOptionId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.FacilityTypeName, new { @class = "form-control", placeholder = "Enter Facility Type" })
+                        @Html.ValidationMessageFor(m => m.FacilityTypeName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+    </div>
+    <script type="text/javascript">
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmFacilityType'));
+        if ($("#frmFacilityType").valid()) {
+            $.post("@Url.Action("AddEditFacilityType")", $("#frmFacilityType").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindFacilityTypeList();
+                    closeModal();
+                }
+            });
+        }
+    });
+    </script>

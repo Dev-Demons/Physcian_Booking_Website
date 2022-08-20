@@ -1,0 +1,247 @@
+﻿@model Binke.ViewModels.DoctorBoardCertificationViewModel
+@{
+    ViewBag.Title = "Board Certification";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+@section pageheader{
+    <div class="col-md-12" style="margin-bottom:25px;">
+        <div class="col-md-3">
+            <h3><i class="fa fa-user-md"></i> Board Certification </h3>
+        </div>
+        <div class="col-md-5 text-center" style="top:10px">
+            <h3>@Convert.ToString(Session["DoctorName"])</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="breadcrumb-wrapper" style="top:15px;">
+                <span class="label">You are here:</span>
+
+                <ol class="breadcrumb">
+                    <li> <a href='@("/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]))'> Doctor </a></li>
+                    <li class="active"> Board Certification </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    #dtBoardCertification_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtBoardCertification_length {
+        float: left;
+    }
+</style>
+<style>
+    label.switch {
+        position: relative;
+        display: inline-block;
+        height: 23px;
+        padding-left: 2.8em !important;
+        cursor: pointer;
+        color: red;
+    }
+
+    @@media (min-width:300px) and (max-width:767px) {
+        .button-action {
+            margin-bottom:20px;
+            float:none!important;
+        }
+    }
+
+    @@media (min-width:768px) and (max-width:1023px) {
+        .button-action {
+            margin-left: 10px;
+        }
+    }
+</style>
+<div class="panel" style="margin-top:20px;">
+
+    <div class="panel-body">
+        <div class="pull-right button-action">
+            <button class="btn btn-sm btn-primary" id="addBoardCertification">Add  Board Certification</button>
+        </div>
+        <table id="dtBoardCertification" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th> Name</th>
+                    <th>Description</th>
+                    <th>Active</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindBoardCertificationList();
+        });
+
+        $(document).on("click", "#addBoardCertification", function () {
+            window.location.href = '/AddEditDoctorBoardCertification/';
+            //AddEditBoardCertification(0);
+        });
+
+        function AddEditBoardCertification(id) {
+            window.location.href = '/AddEditDoctorBoardCertification/' + id;
+            //$("#modalContent").load("/AddEditDoctorBoardCertification/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function AddEditViewBoardCertification(id) {
+            window.location.href = '/AddEditViewDoctorBoardCertification/' + id;
+            //$("#modalContent").load("/AddEditDoctorBoardCertification/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function ViewBoardCertification(id) {
+            $("#modalContent").load("/_DoctorBoardCertificationView/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        function bindBoardCertificationList() {
+            if ($.fn.DataTable.isDataTable("#dtBoardCertification")) {
+                $('#dtBoardCertification').DataTable().destroy();
+            }
+            var table = $('#dtBoardCertification')
+                .DataTable({
+                    "sAjaxSource": "/GetDoctorBoardCertificationList/",
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> ';
+                                content += '<label class="switch" style="pointer-events:none">';
+                                content += '<input onchange="ActiveDeactiveBoardCertification(this)"  type="checkbox" ' + value + ' data-DocId="' + row.Id + '" data-Id= "IsActive" />';
+                                content += '<span class="slider round"style="width:35px;"></span> ';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div><a href="javascript:;" onclick="AddEditBoardCertification(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="AddEditViewBoardCertification(' + data + ')" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="RemoveBoardCertification(' + data + ')" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;</div>'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+        var ActiveDeactiveBoardCertification = function (ctrl) {
+            var flag = $(ctrl).is(":checked");
+
+            var id = $(ctrl).data("docid");
+            switch (flag) {
+                case false:
+                    DeactivateBoardCertification(id, true);
+                    break;
+                case true:
+                    DeactivateBoardCertification(id, false);
+                default:
+            }
+        }
+        function DeactivateBoardCertification(id, flag) {
+            var title = flag ? "De Activate" : "Re Activate";
+            var message = "Are you sure you want to <b> " + title + " </b> this  Board Certification";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeBoardCertification/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindBoardCertificationList();
+
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        $('#dtBoardCertification').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "edit":
+                    AddEditBoardCertification(id);
+                    break;
+                case "delete":
+                    RemoveBoardCertification(id);
+                    break;
+                case "View":
+                    ViewBoardCertification(id);
+                    break;
+            }
+        });
+
+        function RemoveBoardCertification(id) {
+            var message = "Are you sure you want to <b> Remove  Board Certification </b> ";
+            BinkeDialog.Confirmation("Remove  Board Certification", message, function () {
+                $.ajax({
+                    url: "/RemoveDoctorBoardCertification/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindBoardCertificationList();
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+    </script>
+}

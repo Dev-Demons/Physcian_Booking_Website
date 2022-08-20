@@ -1,0 +1,172 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Language";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-book"></i> Language </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Language/"> Language </a></li>
+            <li class="active"> Language List </li>
+        </ol>
+    </div>
+}
+@*<div class="col-8 pull-right">*@
+@*<div class="panel">
+
+    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addLanguage">Add Language</button>
+
+    <div class="panel-body">
+
+
+        <table id="dtLanguage" class="table table-striped table-bordered table-hover small" width="100%">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Language Code</th>
+                    <th>Language</th>
+                    <th>Date Created</th>
+                    <th>Date Modified</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div> *@
+
+
+<div class="tab-base">
+    <div class="tab-content">
+        <div id="" class="tab-pane fade active in">
+            <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addLanguage">Add Language</button>
+            <table id="dtLanguage" class="table table-striped table-bordered table-hover small" width="100%">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Language Code</th>
+                        <th>Language</th>
+                        <th>Date Created</th>
+                        <th>Date Modified</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+        @*</div>*@
+
+        <!-- END MAIN CONTENT -->
+        @section pagespecific {
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    bindLanguageList();
+                });
+
+                $(document).on("click", "#addLanguage", function () {
+                    AddEditLanguage(0);
+                });
+
+                function AddEditLanguage(id) {
+                    $("#modalContent").load("/_Language/" + id, function () {
+                        $("#divModal").modal('show');
+                    });
+                }
+
+                function bindLanguageList() {
+
+                    if ($.fn.DataTable.isDataTable("#dtLanguage")) {
+                        $('#dtLanguage').DataTable().destroy();
+                    }
+                    var table = $('#dtLanguage')
+                        .DataTable({
+                            "sAjaxSource": "/Language/GetLanguageList/",
+                            "columns": [
+                                {
+                                    render: function (data, type, row, meta) {
+                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                    }
+                                },
+                                {
+                                    "data": "LanguageCode",
+                                    "autoWidth": false,
+                                    "searchable": true
+                                },
+                                {
+                                    "data": "LanguageName",
+                                    "autoWidth": false,
+                                    "searchable": true
+                                },
+                                {
+                                    "data": "CreatedDate",
+                                    "autoWidth": false,
+                                    "searchable": true
+                                },
+                                {
+                                    "data": "UpdatedDate",
+                                    "width": "20%",
+                                    "searchable": true
+                                },
+                                {
+                                    "data": "Id",
+                                    "autoWidth": false,
+                                    "searchable": false,
+                                    "orderable": false,
+                                    "render": function (data) {
+                                        var content = '<a href="javascript:;" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                        content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;'
+                                        return content;
+                                    }
+                                }
+                            ]
+                        });
+                };
+
+                $('#dtLanguage').on("click", ".action", function (e) {
+                    var flag = $(e.currentTarget).attr("data-flag");
+                    var id = $(e.currentTarget).attr("data-Id");
+                    switch (flag) {
+                        case "edit":
+                            AddEditLanguage(id);
+                            break;
+                        case "delete":
+                            DeleteLanguage(id);
+                            break;
+                        default:
+                    }
+                });
+
+                function DeleteLanguage(id) {
+                    BinkeDialog.Confirmation("Delete",
+                        "Are you sure you want to delete this ?",
+                        function () {
+                            $.ajax({
+                                url: "/RemoveLanguage/" + parseInt(id),
+                                type: "POST",
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                                success: function (data) {
+                                    HandleResponse(data);
+                                    bindLanguageList();
+                                },
+                                error: function (data) {
+                                    HandleResponse(data);
+                                }
+                            });
+                        });
+                }
+            </script>
+        }

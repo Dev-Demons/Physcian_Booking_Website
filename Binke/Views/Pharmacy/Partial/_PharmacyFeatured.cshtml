@@ -1,0 +1,508 @@
+﻿@model Binke.ViewModels.OrganisationFeaturedAddEditViewModel
+@{
+    ViewBag.Title = "Pharmacy Featured";
+
+    string dt1 = "";
+    string dt2 = "";
+    if (Model.FeaturdStartDate.ToString("dd/MM/yyyy") != "01/01/0001")
+    {
+        dt1 = Model.FeaturdStartDate.ToString("MM/dd/yyyy");
+    }
+    if (Model.EndDate.ToString("dd/MM/yyyy") != "01/01/0001")
+    {
+        dt2 = Model.EndDate.ToString("MM/dd/yyyy");
+    }
+}
+<style>
+    #Image1 {
+        line-height: 1.2 !important;
+    }
+</style>
+@if (ViewBag.PharmacyID > 0)
+{<h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Session["PharmacyName"]</h4>}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.FeaturedId == 0 ? "Add Pharmacy Featured" : "Edit Pharmacy Featured")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditPharmacyFeatured", "Pharmacy", FormMethod.Post, new { id = "frmPharmacyFeatured", @class = "form-horizontal form-bordered", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.FeaturedId)
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganisationName)
+
+        @Html.HiddenFor(model => model.OrganizationTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        if (ViewBag.ID > 0)
+        {
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.CreatedBy)
+        }
+        @Html.HiddenFor(model => model.IsDeleted)
+
+        @Html.HiddenFor(model => model.TotalImpressions)
+        @Html.HiddenFor(model => model.PaymentTypeID)
+        @Html.HiddenFor(model => model.CityStateZipCodeID)
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-12 row">
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Start Date</b></label>
+                            @Html.TextBoxFor(model => model.FeaturdStartDate, new { @class = "datefield form-control", placeholder = "Enter Start Date" })
+                            @Html.ValidationMessageFor(model => model.FeaturdStartDate, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>End Date</b></label>
+                            @Html.TextBoxFor(model => model.EndDate, new { @class = "datefield form-control", placeholder = "Enter End Date" })
+                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Zip Code</b></label>
+                            @Html.TextBox("ZipCode", null, new { @class = "form-control refName", placeholder = "Enter Zip Code" })
+                            @Html.ValidationMessageFor(model => model.CityStateZipCodeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>City</b></label>
+                            @Html.DropDownList("City", ViewBag.cityList as SelectList, "Select City", new { @class = "form-control chosen-select" })
+                            @*@Html.TextBox("City", null, new { @class = "form-control refName", placeholder = "Enter City" })*@
+                        </div>
+
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>State</b></label>
+                            @Html.DropDownList("State", ViewBag.stateList as SelectList, "Select State", new { @class = "form-control chosen-select" })
+                            @*@Html.TextBox("State", null, new { @class = "form-control disable", placeholder = "Enter State" })*@
+                        </div>
+
+                        <div class="col-md-2 mar-btm">
+                            <label class="control-label"><b>Country</b></label>
+                            @Html.DropDownList("Country", ViewBag.countryList as SelectList, "Select Country", new { @class = "form-control chosen-select" })
+                            @*@Html.TextBox("Country", null, new { @class = "form-control disable", placeholder = "Enter Country" })*@
+                        </div>
+                        <div class="col-md-2 mar-btm">
+                            <label class="control-label"><b>Lat</b></label>
+                            @Html.TextBox("Lat", null, new { @class = "form-control disable", placeholder = "Enter Lat" })
+                        </div>
+                        <div class="col-md-2 mar-btm">
+                            <label class="control-label"><b>Long</b></label>
+                            @Html.TextBox("Long", null, new { @class = "form-control disable", placeholder = "Enter Long" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Title</b></label>
+                            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Enter Featured Title" })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-8 mar-btm">
+                            <label class="control-label"><b>Description</b></label>
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Enter Featured Description" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 row">
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Profile Image</b></label>
+                            <input type="file" id="Image1" name="Image1" class="form-control" />
+                            @Html.HiddenFor(model => model.ProfileImage)
+                            @Html.ValidationMessageFor(model => model.ProfileImage, "", new { @class = "text-danger" })
+                        </div>
+
+
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>Advertisement Location</b></label>
+                            @Html.DropDownListFor(model => model.AdvertisementLocationID, ViewBag.AdvertisementLocations as SelectList, "- Select -", new { @class = "form-control chosen-select" })
+                            @Html.ValidationMessageFor(model => model.AdvertisementLocationID, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3 mar-btm">
+                            <div style="height:35px; width:90%; display:block;"></div>
+                            <label class="control-label"><b>Is Active</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-2 mar-btm" style="text-align:right; margin-top:30px;">
+                            <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                        @if (Model.ProfileImage != null)
+                        {
+                            <div class="col-md-12 mar-btm">
+                                <img src="~/Uploads/FeaturedPharmacy/@Model.ProfileImage" style="max-height:50px; text-align:left;" alt="icon"/>
+                            </div>
+                        }
+
+
+
+                    </div>
+                </div>
+        </div>
+    }
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+      $(document).ready(function () {
+          $("#FeaturdStartDate").val('@(Model.FeaturdStartDate.ToString("dd/MM/yyyy")=="01/01/0001"?DateTime.Now.ToString("dd/MM/yyyy"):Model.FeaturdStartDate.ToString("dd/MM/yyyy"))');
+        $('#EndDate').val('@(Model.EndDate.ToString("dd/MM/yyyy") == "01/01/0001" ? DateTime.Now.ToString("dd/MM/yyyy") : Model.EndDate.ToString("dd/MM/yyyy"))');
+          $("#FeaturdStartDate").datepicker({
+            dateFormat: 'dd/mm/yy',
+         
+        }).on('changeDate', function () {
+            // set the "fromDate" end to not be later than "toDate" starts:
+            $('#EndDate').datepicker('setStartDate', new Date($(this).val()));
+        });
+        $("#EndDate").datepicker({
+            dateFormat: 'dd/mm/yy',
+           
+        }).on('changeDate', function () {
+            // set the "fromDate" end to not be later than "toDate" starts:
+            $('#FeaturdStartDate').datepicker('setEndDate', new Date($(this).val()));
+        });
+
+        $('#EndDate').datepicker("setDate", '@(Model.EndDate.ToString("dd/MM/yyyy") == "01/01/0001" ? DateTime.Now.ToString("dd/MM/yyyy") : Model.EndDate.ToString("dd/MM/yyyy"))').datepicker("option", "minDate",'@(Model.FeaturdStartDate.ToString("dd/MM/yyyy")=="01/01/0001"?DateTime.Now.ToString("dd/MM/yyyy"):Model.FeaturdStartDate.ToString("dd/MM/yyyy"))')
+          $("#FeaturdStartDate").datepicker("setDate", '@(Model.FeaturdStartDate.ToString("dd/MM/yyyy")=="01/01/0001"?DateTime.Now.ToString("dd/MM/yyyy"):Model.FeaturdStartDate.ToString("dd/MM/yyyy"))').datepicker("option", "maxDate", '@(Model.EndDate.ToString("dd/MM/yyyy") == "01/01/0001" ? DateTime.Now.ToString("dd/MM/yyyy") : Model.EndDate.ToString("dd/MM/yyyy"))');
+
+
+
+
+    })
+   $(function () {
+       $('.datefield').datepicker({
+            format: 'mm/dd/yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+
+
+    $(function () {
+        $("#AdvertisementLocationID").chosen();
+        $("#AdvertisementLocationID_chosen").css("width", "100%");
+
+        $("#City").chosen();
+        $("#City_chosen").css("width", "100%");
+
+        $("#State").chosen();
+        $("#State_chosen").css("width", "100%");
+
+        $("#Country").chosen();
+        $("#Country_chosen").css("width", "100%");
+    });
+
+
+    $("#OrganisationId").val('@ViewBag.PharmacyID');
+    $("#OrganisationName").val('@Session["PharmacyName"]');
+            $("#OrganizationTypeID").val('1005');
+            $("#UserTypeID").val('3');
+
+            var ID = "@ViewBag.ID";
+
+            if (ID == 0) {
+                $("#IsDeleted").val('false');
+    }
+
+    if (ID > 0) {
+
+        if ("@Model.IsActive" == 'True') {
+            $("#IsActive").prop('checked', true);
+            $("#IsActive").val(true);
+        }
+        else {
+            $("#IsActive").prop('checked', false);
+            $("#IsActive").val(false);
+        }
+
+        $("#FeaturdStartDate").val("@dt1");
+        $("#EndDate").val("@dt2");
+
+        getCityByZip("@Model.ZipCode", "@Model.City");
+    }
+
+    $(document).on('click', '.slider',function () {
+        var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+        if (chekedstatus == false)
+            $(this).parent().find(":checkbox").val(true);
+        else
+            $(this).parent().find(":checkbox").val(false);
+    });
+
+    $(".disable").prop("disabled", true);
+
+
+    $("#ZipCode").keyup(function () {
+        if ($.trim($(this).val()) == "") {
+            $("#CityStateZipCodeID").val('');
+        }
+    });
+
+    $("#City").keyup(function () {
+        if ($.trim($(this).val()) == "") {
+            $("#CityStateZipCodeID").val('');
+        }
+    });
+
+    $("#ZipCode").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "/Pharmacy/GetZipCode",
+                type: "POST",
+                dataType: "json",
+                data: { Prefix: request.term },
+                success: function (data) {
+                    if (!data.length) {
+                        var result = [
+                            {
+                                label: 'No matches found',
+                                value: response.term
+                            }
+                        ];
+                        response(result);
+                    }
+                    else {
+                        response($.map(data, function (item) {
+                            return { label: item.ZipCode, value: item.ZipCode };
+                        }))
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            })
+        },
+        minLength: 3,
+        select: function (event, ui) {
+            $(this).val(ui.item.label);
+            getCityByZip(ui.item.label);
+        }
+    });
+
+    var dataIndex = 0;
+
+    function getCityByZip(Code, city) {
+        if ($.trim(Code) == "") {
+            $("#City option").remove();
+            $('#City').html('<option value="0">Select City</option>');
+            $("#City").trigger("chosen:updated");
+
+            $("#State option").remove();
+            $('#State').html('<option value="0">Select City</option>');
+            $("#State").trigger("chosen:updated");
+
+            $("#Country option").remove();
+            $('#Country').html('<option value="0">Select City</option>');
+            $("#Country").trigger("chosen:updated");
+
+            $("#Lat").val('')
+            $("#Long").val('')
+        }
+        else {
+            var curCity = "@Model.City";
+            var Index = 0;
+            $.ajax({
+                url: "/Pharmacy/GetCityByZipCode",
+                type: "POST",
+                dataType: "json",
+                data: { Prefix: null, ZipCode: Code },
+                success: function (data) {
+                    $("#City option").remove();
+                    var options = '';
+
+                    options += '<option value="">Select City</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].City + '">' + data[i].City + '</option>';
+                        if (curCity != "" && curCity == data[i].City) {
+                            dataIndex = i;
+                        }
+                    }
+                    $('#City').html(options);
+
+                    if (city != "") {
+                        if (curCity != "") {
+                            Index = parseInt(dataIndex) + 1;
+                            $('#City').prop('selectedIndex', Index);
+                        }
+                        else {
+                            $('#City').prop('selectedIndex', 1);
+                        }
+                    }
+
+                    $("#City").trigger("chosen:updated");
+
+                    $("#State option").remove();
+                    var options1 = '';
+                    options1 += '<option value="">Select State</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options1 += '<option value="' + data[i].State + '">' + data[i].State + '</option>';
+                    }
+                    $('#State').html(options1);
+
+                    $('#State').prop('selectedIndex', 1);
+                    $("#State").trigger("chosen:updated");
+
+                    $("#Country option").remove();
+                    var options2 = '';
+                    options2 += '<option value="">Select State</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options2 += '<option value="' + data[i].Country + '">' + data[i].Country + '</option>';
+                    }
+                    $('#Country').html(options2);
+
+                    $('#Country').prop('selectedIndex', 1);
+
+                    $("#Country").trigger("chosen:updated");
+
+                    $("#CityStateZipCodeID").val(data[dataIndex].CityStateZipCodeID);
+                    $("#Lat").val(data[dataIndex].Lat)
+                    $("#Long").val(data[dataIndex].Long)
+                }
+            });
+        }
+    }
+
+
+    $("#City").change(function () {
+        if ($(this).val() == "") {
+            $('#State').prop('selectedIndex', 0);
+            $("#State").trigger("chosen:updated");
+
+            $('#Country').prop('selectedIndex', 0);
+            $("#Country").trigger("chosen:updated");
+
+            $("#CityStateZipCodeID").val('')
+            $("#Lat").val('')
+            $("#Long").val('')
+        }
+        else {
+            var curCity = "@Model.City";
+            var Index = 0;
+               Index = $(this).prop('selectedIndex');
+                dataIndex = parseInt(Index) - 1;
+
+                       
+            $.ajax({
+                url: "/Pharmacy/GetCityByZipCode",
+                type: "POST",
+                dataType: "json",
+                data: { Prefix: $(this).val(), ZipCode: $("#ZipCode").val() },
+                success: function (data) {
+                    
+                    $("#State option").remove();
+                    var options1 = '';
+                    options1 += '<option value="">Select State</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options1 += '<option value="' + data[i].State + '">' + data[i].State + '</option>';
+                    }
+                    $('#State').html(options1);
+
+                    $('#State').prop('selectedIndex', 1);
+
+                    $("#State").trigger("chosen:updated");
+
+                    $("#Country option").remove();
+                    var options2 = '';
+                    options2 += '<option value="">Select State</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options2 += '<option value="' + data[i].Country + '">' + data[i].Country + '</option>';
+                    }
+                    $('#Country').html(options2);
+                    $('#Country').prop('selectedIndex', 1);
+
+                    $("#Country").trigger("chosen:updated");
+
+                    $("#CityStateZipCodeID").val(data[dataIndex].CityStateZipCodeID);
+                    $("#Lat").val(data[dataIndex].Lat)
+                    $("#Long").val(data[dataIndex].Long)
+                }
+            });
+        }
+    });
+
+    $('input[type="file"]').change(function (e) {
+        var imageX = e.target.files[0];
+        var imgesize = imageX.size;
+        var fileName = e.target.files[0].name;
+
+        if (imgesize < 5242880) {            
+            let img = new Image()
+            img.src = window.URL.createObjectURL(imageX)
+
+            img.onload = () => {
+                $("#ImagePath").val(fileName);
+                //w = img.width;
+                //h = img.height;
+                //if (w <= 50 && h <= 50) {
+                //    $("#ImagePath").val(fileName);
+                //}
+                //else {
+                //    alert("Image width and height should be less than or equal 50px");
+                //    $("#ImagePath").val('');
+                //    $("#Image1").val('');
+                //}
+            }
+        }
+        else {
+            alert("Image size should be less than 5MB");
+            $("#ImagePath").val('');
+            $("#Image1").val('');
+        }
+
+    });
+
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmPharmacyFeatured'));
+                if ($("#frmPharmacyFeatured").valid()) {
+                    var form = $('#frmPharmacyFeatured')[0];
+                    var formData = new FormData(form);
+                    $.ajax({
+                        url: "@Url.Action("AddEditPharmacyFeatured")",
+                        type: form.method,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            HandleResponse(response);
+                            if (response.Status == 1) {
+                                window.location.reload();
+                            }
+                        },
+                        error: function (result) {
+                            console.log(response);
+                        }
+                    });
+                }
+            });
+
+     SetCity("@Model.City");
+
+        function SetCity(CityCode) {
+            if (ID > 0) {
+                $('#City').val(CityCode);
+                $('#City').trigger('change');
+            }
+        }
+</script>

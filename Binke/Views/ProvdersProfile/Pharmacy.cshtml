@@ -1,0 +1,2353 @@
+﻿@using Binke.Utility;
+@using Doctyme.Repository.Enumerable;
+@model Doctyme.Model.ViewModels.ProfileViewModel
+@{
+    ViewBag.Title = "" + Model.OrganisationName + "-" + Model.TaxonomyCode + "| DocTyme";
+    
+}
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+<style type="text/css">
+    ul.listdata li {
+        list-style: none;
+        position: relative;
+        color: #007bff;
+        text-align: left;
+    }
+
+        ul.listdata li:before {
+            content: "\f00c";
+            font-family: FontAwesome;
+            color: #000;
+            font-size: 1em;
+            padding-right: .5em;
+            position: absolute;
+            top: 0;
+            left: -16px;
+            font-size: 13px !important;
+            color: #ff1a1a;
+        }
+
+    .single-comment {
+        margin-top: inherit;
+        margin-bottom: 8px;
+    }
+
+        .single-comment img {
+            height: 60px;
+        }
+
+    *:focus {
+        outline: none;
+    }
+
+    .owl-theme .owl-controls {
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        cursor: e-resize
+    }
+
+        .owl-theme .owl-controls .owl-nav [class*=owl-] {
+            color: #fff;
+            font-size: 14px;
+            font-family: 'KeplerStd-Regular';
+            display: block;
+            cursor: e-resize;
+        }
+
+    .owl-prev {
+        left: 0;
+        text-align: left;
+        position: absolute;
+        z-index: 999999;
+        cursor: e-resize;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-next {
+        text-align: right;
+        position: absolute;
+        z-index: 999999;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: e-resize;
+        right: 0;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-theme .owl-controls .owl-nav [class*=owl-]:hover {
+        background-color: #1f1f1f;
+        transition: 0.5s all;
+        cursor: e-resize
+    }
+
+    .owl-theme .owl-controls .owl-nav .disabled {
+        opacity: .5;
+        cursor: e-resize
+    }
+
+    #owl-demo .owl-item > div img {
+        display: block;
+        width: 100%;
+        height: auto;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin-bottom: 4px;
+    }
+
+    #owl-demo .owl-item > div {
+        padding: 0px 2px
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-prev {
+        opacity: 1 !important;
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-next {
+        opacity: 1 !important;
+    }
+
+    .mrg-tb {
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    i.fa.fa-star {
+        color: yellow;
+    }
+
+    button#btnSubmit {
+        width: auto;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 1%;
+        color: white;
+    }
+
+    .btnGreen {
+        background-color: green !important;
+    }
+
+    ul#featureList {
+        column-count: 2;
+        list-style: none;
+    }
+
+    .text-white:hover {
+        border-bottom: 2px solid red;
+    }
+
+    a.btn.btn-sm.btn-primary.text-white.active {
+        border-bottom: 2px solid red;
+    }
+
+
+    .image {
+        height: 25% !important;
+        width: 100%;
+    }
+
+    .image-map {
+        height: 250px;
+        width: 500px;
+    }
+
+    hr {
+        border-top: 1px solid black;
+    }
+
+    .header-title {
+        color: #3498db;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .header-top-inner .header-support-info li span.icon {
+        padding: 5px !important;
+        line-height: 15px;
+    }
+
+    .glyphicon-star {
+        color: yellow;
+        font-size: 15px;
+    }
+
+    .active > a {
+        background-color: #3498db !important;
+    }
+
+    .a {
+        cursor: pointer;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    summary {
+        font-weight: bold;
+        font-size: 15px;
+        background: #3498db;
+        padding: 5px 5px 5px 10px;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+        summary:hover {
+            cursor: pointer;
+        }
+
+    details[open] {
+        padding-bottom: 1px !important;
+    }
+
+    details {
+        max-width: 600px;
+        margin: 0 auto 5px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(55,92,192,.08),0 0 1px 0 rgba(18,32,73,.08);
+    }
+
+        details p {
+            padding: 0px 10px 0px 10px;
+            margin-bottom: 0px !important;
+            font-size: 12px !important;
+            line-height: 19px;
+        }
+
+        details ul {
+            position: relative;
+            bottom: 25px;
+            right: 20px;
+        }
+
+            details ul li {
+                display: inline-block;
+                float: right;
+            }
+
+
+
+    .nav {
+        display: inherit;
+    }
+
+    .social-icon {
+        position: inherit;
+    }
+
+    .favSocialIcon {
+        /*margin-left: 10%;*/
+        margin-bottom: 0%;
+    }
+
+        .favSocialIcon li {
+            list-style: none;
+            float: left;
+        }
+
+        .favSocialIcon .fa-change {
+            padding: 5px;
+            font-size: 30px;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            text-decoration: none;
+            margin: 5px 2px;
+            border-radius: 36px;
+        }
+
+    .fa-change:hover {
+        opacity: 0.7;
+    }
+
+    .fa-change-facebook {
+        background: #3B5998;
+        color: white;
+    }
+
+    .fa-change-twitter {
+        background: #55ACEE;
+        color: white;
+    }
+
+    .fa-change-google {
+        background: #dd4b39;
+        color: white;
+    }
+
+    .fa-change-linkedin {
+        background: #007bb5;
+        color: white;
+    }
+
+    .fa-change-youtube {
+        background: #bb0000;
+        color: white;
+    }
+
+    .fa-change-instagram {
+        background: #125688;
+        color: white;
+    }
+
+    button.owl-prev, button.owl-next span {
+        height: 40px;
+        width: 10px;
+    }
+
+        button.owl-prev span, button.owl-next span {
+            font-size: 35px;
+        }
+
+    .tabsCustom {
+        padding: 6px 14px;
+        margin-bottom: 6px;
+        /*margin-top: 5px;
+        width: 250px;*/
+    }
+
+    .margin-lft60 {
+        margin-left: 60px !important;
+        margin-bottom: 2px !important;
+        margin-right: 80px !important;
+    }
+
+    /*.nav-tabs a.active {
+        background-color: #3498db !important;
+        color: white !important;
+    }
+
+    .nav-tabs a {
+        background-color: rgb(243, 237, 237);
+        color: dodgerblue !important;
+    }*/
+
+    .bgColorForbuttons {
+        background-color: #3498db
+    }
+
+
+    .table thead th {
+        padding: unset !important;
+        vertical-align: unset !important
+    }
+
+    tr, th, td {
+        font-size: 8px;
+        text-align: center;
+    }
+
+    .table {
+        line-height: 2 !important
+    }
+
+    .marginBottom150px {
+        margin-bottom: 50px
+    }
+
+    .timesSlotsButtons {
+        font-size: 8px;
+        width: 90px;
+        background-color: rgb(49, 209, 49);
+        border-radius: 10px;
+        padding: 3px 0px 3px 0px;
+    }
+
+    .timesSlotsSelectButtons {
+        font-size: 8px;
+        width: 90px;
+        background-color: orange !important;
+        border-radius: 10px;
+        padding: 3px 0px 3px 0px;
+    }
+
+    .owl-carousel .item img {
+        height: 200px;
+        width: 400px;
+    }
+
+    .noslotsAvlbuttons {
+        color: #8f7474;
+        font-size: 8px;
+        width: 90px;
+        background-color: rgb(243, 237, 237);
+        border-radius: 10px;
+        padding: 3px 0px 3px 0px;
+    }
+
+    ul.star_rate li {
+        list-style: none;
+        display: inline;
+        margin: 0 1px;
+    }
+
+
+    ul.star_rate li {
+        list-style: none;
+        display: inline;
+        margin: 0 1px;
+    }
+
+    .text-orange {
+        color: orange !important;
+    }
+
+    .text-white {
+        color: white !important;
+    }
+
+
+    .ReviewCount {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    ul.star_rate li i {
+        color: #efa51e;
+        font-size: 20px;
+        /*position: relative;*/
+        top: 2px;
+        padding-right: 2px !important
+    }
+
+    .btn-primary:not(:disabled):not(.disabled).active {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .practiceWebsite {
+        /*padding: 0px 10px 0px 10px;*/
+        margin-bottom: 0px !important;
+        font-size: 13px !important;
+        line-height: 19px;
+    }
+
+    /*.adressClick:hover {
+        color: #fd7e14
+    }*/
+
+    .margiLeft15px {
+        margin-left: 15px;
+    }
+
+    .cursorNotAllowed {
+        cursor: not-allowed !important;
+    }
+
+    /*.adressClick p:hover {
+        text-decoration: underline;
+        color: orange;
+    }*/
+
+    .practiceWebsite {
+        padding: 0px 10px 0px 10px;
+        margin-bottom: 0px !important;
+        font-size: 13px !important;
+        line-height: 19px;
+    }
+
+    .adressClick:hover {
+        color: #fd7e14
+    }
+
+    .margiLeft15px {
+        margin-left: 15px;
+    }
+
+    .cursorNotAllowed {
+        cursor: not-allowed !important;
+    }
+
+    .adressClick p:hover {
+        text-decoration: underline;
+        color: orange;
+    }
+
+    .accordianCustHeader {
+        border-radius: .35rem;
+        border-color: #239fbc96;
+    }
+
+    .accordiaHeaderbgColor {
+        color: #3498db
+    }
+
+    .acbody p {
+        padding: 0px 10px 0px 10px;
+        margin-bottom: 0px !important;
+        font-size: 14px !important;
+        line-height: 19px;
+    }
+
+    .acbody ul {
+        position: relative;
+        /*bottom: 25px;
+        right: 20px;*/
+    }
+
+        .acbody ul li {
+            display: inline-block;
+            /*float: right;*/
+        }
+
+    .accHeaderPaddig {
+        padding: 0.35rem 1.25rem !important;
+    }
+
+    .startColorwhite {
+        color: #dbcece !important
+    }
+
+    .accBodyTop {
+        padding-top: 15px !important;
+        padding-bottom: 1px;
+    }
+
+    .card-header .accordion-toggle[aria-expanded="true"]:before {
+        font-family: 'FontAwesome';
+        color: #A80F0F;
+        content: "\f0d7";
+    }
+
+    .card-header .accordion-toggle[aria-expanded="true"]:before {
+        font-family: 'FontAwesome';
+        color: #e907079e;
+        content: "\f0d7";
+        margin-right: 5px;
+    }
+
+    .card-header .accordion-toggle[aria-expanded="true"] span {
+        color: #e907079e !important;
+    }
+
+
+    .card-header .accordion-toggle[aria-expanded="false"]:before {
+        font-family: 'FontAwesome';
+        color: #3498db;
+        content: "\f0da";
+        margin-right: 5px;
+    }
+
+    .card-header .accordion-toggle.collapsed:before {
+        font-family: 'FontAwesome';
+        color: #3498db;
+        content: "\f0da";
+        margin-right: 5px;
+    }
+
+    .headingFont {
+        font-weight: bold;
+        font-size: 15px;
+        background: #3498db;
+        padding: 5px 5px 5px 10px;
+        color: #0069d9 !important;
+        margin-bottom: 10px;
+        background-color: rgb(229,254,254);
+    }
+
+    .text-whiteText {
+        color: white;
+    }
+
+    .accordion > .card:first-of-type {
+        border-bottom: 1px solid #239fbc96;
+    }
+
+    .section-padding-top-sm {
+        padding-top: 40px !important;
+    }
+
+
+    .accordion > .card:first-of-type {
+        border-bottom: 1px solid #239fbc96 !important;
+    }
+
+    #remote-container video {
+        height: auto;
+        position: relative !important;
+    }
+
+    #me {
+        position: relative;
+        width: 50%;
+        margin: 0 auto;
+        display: block;
+    }
+
+        #me video {
+            position: relative !important;
+        }
+
+    #remote-container {
+        display: flex;
+    }
+
+    .marker {
+        content: "\f00c";
+        padding: 0;
+        margin: 0;
+        font-family: FontAwesome;
+        color: #000;
+        font-size: 1em;
+        padding-right: .5em;
+        position: absolute;
+        top: 0;
+        left: -16px;
+        font-size: 13px !important;
+        color: #ff1a1a;
+    }
+
+    .btnNewRefill {
+        display: block;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        background-image: url('../../Images/New-Prescription.png');
+        background-size:100%;
+        margin-right: 15px;
+    }
+    .btnRefill {
+        display: block;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        background-image: url('../../Images/Refill-Prescription.png');
+        background-size: 100%;
+        margin-right: 15px;
+    }
+    .btnTransRefill {
+        display: block;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        background-image: url('../../Images/Prescription_Transfer.png');
+        background-size: 100%;
+        margin-right: 15px;
+    }
+</style>
+<head>
+
+    @*<title>@Model.OrganisationName - @Model.TaxonomyCode| DocTyme</title>*@
+
+    @*<link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>*@
+    @{
+        List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Name = "description",
+            Content = "" + Model.OrganisationName + " Pharmacy in " + Model.City + " , " + Model.State + ". Call " + Model.PhoneNumber + " to Order Online for cheap drugs."
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:title",
+            Content = "" + Model.OrganisationName + ", Pharmacy in " + Model.City + " , " + Model.State
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:description",
+            Content = "" + Model.OrganisationName + " Pharmacy is a " + Model.TaxonomyCode + " in " + Model.City + " ," + Model.State
+        });
+
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Name = "keywords",
+            Content = "" + Model.OrganisationName + " - " + Model.State + "," + Model.State
+        });
+
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "twitter:image",
+            Content = "logo image url"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:url",
+            Content = "https://www.doctyme.com/"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:site_name",
+            Content = "DocTyme"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:image",
+            Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:type",
+            Content = "website"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Name = "twitter:title",
+            Content = "Search & Review Doctors, Hospital, Senior Care, Pharmacy and Book an appointment online."
+        });
+    }
+
+    @*<meta name="description" content="@Model.OrganisationName Pharmacy in @Model.City, @Model.State. Call @Model.PhoneNumber to Order Online for cheap drugs.">
+        <meta property="og:title" content="@Model.OrganisationName, Pharmacy in @Model.City, @Model.State">
+        <meta property="og:description" content="@Model.OrganisationName Pharmacy is a @Model.TaxonomyCode in @Model.City, @Model.State">
+
+        <meta name="keywords" content="@Model.OrganisationName - @Model.City, @Model.State" />*@
+
+    @*<meta name="twitter:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+        <meta property="og:url" content="https://www.doctyme.com/">
+        <meta property="og:site_name" content="DocTyme">*@
+    @*<meta property="og:title" content="Read Doctor Reviews, Compare Doctors &amp; Book Appointments">*@
+    @* <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">*@
+    @*<meta property="og:description" content="Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme.">*@
+    @*<meta property="og:type" content="website">
+        <link rel='icon' href='favicon.ico' type='image/x-icon' />*@
+</head>
+<div class="bk-section doctors-profile-area section-padding-top-sm section-padding-bottom-sm" data-id="@Model.OrganisationId">
+
+    <input type="hidden" value="@Model.MaxDays" id="lblMaxDays" />
+    <input type="hidden" value="@Model.CalenderDatesCount" id="lblcalCount" />
+    <input type="hidden" value="@Model.OrganisationId" id="lblOrganizationID" />
+    <input type="hidden" value='@Model.OrganisationName.Replace("&","").Replace(" ","")' id="lblOrganizationName" />
+    <input type="hidden" value="" id="lblSlotTime" />
+    <input type="hidden" value="" id="lblSlotDate" />
+    @if (Model.lstSiteImages !=null && Model.lstSiteImages.Where(x => x.IsProfile == true).FirstOrDefault() != null)
+    {
+        <input type="hidden" value="@Common.GetValidProfileImagePath(Model.lstSiteImages.Where(x => x.IsProfile == true).FirstOrDefault().ImagePath)" id="lblImagePath" />
+    }
+    else
+    {
+        <input type="hidden" value="@Common.GetValidProfileImagePath("")" id="lblImagePath" />
+    }
+<div class="container">
+    <div class="row ">
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="panel panel-default text-center">
+                <div class="panel-body border">
+                    <div id="owl-carousel1" class="owl-carousel owl-theme">
+                        @if (Model.lstSiteImages != null && Model.lstSiteImages.Any())
+                        {
+                            foreach (var item in Model.lstSiteImages)
+                            {
+                                <div class="item">
+                                    <img src="@("/Uploads/PharmacySiteImages/" + item.ImagePath)" alt="@item.ImagePath">
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <img src="~/Uploads/ProfilePic/no_picture.png" alt="no-picture">
+                            </div>
+                        }
+                        @*<div class="item">
+                                <img src="~/Content/client/images/1.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img src="~/Content/client/images/2.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img src="~/Content/client/images/3.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img src="~/Content/client/images/4.jpg" alt="">
+                            </div>*@
+
+
+                    </div>
+
+                </div>
+                <div class=" panel-footer mrg-tb border">
+                    <div class="nav nav-tabs">
+                        <a data-toggle="tab" class="btn btn-sm btn-primary text-white tabsCustom bgColorForbuttons active" href="#Summary">Summary</a>
+                        <a data-toggle="tab" class="btn btn-sm btn-primary text-white tabsCustom bgColorForbuttons" href="#Description">Description</a>
+                        @*<a data-toggle="tab" class="btn btn-sm btn-primary text-white tabsCustom bgColorForbuttons" href="#Amenities">Amenities</a>*@
+                        <a data-toggle="tab" class="btn btn-sm btn-primary text-white tabsCustom bgColorForbuttons" href="#Cost">Cost</a>
+                        <a data-toggle="tab" class="btn btn-sm btn-primary text-white tabsCustom bgColorForbuttons" href="#Photos">Photos and Videos</a>
+                        <a data-toggle="tab" class="btn btn-sm btn-primary text-white tabsCustom bgColorForbuttons" href="#Reviews">Reviews</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 border">
+            @*<h3 class="header-title">@Model.FullForDoctor <small>(@Model.Education)</small></h3>*@
+            <h3 class="header-title d-inline" id="hFullDctName">@Model.OrganisationName</h3>
+            <br />
+            @if (@Model.TaxonomyName != null)
+            {
+                <ul style="margin-left:0;padding:0;">
+                    @Model.TaxonomyName
+                </ul>
+            }
+
+            @*<table>
+                    <tr style="vertical-align: top;">
+                        <td style="padding:0;margin:0">
+                            <ul class="listdata" style="font-size:13px;padding-left:10px!important;margin:5px!important">
+                                <li>@Model.TaxonomyName</li>
+                            </ul>
+
+                        </td>
+                    </tr>
+                </table>*@
+            @*@if (Model.TaxonomyName != null)
+                {
+                    <ul class="marker">
+                        @Model.TaxonomyName
+                    </ul>
+                }*@
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-sm-10">
+                    <div class="star-section visible-sm-inline-block ">
+
+                        @{
+                            var ratingCount = (int)Math.Floor(Model.ReviewStars);
+                            string reviewStr = (Model.ReviewStars == 0 ? "0" : (Model.ReviewStars.ToString("0.0")));
+                        }
+                        <ul class="star_rate pl-3 mb-2">
+
+                            @*<li class=" ReviewCount text-orange">@reviewStr</li>*@
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                if (ratingCount == 0)
+                                {
+                                    <li><i class="fa fa-star startColorwhite"></i></li>
+                                }
+                                else if (i < ratingCount)
+                                {
+                                    <li><i class="fa fa-star text-orange"></i></li>
+                                }
+                                else
+                                {
+                                    <li><i class="fa fa-star startColorwhite"></i></li>
+                                }
+
+                            }
+                            <li class="ReviewCount" style="font-size:12px;font-weight:normal">(@Model.ReviewCount &nbsp;Reviews)</li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div style="border: 1px solid #dee2e6;margin-top: 15px;margin-bottom: 10px;">
+
+            </div>
+            <div>
+                @{
+                    System.Globalization.TextInfo cultInfo = new System.Globalization.CultureInfo("en-US", false).TextInfo;
+                    string cityNameD = !string.IsNullOrWhiteSpace(Model.City) ? cultInfo.ToTitleCase(Model.City.ToLower()) : "";
+                    string locationName = cityNameD + ", " + Model.State;
+                    string longlocationname = Model.Address1 + ", " + cityNameD + ", " + Model.State + " - " + Model.ZipCode;
+                }
+                <div id="accordion">
+                    <p class="parared">
+                        <b>@Model.OrganisationName</b> is located in @locationName and been in business for @Model.NumberOfYears years.
+
+                        @Model.LongDescription
+                    </p>
+                </div>
+            </div>
+            <br />
+            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true" style="margin-top: -10px;">
+
+                <div class="card card-default mb-1 accordianCustHeader">
+                    <!-- Card header -->
+                    <div class="card-header headingFont accHeaderPaddig adressClick" role="tab" id="heading1">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true"
+                           aria-controls="collapseOne1">
+                            @*<i class="fa fa-caret-down"></i>*@
+                            <span class="mb-0 accordiaHeaderbgColor">
+                                @*@Model.OrganisationName <i class="fa fa-angle-down rotate-icon"></i>*@
+                                @longlocationname  
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- Card body -->
+                    <div id="collapseOne1" class="collapse show in collapsed" role="tabpanel" aria-labelledby="heading1" data-parent="#accordionEx">
+
+                        <div class="card-body mb-1 acbody accBodyTop">
+                            <span>
+
+                                @*<p>@Model.OrganisationName</p>*@
+                                <p><i aria-hidden="true" class="fa fa-map-marker" style="color: #3498db;margin-right:2px"></i>@Model.Address1  @Model.Address2 @Model.City, @Model.State,@Model.Country,  @Model.ZipCode</p>
+                                @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                                {
+                                    <p><i class="fa fa-phone" aria-hidden="true" style="color: #3498db;margin-right:2px"></i>@Model.PhoneNumber</p>
+                                }
+
+
+                                @if (!string.IsNullOrEmpty(Model.WebSite))
+                                {
+                                    <a style="color:dodgerblue" href="@Model.WebSite" class="practiceWebsite" target="_blank">
+                                        <i class="fa fa-globe" aria-hidden="true" style="margin-left: 10px;color: #3498db;"></i> <span>Practice Websites</span>
+                                    </a>
+                                }
+                                    <input type="hidden" id="storeAddress" />
+                            </span>
+                            <br />
+                            @if (Model.lstOrgAmenOpt !=null &&  Model.lstOrgAmenOpt.Any())
+                            {
+                                var lstTextName = Model.lstOrgAmenOpt.Where(i => i.IsOption == true);
+                                <table>
+                                    @{
+                                        int col1 = 0;
+                                        int col2 = 0;
+                                        <tr style="vertical-align: top; line-height: 5px;">
+                                            <td style="margin-left: 0;margin-bottom:0;text-align:left;">
+                                                @foreach (var value in lstTextName)
+                                                {
+                                                    if (@col1 % 2 == 0)
+                                                    {
+                                                        <ul style="margin:0;padding:0">
+                                                            @if (!string.IsNullOrEmpty(value.ImagePath))
+                                                            {
+                                                                <li class="fa"><img src="@("/Uploads/AmenityOptions/" + value.ImagePath)" alt="icon" width="20" height="20" /> <span style="font-size: 14px;margin-right: 10px;"> @value.Name </span></li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li @*class="fa has-icon icon"*@ style="margin-bottom:10px;"><span><span style="padding: 4px 8px 2px 8px;border-radius: 20%;background-color: rgb(165, 246, 246);color: #e907079e !important;margin-top:2px"><b>@value.Name.Substring(1, 1).ToUpper()</b></span> <span style="font-size: 14px;margin-right: 10px;"> @value.Name </span> </span></li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                    col1 = col1 + 1;
+                                                }
+                                            </td>
+                                            <td style="margin-left: 0;margin-bottom:0;text-align:left;">
+                                                @foreach (var value in lstTextName)
+                                                {
+                                                    if (@col2 % 2 != 0)
+                                                    {
+                                                        <ul style="margin:0;padding:0">
+                                                            @if (!string.IsNullOrEmpty(value.ImagePath))
+                                                            {
+
+                                                                <li class="fa"><img src="@("/Uploads/AmenityOptions/" + value.ImagePath)" alt="icon" width="20" height="20" /> <span style="font-size: 14px;margin-right: 10px;"> @value.Name </span></li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li @*class="fa has-icon icon"*@ style="margin-bottom:10px;"><span><span style="padding: 4px 8px 2px 8px;border-radius: 20%;background-color: rgb(165, 246, 246);color:#e907079e !important;margin-top:2px"><b>@value.Name.Substring(1, 1).ToUpper()</b></span> <span style="font-size: 14px;margin-right: 10px;"> @value.Name </span> </span></li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                    col2 = col2 + 1;
+                                                }
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </table>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <br />
+            <div class="row" style="">
+                <div class="">
+                    <div id="FeaturedAndServices">
+                        <h3 class="header-title">Featured & Services</h3>
+                        <hr />
+                        @if (Model.lstOrgAmenOpt != null)
+                        {
+                            if (Model.lstOrgAmenOpt.Where(i => i.IsOption == false).Count() > 0)
+                            {
+                                var lstOrgAmenOpt = Model.lstOrgAmenOpt.Where(i => i.IsOption == false);
+                                <table>
+                                    @{int col1 = 0;
+                                        int col2 = 0;
+                                    }
+                                    <tr style="vertical-align: top;">
+                                        <td>
+                                            @foreach (var value in lstOrgAmenOpt)
+                                            {
+                                                if (@col1 % 2 == 0)
+                                                {
+                                                    <ul class="listdata" style="font-size:13px">
+                                                        <li> @value.Name</li>
+                                                    </ul>
+                                                }
+                                                col1 = col1 + 1;
+                                            }
+                                        </td>
+                                        <td>
+                                            @foreach (var value in lstOrgAmenOpt)
+                                            {
+                                                if (@col2 % 2 != 0)
+                                                {
+
+                                                    @*<div class="d-block company-details">*@
+                                                    <ul class="listdata" style="font-size:13px">
+                                                        <li>  @value.Name</li>
+                                                    </ul>
+                                                    @*</div>*@
+                                                }
+                                                col2 = col2 + 1;
+                                            }
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                            }
+
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="tab-content">
+
+                <div id="Summary" class="tab-pane in active">
+                    <h3 class="header-title">Summary</h3>
+                    <hr />
+                    <p>@Html.Raw(Server.HtmlDecode(Model.ShortDescription))</p>
+
+                </div>
+                <div id="Description" class="tab-pane">
+                    <h3 class="header-title">Description</h3>
+                    <hr />
+                    <p>@Html.Raw(Server.HtmlDecode(Model.LongDescription))</p>
+                </div>
+                @*<div id="Amenities" class="tab-pane">
+                        <h3 class="header-title">Amenities</h3>
+                        <hr />
+                        @if (Model.lstOrgAmenOpt != null)
+                        {
+                            foreach (var item in Model.lstOrgAmenOpt.Where(i => i.IsOption == false))
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-12 col-lg-12" style="font-size: 13px;">
+                                        <p style="font-weight:bold">@item.Name</p>
+                                        <p style="margin-top: -10px;line-height:18px"> @item.Description</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>*@
+                <div id="Cost" class="tab-pane">
+                    <h3 class="header-title">Cost</h3>
+                    <hr />
+                    @if (Model.lstCost != null)
+                    {
+                        <div class="row">
+                            @*<div class="col-md-12">*@
+                            @foreach (var cost in Model.lstCost)
+                            {
+                                <div class="col-md-1">
+                                    <i class="fa fa-check" style="color:#3498db;margin-right: 2px;"></i>
+                                </div>
+                                <div class="col-md-11" style="padding:0px">
+
+                                    <div class="row">
+                                        <div class="col-md-12" style="align-content:space-between">
+                                            @*<p>*@
+                                            <span>
+                                                @cost.Name
+                                            </span>
+                                            <span>
+                                                At: &nbsp;$@cost.Price
+                                            </span>
+                                            <span>
+                                                /month
+                                            </span>
+                                            @*</p>*@
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" style="align-content:space-between">
+                                            <span style="font-size:13px">@cost.Description</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+
+                            @*</div>*@
+
+                        </div>
+
+                    }
+
+                </div>
+                <div id="Photos" class="tab-pane">
+                    <h3 class="header-title">Photos and Videos</h3>
+                    <hr />
+                    @if (Model.lstSiteImages != null)
+                    {
+                        <div class="row">
+                            @foreach (var item in Model.lstSiteImages)
+                            {
+
+                                <div class="col-xs-12 col-md-4 col-lg-4" style="padding-right:20px">
+                                    <img src="@Common.GetValidProfileImagePath(item.ImagePath)" class="logo" style="border:1px solid lightgray;max-width:180px;min-width:100px;max-height:200px;min-height:100px" />
+                                </div>
+
+                            }
+                        </div>
+                    }
+
+                </div>
+
+
+                <div id="Reviews" class="tab-pane">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                            <h3 class="header-title">Reviews</h3>
+                        </div>
+                        <div class="col-xs-12 col-md-9" style="margin-top: 15px;">
+                            <ul class="star_rate pl-3 mb-2">
+
+                                @*<li class="ReviewCount text-orange">@reviewStr</li>*@
+                                @for (int i = 0; i < 5; i++)
+                                {
+                                    if (ratingCount == 0)
+                                    {
+                                        <li><i class="fa fa-star startColorwhite"></i></li>
+                                    }
+                                    else if (i < ratingCount)
+                                    {
+                                        <li><i class="fa fa-star text-orange"></i></li>
+                                    }
+                                    else
+                                    {
+                                        <li><i class="fa fa-star startColorwhite"></i></li>
+                                    }
+
+                                }
+                                <li class="ReviewCount" style="font-size:18px;font-weight:normal">(@Model.ReviewCount &nbsp;Reviews)</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+
+                    <hr />
+                    <!-- Single Comment -->
+                    @if (Model.lstReviews !=null && Model.lstReviews.Any())
+                    {
+                        foreach (var item in Model.lstReviews)
+                        {
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-md-12" style="font-size:25px;font-weight:bold">@item.Rating.0</div>
+                                        <div class="col-md-12" style="margin-top: -12px;">..........</div>
+                                    </div>
+                                    <div class="row" style="margin-top: -8px;text-align: center">
+                                        <div class="col-md-12">
+                                            @for (int i = 1; i <= Convert.ToInt32(item.Rating); i++)
+                                            {
+                                                <i class="fa fa-star text-orange" style="font-size: 11px;"></i>
+                                            }
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span style="font-size: 18px;font-weight: bold;">@item.Description</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><span style="font-size:12px">@item.UserName</span>  &nbsp; <span style="font-size:12px">@item.CreatedDate</span></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    }
+
+                </div>
+            </div>
+            @*Added by Reena*@
+            @if (Model.lstProviderAdvertisements != null && Model.lstProviderAdvertisements.Count > 0)
+            {
+
+                <div class="row" style="margin-top:100px">
+                    <div class="col-md-12">
+                        <div id="owl-carousel2" class="three-grid-slider owl-carousel owl-theme owl-rtl owl-loaded">
+                            <div class="owl-stage-outer">
+                                <div class="owl-stage" style="transform: translate3d(1533.33px, 0px, 0px); transition: all 1.2s ease 0s; width: 4600px;">
+                                    @foreach (var items in Model.lstProviderAdvertisements)
+                                    {
+                                        <div class="owl-item" style="width:373.333px !important; margin-left: 10px !important;padding-right:10px">
+                                            <div class="item">
+                                                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                                    <div class="testi-thumb">
+                                                        <img class="img-responsive thumbnail" src="@(FilePathList.Advertisement + items.ImagePath)" alt="@items.Title">
+
+                                                    </div>
+                                                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                                    <div class="testi-details">
+
+                                                        <h4><small>@items.PaymentTypeName</small></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="owl-controls">
+                                <div class="owl-nav">
+                                    <div class="owl-prev" style="display: none;">
+                                        <i class="fa fa-long-arrow-left"></i>
+                                    </div>
+                                    <div class="owl-next" style="display: none;">
+                                        <i class="fa fa-long-arrow-left-right"></i>
+                                    </div>
+                                </div>
+                                <div class="owl-dots" style="">
+                                    <div class="owl-dot active">
+                                        <span></span>
+                                    </div>
+                                    <div class="owl-dot">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 marginBottom150px">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card card-default border">
+                        <div class="card-body" style="padding: 5px 10px 5px 10px;">
+                            <div class="d-inline-flex bd-highlight" style="width: 100%;">
+
+                                <div id="googleMap" class="image-map"></div>
+                            </div>
+                            <div class="border" style="margin-top:10px">
+                                <div class="card-body" style="padding: 1.25rem 1.25rem 0.5rem 0rem;">
+                                    <div class="d-inline-flex bd-highlight" style="width: 100%;justify-content:center">
+                                        <ul class="favSocialIcon">
+
+                                            @{
+                                                Doctyme.Model.SocialMedia socialMedias = new Doctyme.Model.SocialMedia();
+                                                if (Model.SocialMediaLinks !=null && Model.SocialMediaLinks.Count > 0)
+                                                {
+                                                    socialMedias = Model.SocialMediaLinks.FirstOrDefault();
+                                                }
+                                            }
+                                            <li>
+                                                @if (string.IsNullOrEmpty(socialMedias.Facebook))
+                                                {
+                                                    <a target="_blank"> <i class="fa fa-change fa-change-facebook fa-facebook" style="margin-top: 0px;"></i></a>
+
+                                                }
+                                                else
+                                                {
+                                                    <a target="_blank" href=@(string.IsNullOrEmpty(socialMedias.Facebook) ? "#" : socialMedias.Facebook)><i class="fa fa-change fa-change-facebook fa-facebook" style="margin-top: 0px;"></i></a>
+                                                }
+                                            </li>
+                                            @if (string.IsNullOrEmpty(socialMedias.Twitter))
+                                            {
+                                                <li><a target="_blank"><i class="fa fa-change fa-change-twitter fa-twitter" style="margin-top: 0px;"></i></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a target="_blank" href=@(string.IsNullOrEmpty(socialMedias.Twitter)?"#":socialMedias.Twitter)><i class="fa fa-change fa-change-twitter fa-twitter" style="margin-top: 0px;"></i></a></li>
+                                            }
+
+                                            @if (string.IsNullOrEmpty(socialMedias.LinkedIn))
+                                            {
+                                                <li><a target="_blank"><i class="fa fa-change fa-change-linkedin fa-linkedin" style="margin-top: 0px;"></i></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a target="_blank" href=@(string.IsNullOrEmpty(socialMedias.LinkedIn)?"#":socialMedias.LinkedIn)><i class="fa fa-change fa-change-linkedin fa-linkedin" style="margin-top: 0px;"></i></a></li>
+                                            }
+
+                                            @if (string.IsNullOrEmpty(socialMedias.Instagram))
+                                            {
+                                                <li><a target="_blank"><i class="fa fa-change fa-change-instagram fa-instagram" style="margin-top: 0px;"></i></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a target="_blank" href=@(string.IsNullOrEmpty(socialMedias.Instagram)?"#":socialMedias.Instagram)><i class="fa fa-change fa-change-instagram fa-instagram" style="margin-top: 0px;"></i></a></li>
+                                            }
+
+                                            @if (string.IsNullOrEmpty(socialMedias.Youtube))
+                                            {
+                                                <li><a target="_blank"><i class="fa fa-change fa-change-youtube fa-youtube" style="margin-top: 0px;"></i></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a target="_blank" href=@(string.IsNullOrEmpty(socialMedias.Youtube)?"#":socialMedias.Youtube)><i class="fa fa-change fa-change-youtube fa-youtube" style="margin-top: 0px;"></i></a></li>
+                                            }
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            @if (Model.IsClaimed != true)
+                            {
+                                <div class="border" style="margin-top:10px">
+                                    <div class="card-body" style="text-align:center">
+                                        <span style="color:#3498db;cursor:pointer" id="btnClaimPractice"> Claim your Business</span>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="margin-top:10px">
+                                    <div class="card-body" style="text-align:center;background-color:#0bda0b26;padding: 10px 10px 10px 10px;">
+                                        <span>
+                                            <i class="fa fa-check-circle"></i> &nbsp; &nbsp;  Owner Verified Listing
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <div class="border" style="margin-top:10px">
+                    <div class="card-body" style="padding: 1.25rem 1.25rem 0.5rem 0rem;">
+                        <div class="d-inline-flex bd-highlight" style="width: 100%;justify-content:center">
+                            <ul class="favSocialIcon">
+
+                                <li><a id="btnNewPrescription" title="New prescription"><i class="btnNewRefill"></i></a></li>
+
+                                <li><a id="btnRefillPrescription" title="Refill prescription"><i class="btnRefill"></i></a></li>
+
+                                <li><a id="btnTransferPrescription" title="Transfer prescription"><i class="btnTransRefill"></i></a></li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                @*<div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card-body" style="padding: 1px 1px 0px 1px;">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="mar-rgt social-icon">
+                            <p style="margin-bottom: 0px;">
+                                <a class="btn btn-sm btn-primary btnGreen mrg-tb text-white tabsCustom" style="color:white">Refill prescription</a>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>*@@*class="margin-lft60"*@
+
+            @*<div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="mar-rgt social-icon">
+                            <p style="margin-bottom: 0px;">
+                                <a class="btn btn-sm btn-primary mrg-tb green text-white tabsCustom btnGreen" style="color:white">Transfer prescription</a>
+
+                                <div class="row" style="justify-content:center">
+
+                                </div>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>*@ @*class="margin-lft60"*@
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card card-default border" style="margin-top:10px">
+                        <div class="card-body" style="padding: 5px 1px 0px 1px;">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="mar-rgt social-icon">
+
+                                    <p @*class="margin-lft60"*@ style="margin-bottom: 0px;">
+                                        <a class="btn btn-sm btn-primary mrg-tb text-white tabsCustom bgColorForbuttons" style="color:white">Opening Hours</a>
+                                        <span style="color:red">Stores hours may be impacted by COVID-19 Please cal your pharmacy to confirm their hours.</span>
+                                        <div class="row" style="justify-content:center">
+
+                                            @if (Model.OpeningHours !=null && Model.OpeningHours.Any())
+                                            {
+                                                foreach (var result in Model.OpeningHours)
+                                                {
+                                                    DateTime dateValue = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+                                                    int weekNumber = (int)dateValue.DayOfWeek;
+                                                    //var result = hours.Where(i => i.WeekDay == weekNumber + 1).FirstOrDefault();
+                                                    DateTime startDateTIme, endDateTIme;
+                                                    if (result != null && DateTime.TryParse(result.StartDateTime, out startDateTIme) && DateTime.TryParse(result.EndDateTime, out endDateTIme))
+                                                    {
+                                                        startDateTIme = DateTime.Parse(result.StartDateTime);
+                                                        endDateTIme = DateTime.Parse(result.EndDateTime);
+                                                        string strMinFormat = startDateTIme.ToString("hh:mm tt");
+                                                        string endMinFormat = endDateTIme.ToString("hh:mm tt");
+                                                        if (string.IsNullOrEmpty(strMinFormat) || strMinFormat == null)
+                                                        {
+                                                            <span id="spnOpeningHours">No time available today</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span id="spnOpeningHours"><b> @dateValue.ToString("ddd") </b> &nbsp; &nbsp; @strMinFormat - @endMinFormat </span>
+                                                        }
+                                                    }
+                                                    @*else
+                                                        {
+                                                            <span id="spnOpeningHours">No time available today</span>
+                                                        }*@
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <span id="spnOpeningHours">No time available today</span>
+                                            }
+
+                                        </div>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="display:none;" class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    @if (Model.lstslotsDates == null || Model.lstslotsDates.Count > 0)
+                    {
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @*<div class="col align-self-center">*@
+                                <div id="dvSlottbl" class="card card-default border" style="margin-top:10px">
+
+                                    <div class="card-body" style="padding: 1px 1px 0px 1px !important;">
+                                        <div>
+
+
+                                            <div class="d-flex justify-content-between">
+                                                <div class="p-2 bd-highlight">
+                                                    <a class="text-dark" @*href="#table_carousel"*@ data-slide="next" id="btnPrv" style="cursor:pointer">
+                                                        <i class="fa fa-chevron-left"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="p-2 bd-highlight">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered tblslot" id="tblSlots" style="table-layout:fixed;margin-bottom: 0px;">
+                                                            <thead>
+                                                                <tr class="tsHead">
+                                                                    @if (Model.lstslotsDates != null)
+                                                                    {
+                                                                        foreach (var x in Model.lstslotsDates)
+                                                                        {
+                                                                        <th class="p-1 days">
+                                                                            @x.displayweek<p class="small-font m-0">@x.DisplayDate </p>
+                                                                        </th>
+                                                                        }
+                                                                    }
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                @{
+                                                                    for (int i = 1; i <= Model.Maxslots; i++)
+                                                                    {
+                                                                        if (i > 10)
+                                                                        {
+                                                                            <tr class="tsBody hidden tsBodyh">
+                                                                                @foreach (var x in Model.lstslotTimes.Where(j => j.slotTImesRno == i))
+                                                                                {
+                                                                                    if (!string.IsNullOrEmpty(x.SlotSatrtTime))
+                                                                                    {
+
+                                                                                        string btnsId = "btns" + "" + x.slotTImesRno + "" + x.Rno;
+                                                                                        string chkId = "chk" + "" + x.slotTImesRno + "" + x.Rno;
+                                                                                        string slotId = "wkDate" + "" + x.slotTImesRno + "" + x.Rno;
+
+                                                                                        if (!x.IsBooked)
+                                                                                        {
+                                                                                            <td class="p-1"><button name="@x.SlotSatrtTime" id="@btnsId" class="btn btn-sm btnHour1 timesSlotsButtons " style="cursor:pointer">@x.SlotSatrtTime <span id="@chkId" class="fa fa-check chkhide hidden"></span><span id="@slotId" class="hidden">@x.SlotDate</span></button></td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td class="p-1"><button name="@x.SlotSatrtTime" id="@btnsId" class="btn btn-sm  noslotsAvlbuttons cursorNotAllowed">@x.SlotSatrtTime</button></td>
+                                                                                        }
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td></td>
+                                                                                    }
+
+                                                                                }
+                                                                            </tr>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <tr class="tsBody">
+                                                                                @foreach (var x in Model.lstslotTimes.Where(j => j.slotTImesRno == i))
+                                                                                {
+                                                                                    if (!string.IsNullOrEmpty(x.SlotSatrtTime))
+                                                                                    {
+
+                                                                                        string btnsId = "btns" + "" + x.slotTImesRno + "" + x.Rno;
+                                                                                        string chkId = "chk" + "" + x.slotTImesRno + "" + x.Rno;
+                                                                                        string slotId = "wkDate" + "" + x.slotTImesRno + "" + x.Rno;
+
+                                                                                        if (!x.IsBooked)
+                                                                                        {
+                                                                                            <td class="p-1"><button name="@x.SlotSatrtTime" id="@btnsId" class="btn btn-sm btnHour1 timesSlotsButtons " style="cursor:pointer">@x.SlotSatrtTime <span id="@chkId" class="fa fa-check chkhide hidden"></span><span id="@slotId" class="hidden">@x.SlotDate</span></button></td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td class="p-1"><button name="@x.SlotSatrtTime" id="@btnsId" class="btn btn-sm  noslotsAvlbuttons cursorNotAllowed">@x.SlotSatrtTime</button></td>
+                                                                                        }
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td></td>
+                                                                                    }
+
+                                                                                }
+                                                                            </tr>
+                                                                        }
+
+
+                                                                    }
+                                                                    if (Model.lstslotTimes !=null && Model.lstslotTimes.Count > 10)
+                                                                    {
+                                                                        <tr class="tsBody hkloadMore" style="text-align: start;">
+                                                                            @{
+                                                                                int colspan = Model.lstslotsDates.Count;
+                                                                            }
+                                                                            <td colspan="@colspan" style="text-align: start;"><a style="font-size:15px;color:blue;cursor:pointer;text-align:start"> LoadMore...</a></td>
+
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="p-2 bd-highlight">
+                                                    <a class="text-dark" @*href="#table_carousel"*@ data-slide="prev" id="btnNext" style="cursor:pointer">
+                                                        <i class="fa fa-chevron-right"></i>
+                                                    </a>
+                                                </div>
+
+
+                                                @*<div id="table_carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+
+                                                        <div class="carousel-inner">
+                                                            <div class="carousel-item active" style="transition-duration:0.5s;">
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>*@
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                @*</div>*@
+                            </div>
+
+
+                        </div>
+
+                        <div class="marginTop" style="margin-top:5px">
+                            <input type="button" class="btn btn-sm btn-primary col-md-2 hidden" id="btnNex" value="Next" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row hidden" id="dvemptySlots">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="">
+                                    <div id="dvSlottbl" class="card card-default border" style="margin-top:10px">
+
+                                        <div class="card-body">
+                                            <div style="padding-top: 20px;">
+
+
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="p-2 bd-highlight">
+                                                        <a class="text-dark hidden" @*href="#table_carousel"*@ data-slide="next" id="btnPrv" style="cursor:pointer">
+                                                            <i class="fa fa-chevron-left"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-2 bd-highlight">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered tblslot" id="tblSlots" style="table-layout:fixed"></table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-2 bd-highlight">
+                                                        <a class="text-dark hidden" @*href="#table_carousel"*@ data-slide="prev" id="btnNext" style="cursor:pointer">
+                                                            <i class="fa fa-chevron-right"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="marginTop" style="margin-top:5px">
+                            <input type="button" class="btn btn-sm btn-primary col-md-2 hidden" id="btnNex" value="Next" />
+                        </div>
+
+
+                    }
+                </div>
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+
+        <!--<div id="div_device" class="panel panel-default">
+        <div class="select">
+            <label for="audioSource">Audio: </label>
+            <select id="audioSource">-->
+        @*<option value="default">Default - Microphone (Conexant SmartAudio HD)</option>
+            <option value="communications">Communications - Microphone (Conexant SmartAudio HD)</option>
+            <option value="2f869ffea3abd6f52eef56b9e07dcd7fdd44032ade073656cd3a14d316decc63">Microphone (Conexant SmartAudio HD)</option>*@
+        <!--</select>
+        </div>
+        <div class="select">
+            <label for="videoSource">Video: </label>
+            <select id="videoSource">-->
+        @*<option value="36f7a7fb15b798d9979995a9f8b053a15c28cd597df3a9a4f0866d8bf3f40f0f">EasyCamera (0bda:579a)</option>*@
+        <!--</select>
+            </div>
+            <div id="div_join" class="col-md-12">
+                <div class="row">
+                    <input id="key" type="text" placeholder="Enter App ID" value="0f8f282b530c4232b289867cda582737" size="36" style="display:none;" />
+                    <input id="channel" type="text" value="test" size="4" style="display:none" />
+                    <button id="join" class="btn-primary" width="50px !important" onclick="join()">Call</button> &nbsp;
+                    <button id="leave" class="btn-primary" width="50px !important" onclick="leave()">End Call</button> &nbsp;
+                    <button id="muteAudio" class="btn-primary" width="50px !important" onclick="muteAudio()">Mute</button> &nbsp;
+                    <button id="unmuteAudio" class="btn-primary" width="50px !important" onclick="unmuteAudio()">Unmute</button> &nbsp;
+                    <button id="enableVideo" class="btn-primary" width="50px !important" onclick="enableVideo()">Enable Video</button> &nbsp;
+                    <button id="disableVideo" class="btn-primary" width="50px !important" onclick="disableVideo()">Disable Video</button>
+
+                </div>
+            </div>
+            <div id="video" style="margin:0 auto;">
+                <div id="agora_local" style="width:210px;height:147px;display:inline-block;">
+                    <iframe id="iframe" style="width:100%; height:100%; border:0;"></iframe>
+                </div>
+            </div>
+            <script src="https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.1.1.js"></script>
+            <script language="javascript">
+
+                if (!AgoraRTC.checkSystemRequirements()) {
+                    alert("browser does not support webRTC");
+                }
+
+
+                var client, localStream, camera, microphone;
+
+                var audioSelect = document.querySelector('select#audioSource');
+                var videoSelect = document.querySelector('select#videoSource');
+
+                function join() {
+                    document.getElementById("join").disabled = true;
+                    //document.getElementById("video").disabled = true;
+                    var channel_key = null;
+                    key.value = '@ViewBag.AgoraKey';
+
+                    console.log("Init AgoraRTC client with vendor key: " + key.value);
+                    client = AgoraRTC.createClient({ mode: 'live' });
+
+                    client.init(key.value, function () {
+                        console.log("AgoraRTC client initialized");
+                        client.join(channel_key, channel.value, null, function (uid) {
+                            console.log("User " + uid + " join channel successfully");
+                            camera = videoSource.value;
+                            microphone = audioSource.value;
+                            localStream = AgoraRTC.createStream({ streamID: uid, audio: true, cameraId: camera, microphoneId: microphone, video: true, screen: false });
+                            //localStream = AgoraRTC.createStream({streamID: uid, audio: false, cameraId: camera, microphoneId: microphone, video: false, screen: true, extensionId: 'minllpmhdgpndnkomcoccfekfegnlikg'});
+                            if (document.getElementById("video").checked) {
+                                localStream.setVideoProfile('720p_3');
+
+                            }
+
+                            // The user has granted access to the camera and mic.
+                            localStream.on("accessAllowed", function () {
+                                console.log("accessAllowed");
+                            });
+
+                            // The user has denied access to the camera and mic.
+                            localStream.on("accessDenied", function () {
+                                console.log("accessDenied");
+                            });
+
+                            localStream.init(function () {
+                                console.log("getUserMedia successfully");
+                                localStream.play('agora_local');
+
+                                client.publish(localStream, function (err) {
+                                    console.log("Publish local stream error: " + err);
+                                });
+
+                                client.on('stream-published', function (evt) {
+                                    console.log("Publish local stream successfully");
+
+                                    document.write(document.getElementById("iframe_id").contentWindow.location.href);
+                                });
+                            }, function (err) {
+                                console.log("getUserMedia failed", err);
+                            });
+                        }, function (err) {
+                            console.log("Join channel failed", err);
+                        });
+                    }, function (err) {
+                        console.log("AgoraRTC client init failed", err);
+                    });
+
+                    channelKey = "";
+                    client.on('error', function (err) {
+                        console.log("Got error msg:", err.reason);
+                        if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
+                            client.renewChannelKey(channelKey, function () {
+                                console.log("Renew channel key successfully");
+                            }, function (err) {
+                                console.log("Renew channel key failed: ", err);
+                            });
+                        }
+                    });
+
+
+                    client.on('stream-added', function (evt) {
+                        var stream = evt.stream;
+                        console.log("New stream added: " + stream.getId());
+                        console.log("Subscribe ", stream);
+                        client.subscribe(stream, function (err) {
+                            console.log("Subscribe stream failed", err);
+                        });
+                    });
+
+                    client.on('stream-subscribed', function (evt) {
+                        var stream = evt.stream;
+                        console.log("Subscribe remote stream successfully: " + stream.getId());
+                        if ($('div#video #agora_remote' + stream.getId()).length === 0) {
+                            $('div#video').append('<div id="agora_remote' + stream.getId() + '" style="float:left; width:810px;height:607px;display:inline-block;"></div>');
+                        }
+                        stream.play('agora_remote' + stream.getId());
+                    });
+
+                    client.on('stream-removed', function (evt) {
+                        var stream = evt.stream;
+                        stream.stop();
+                        $('#agora_remote' + stream.getId()).remove();
+                        console.log("Remote stream is removed " + stream.getId());
+                    });
+
+                    client.on('peer-leave', function (evt) {
+                        var stream = evt.stream;
+                        if (stream) {
+                            stream.stop();
+                            $('#agora_remote' + stream.getId()).remove();
+                            console.log(evt.uid + " leaved from this channel");
+                        }
+                    });
+                }
+
+                function leave() {
+                    document.getElementById("leave").disabled = true;
+                    client.leave(function () {
+                        console.log("Leavel channel successfully");
+                    }, function (err) {
+                        console.log("Leave channel failed");
+                    });
+                }
+
+
+                function muteAudio() {
+                    document.getElementById("unmuteAudio").disabled = false;
+                    document.getElementById("muteAudio").disabled = true;
+                    //localStream.disableAudio();
+                    localStream.disableAudio();
+                }
+                function unmuteAudio() {
+                    document.getElementById("unmuteAudio").disabled = true;
+                    document.getElementById("muteAudio").disabled = false;
+                    localStream.enableAudio();
+                }
+
+                function enableVideo() {
+                    document.getElementById("disableVideo").disabled = false;
+                    document.getElementById("enableVideo").disabled = true;
+                    localStream.enableVideo();
+
+                }
+                function disableVideo() {
+                    document.getElementById("disableVideo").disabled = true;
+                    document.getElementById("enableVideo").disabled = false;
+                    localStream.disableVideo();
+                }
+
+                function getDevices() {
+                    //audioSelect.empty();
+                    //videoSelect.empty();
+                    AgoraRTC.getDevices(function (devices) {
+                        for (var i = 0; i !== devices.length; ++i) {
+                            var device = devices[i];
+                            var option = document.createElement('option');
+                            option.value = device.deviceId;
+                            if (device.kind === 'audioinput') {
+                                option.text = device.label || 'microphone ' + (audioSelect.length + 1);
+                                audioSelect.appendChild(option);
+                            } else if (device.kind === 'videoinput') {
+                                option.text = device.label || 'camera ' + (videoSelect.length + 1);
+                                videoSelect.appendChild(option);
+                            } else {
+                                console.log('Some other kind of source/device: ', device);
+                            }
+                        }
+                    });
+                }
+
+                //audioSelect.onchange = getDevices;
+                //videoSelect.onchange = getDevices;
+                getDevices();
+            </script>
+
+
+        </div>-->
+    </div>
+
+    <div id="dvAdSlider">
+        @*@Html.Partial("_Advertisement", new ViewDataDictionary { { "AddTypeId", "1" }, { "OrgTypeId", "0" }, { "UserTypeIds", "2" } })*@
+    </div>
+</div>
+    
+</div>
+
+@section scripts {
+    <script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript">
+        var owl = $('#owl-carousel1');
+        owl.owlCarousel({
+            animateOut: 'slideOutDown',
+            animateIn: 'flipInX',
+            //autoHeight: true,
+            dots: true,
+            items: 1,
+            loop: true,
+            nav: true,
+            //infinite: true,
+            autoplay: true,
+            autoplaySpeed: 5000
+
+
+            //adaptiveHeight: true,
+            });
+            var owl1 = $('#owl-carousel2');
+            owl1.owlCarousel({
+                animateOut: 'slideOutDown',
+                animateIn: 'flipInX',
+                //autoHeight: true,
+                dots: true,
+                items:3,
+                loop: true,
+                nav: true,
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 5000
+                //,
+                //adaptiveHeight: true,
+            });
+        function LoadAds() {
+            $("#dvAdSlider").html('');
+            $.ajax({
+                url: '@Url.Action("AdsView", "Search" )?AddsPerPage=7&AddTypeId=1&OrgTypeId=1005&UserTypeIds=2&City=' + "@Model.City" + '&Zipcode=' + "@Model.ZipCode",
+                    type: 'GET',
+                    cache: false,
+                    data: { }
+            }).done(function (result) {
+                $("#dvAdSlider").append(result);
+            });
+        }
+        $(document).ready(function () {
+            loadLocation();
+            LoadAds();
+        });
+        $(document).on("click", ".action", function (e) {
+            
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(".doctors-profile-area").data("id");
+            switch (flag) {
+                case "RequestAppointment":
+                    RequestAppointment(id);
+                default:
+            }
+            });
+
+            //$(document).on("click", ".adressClick", function (e) {
+            //    var id = $(this).attr('id').replace("hkADd", "").replace(" ", "");
+            //    var fulladd = $("#adFull" + id).html();
+            //    var orgId = $("#org" + id).html();
+            //    loadLocationByAddRssID(fulladd);
+            //    $("#lblOrganizationID").val(orgId);
+            //    RebindSlots(1);
+
+            //});
+        function RequestAppointment(id) {
+            $("#modalContent").load("/_RequestAppointment/" + id, function () {
+                $("#divModal .modal-dialog").addClass("modal-lg");
+                $("#divModal").modal('show');
+            });
+        }
+        $("#lnkAddReview").click(function (e) {
+            var id = $(".doctors-profile-area").data("id");
+            $("#modalContent").load("/_DoctorReview/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        });
+
+        $('#btnRefillPrescription').click(function (e) {
+            //alert('Hello');
+            $.get("/ProvdersProfile/CheckIfPatientLoggedIn", null, function (data) {
+                if (data == 1) {
+                    window.location.href = '/ProvdersProfile/RefillPrescription?pharmacy='+ @Model.OrganisationId;
+                }
+                else if (data == -1) {
+                    //alert('/Account/Login?ReturnUrl=/Profile/Pharmacy/' + '@Model.OrganisationName' + '-' + '@Model.OrganisationId');
+                    window.location.href = '/Account/Login?ReturnUrl=/ProvdersProfile/RefillPrescription';
+                }
+            });
+        });
+         $('#btnNewPrescription').click(function (e) {
+            //alert('Hello');
+            $.get("/ProvdersProfile/CheckIfPatientLoggedIn", null, function (data) {
+                if (data == 1) {
+                    window.location.href = '/ProvdersProfile/NewPrescription?pharmacy='+ @Model.OrganisationId;
+                }
+                else if (data == -1) {
+                    //alert('/Account/Login?ReturnUrl=/Profile/Pharmacy/' + '@Model.OrganisationName' + '-' + '@Model.OrganisationId');
+                    window.location.href = '/Account/Login?ReturnUrl=/ProvdersProfile/NewPrescription';
+                }
+            });
+        });
+        $('#btnTransferPrescription').click(function (e) {
+            //alert('Hello');
+            $.get("/ProvdersProfile/CheckIfPatientLoggedIn", null, function (data) {
+                if (data == 1) {
+                    window.location.href = '/ProvdersProfile/Transferprescription?pharmacy='+ @Model.OrganisationId;
+                }
+                else if (data == -1) {
+                    //alert('/Account/Login?ReturnUrl=/Profile/Pharmacy/' + '@Model.OrganisationName' + '-' + '@Model.OrganisationId');
+                    window.location.href = '/Account/Login?ReturnUrl=/ProvdersProfile/Transferprescription';
+                }
+            });
+        });
+        
+            $("#btnNext").click(function () {
+
+            var MaxCout = parseInt($("#lblMaxDays").val());
+            var calCount = parseInt($("#lblcalCount").val());
+            $("#btnNex").addClass("hidden");
+            if (MaxCout + 3 <= calCount) {
+                RebindSlots(MaxCout + 3)
+            }
+        })
+
+        $("#btnPrv").click(function () {
+
+            var MaxCout = parseInt($("#lblMaxDays").val());
+            var calCount = parseInt($("#lblcalCount").val());
+            $("#btnNex").addClass("hidden");
+            if (MaxCout > 1) {
+                RebindSlots(MaxCout - 3)
+            }
+        })
+
+        $(document).on("click", ".btnHour1", function () {
+
+            $(".chkhide").addClass("hidden");
+            var id = $(this).attr('id').replace("btns", "").replace(" ", "");
+            $("#chk" + id).removeClass("hidden");
+            var SlotDate = $("#wkDate" + id).text();
+            $("#lblSlotDate").val(SlotDate);
+            $("#lblSlotTime").val($(this).attr("name"));
+            $("#btnNex").removeClass("hidden");
+            $(".btnHour1").removeClass("timesSlotsSelectButtons");
+            $(this).addClass("timesSlotsSelectButtons");
+        });
+
+        $(document).on("click", ".hkloadMore", function () {
+            $(".hkloadMore").addClass("hidden");
+            $(".tsBodyh").removeClass("hidden");
+
+        })
+        //$(".btnHour").click(function () {
+        //    $(".chkhide").addClass("hidden");
+        //    var id = $(this).attr('id').replace("btns", "").replace(" ", "");
+        //    $("#chk" + id).removeClass("hidden");
+        //});
+
+            function RebindSlots(maxDays) {
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetSlotsByOrg", "ProvdersProfile")",/*/ GetSlots /*/
+                data: { MaxDays: maxDays,  OrganisationId: $("#lblOrganizationID").val() },
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+
+
+                    if (response.Data != null) {
+
+                        if (response.Data.lstslotsDates != null && response.Data.lstslotsDates.length > 0) {
+
+                            $("#btnPrv").removeClass("hidden");
+                            $("#btnNext").removeClass("hidden");
+                            $("#dvSlottbl").removeClass("hidden");
+                            $(".tsBody").remove();
+                            $(".tsHead").remove();
+                            $("#spnOpeningHours").html("");
+                            $("#spnOpeningHours").append("<b>" + response.Data.OpeningDay + "</b>");
+                            $("#spnOpeningHours").append("&nbsp;&nbsp;" + response.Data.OpeningTime);
+                            $("#lblMaxDays").val(response.Data.MaxDays);
+
+                            var headerText = "";
+
+                            headerText = "<tr class='tsHead'>"
+                            $.each(response.Data.lstslotsDates, function (key, value) {
+
+                                headerText = headerText + "<th class='p-1 days'>" + value.WeekName + "<p class='small-font m-0'>" + value.SlotDate + " </p></th>";
+                            });
+
+                            headerText = headerText + "</tr>"
+                            $('#tblSlots').children('thead').append(headerText);
+
+                            var bodyText = "";
+                            for (i = 1; i <= response.Data.Maxslots; i++) {
+
+
+                                var filterednames = response.Data.lstslotTimes.filter(function (obj) {
+                                    return (obj.slotTImesRno === i);
+                                });
+
+                                if (i <= 10) {
+                                    bodyText = bodyText + "<tr class='tsBody'>"
+                                    $.each(filterednames, function (key, value) {
+
+                                        if (value.SlotSatrtTime != null && value.SlotSatrtTime != "") {
+                                            var btnID = "btns" + "" + value.slotTImesRno + "" + value.Rno;
+                                            var checkId = "chk" + "" + value.slotTImesRno + "" + value.Rno;
+                                            var slotId = "wkDate" + "" + value.slotTImesRno + "" + value.Rno;
+                                            if (!value.IsBooked) {
+                                                bodyText = bodyText + "<td class='p-1'><button id='" + btnID + "' name='" + value.SlotSatrtTime + "' class='btn btn-sm btnHour1 timesSlotsButtons' style='cursor: pointer' > " + value.SlotSatrtTime + "<span id='" + checkId + "' class='fa fa-check chkhide hidden'></span><span id='" + slotId + "' class='hidden'>" + value.SlotDate + "</span></button></td > ";
+                                            }
+                                            else {
+                                                bodyText = bodyText + "<td class='p-1'><button id='" + btnID + "' name='" + value.SlotSatrtTime + "' class='btn btn-sm  noslotsAvlbuttons cursorNotAllowed' > " + value.SlotSatrtTime + "</button></td > ";
+                                            }
+                                        }
+                                        else {
+                                            bodyText = bodyText + "<td></td>";
+                                        }
+
+
+                                    })
+                                    bodyText = bodyText + "</tr>"
+                                }
+                                else {
+                                    bodyText = bodyText + "<tr class='tsBody hidden tsBodyh' >"
+                                    $.each(filterednames, function (key, value) {
+
+                                        if (value.SlotSatrtTime != null && value.SlotSatrtTime != "") {
+                                            var btnID = "btns" + "" + value.slotTImesRno + "" + value.Rno;
+                                            var checkId = "chk" + "" + value.slotTImesRno + "" + value.Rno;
+                                            var slotId = "wkDate" + "" + value.slotTImesRno + "" + value.Rno;
+                                            if (!value.IsBooked) {
+                                                bodyText = bodyText + "<td class='p-1'><button id='" + btnID + "' name='" + value.SlotSatrtTime + "' class='btn btn-sm btnHour1 timesSlotsButtons' style='cursor: pointer' > " + value.SlotSatrtTime + "<span id='" + checkId + "' class='fa fa-check chkhide hidden'></span><span id='" + slotId + "' class='hidden'>" + value.SlotDate + "</span></button></td > ";
+                                            }
+                                            else {
+                                                bodyText = bodyText + "<td class='p-1'><button id='" + btnID + "' name='" + value.SlotSatrtTime + "' class='btn btn-sm  noslotsAvlbuttons cursorNotAllowed' > " + value.SlotSatrtTime + "</button></td > ";
+                                            }
+
+                                        }
+                                        else {
+                                            bodyText = bodyText + "<td></td>";
+                                        }
+
+
+                                    })
+                                    bodyText = bodyText + "</tr>"
+                                }
+
+
+
+
+                            }
+                            if (response.Data.lstslotTimes.length > 10) {
+
+                                bodyText = bodyText + "<tr class='tsBody hkloadMore'><td colspan='3' style='border-left:none;border-righ'><a style='font-size:15px;color:blue;cursor:pointer'> LoadMore...</a></td></tr>";
+
+                            }
+                            $('#tblSlots').children('tbody').append(bodyText);
+                        }
+                        else {
+                            $("#dvSlottbl").addClass("hidden");
+                            $("#spnOpeningHours").html("");
+                            $("#spnOpeningHours").append("");
+                            $("#btnPrv").addClass("hidden");
+                            $("#btnNext").addClass("hidden");
+                        }
+                        // dvSlottbl
+
+
+                    }
+                    else {
+                        $("#dvSlottbl").addClass("hidden");
+                    }
+
+
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+
+        }
+
+        function loadLocation() {
+            var geocoder;
+            var rviewhtml = $('.star-section').html();
+            var map;
+            @{
+                var fulladdress = Model.Address1 + " " + Model.Address2 + " " + Model.City + " " + Model.State + " " + Model.Country + " " + Model.ZipCode;
+            }
+            var address = "@fulladdress";
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(-34.397, 150.644);
+                var myOptions = {
+                    zoom: 15,
+                    center: latlng,
+                    //mapTypeControl: true,
+                    //mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
+                    //navigationControl: true,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+                if (geocoder) {
+                    geocoder.geocode({ 'address': address }, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+                                map.setCenter(results[0].geometry.location);
+                                var imagepath = $('#lblImagePath').val()
+
+
+
+    var infowindow = new google.maps.InfoWindow(
+                                    {
+
+
+                                         content:  "<div class='card map-container'>" +
+                                                "	<div class='row no-gutters mb-3'>" +
+                                                "		<div class='col-auto'>" +
+                                            "			<img src='" + imagepath + "' class='img-fluid' alt=''>" +
+                                                "		</div>" +
+                                                "		<div class='col'>" +
+                                                "			<div class='card-block px-2'>" +
+                                                "				<h4 class='card-title'><b>" +'@Model.OrganisationName.ToString()'+"</b></h4>"
+                                                                    +rviewhtml.trim() +
+                                                "				<p class='card-text'>" + address + "</p>" +
+                                                "			</div>" +
+                                                "		</div>" +
+                                                "	</div>" +
+                                               //"	<div class='card-footer w-100 text-muted'>" +
+                                               //"		" + ratingHtmlStr + "" +
+                                               //"	</div> " +
+                                               "</div> ",
+                                       // content: '<b>' + address + '</b>',
+
+
+                                        size: new google.maps.Size(150, 50)
+                                    });
+
+                                var marker = new google.maps.Marker({
+                                    position: results[0].geometry.location,
+                                    map: map,
+                                    title: address
+                                });
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    infowindow.open(map, marker);
+                                });
+
+                            }
+                        }
+                    });
+                }
+            }
+             function loadLocationByAddRssID(FullAddress) {
+            var geocoder;
+            var map;
+                 var rviewhtml = $('.star-section').html();
+            var address = FullAddress;
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(-34.397, 150.644);
+                var myOptions = {
+                    zoom: 15,
+                    center: latlng,
+                    //mapTypeControl: true,
+                    //mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
+                    //navigationControl: true,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+                if (geocoder) {
+                    geocoder.geocode({ 'address': address }, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+                                map.setCenter(results[0].geometry.location);
+
+                                var infowindow = new google.maps.InfoWindow(
+                                    {
+                                        content: '<b>' + address + '</b>',
+                                        size: new google.maps.Size(150, 50)
+                                    });
+
+                                var marker = new google.maps.Marker({
+                                    position: results[0].geometry.location,
+                                    map: map,
+                                    title: address
+                                });
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    infowindow.open(map, marker);
+                                });
+
+                            }
+                        }
+                    });
+                }
+        }
+        function CofirmAppoinment() {
+            var SlotCofirmation={
+                DoctorId: $("#lblDoctorId").val(),
+                OrganisationId: $("#lblOrganizationID").val(),
+                SlotDate: $("#lblSlotDate").val(),
+                SlotTime: $("#lblSlotTime").val(),
+                DoctorName: $("#hFullDctName").html(),
+                NPI: $("#lblNPI").val(),
+                SlotFor: 'Senior Care',
+                ReturUrl: '/Profile/Pharmacy/' + $("#lblOrganizationName").val() + '-' + $("#lblOrganizationID").val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: "/rSlotConfirm/",
+                data: '{_model: ' + JSON.stringify(SlotCofirmation) + '}',
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                     window.location.href = "@Url.Action("SlotsConfirmation", "ProvdersProfile")";
+                },
+                error: function (response) {
+                    window.location.href = "@Url.Action("SlotsConfirmation", "ProvdersProfile")";
+                }
+            });
+
+            }
+
+            function VerifyClaim() {
+
+                  var ClaimPractice = {
+                      ReferenceId: $("#lblOrganizationID").val(),
+                      OrganizationId: $("#lblOrganizationID").val(),
+                      DoctorName: $("#hFullDctName").html(),
+                      ClaimType: 'Pharmacy',
+                      Npi: $("#lblNPI").val(),
+                      ReturnUrl: '/Profile/Pharmacy/' + $("#lblOrganizationName").val() + '-' + $("#lblOrganizationID").val()
+                  }
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("ClaimPractice", "ProvdersProfile")",
+                data: '{_claimPractice: ' + JSON.stringify(ClaimPractice) + '}',
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response != null) {
+                        if (response.Data == "Login") {
+                            window.location.href = "@Url.Action("ClaimPracticeBusiness", "ProvdersProfile")";
+                        }
+                        else if (response.Data == "NoLogin") {
+                            window.location.href = "@Url.Action("Login", "Account")";
+                        }
+                        else {
+
+                        }
+                    }
+
+                },
+                error: function (response) {
+                    alert("Something went wrong.")
+                }
+            });
+
+            }
+            $("#btnClaimPractice").click(function () {
+                VerifyClaim();
+            })
+
+        $("#btnNex").click(function () {
+            CofirmAppoinment();
+        })
+    </script>
+}

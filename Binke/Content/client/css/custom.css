@@ -1,0 +1,32 @@
+/*********************************************************************************
+
+	Template Name: Binke - Health & Medical Bootstrap4 Template
+	Description: A perfect template to build beautiful and unique medical websites. It comes with nice and clean design.
+	Version: 1.0
+
+	Note: This is custom css. All custom styles (user styles) declare here.
+
+**********************************************************************************/
+
+a.view_revies {
+    margin-bottom: 10px;
+    width: 100%;
+    float: left;
+    font-size: 12px;
+    color: #fff;
+}
+
+.social-icons.social-icons-rounded {
+    position: unset;
+    color: #fff;
+}
+
+.banner-single .nav > li > a {
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+
+.nav > li > a, .nav > li > a {
+    padding-left: 30px;
+    padding-right: 30px;
+}

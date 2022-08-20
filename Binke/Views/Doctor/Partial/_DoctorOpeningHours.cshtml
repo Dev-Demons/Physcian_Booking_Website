@@ -1,0 +1,408 @@
+﻿@model  Binke.ViewModels.DoctorOpeningHoursUpdateViewModel
+@{
+    ViewBag.Title = "Doctor Opening Hours";
+
+    string dt1 = "";
+    if (Model.CalendarDate != null)
+    {
+        dt1 = Model.CalendarDate.Value.ToString("MM/dd/yyyy");
+    }
+}
+@if (ViewBag.DoctorID > 0)
+{@*<h4 style="text-align:center; background-color:#f4f6f9; color:#54abd9;">@Session["DoctorName"]</h4>*@}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.OpeningHourID == 0 ? "Add Doctor Opening Hours" : "Edit Doctor Opening Hours")
+    </h4>
+
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditDoctorSocialMedia", "Doctor", FormMethod.Post, new { id = "frmDoctorOpeningHours", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.OpeningHourID)
+        @Html.HiddenFor(model => model.DoctorID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        @Html.HiddenFor(model => model.CalendarDate)
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+                    @Html.ValidationMessageFor(model => model.DoctorID, "", new { @class = "text-danger" })
+                    @*<div class="col-md-12 row">
+                            <div class="col-md-7 mar-btm">
+                                <label style="text-align:left;" class="col-md-3"><b>Calendar Date</b></label>
+                                @Html.TextBoxFor(model => model.CalendarDate, new { @class = "form-control col-md-4 datefield", placeholder = "Enter Calendar Date" })
+                                @Html.ValidationMessageFor(model => model.CalendarDate, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.OrganizationID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+                    <div class="col-md-2 mar-btm">
+                        <div class="col-md-12 mar-btm">
+                            <label class="control-label"><b>Day</b></label>
+                        </div>
+                        @for (int d1 = 0; d1 < 7; d1++)
+                        {
+                            int RowId = d1 + 1;
+                            <div class="col-md-12 mar-btm">
+                                @if (@RowId == 1)
+                                {<label class="control-label"><b>Sunday</b></label>}
+                                @if (@RowId == 2)
+                                {<label class="control-label"><b>Monday</b></label>}
+                                @if (@RowId == 3)
+                                {<label class="control-label"><b>Tuesday</b></label>}
+                                @if (@RowId == 4)
+                                {<label class="control-label"><b>Wednesday</b></label>}
+                                @if (@RowId == 5)
+                                {<label class="control-label"><b>Thursday</b></label>}
+                                @if (@RowId == 6)
+                                {<label class="control-label"><b>Friday</b></label>}
+                                @if (@RowId == 7)
+                                {<label class="control-label"><b>Saturday</b></label>}
+
+                                <input type="hidden" name="DayNo[@d1]" value="@RowId" />
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-2 mar-btm">
+                        <label class="control-label" style="padding-left:12px;margin-bottom:20px;"><b>Start Time</b></label>
+                        @for (int d1 = 0; d1 < 7; d1++)
+                        {
+                            string strTime1 = "";
+                            if (ViewBag.ID > 0 && d1 <= ViewBag.ItemCount)
+                            {
+                                foreach (var item in ViewBag.Items)
+                                {
+                                    if (item.WeekDay == (d1 + 1))
+                                    {
+                                        strTime1 = item.StartDateTime;
+                                        break;
+                                    }
+                                }
+
+                            }
+                            <div class="col-md-12 mar-btm">
+                                @Html.TextBox("StartTime[" + d1 + "]", strTime1, new { @class = "form-control timepicker", placeholder = "Enter Start Time" })
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-2 mar-btm">
+                        <label class="control-label" style="padding-left:12px;margin-bottom:20px;"><b>End Time</b></label>
+                        @for (int d1 = 0; d1 < 7; d1++)
+                        {
+                            string strTime2 = "";
+                            if (ViewBag.ID > 0 && d1 <= ViewBag.ItemCount)
+                            {
+                                foreach (var item in ViewBag.Items)
+                                {
+                                    if (item.WeekDay == (d1 + 1))
+                                    {
+                                        strTime2 = item.EndDateTime;
+                                        break;
+                                    }
+                                }
+                            }
+                            <div class="col-md-12 mar-btm">
+                                @Html.TextBox("EndTime[" + d1 + "]", strTime2, new { @class = "form-control timepicker", placeholder = "Enter End Time" })
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-2 mar-btm">
+                        <label class="control-label" style="padding-left:12px;margin-bottom:20px;"><b>Slot Duration</b></label>
+                        @for (int d1 = 0; d1 < 7; d1++)
+                        {
+                            int strSlot = 0;
+                            if (ViewBag.ID > 0 && d1 <= ViewBag.ItemCount)
+                            {
+                                foreach (var item in ViewBag.Items)
+                                {
+                                    if (item.WeekDay == (d1 + 1))
+                                    {
+                                        strSlot = item.SlotDuration;
+                                        break;
+                                    }
+                                }
+                            }
+                            string slotTxt = strSlot > 0 ? strSlot.ToString() : null;
+                            <div class="col-md-12 mar-btm">
+                                @Html.TextBox("SlotDuration[" + d1 + "]", slotTxt, new { @class = "form-control", placeholder = "Enter Slot Duration" })
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-2 mar-btm">
+                        <label class="control-label" style="padding-left:12px;margin-bottom:20px;"><b>Comments</b></label>
+                        @for (int d1 = 0; d1 < 7; d1++)
+                        {
+                            string strComment = "";
+                            if (ViewBag.ID > 0 && d1 <= ViewBag.ItemCount)
+                            {
+                                foreach (var item in ViewBag.Items)
+                                {
+                                    if (item.WeekDay == (d1 + 1))
+                                    {
+                                        strComment = item.Comments;
+                                        break;
+                                    }
+                                }
+                            }
+                            <div class="col-md-12 mar-btm">
+                                @Html.TextBox("Comments[" + d1 + "]", strComment, new { @class = "form-control", placeholder = "Enter Comments" })
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-1 mar-btm">
+                        <div class="col-md-12 mar-btm">
+                            <label class="control-label" style="margin-bottom:15px;"><b>Holiday</b></label>
+                        </div>
+                        @for (int d1 = 0; d1 < 7; d1++)
+                        {
+                            bool check1 = false;
+                            if (ViewBag.ID > 0 && d1 <= ViewBag.ItemCount)
+                            {
+                                foreach (var item in ViewBag.Items)
+                                {
+                                    if (item.WeekDay == (d1 + 1))
+                                    {
+                                        check1 = item.IsHoliday;
+                                        break;
+                                    }
+                                }
+                            }
+                            <div class="col-md-12 mar-btm">
+                                <label class="switch">
+                                    @{
+                                        var Checked1 = "";
+                                        if (check1 == true)
+                                        {
+                                            Checked1 = "checked=checked";
+                                        }
+                                    }
+                                    <input type="checkbox" id="IsHolidayCh[@d1]" name="IsHolidayCh[@d1]" dataId="IsHolidayCh[@d1]" @Checked1 value="@check1" />
+                                    <span class="slider round" style="width:35px;"></span>
+                                </label>
+                                @*@Html.CheckBox("IsHoliday[" + d1 + "]", check1, new { @class = "chArray" })*@
+                                @Html.Hidden("IsHoliday[" + d1 + "]", check1)
+                            </div>
+
+                        }
+                    </div>
+
+                    <div class="col-md-1 mar-btm">
+                        <div class="col-md-12 mar-btm">
+                            <label class="control-label" style="margin-bottom:15px;"><b>Active</b></label>
+                        </div>
+                        @for (int d1 = 0; d1 < 7; d1++)
+                        {
+                            bool check = false;
+                            if (ViewBag.ID > 0 && d1 <= ViewBag.ItemCount)
+                            {
+                                foreach (var item in ViewBag.Items)
+                                {
+                                    if (item.WeekDay == (d1 + 1))
+                                    {
+                                        check = item.IsActive;
+                                        break;
+                                    }
+                                }
+                            }
+                            <div class="col-md-12 mar-btm">
+                                <label class="switch">
+                                    @{
+                                        var Checked = "";
+                                        if (check == true)
+                                        {
+                                            Checked = "checked=checked";
+                                        }
+                                    }
+                                    <input type="checkbox" id="IsActiveCh[@d1]" name="IsActiveCh[@d1]" dataId="IsActiveCh[@d1]" @Checked value="@check" />
+                                    <span class="slider round" style="width:35px;"></span>
+                                </label>
+
+                                @Html.Hidden("IsActive[" + d1 + "]", check)
+                                @*@Html.CheckBox("IsActive[" + d1 + "]", check, new { @class = "chArray" })*@
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="modal-footer">
+        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+    </div>
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+    $(".form-control").attr("autocomplete", "off");
+    $(function () {
+        $('.datefield').datepicker({
+            format: 'mm/dd/yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+
+    $(document).ready(function () {
+        $("#DoctorID").val('@ViewBag.DoctorID');
+
+        $("#UserTypeID").val('2');
+
+
+        $(function () {
+            $('.timepicker').timepicker({});
+
+        });
+
+
+        var ID = "@ViewBag.ID";
+
+        if (ID > 0) {
+            $("#CalendarDate").val("@dt1")
+        }
+
+        $(document).on('click', '.slider', function () {
+            var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+            if (chekedstatus == false) {
+                $(this).parent().find(":checkbox").val(true);
+                $(this).parent().parent().find(":hidden").val(true);
+            }
+            else {
+                $(this).parent().find(":checkbox").val(false);
+                $(this).parent().parent().find(":hidden").val(false);
+            }
+        });
+
+
+
+
+        //$("#OrganisationName").keyup(function () {
+        //    if ($.trim($(this).val()) == "")
+        //        $("#OrganisationId").val('');
+        //});
+
+
+        $(document).on('click', '.chArray', function () {
+            if ($(this).is(":checked")) {
+                $(this).val(true);
+                $(this).parent().find('input:hidden:first').val(true);
+            }
+            else {
+                $(this).val(false);
+                $(this).parent().find('input:hidden:first').val(false);
+            }
+        });
+
+        function ClearAll() {
+            $('#frmDoctorOpeningHours input:text').each(function () {
+                $(this).val('');
+            });
+            $('#frmDoctorOpeningHours input:checkbox').each(function () {
+                $(this).prop('checked', false);
+            });
+        }
+
+
+
+        $("#btnSave").click(function () {
+            var slot = false;
+            var result = new Object();
+            for (var j = 0; j < 7; j++) {
+                if (($('#EndTime_' + j + '_').val() != null || $('#EndTime_' + j + '_').val() != "") && $('#SlotDuration_' + j + '_').val() == "") {
+                    switch ('#EndTime_' + j + '_') {
+                        case '#EndTime_0_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Sunday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_0_').focus();
+                            break;
+                        case '#EndTime_1_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Monday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_1_').focus();
+                            break;
+                        case '#EndTime_2_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Tuesday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_2_').focus();
+                            break;
+                        case '#EndTime_3_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Wednesday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_3_').focus();
+                            break;
+                        case '#EndTime_4_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Thursday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_4_').focus();
+                            break;
+                        case '#EndTime_5_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Friday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_5_').focus();
+                            break;
+                        case '#EndTime_6_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Saturday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_6_').focus();
+                            break;
+                    }
+                    if (slot == true)
+                        break;
+                }
+            }
+            if (slot == true)
+                return false;
+
+            $.validator.unobtrusive.parse($('#frmDoctorOpeningHours'));
+            if ($("#frmDoctorOpeningHours").valid()) {
+                $.post("@Url.Action("AddEditDoctorOpeningHours")", $("#frmDoctorOpeningHours").serialize(), function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        if (response.Status == 1) {
+                            bindDoctorOpeningHoursList(true, CurrentPageStart());
+                            if (ID == 0) {
+                                // $("#frmDoctorOpeningHours")[0].reset();
+                            }
+                            closeModal();
+                        } else {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,420 @@
+﻿@using Binke.ViewModels
+@model PatientPrescription
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "RefillPrescription";
+    var storeAddress = @TempData["storeAddress"];
+    var viewrefill = @ViewBag.Refillitems;
+    string drugIds = "";
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var val = jss.Serialize(ViewBag.Refillitems);
+}
+<style type="text/css">
+    .label:after {
+        content: '\A';
+        white-space: pre;
+    }
+</style>
+<div class="container mt-4 mb-5">
+    @using (Html.BeginForm("ConfirmRefillPrescription", "ProvdersProfile", FormMethod.Post, new { id = "frmRefillInfo", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.PatientId)
+        @Html.HiddenFor(x => x.PatientId)
+        @Html.HiddenFor(x => x.Address)
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Contact Information</h3>
+                    </div>
+                    <!--No Label Form-->
+                    <!--===================================================-->
+
+                    <div class="row">
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>First Name</b></label>
+                            @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", placeholder = "First Name", @readonly = "true" })
+                            @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>Last Name</b></label>
+                            @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", placeholder = "Last Name", @readonly = "true" })
+                            @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>Phone Number</b></label>
+                            @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", data_mask = "(999) 999-9999", placeholder = "Enter phone number", @readonly = "true" })
+                            @Html.ValidationMessageFor(x => x.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3 mar-btm">
+                            <label class="control-label"><b>Date Of Birth</b></label>
+                            @Html.TextBoxFor(x => x.DateOfBirth, new { @class = "form-control", placeholder = "Date Of Birth", @readonly = "true" })
+                            <input type="hidden" id="hdnDateOfBirth" value="@Model.DateOfBirth" />
+                            @Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!--===================================================-->
+                    <!--End No Label Form-->
+                </div>
+            </div>
+        </div>
+    }
+    <br />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Prescription Info</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        @*<div class="col-md-6 col-lg-6">*@
+                        <strong>Your Existing Prescription </strong>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-vcenter" id="data" style="border:1px solid lightgray !important">
+                                <thead>
+                                    <tr>
+                                        <th class="doger-color">RX Number</th>
+                                        <th class="doger-color">Drug Name</th>
+                                        <th class="doger-color">Drug Strength</th>
+                                        <th class="doger-color">Quantity</th>
+                                        <th class="doger-color">Insurance Provider</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null && Model.lstExistingPrescriptionInfo != null && Model.lstExistingPrescriptionInfo.Count > 0)
+                                    {
+                                        foreach (var pres in Model.lstExistingPrescriptionInfo)
+                                        {
+                                            <tr>
+                                                <td id="rxnum">@pres.RXNumber</td>
+                                                <td id="drugname">@pres.DrugName</td>
+                                                <td id="drugstrength">@pres.DrugStrengthName</td>
+                                                <td id="drugQuantity">@pres.Quantity</td>
+                                                @*<td>@pres.RefillDate</td>*@
+                                                <td id="InsProvider">@pres.InsuranceProvider</td>
+                                                <td id='refillId_"+@pres.DrugId"'>
+                                                    <input type="hidden" name="DragIds" id="DragIds" value="@pres.DrugId" />
+                                                    <input type="hidden" name="PPID" id="PPID" value="@pres.PatientPrescriptionID" />
+                                                    <input type="hidden" name="PRID" id="PRID" value="@pres.PatientRefillId" />
+                                                    <input type="hidden" name="DrugStrengthId" id="DrugStrengthId" value="@pres.DrugStrengthID" />
+                                                    <button type="button" class="btn btn-link" id="refill" data-value="@pres.DrugId">Refill</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                                No existing prescription found.
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="table-responsive" id="refillGrid" style="display:none;">
+                            <strong>Refill Prescription </strong>
+                            <table class="table table-hover table-vcenter" id="refillData" style="border:1px solid lightgray !important">
+                                <thead>
+                                    <tr>
+                                        <th class="doger-color">RX Number</th>
+                                        <th class="doger-color">Drug Name</th>
+                                        <th class="doger-color">Drug Strength</th>
+                                        <th class="doger-color">Quantity</th>
+
+                                        <th class="doger-color"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*@if (ViewBag.Refillitems != null && ViewBag.Refillitems.Count > 0)
+                                    {
+                                        foreach (var item in ViewBag.Refillitems)
+                                        {
+                                            var rowId = "row_" + item.DrugId;
+                                            if (drugIds == "")
+                                            {
+                                                drugIds = item.DrugId.ToString();
+                                            }
+                                            else
+                                            {
+                                                drugIds += "," + item.DrugId.ToString();
+                                            }
+                                            <tr id="@rowId" role='row'>
+                                                <td><input type='hidden' class='curPPID' id="PPId_@item.DrugId" name="PPId_@item.DrugId" value=@item.PatientPrescriptionID /><input type='hidden' class='curPRID' id="PRId_@item.DrugId" name="PRId_@item.DrugId" value=@item.PatientRefillId /><input type='hidden' class='curDetailID' id="DetailId_@item.DrugId" name="DetailId_@item.DrugId" value=@item.RXNumber /><input type='hidden' class='curDrugID' id="DrugId_@item.DrugId" name="DrugId_@item.DrugId" value=@item.DrugId /><span class='curRxnum' id="DrugName_@item.DrugId">@item.RXNumber</span></td>
+                                                <td><input type='hidden' class='curName' id="Description_@item.DrugId" name="Description_@item.DrugId" value=@item.DrugName /><span class='curDrugName' id="lblDescription_@item.DrugId">@item.DrugName</span></td>
+                                                <td><input type='hidden' class='curDrugStrengthId' id="DrugStrength_@item.DrugId" name="DrugStrength_@item.DrugId" value=@item.DrugStrengthID /><span class='curDrugStrengthName' id="lblDrugStrength_@item.DrugId">@item.DrugStrengthName</span></td>
+                                                <td><input type='hidden' class='curInsP' id="InsProvider_@item.DrugId" name="InsProvider_@item.DrugId" value=@item.InsuranceProvider /><input type='hidden' class='curQty' id="qty_@item.DrugId" name="qty_@item.DrugId" value=@item.Quantity /><input maxlength='3' size='3' class='numeric' type='text' id="lblqty_@item.DrugId" value=@item.Quantity /><span class='text - red' style='color: red; padding-left:5px'><b>*</b></span><span class='lblError' id="lblError_@item.DrugId" style='color:red; display:none'></span></td>
+                                                <td style='text-align:center'><a href='JavaScript:' class='btn btn-danger btn-sm action deleteOrderRow'><i class='fa fa-times'></i></a></td>
+                                            </tr>
+                                        }
+                                    }*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Delivery Type</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <label class="ml-1">
+                                <input name="deliveryType" type="radio" id="homeDelivery" value="homeDelivery" />&nbsp;<label>Home Delivery</label>
+                            </label>
+                            <label class="ml-4">
+                                <input name="deliveryType" type="radio" checked="checked" id="storePickup" value="storePickup" />&nbsp;<label>Pickup from store</label>
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="display:none" id="divhomeDelivery">
+                            <strong>
+                                <span class="label">
+                                    <i aria-hidden="true" class="fa fa-map-marker" style="color: #3498db;margin-right:6px"></i><label>@Model.Address &nbsp;&nbsp;&nbsp; @Model.City &nbsp;&nbsp;&nbsp; @Model.State  - &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; @Model.ZipCode</label>
+                                </span>
+                                <span class="label">
+                                    <i aria-hidden="true" class="fa fa-phone" style="color: #3498db;margin-right:6px"></i><label>@Model.PhoneNumber</label>
+                                </span>
+                            </strong>
+                        </div>
+                        <div class="col-md-12 col-lg-12" id="divstorePickup">
+                            <strong>
+                                <span class="label">
+                                    <i aria-hidden="true" class="fa fa-map-marker" style="color: #3498db;margin-right:6px"></i><label>@Model.Pharmacy.OrgName</label>
+                                </span>
+                                <span class="label">
+                                    <i aria-hidden="true" style="color: #3498db;margin-right:10px"></i> <label>@Model.Pharmacy.FullAddress</label>
+                                </span>
+                                <span class="label">
+                                    <i aria-hidden="true" class="fa fa-phone" style="color: #3498db;margin-right:6px"></i><label>@Model.Pharmacy.PhoneNumber</label>
+                                </span>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-lg-12 mt-2 border-top float-right">
+            @*<input type="hidden" name="DragIds" id="DragIds" value="@drugIds" />*@
+            <button type="button" id="btnSubmit" class="btn btn-primary btn-lg mt-3" disabled="true">Continue</button>
+            <label class="control-label" id="lblError" style="color:red; display:none;"></label>
+        </div>
+    </div>
+    <br />
+
+    <div id="dialog" title="Required*">
+        <span id="popup"></span>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+
+            function Popup(msg) {
+                $("#popup").text(msg);
+                $("#dialog").dialog();
+            };
+             $(function ()
+                {
+                 var val = '@Html.Raw(val)';
+                 var obj = $.parseJSON(val);
+                 console.log(obj);
+            var deliverytype = @Html.Raw(Json.Encode(Model.IsDeliveryType));
+            deliverytype = deliverytype == 0 ? 'homeDelivery' : 'storePickup';
+           // $("#btnSubmit").prop('disabled', false);
+                 if (obj != null && obj.length > 0)
+                 {
+                  // $("#refillGrid").show();
+                BindDeliveryType(deliverytype);
+             }
+        });
+            $(document).on("click", "#refill", function (e) {
+                $(this).prop('disabled', true);
+                $("#btnSubmit").prop('disabled', false);
+                var DrugStrengthId = $(this).closest('tr').find("#DrugStrengthId").val();
+                var PPId = $(this).closest('tr').find("#PPID").val();
+                var PRId = $(this).closest('tr').find("#PRID").val();
+
+                var drugID = $(this).data("value");
+                var drugName = $(this).closest('tr').find("#drugname").text();
+                var drugStrengthName = $(this).closest('tr').find("#drugstrength").text();
+                var rxNumber = $(this).closest('tr').find("#rxnum").text();
+                var InsProvider = $(this).closest('tr').find("#InsProvider").text(); 
+
+                var qty = "";
+                if (parseInt(drugID) > 0 && $.trim(drugName) != "") {
+                    $("#refillGrid").show();
+                    var rowID = "row_" + drugID;
+
+                    var orderRow = "<tr id='" + rowID + "' role='row'></tr>";
+                    $("#refillData tbody").append(orderRow);
+
+                    objCell = "<td><input type='hidden' class='curPPID' id='PPId_" + drugID + "' name='PPId_" + drugID + "' value='" + PPId + "' /><input type='hidden' class='curPRID' id='PRId_" + drugID + "' name='PRId_" + drugID + "' value='" + PRId + "' /><input type='hidden' class='curDetailID' id='DetailId_" + drugID + "' name='DetailId_" + drugID + "' value='" + rxNumber + "' /><input type='hidden' class='curDrugID' id='DrugId_" + drugID + "' name='DrugId_" + drugID + "' value='" + drugID + "' /><span class='curRxnum' id='DrugName_" + drugID + "'>" + rxNumber + "</span></td>";
+                    objCell += "<td><input type='hidden' class='curName' id='Description_" + drugID + "' name='Description_" + drugID + "' value='" + drugName + "' /><span class='curDrugName' id='lblDescription_" + drugID + "'>" + drugName + "</span></td>";
+                    objCell += "<td><input type='hidden' class='curDrugStrengthId' id='DrugStrength_" + drugID + "' name='DrugStrength_" + drugID + "' value='" + DrugStrengthId + "' /><span class='curDrugStrengthName' id='lblDrugStrength__" + drugID + "'>" + drugStrengthName + "</span></td>";
+                    objCell += "<td><input type='hidden' class='curInsP' id='InsProvider_" + drugID + "' name='InsProvider_" + drugID + "' value='" + InsProvider + "' /><input type='hidden' class='curQty' id='qty_" + drugID + "' name='qty_" + drugID + "' value='" + qty + "' /><input maxlength='3' size='3' class='numeric' type='text' id='lblqty_" + drugID + "'  value='" + qty + "' /><span class='text - red' style='color: red; padding-left:5px;'><b>*</b></span><span class='lblError' id='lblError_" + drugID + "' style='color:red; display:none;'></span></td>";
+                    objCell += "<td style='text-align:center;'><a href='JavaScript:' class='btn btn-danger btn-sm action deleteOrderRow'><i class='fa fa-times'></i></a></td>";
+
+
+                    $("#refillData #" + rowID).append(objCell);
+                    $('.numeric').on('input', function (event) {
+
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                        var errDrugId = $(this).parent().parent().find('.curDrugID').val();
+                        var qtyvalue = $("#refillData #row_" + errDrugId).find("#lblqty_" + errDrugId).val();
+                        if (qtyvalue > 100) {
+                                $("#refillData #row_" + errDrugId).find('.lblError').text("Please enter Quantity upto 100");
+                                $("#refillData #row_" + errDrugId).find("#lblError_" + errDrugId).show();
+                                e.preventDefault();
+                            }
+                            else if (qtyvalue == 0) {
+                                $("#refillData #row_" + errDrugId).find('.lblError').text("Please enter valid Quantity");
+                                $("#refillData #row_" + errDrugId).find("#lblError_" + errDrugId).show();
+                                $(this).val("");
+                                e.preventDefault();
+                            }
+                            else {
+                            $("#refillData #row_" + errDrugId).find("#lblError_" + errDrugId).hide();
+                            }
+
+                    });
+                }
+            })
+
+            $(document).on('click', '.deleteOrderRow', function () {
+
+                var drugId = $(this).parent().parent().find('.curDrugID').val();
+
+                var title = "Delete Refill Prescription ?";
+                var message = "Are you sure you want to remove this Refill Prescription ?";
+                BinkeDialog.Confirmation(title, message, function () {
+                    if (parseInt(drugId) > 0) {
+                         $("#refillData #row_" + drugId).remove();
+
+                        //Hide the refill grid if there is no data
+                        var rowCount = $('#refillData tr').length - 1;
+
+                        $("#data tr").each(function () {
+                            var refillDrugId = $(this).find("#DragIds").val();
+                            if (refillDrugId == drugId) {
+
+                                $(this).find("#refill").prop('disabled', false);
+                            }
+                        });
+                        if (rowCount == 0) {
+                            $("#refillGrid").hide();
+                            $("#btnSubmit").prop('disabled', true);
+                        }
+                        else {
+                            $("#refillGrid").show();
+                            $("#btnSubmit").prop('disabled', false);
+                        }
+                    }
+                })
+            });
+
+            $('input[type=radio][name=deliveryType]').change(function () {
+                BindDeliveryType(this.value);
+            });
+
+            function BindDeliveryType(type) {
+                if (type == 'homeDelivery') {
+                    $("#homeDelivery").prop("checked", "checked");
+                    $("#divhomeDelivery").show();
+                    $("#divstorePickup").hide();
+                }
+                else if (type == 'storePickup') {
+                    $("#storePickup").prop("checked", "checked");
+                    $("#divstorePickup").show();
+                    $("#divhomeDelivery").hide();
+                }
+            }
+
+            $("#btnSubmit").click(function (event) {
+
+                var existingPrescriptionInfo = [];
+                $('#refillGrid tr').each(function (i, el) {
+
+                    if ($(el).children('td').children('.numeric').val() == "") {
+                        $(el).children('td').children('.lblError').show();
+
+                        $(el).children('td').children('.lblError').text("Please enter valid Quantity");
+                        e.preventDefault();
+                        $("#btnSubmit").prop('disabled', true);
+                    }
+                    else if ($(el).children('td').children('.numeric').val() > 100) {
+                        $(el).children('td').children('.lblError').show();
+
+                        $(el).children('td').children('.lblError').text("Please enter Quantity upto 100!");
+                        e.preventDefault();
+                        $("#btnSubmit").prop('disabled', true);
+                    }
+                    else {
+                        $(el).children('td').children('.lblError').hide();
+                    }
+                    $("#btnSubmit").prop('disabled', false);
+                    var Pres = {};
+                    Pres.DrugId = $(el).children('td').children('.curDrugID').val();
+                    Pres.PatientPrescriptionID = $(el).children('td').children('.curPPID').val();
+                    Pres.PatientRefillId = $(el).children('td').children('.curPRID').val();
+                    Pres.RXNumber = $(el).children('td').children('.curRxnum').text();
+                    Pres.Quantity = $(el).children('td').children('.numeric').val();
+                    Pres.DrugName = $(el).children('td').children('.curName').val();
+                    Pres.DrugStrengthId = $(el).children('td').children('.curDrugStrengthId').val();
+                    Pres.DrugStrengthName = $(el).children('td').children('.curDrugStrengthName').text();
+                    Pres.InsuranceProvider = $(el).children('td').children('.curInsP').val();
+                    existingPrescriptionInfo.push(Pres);
+
+                });
+
+                var radioValue = $("input[name='deliveryType']:checked").val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/ProvdersProfile/RefillPrescriptionInfo",
+                    data: { refillPrescription: existingPrescriptionInfo, deliver: radioValue },
+                    dataType: 'json',
+                    async: true,
+                    success: function (response) {
+                        window.location.href = "@Url.Action("ConfirmRefillPrescription", "ProvdersProfile")";
+                    },
+                    failure: function (response) {
+                        console.log(response.responseText);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+
+        });
+</script>

@@ -1,0 +1,327 @@
+﻿@using Binke.Utility
+@using Doctyme.Repository.Enumerable
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    @if (ViewBag.Title != null)
+    {
+        <title>@ViewBag.Title - Doctyme</title>
+    }
+    else
+    {
+    <title>Read Reviews and Compare Doctors, Pharmacy, Senior Care, Facility and Drug Prices; Book Appointment | DocTyme</title>
+    }
+    @if (@ViewBag.PageDescription != null)
+    {
+        <meta name="description" content="@ViewBag.PageDescription">
+    }
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/Content/client/images/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Content/client/images/icon.png">
+
+    <!-- Google font (font-family: 'Lato', sans-serif;) -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,500,700,900" rel="stylesheet">
+    <!-- Google font (font-family: 'Raleway', sans-serif;) -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,700,800" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    @*@Styles.Render("~/Content/clientCss")*@
+    <link href="~/Content/client/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/client/css/plugins.css" rel="stylesheet" />
+    <link href="~/Content/client/css/style11.css" rel="stylesheet" />
+    <link href="~/Content/client/css/custom.css" rel="stylesheet" />
+    <link href="~/Content/client/css/style.css" rel="stylesheet" />
+    <link href="~/Content/client/css/plugins/slick.min.css" rel="stylesheet" />
+    <link href="~/Content/client/css/change-color.css" rel="stylesheet" />
+    <link href="~/Content/custom/toastr.min.css" rel="stylesheet" />
+
+    <!-- Google font (font-family: 'Lato', sans-serif;) -->
+    <link href="//fonts.googleapis.com/css?family=Lato:300,400,400i,500,700,900" rel="stylesheet">
+    <!-- Google font (font-family: 'Raleway', sans-serif;) -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:300,400,700,800" rel="stylesheet">
+
+
+    <!-- Modernizer js -->
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    <style>
+        #page-title {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    @*<div class="fakeloader"></div>*@
+    <h1 id="page-title">DocTyme Homepage</h1>
+    <div id="wrapper" class="wrapper">
+
+        <!-- Header -->
+        <div class="header sticky-header">
+
+            <!-- Header Top Area -->
+            <div class="header-top-area-dark">
+                <div class="container">
+                    <div class="header-top-inner">
+
+
+                        <ul class="header-support-info w-50">
+                            <li style="padding: 0px 20px; color: #fff;"><b><a href="~/Home/AdvertiseWithUs">Advertise With Us</a></b></li>
+                        </ul>
+
+                        <ul class="header-social">
+                            <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="https://twitter.com/DoctymeInc"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="https://plus.google.com/"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="https://www.instagram.com/"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a></li>
+                        </ul>
+
+                        @{string cls = ViewBag.IsLoginShow != null && ViewBag.IsLoginShow ? "" : "p-4"; }
+                        <ul class="header-support-info @cls">
+                            @if (ViewBag.IsLoginShow != null && ViewBag.IsLoginShow)
+                            {
+                                <li class="pull-right"><span class="icon"><i class="fa fa-lock"></i></span> <a href="/Account/Login">LOGIN</a></li>
+                            }
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <!--// Header Top Area -->
+            <!-- Header Middle Area -->
+            <div class="header-middle-area d-none d-lg-block" style="box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);">
+                <div class="container">
+                    <div class="header-middle-inner">
+                        <a href="/Home" class="header-logo">
+                            <img src="~/Content/client/images/logo/logo-secondary-dark.png" alt="Doctyme logo">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--// Header Middle Area -->
+            <!-- Mobile Menu Wrapper -->
+            <div class="mobile-menu-wrapper">
+                <div class="container">
+                    <div class="mobile-menu d-block d-lg-none">
+                        <a href="/" class="logo">
+                            <img src="~/Content/client/images/logo/logo-secondary-dark.png" alt="logo theme">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--// Mobile Menu Wrapper -->
+        </div>
+
+        @RenderSection("SliderContent", required: false)
+        <!-- Page Content -->
+        <main id="page-content">
+            @RenderBody()
+        </main>
+        <!--// Page Content -->
+        <div class="footer">
+
+            <!-- Footer Top Area -->
+            <div class="footer-top-area bg-theme">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <ul class="footer-social-icons">
+                                <li><a href="https://twitter.com/DoctymeInc"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://plus.google.com/"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="https://www.instagram.com/"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <form id="frmNewsLetter" class="footer-newsletter-form" novalidate>
+                                <h4>Newsletter</h4>
+                                <input type="email" id="NewsLetterEmail" placeholder="Email address...">
+                                <input type="submit" value="Subscribe" id="btnNewsLetter">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--// Footer Top Area -->
+            <!-- Footer Bottom Area -->
+            <div class="footer-bottom-area bg-dark-light section-padding-xs">
+                <div class="container">
+                    <div class="row widgets footer-widgets">
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">About Us</h5>
+                                <ul>
+                                    <li><a href="/Home/ClaimYourListing">Claim Your Listing</a></li>
+                                    <li><a href="/Home/AdvertiseWithUs">Advertise With Us</a></li>
+                                    <li><a href="/Home/ContactUs">Contact Us</a></li>
+                                    <li><a href="/Home/Blog">Blog</a></li>
+                                    <li><a href="/Home/TermsAndConditions">Terms and Conditions</a></li>
+                                    <li><a href="/Home/PrivacyPolicy">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        @{
+                            string text = System.IO.File.ReadAllText(Server.MapPath(StaticFilePath.WebSettings)).NullToString();
+                            var jsonNetworkCount = Newtonsoft.Json.JsonConvert.DeserializeObject<Binke.ViewModels.NetworkCount>(text);
+                            string[] MostlySearchedDrug = !string.IsNullOrWhiteSpace(jsonNetworkCount.MostlySearchedDrug) ? jsonNetworkCount.MostlySearchedDrug.Split(',').Take(3).ToArray() : null;
+                        }
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">Discover</h5>
+                                <ul>
+                                    <li><a class="FindProvider" href="javascript:void(0);">Find a Provider</a></li>
+                                    <li><a href="/Search/Doctor/">-&nbsp;&nbsp;&nbsp;Doctor</a>
+                                    <li />
+                                    <li><a href="/Filter/Pharmacy/">-&nbsp;&nbsp;&nbsp;Pharmacy</a>
+                                    <li />
+                                    <li><a href="/Filter/Facility/">-&nbsp;&nbsp;&nbsp;Facility</a>
+                                    <li />
+                                    <li><a href="/Filter/SeniorCare/">-&nbsp;&nbsp;&nbsp;Senior Care</a>
+                                    <li />
+                                    <li><a href="/SearchDrug">Find Drug Prices</a></li>
+                                    @if (MostlySearchedDrug != null)
+                                    {
+                                        foreach (var item in MostlySearchedDrug)
+                                        {
+                                            <li><a href="/SearchDrug/@item">@item</a></li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">Specialties</h5>
+                                <ul>
+                                    @{ Html.RenderAction("GetSpeciality", "Home"); }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-contact">
+                                <h5 class="widget-title">Top Doctor</h5>
+                                <ul>
+                                    @{ Html.RenderAction("GetTopDoctor", "Home"); }
+                                </ul>
+                                <div class="single-widget widget-about mt-1">
+                                    <p><a href="/Search/Doctor/">View All</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--// Footer Bottom Area -->
+            <!-- Footer Copyright Area -->
+            <div class="footer-copyright-area bg-dark">
+                <div class="container">
+                    <div class="footer-copyright text-center">
+                        <p>Copyright © <a href="#">Doctyme</a>. All Rights Reserved</p>
+                    </div>
+                </div>
+            </div>
+            <!--// Footer Copyright Area -->
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="divModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="modalContent"></div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- Modal -->
+    </div>
+    <!-- JS Files -->
+    @{ Html.RenderPartial("_ClientScripts", RenderSection("pagespecific", false)); }
+    <script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            @if (TempData["Alerts"] != null)
+            {
+                foreach (Common.JsonModel jsonModel in (List<Common.JsonModel>) TempData["Alerts"])
+                {
+                    <text>
+                        var alert = { AlertType: '@jsonModel.AlertType', Message: '@jsonModel.Message', Title: '@jsonModel.Title' };
+                        showAlert(alert);
+                    </text>
+                }
+            }
+
+            $("#btnNewsLetter").click(function () {
+                return NewsLetter();
+            });
+
+            $("#NewsLetterEmail").change(function () {
+                $("#NewsLetterEmail-error").hide();
+            });
+        });
+
+        function NewsLetter() {
+            var url = '@Url.Action("SubscribeNewsLetter", "Home")';
+            var Email = $("#NewsLetterEmail").val();
+            var isValid = validateEmail(Email) //$("#frmNewsLetter").valid();
+            if (Email != "" && isValid) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    cache: false,
+                    data: { 'Email': Email },
+                    success: function (response) {
+                        HandleResponse(response);
+                        $("#NewsLetterEmail").val("");
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            } else {
+                $("#NewsLetterEmail-error").hide();
+                response = { Status: 0, Message: "Please enter valid email address." };
+                HandleResponse(response);
+            }
+            return false;
+        }
+
+        function validateEmail($email) {
+            var emailReg = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+            return emailReg.test($email);
+        }
+
+        var originalModal = $("#divModal").clone();
+        $("#divModal").on("hidden.bs.modal", function () {
+            $("#divModal").remove();
+            var myClone = originalModal.clone();
+            $("body").append(myClone);
+        });
+
+        ////Added by Reena
+        var owl = $('#owl-carousel2');
+        owl.owlCarousel({
+            animateOut: 'slideOutDown',
+            animateIn: 'flipInX',
+            //autoHeight: true,
+            dots: true,
+            items: 3,
+            loop: true,
+            nav: true,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 5000
+            //,
+            //adaptiveHeight: true,
+        });
+    </script>
+</body>
+</html>

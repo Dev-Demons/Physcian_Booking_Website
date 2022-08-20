@@ -1,0 +1,129 @@
+﻿@model Binke.ViewModels.AddressViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.AddressId == 0 ? "Add Location" : "Edit Location")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditLocation", "Doctor", FormMethod.Post, new { id = "frmLocation" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.AddressId)
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label"><b>Address1</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", placeholder = "Enter Address1" })
+                    @Html.ValidationMessageFor(m => m.Address1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b>Address2</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Address2, new { @class = "form-control", placeholder = "Enter Address2" })
+                    @Html.ValidationMessageFor(m => m.Address2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label"><b>Country</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Country, new { @class = "form-control", placeholder = "Enter Country" })
+                    @Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b>State</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.StateId, ViewBag.StateList as IEnumerable<SelectListItem>, "-- Select State --",
+                                        new {@class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.StateId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label"><b>City</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.CityId, Enumerable.Empty<SelectListItem>(), "-- Select City --", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.CityId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b>Zipcode</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control", placeholder = "Enter Zipcode" })
+                    @Html.ValidationMessageFor(m => m.ZipCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label"><b>IsDefault</b></label>
+                <div class="form-group">
+                    @Html.CheckBoxFor(m => m.IsDefault, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var stateId = @(Model.StateId);
+        stateId = (isNaN(stateId) ? 0 : stateId);
+        var cityId = @(Model.CityId);
+        cityId = (isNaN(cityId) ? 0 : cityId);
+        if (stateId!==0 ) {
+            SetCityOnEdit(stateId, cityId);
+        }
+    });
+
+    $(document).on("change", "#StateId", function () {
+        var id = parseInt($(this).val());
+        id = (isNaN(id) ? 0 : id);
+        if (id!==0 ) {
+            var cityId = parseInt($("#CityId").val());
+            cityId = (isNaN(cityId) ? 0 : cityId);
+            SetCityOnEdit(id, cityId);
+        }
+    });
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmLocation'));
+        if ($("#frmLocation").valid()) {
+            $.post("@Url.Action("AddEditDoctorLocation")", $("#frmLocation").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindMyLocationList();
+                    closeModal();
+                }
+            });
+        }
+    });
+
+    function SetCityOnEdit(stateId, cityId) {
+        GetCityList(stateId).done(function (response) {
+            if (response.Status) {
+                var data = response.Data;
+                $("#CityId").empty();
+                $("<option>", { text: "City", value: 0 }).html("-- Select City --").appendTo("#CityId");
+                $.each(data, function (key, val) {
+                    $("<option>", { text: val.Text, value: val.Value }).html(val.Text).appendTo("#CityId");
+                });
+                $("#CityId").val(cityId).trigger("change.selectpicker");
+            }
+        });
+    }
+
+</script>

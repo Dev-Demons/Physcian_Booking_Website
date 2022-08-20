@@ -1,0 +1,217 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Index";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i>Booking</h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/SeniorCare/"> SeniorCare</a></li>
+            <li class="active"> Booking List </li>
+        </ol>
+    </div>
+}
+<style>
+    #dtSlot_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtSlot_length {
+        float: left;
+    }
+</style>
+
+<div class="panel">
+
+    <div class="panel-body">
+        <div id="renderAddEditBooking"></div>
+        <br />
+        @*<button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addSlot">Add Slot</button>*@
+        <table id="dtSlot" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Slot Date</th>
+                    <th>Slot Time</th>
+                    <th>Description </th>
+                    <th>Is Booked</th>
+                    <th>Is Email Reminder</th>
+                    <th>Is Text Reminder</th>
+                    <th>Is Insurance Changed</th>
+                    <th>Date Created</th>
+                    <th>Date Modified</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT -->
+@section pagespecific {
+<script type="text/javascript">
+        $(document).ready(function () {
+            bindSlotList();
+            AddEditSlot(0);
+            AddSeniorcareSubmenu();
+        });
+
+        $(document).on("click", "#addSlot", function () {
+            AddEditSlot(0);
+        });
+
+        function AddEditSlot(id) {
+            var SeniorOrgId = sessionStorage.getItem("SeniorcareOrganisationId");
+            $("#renderAddEditBooking").load("/_Slot/" + id + "/" + SeniorOrgId  , function () {
+                //$("#divModal").modal('show');
+                $('#lblSeniorcareOrganisationName').val(sessionStorage.getItem("SeniorcareOrganisationName"));
+                $('#lblSeniorcareNPI').val(sessionStorage.getItem("SeniorcareOrganisationNPI"));
+            });
+        }
+
+        function bindSlotList() {
+            if ($.fn.DataTable.isDataTable("#dtSlot")) {
+                $('#dtSlot').DataTable().destroy();
+            }
+            var SeniorOrgId = sessionStorage.getItem("SeniorcareOrganisationId");
+            var table = $('#dtSlot')
+                .DataTable({
+                    "sAjaxSource": "/Doctor/GetSlotList?Id=" + SeniorOrgId,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "SlotDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "SlotTime",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsBooked",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsEmailReminder",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsTextReminder",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsInsuranceChanged",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "SlotId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data) {
+                                var content = '<div style="display:flex"><a href="javascript:;" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;</div>'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        $('#dtSlot').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).attr("data-flag");
+            var id = $(e.currentTarget).attr("data-Id");
+            switch (flag) {
+                case "edit":
+                    AddEditSlot(id);
+                    break;
+                case "delete":
+                    DeleteSlot(id);
+                    break;
+                default:
+            }
+        });
+
+        function DeleteSlot(id) {
+            BinkeDialog.Confirmation("Delete",
+                "Are you sure you want to delete this ?",
+                function () {
+                    $.ajax({
+                        url: "/RemoveBookingSlot/" + parseInt(id),
+                        type: "POST",
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            HandleResponse(data);
+                            bindSlotList();
+                        },
+                        error: function (data) {
+                            HandleResponse(data);
+                        }
+                    });
+                });
+        }
+    function AddSeniorcareSubmenu() {
+        var SeniorOrgId = sessionStorage.getItem("SeniorcareOrganisationId");
+        var isSeniorCareUser = sessionStorage.getItem("isSeniorCareUser");
+
+        var submenuHtml = '';
+        if (isSeniorCareUser == 1) {
+            $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '/1/1');
+            submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/1/1" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li >';
+        }
+        else {
+            $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '');
+            submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/0" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li >';
+        }
+
+        submenuHtml += '<li class="nav-item"><a href="/OrganizationAmenityOption/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Amenities/Options</p></a></li>';
+        submenuHtml += '<li class="nav-item"><a href="/Booking/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Booking</p></a></li>';
+        submenuHtml += '<li class="nav-item"><a href="/SiteImage" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Images</p></a></li>';
+        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Reviews" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Reviews</p></a></li>';
+        submenuHtml += '</ul>'
+        $('.seniorcare-tree-parent').addClass("active");
+        $('.seniorcare-tree-parent').addClass("open");
+        $('.seniorcare-tree-parent').addClass("menu-open");
+        $('.seniorcare-tree-parent').append(submenuHtml);
+        }
+</script>
+}

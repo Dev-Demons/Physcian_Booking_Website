@@ -1,0 +1,125 @@
+﻿@model Binke.ViewModels.RequestSlotViewModel
+<link href="~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+<style type="text/css">
+    button.active {
+    }
+
+    button.IsBook {
+    }
+
+    .py-10px {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel">Book Appointment</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+</div>
+<div class="modal-body">
+    <div id="screen1">
+        <div class="row">            
+            <div class="col-lg-6 col-md-6 single-input">
+                <label for="FirstName">Location</label>
+                @Html.DropDownListFor(m => m.Location, ViewBag.LocationList as IEnumerable<SelectListItem>, "-- Select Location --",
+                    new {@class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div id="TimeSlot" class="row" style="display:none;">
+
+        </div>
+    </div>
+    <div id="screen2" style="display:none;"></div>
+</div>
+<div class="modal-footer">
+    <button type="button" id="btnSubmit" style="display:none;" class="btn btn-success">Book Now</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    @*<button type="button" id="btnNext" class="btn btn-primary">Next</button>*@
+</div>
+
+<script src="~/Scripts/admin/js/moment.js"></script>
+<script src="~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript">
+    var doctorId = '@ViewBag.DoctorId';
+    var selectedSlot = 0;
+    $('#AppDate').datepicker({
+        format: 'dd-M-yyyy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        autoclose: true,
+        todayHighlight: true,
+        startDate: '-0m'
+    }).on('changeDate', function (selected) {
+        selected = $('#AppDate').val();
+        loadTimeSlots(selected);
+        });
+
+    
+
+    $(document).ready(function () {
+        var today = moment().format("DD-MMM-YYYY");
+        $('#AppDate').val(today);
+        loadTimeSlots(today);
+    });
+
+    //$("#btnNext").click(function (e) {
+    //    $("#screen1").hide();
+    //    loadRequestAppointmentScreen2(findSelectedSlot());
+    //    $(e.currentTarget).hide();
+    //});
+
+    $("#btnSubmit").click(function () {
+        $.validator.unobtrusive.parse($('#ReqAppS2'));
+        if ($("#ReqAppS2").valid()) {
+            $.post("/AddEditRequestAppointmentScreen2/", $("#ReqAppS2").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    closeModal();
+                }
+            });
+        }
+    });
+
+    function loadTimeSlots(selectedDate) {
+        $("#TimeSlot").load("/LoadTimeSlots/" + doctorId + "/" + selectedDate, function (response) {
+            if (response!== "") {
+                $("#TimeSlot").show();
+            }
+        });
+    }
+
+    function loadRequestAppointmentScreen2(slotId, locationId) {
+        $("#btn" + slotId).addClass("btn btn-active");
+        $("#screen2").load("/RequestAppointmentScreen2/" + slotId + "/" + locationId, function () {
+            $("#myModalLabel").text("Request for appointment");
+            $('#DateOfBirth').datepicker({
+                format: 'dd-M-yyyy',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                autoclose: true,
+                todayHighlight: true,
+            });
+            $("#screen2").show();
+        });
+    }
+
+    function SetTimeSlot(slotId) {
+        $("#screen1").hide();
+        $("#screen2").html('');
+        var locationID = parseInt($("#Location").val());
+
+        $("#screen2").load("/RequestAppointmentScreen2/" + slotId + "/" + locationID, function (result) {
+            $("#myModalLabel").text("Request for appointment");
+            $("#btnSubmit").show();
+            $("#screen2").show();
+        });
+    }
+
+    function findSelectedSlot() {
+        return 0;
+    }
+</script>

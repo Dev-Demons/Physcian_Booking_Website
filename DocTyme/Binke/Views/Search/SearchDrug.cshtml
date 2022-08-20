@@ -1,0 +1,1469 @@
+﻿
+@{
+    ViewBag.Title = "SearchDrug";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<link href="~/Content/client/css/index.css" rel="stylesheet" />
+<link href="~/Content/client/css/search.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+@* pharmacy design *@
+ 
+<style>
+    .align-left {
+        text-align: left;
+    }
+
+    .alphabates-color {
+        color: blue !important;
+        font-size: large;
+    }
+
+    div a:hover {
+        cursor: pointer;
+    }
+
+    .pagesize-dropdown {
+        float: right;
+        margin: 4px;
+        border-radius: 10px;
+        border-color: deepskyblue;
+    }
+
+    .recentDrugsPadding {
+        padding: 2px 4px 2px 2px;
+    }
+
+    .fontSize14 {
+        font-size: 14px;
+    }
+
+    .fontSize13 {
+        font-size: 13px;
+    }
+
+    .colorblue {
+        color: #30aedf !important
+    }
+
+    .colorBG {
+        background-color: #30aedf !important
+    }
+
+    .navachPaddig {
+        padding: 3px 5px 4px 2px;
+        border-radius: 4px;
+    }
+
+    .padding10 {
+        padding-top: 10px;
+    }
+
+    .nav > li {
+        padding: 1px;
+        padding-top: 2px
+    }
+
+    .nav-tabs {
+        border-bottom: none;
+    }
+
+    .owl-carousel.owl-rtl {
+        direction: rtl;
+    }
+
+        .owl-carousel.owl-rtl .owl-item {
+            float: right;
+        }
+
+    .ulockd-testimonials {
+        background-color: #ffffff;
+        border: 1px solid #eeeeee;
+        border-radius: 0 45px 0;
+        padding: 10px 20px;
+        position: relative;
+        -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.2);
+        -webkit-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .ulockd-mrgn620 {
+        margin-bottom: 20px;
+    }
+
+    .ulockd-mrgn1250 {
+        margin-top: 50px;
+    }
+
+    .ulockd-testimonials .testi-thumb img {
+        border: 1px solid #eeeeee;
+        border-radius: 0 20px;
+        height: 150px;
+        margin: -50px auto 0;
+        width: 300px;
+    }
+
+    .owl-carousel .owl-item img {
+        display: block;
+        width: 100%;
+    }
+
+    .thumbnail {
+        display: block;
+        padding: 4px;
+        margin-bottom: 20px;
+        line-height: 1.42857143;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        -webkit-transition: border .2s ease-in-out;
+        -o-transition: border .2s ease-in-out;
+        transition: border .2s ease-in-out;
+    }
+
+    .ulockd-mrgn1220 {
+        margin-top: 20px;
+    }
+
+    .list-inline {
+        padding-left: 0;
+        margin-left: -5px;
+        list-style: none;
+    }
+
+    .fz16 {
+        font-size: 16px;
+    }
+
+    .ulockd-testimonials p {
+        margin-bottom: 20px;
+        text-transform: capitalize;
+    }
+
+    .owl-carousel.owl-rtl {
+        direction: rtl;
+    }
+
+    .ulockd-testimonials .testi-thumb img {
+        border: 1px solid #eeeeee;
+        border-radius: 0 20px;
+        height: 100px;
+        margin: -50px auto 0;
+        width: 400px;
+    }
+
+    .ulockd-testimonials .testi-thumb ul li {
+        padding: 0;
+    }
+
+    .list-inline > li {
+        display: inline-block;
+    }
+
+    .text-thm2 {
+        color: #00b3ff !important;
+    }
+
+    .fontSize12 {
+        font-size: 12px !important;
+    }
+
+    .boderColorFv {
+        border-color: #30aedf !important
+    }
+
+    .nav > li > a, .nav > li > a {
+        background-color: rgb(243, 237, 237)
+    }
+</style>
+
+<div class="container-fluid row" style="padding:0;margin:0;">
+    <div class="col-sm-3 p-2">
+        <div class="container bg-primary p-2 text-center colorBG" style="border-radius:2px;background-color:#30aedf !important">
+            <h4 class="p-0 m-0 d-inline" style="color:white;font-size:20px;">Filters</h4>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter1').slideToggle()"><i class="fa fa-hand-point-right colorblue"></i> Type</p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter1').slideToggle()"></i>
+                <div id="filter1" class="display_none"></div>
+            </li>
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter2').slideToggle()"><i class="fa fa-hand-point-right colorblue"></i> Tablet</p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter2').slideToggle()"></i>
+                <div id="filter2" class="display_none"></div>
+            </li>
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter3').slideToggle()"><i class="fa fa-hand-point-right colorblue"></i> Quantity</p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter3').slideToggle()"></i>
+                <div class="display_none" id="filter3"></div>
+            </li>
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter4').slideToggle()"><i class="fa fa-hand-point-right colorblue"></i> Manufacturer</p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter4').slideToggle()"></i>
+                <div id="filter4" class="display_none"></div>
+                <div class="text-right">
+                    <button id="applyFilter" class="btn" style="background-color:#30aedf;color:white;font-size:16px;padding:4px 10px;">Apply</button>
+                </div>
+
+            </li>
+        </ul>
+        <fieldset id="mostlySearchDrug" class="container mt-2 pb-2" style="border:1px solid lightgray;border-radius:2px;">
+            <legend class="text-primary text-center" style="font-size:15px;width:auto">Mostly Searched Medicine</legend>
+
+        </fieldset>
+    </div>
+
+    <div class="col-sm-9 pt-2">
+        <div class="input-group mb-1 ">
+            <input type="text" class="form-control" placeholder="Search" id="searchDrugText" name="searchDrugText">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="searchDrug()" style="background-color: #30aedf !important;"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+
+        @*<div class="container-fluid m-0 p-0 mb-2" id="alphbatesFilter">
+                <p class="d-inline fontSize14">Browse all medicines:</p>
+                <a class="fontSize13 colorblue">A</a>
+                <a class="fontSize13 colorblue">B</a>
+                <a class="fontSize13 colorblue">C</a>
+                <a class="fontSize13 colorblue">D</a>
+                <a class="fontSize13 colorblue">E</a>
+                <a class="fontSize13 colorblue">F</a>
+                <a class="fontSize13 colorblue">G</a>
+                <a class="fontSize13 colorblue">H</a>
+                <a class="fontSize13 colorblue">I</a>
+                <a class="fontSize13 colorblue">J</a>
+                <a class="fontSize13 colorblue">K</a>
+                <a class="fontSize13 colorblue">L</a>
+                <a class="fontSize13 colorblue">M</a>
+                <a class="fontSize13 colorblue">N</a>
+                <a class="fontSize13 colorblue">O</a>
+                <a class="fontSize13 colorblue">P</a>
+                <a class="fontSize13 colorblue">Q</a>
+                <a class="fontSize13 colorblue">R</a>
+                <a class="fontSize13 colorblue">S</a>
+                <a class="fontSize13 colorblue">T</a>
+                <a class="fontSize13 colorblue">U</a>
+                <a class="fontSize13 colorblue">V</a>
+                <a class="fontSize13 colorblue">W</a>
+                <a class="fontSize13 colorblue">X</a>
+                <a class="fontSize13 colorblue">Y</a>
+                <a class="fontSize13 colorblue">Z</a>
+                <a href="#" style="float:right;margin-bottom:5px;clear:both;">Advanced Search</a>
+            </div>*@
+
+        <ul class="nav nav-tabs padding10" role="tablist" id="navListItem">
+            <li class="nav-item mx-1 mb-0">
+                <a class="nav-link navs-color navachPaddig active" data-toggle="tab" href="#home" onclick="color();">Overview</a>
+            </li>
+            <li class="nav-item mx-1 mb-0" title="Side Effects">
+                <a class="nav-link navs-color navachPaddig" data-toggle="tab" href="#drgdet" id="menu1" onclick="color()">DrugDetail</a>
+            </li>
+            <li class="nav-item mx-1 mb-0">
+                <a class="nav-link  navs-color navachPaddig" data-toggle="tab" href="#near" id="menu2" onclick="color()">Nearest Store</a>
+            </li>
+            @*<li class="nav-item mx-1 mb-0">
+                    <a class="nav-link  navs-color navachPaddig" data-toggle="tab" href="#menu3" id="menu3" onclick="color()">Professional</a>
+                </li>
+                <li class="nav-item mx-1 mb-0">
+                    <a class="nav-link  navs-color navachPaddig" data-toggle="tab" href="#menu4" id="menu4" onclick="color()">Tips</a>
+                </li>
+                <li class="nav-item mx-1 mb-0">
+                    <a class="nav-link  navs-color navachPaddig" data-toggle="tab" href="#menu5" id="menu5" onclick="color()">Interaction</a>
+                </li>*@
+            @*<li>*@
+
+
+        </ul>
+        <div style="border-bottom: 2px solid dodgerblue; position: relative; transition-duration: .5s;">
+            <a href="#" id="more_less" onclick="more(navListItem)" style="bottom:-3px"> <i class="fa fa-plus-square colorblue"></i></a>
+        </div>
+
+        <div id="home">
+            <select id="pageSelector" name="pageSelector" class="pagesize-dropdown">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+
+            <table id="example" class="table">
+                <thead class="hidden">
+                    <tr><th>Subscriber</th></tr>
+                </thead>
+                <tbody id="drugTabContentOters"></tbody>
+            </table>
+        </div>
+        <div id="drgdet">
+            <div id="dhead"></div>
+            <div id="ddetail"></div>
+        </div>
+        <div id="near">
+
+        </div>
+        <div id="">
+            <nav aria-label="Page navigation">
+                <div id="page-selection"></div>
+            </nav>
+        </div>
+
+
+
+        <!-- coupon -->
+        <!-- The Modal -->
+        <div class="modal" id="couponModal">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header position-relative p-0">
+                        <h1 class="modal-title mx-auto" style="color:dodgerblue">Coupons</h1>
+                        <!-- <i class="fas fa-times-circle" class="close" data-dismiss="modal" style="position:absolute;z-index:16;right:2px;top:2px;border-radius:50%;font-size:20px;background-color:white;cursor:pointer;overflow:visible"></!-->
+
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Image Map Generated by http://www.image-map.net/ -->
+        <div class="container-fluid px-0 mt-4">
+            <div class="container-fluid text-center " style="background-color:white;">
+                <p style="color:rgb(99, 93, 93);font-size:14px">HAS ALSO BEEN FEATURED ON:</p>
+                <div class="container-fluid">
+                    <img src='~/Content/client/images/logo1.jpg' class="logo">
+                    <img src='~/Content/client/images/logo2.jpg' class="logo">
+                    <img src='~/Content/client/images/logo3.webp' class="logo">
+                    <img src='~/Content/client/images/logo4.png' class="logo">
+                    <img src='~/Content/client/images/logo3.png' class="logo">
+                </div>
+            </div>
+            <div class="row m-4">
+                <div class="col-sm-6 p-3" style="font-size:15px;background-image: url('/Content/client/images/DoctorsImg.jpg');background-size:cover;">
+                    works with doctors, hospitals and clinics<br>
+                    <div class="" style="width:50%;font-size:15px">
+                        Cost is one of the primary reasons Americans don't take their medication.
+                    </div>
+                    @*<a href="#"></a>*@
+                    <br>
+                    <br>
+                    <div class="" style="width:50%;font-size:15px">
+                        Thousand of doctors and hospitals use to help their patients afford their drugs.<br><br>
+                        <button class="btn" style="background-color:#30aedf;color:white;font-size:16px;padding:4px 10px;">Learn More</button>
+                    </div>
+                </div>
+                <div class="col-sm-6 p-4" style="font-size:15px;background-image: url('/Content/client/images/DrugImage.jpg');background-size:cover;">
+                    <h6>Put savings in your pocket</h6>
+                    <p style="width:60%;font-size:14px;">
+                        website will send you a drug
+                        saving card that can be used for
+                        discount of up to 80% on most
+                        prescription drugs at virtually every
+                        U.S. pharmacy
+                    </p>
+                    <button class="btn" style="background-color:#30aedf;color:white;font-size:16px;padding:4px 10px;">GET A FREE DISCOUNT CARD</button>
+                </div>
+            </div>
+        </div>
+
+        <map name="image-map">
+            <area target="_self" id="cost" title="cost" href="#" coords="" shape="rect" style="z-index: 2">
+            <area target="_self" id="learn_more" title="learn_more" href="#" coords="" shape="rect" style="z-index: 2">
+            <area target="_self" id="discount" title="discount" href="#" coords="" shape="rect" style="z-index: 2">
+        </map>
+        <p class="m-0" style="color:dodgerblue">Featured Pharmacy</p>
+
+        @*<div id="demo" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="d-flex justify-content-between advert" style="margin-bottom:0;">
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/cycling.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+
+                            <div class="card  advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/doctors.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/laptop.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary" height="300px">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="d-flex justify-content-between advert" style="margin-bottom:0;">
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/cycling.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+
+                            <div class="card  advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/laptop.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/doctors.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary" height="300px">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/doctors.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary" height="300px">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="d-flex justify-content-between advert" style="margin-bottom:0;">
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/laptop.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+
+                            <div class="card  advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/doctors.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/cycling.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary" height="300px">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+                            <div class="card advert-card">
+                                <img class="card-img-top img-size" src="~/Content/client/images/doctors.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body p-0 text-center bg-primary" height="300px">
+                                    <h6 class="card-title text-center" style="color:white;margin:5px 0 2px 0;">Kailash Hospital</h6>
+                                    <div class="p-0 m-0" style="margin:0 0 10px 0">
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <i class="fa fa-star star little-star"></i>
+                                        <span style="color:dodgerblue;">(209 Reviews)</span>
+                                    </div>
+                                    <p class="text-white mb-0">Locations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>*@
+
+
+
+        <div id="owl-carousel1" class="three-grid-slider owl-carousel owl-theme owl-rtl owl-loaded">
+
+
+
+
+
+
+            <div class="owl-stage-outer">
+                <div class="owl-stage" style="transform: translate3d(1533.33px, 0px, 0px); transition: all 1.2s ease 0s; width: 4600px;">
+                    <div class="owl-item" style="width:373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/doctors.jpg" alt="4.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Kailash Hospital</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4><small>Locations</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/cycling.jpg" alt="5.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Max Cure</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4> <small>Locations</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/7.jpg" alt="6.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Sun &amp; Shine</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4><small>Locations</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/laptop.jpg" alt="1.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Vijaya Care</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4> <small>Locatios</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/8.jpg" alt="2.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Honest &amp; Dependable</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4><small>Locatios</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/9.jpg" alt="3.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Licensed &amp; Insured</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+                                    <h4> <small>Locatios</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/10.jpg" alt="4.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Special Care</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4> <small>Locatios</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/1.jpg" alt="5.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Home Service</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4> <small>Locatios</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/laptop.jpg" alt="6.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Honest &amp; Dependable</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4><small>Locatios</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/2.jpg" alt="1.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Peaceful Behaviour</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4> <small>Locatios</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item " style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/3.jpg" alt="2.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Honest &amp; Dependable</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4><small>Locations</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+                        <div class="item">
+                            <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                <div class="testi-thumb">
+                                    <img class="img-responsive thumbnail" src="~/Content/client/images/laptop.jpg" alt="3.jpg">
+                                    <ul class="list-inline ulockd-mrgn1220">
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                        <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                                    </ul>
+                                    @*<h6 class="fz16"><em>Licensed &amp; Insured</em></h6>*@
+                                </div>
+                                <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                <div class="testi-details">
+
+                                    <h4> <small>Locations</small></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="owl-controls">
+                <div class="owl-nav">
+                    <div class="owl-prev" style="display: none;">
+                        <i class="fa fa-long-arrow-left"></i>
+                    </div>
+                    <div class="owl-next" style="display: none;">
+                        <i class="fa fa-long-arrow-left-right"></i>
+                    </div>
+                </div>
+                <div class="owl-dots" style="">
+                    <div class="owl-dot active">
+                        <span></span>
+                    </div>
+                    <div class="owl-dot">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#">Search more senior cares in <b>Los Angeles</b></a>
+    </div>
+
+
+</div>
+@section scripts {
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+            crossorigin="anonymous">
+    </script>
+    <script src="~/Scripts/drugs/jquery.table.marge.js"></script>
+
+    <script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+
+    <script type="text/javascript">
+
+        var owl = $('#owl-carousel1');
+        owl.owlCarousel({
+            animateOut: 'slideOutDown',
+            animateIn: 'flipInX',
+            //autoHeight: true,
+            dots: true,
+            items: 5,
+            loop: true,
+            nav: true,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 5000
+            //,
+            //adaptiveHeight: true,
+        });
+
+        /* Object model to store request and response data */
+        var Type = [];
+        var Tablet = []
+        var Quantity = [];
+        var Manufacturer = [];
+        var responseData = [];
+        var pharresponseData = [];
+        var searchParameter = {
+            "MedicineName": "",
+            "PageNumber": 1,
+            "PageSize": $("#pageSelector option:selected").val() ? $("#pageSelector option:selected").val() : 10,
+            "DrugTypeId": [],
+            "TabletId": [],
+            "DrugQuantityId": [],
+            "DrugManufacturerId": [],
+            "StartWithAlphabetically": ""
+        };
+        var i = 1;
+
+        /* Calling Methods to get data on page load */
+        $(document).ready(function () {
+            $("#drugTabContentOters").append('<tr class="no-data"><td colspan="4">No data found</td></tr>');
+            GetDrugFliterDroplist();
+            GetDrugPharmacyDetails();
+            GetMostlySearchedDrug();
+            //debugger;
+            //getpharmacy();
+        });
+
+        $("#pageSelector").change(function () {
+            searchParameter.PageSize = $("#pageSelector option:selected").val();
+            GetDrugPharmacyDetails();
+            getpharmacy();
+        })
+
+        function LoadPagination(totalPage) {
+            console.log(totalPage);
+            if (totalPage == 0) {
+                $("#page-selection").empty();
+            };
+            $('#page-selection').bootpag({
+                total: totalPage > 0 ? totalPage : 0,
+                maxVisible: 5,
+                firstLastUse: true,
+                first: 'FIRST',
+                last: 'LAST'
+            }).on("page", function (event, num) {
+                $("#content").html("Insert content");
+                searchParameter.PageNumber = num;
+                GetDrugPharmacyDetails();
+                getpharmacy();
+            });
+            $('#page-selection li').addClass('page-item');
+            $('#page-selection a').addClass('page-link');
+        }
+
+        function GetDrugFliterDroplist() {
+            $.ajax({
+                url: "/SearchDrug/GetDrugFliterDroplist",
+                type: "Get",
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+
+                        bindFilterData(response.Data);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+        function getpharmacy() {
+            debugger;
+
+            //$.ajax({
+            //    url: "/SearchDrugs/Getpharmadt",
+            //    type: "Post",
+            //    data: searchParameter,
+            //    success: function (response) {
+            //        debugger;
+            //        if (response.Status == 200 && response.Data) {
+            //            responseData = response.Data;
+            //            // drugContentCreate(response.Data);
+            //            loaddrugs(responseData)
+            //            //LoadPagination(parseInt(response.Message));
+            //        }
+            //    },
+            //    error: function (data) {
+            //        unblockPage();
+            //        HandleResponse(data);
+            //    }
+            //});
+            $.ajax({
+                url: "/SearchDrugs/Getpharmadt",
+                type: "Post",
+                data: searchParameter,
+                success: function (response) {
+                    debugger;
+                    if (response.Status == 200 && response.Data) {
+                        pharresponseData  = response.Data;
+                        showpharma(pharresponseData );
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+        function showpharma(responseData) {
+            debugger;
+            $("#near").empty();
+
+            element = "";
+            for (j = 0; j < responseData.length; j++) {
+                
+                if ((j % 2) == 0 && j>0) {
+                    element = element + "</div>";
+                }
+                if ((j % 2) == 0) {
+                    
+                    element = element + "</br><div class='row'>";
+
+                }
+              
+                element = element +"    <div class='col-sm-6'>";
+                element = element + "<div class='card'>";
+                if (responseData[j]["logofilepath"] == null) {
+                    element = element + "<img src='/dist/img/defaultpharma.jpg'   class='card-img-top' alt='...'>";
+                }
+                else {
+                    element = element + "<img src='/dist/img/" + responseData[j]["logofilepath"] + "'   class='card-img-top' alt='...'>";
+                }
+                
+                element = element + "<div class='card-body'>";
+                element = element + "<h5 class='card-title'>"+responseData[j]["organisationname"]+" </h5>";
+                element = element + "<p class='card-text'>" + responseData[j]["longdescription"] + "</p>";
+
+                element = element +"<a href'#' class='btn btn-primary'>See Details</a>";
+                element = element +"</div>";
+                element = element + "</div>";
+                element = element + "</div>"; 
+                 
+                
+
+                
+            }
+
+            $("#near").append(element);
+        }
+        function GetDrugPharmacyDetails() {
+
+            $.ajax({
+                url: "/SearchDrugs/GetDrugsdt",
+                type: "Post",
+                data: searchParameter,
+                success: function (response) {
+                    debugger;
+                    if (response.Status == 200 && response.Data) {
+                        responseData = response.Data;
+                        // drugContentCreate(response.Data);
+                        loaddrugs(responseData)
+                        //LoadPagination(parseInt(response.Message));
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+        function loaddrugs(responseData) {
+            debugger;
+            var element;
+            $("#drugTabContentOters").empty();
+            $("#drugTabContentOters").parents("tr").remove();
+            if (responseData.length > 0) {
+            element = "<tr><th>Generic</th><th>Tablet</th><th>Dosage</th><th>Package</th><th>Company</th><tr>"
+                $("#drugTabContentOters").append(element);
+            }
+            for (j = 0; j < responseData.length; j++) {
+                element = "";
+
+                element = "<tr><td style='vertical-align:middle'>" + responseData[j]["Drugname"] + "</td>"
+                element = element + "<td></td>"
+                element = element + "<td>" + responseData[j]["Dosage"] + "</td>"
+                element = element + "<td></td>"
+                element = element + "<td>" + responseData[j]["Company"] + "</td>"
+                element = element + "</tr>"
+                $("#drugTabContentOters").append(element);
+            }
+            $("#dhead").empty();
+            $("#dhead").append(responseData[0]["ShortDescription"]);
+            $("#ddetail").empty();
+            $("#ddetail").append(responseData[0]["Description"]);
+            $('#example').margetable({
+                type: 1,
+                colindex: [{
+                    index: 0,
+                    dependent: [0]
+                }]
+            });
+
+        }
+        function GetMostlySearchedDrug() {
+            $.ajax({
+                url: "/SearchDrug/MostlySearchedDrug",
+                type: "Get",
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        BindMostlySearchedDrug(response.Data);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+
+        /* Binding API data to the UI */
+        function BindMostlySearchedDrug(searchedDrug) {
+            var splitDrugByComma = searchedDrug ? (searchedDrug.MostlySearchedDrug ? searchedDrug.MostlySearchedDrug.split(',') : []) : [];
+            splitDrugByComma.forEach(function (value, index) {
+                var element = '<button style="cursor:pointer" class="btn btn-outline-primary m-2 recentDrugsPadding boderColorFv" onclick="searchMostlySearched(this)">' + value + '</button>'
+                $("#mostlySearchDrug").append(element);
+            });
+        }
+
+        function bindFilterData(responseData) {
+
+            Type = responseData.DrugType;
+            Manufacturer = responseData.DrugManufacturer;
+            Quantity = responseData.DrugQuantity;
+            Tablet = responseData.Tablet;
+
+            //createItemsType(Type, 1, 'Type');
+            //createItemsTablet(Tablet, 2, 'Tablet');
+            //createItemsQuantity(Quantity, 3, 'Quantity');
+            //createItemsManufacturer(Manufacturer, 4, 'Manufacturer');
+        }
+
+        function btnFunction(obj) {
+            obj.style.backgroundColor = 'rgb(40, 165, 40)';
+            obj.innerHTML += '&nbsp;<i class="fa fa-check-circle"></i>';
+            $('.btn-size').attr('onclick', '');
+        }
+        function enlarge(obj) {
+            if (window.innerWidth > 576)
+                $(obj).css({ 'transform': 'scale(1.5)', 'z-index': '10', 'transition-duration': '.3s' });
+        }
+
+        /* Create elements dynamically based on API response data.
+         * Creating Filter option like Quantity, Type, Manufaturer */
+
+        function createItemsType(values, id, header) {
+
+            if (values.length > 0) {
+
+                values.forEach(function (value, i) {
+                    if (value.Type) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.DrugTypeId + ' title="' + value.Type + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.Type + '">' + value.Type + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+        function createItemsTablet(values, id, header) {
+            if (values.length > 0) {
+                values.forEach(function (value, i) {
+                    if (value.DrugPower) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.TabletId + ' title="' + value.DrugPower + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.DrugPower + '">' + value.DrugPower + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+        function createItemsQuantity(values, id, header) {
+            if (values.length > 0) {
+
+                values.forEach(function (value, i) {
+                    if (value.Quantity) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.DrugQuantityId + ' title="' + value.Quantity + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.Quantity + '">' + value.Quantity + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+        function createItemsManufacturer(values, id, header) {
+            if (values.length > 0) {
+                values.forEach(function (value, i) {
+                    if (value.Manufacturer) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.DrugManufacturerId + ' title="' + value.Manufacturer + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.Manufacturer + '">' + value.Manufacturer + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+
+        /* Creating request object before sending to searching data
+         * Remove duplicate record from the object if filter is getting updated multiple time.*/
+        function updateFilter(name, header) {
+            var isChecked = name.checked;
+            var id = (name ? name.id : 0);
+            if (header == "Type") {
+                searchParameter.DrugTypeId = filterDuplicate(searchParameter.DrugTypeId, id);
+                isChecked ? searchParameter.DrugTypeId.push(id) : null;
+            }
+            else if (header == "Tablet") {
+                searchParameter.TabletId = filterDuplicate(searchParameter.TabletId, id);
+                isChecked ? searchParameter.TabletId.push(id) : null;
+            }
+            else if (header == "Quantity") {
+                searchParameter.DrugQuantityId = filterDuplicate(searchParameter.DrugQuantityId, id);
+                isChecked ? searchParameter.DrugQuantityId.push(id) : null;
+            }
+            else if (header == "Manufacturer") {
+                searchParameter.DrugManufacturerId = filterDuplicate(searchParameter.DrugManufacturerId, id);
+                isChecked ? searchParameter.DrugManufacturerId.push(id) : null;
+            }
+        }
+
+        function filterDuplicate(arrayList, removeItem) {
+            if (arrayList)
+                return arrayList.filter(x => x != removeItem);
+        }
+
+        function searchDrug(alphabhates) {
+            searchParameter.MedicineName = $("#searchDrugText").val();
+            searchParameter.StartWithAlphabetically = alphabhates ? alphabhates : null;
+            GetDrugPharmacyDetails();
+            if (!alphabhates) {
+                $("#alphbatesFilter a").removeClass('alphabates-color');
+            }
+            getpharmacy();
+        }
+
+        function searchMostlySearched(mostlySearcheddrugName) {
+            $("#searchDrugText").val(mostlySearcheddrugName.textContent);
+            searchDrug();
+        }
+
+
+        /* Catch events before filter the data */
+        $("#applyFilter").click(function () {
+            searchDrug();
+        })
+
+        $('#searchDrugText').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                searchDrug();
+            }
+        });
+
+        $("#searchDrugText").blur(function () {
+            //searchDrug();
+        });
+
+        $("#alphbatesFilter a").click(function (event) {
+            $("#alphbatesFilter a").removeClass('alphabates-color');
+            $(this).addClass('alphabates-color');
+            $("#searchDrugText").val('');
+            searchDrug(this.innerText);
+        })
+
+        $('.nav-link.navs-color').click(function (event) {
+            drugContentCreate(responseData, this.innerText);
+        });
+
+        function action(text) {
+            drugContentCreate(responseData, text);
+        }
+
+        function drugContentCreate(responseData, actionText) {
+            $("#drugTabContentOters").empty();
+            debugger;
+            if (responseData.length == 0) {
+                $("#drugTabContentOters").append('<tr class="no-data"><td colspan="4">No data found</td></tr>');
+            }
+
+            if (responseData.length > 0) {
+                //responseData.forEach(function (drug, i) {
+                //    var createModule = '<tr id="drugTabContent' + i + '" class="tab-content align-left"></tr>';
+                //    $("#drugTabContentOters").append(createModule);
+
+                //    var element = '<div id="' + actionText + i + '" class="tab-pane fade in show p-3 active" style="border-bottom:2px solid dodgerblue;"><h3 class="d-inline" style="color:#1E90FF">' + drug.MedicineName + ' </h3><p class="d-inline-block text-secondary"> ' + drug.ShortDescription + '</p><p>' + drug.LongDescription + '</p></div>'
+                //    $("#drugTabContent" + i).append(element);
+                //    createTableHeaderAndBody(i, drug.PharmacyDetail);
+
+                //});
+                loaddrugs(responseData);
+                debugger;
+                if (actionText == "Overview") {
+                    $("#home").show();
+                    $("#drgdet").hide();
+                    $("#near").hide();
+                }
+                else if (actionText == "DrugDetail") {
+                    $("#home").hide();
+                    $("#drgdet").show();
+                    $("#near").hide();
+                }
+                else if (actionText == "Nearest Store") {
+                    $("#home").hide();
+                    $("#drgdet").hide();
+                    $("#near").show();
+                }
+
+            }
+            else {
+                debugger;
+                responseData.forEach(function (drug, i) {
+                    var drugDetails = '';
+                    var createModule = '<tr id="drugTabContent' + i + '" class="tab-content align-left"></tr>';
+                    $("#drugTabContentOters").append(createModule);
+
+                    switch (actionText) {
+                        case "Side Effects":
+                            drugDetails = drug.SideEffects;
+                            drug.drugName = "Side Effects";
+                            break;
+                        case "Dosage":
+                            drugDetails = drug.Dosage;
+                            drug.drugName = "Dosage";
+                            break;
+                        case "Professional":
+                            drugDetails = drug.Professional;
+                            drug.drugName = "Professional";
+                            break;
+                        case "Tips":
+                            drugDetails = drug.Tips;
+                            drug.drugName = "Tips";
+                            break;
+                        case "Interaction":
+                            drugDetails = drug.Interaction;
+                            drug.drugName = "Interaction";
+                            break;
+                        default:
+                        // code block
+                    }
+
+                    var element = '<div id="' + actionText + i + '" class="tab-pane show p-2 active" style="border-bottom:2px solid dodgerblue;"><br><h3 class="d-inline" style="color:#1E90FF">' + drug.drugName + ' </h3><p>' + drugDetails + '</p></div>'
+                    $("#drugTabContent" + i).append(element);
+                    createTableHeaderAndBody(i, drug.PharmacyDetail);
+                });
+            }
+        }
+
+        //Create Pharmacy each rows dynamically.
+        function createTableHeaderAndBody(parentIdIndex, PharmacyDetail) {
+            var table1 = "pharmacyTable" + parentIdIndex;
+
+            var element = '<i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="toggleElement(' + table1 + ')"></i><div class="table-responsive pharmacy mt-4" style="border:1px solid" id=' + table1 + '><table class="table table-borderless"><tbody>' + createRow(PharmacyDetail) + '</tbody></table>';
+
+            $("#drugTabContent" + parentIdIndex).append(element);
+        }
+        function createRow(PharmacyDetails) {
+            var element = '';
+            PharmacyDetails.forEach(function (PharmacyDetail, i) {
+                element += '<tr>' + createCellWithImg() + createCellOnly(PharmacyDetail.PharmacyName) + createCellOnly(PharmacyDetail.PharmacyAddress) + createCellOnly("2.1 MI") + createCellOnly("$" + PharmacyDetail.Price) + createCellWithOrderBtn() + createCellWithCoupon() + '</tr>';
+            });
+            return element;
+        }
+        function createCellOnly(data) {
+            data = data ? data : '';
+            var element = '<td class="text-left p-1 pl-0" style="font-size:12px;white-space: nowrap;">' + data + '</td>';
+            return element;
+        }
+        function createCellWithImg() {
+            var element = '<td class="text-left p-1 pr-0" style="font-size:12px;color:dodgerblue;"><img class="p-0" src="/Content/client/images/logo3.jpg" alt="logo" width="20px"></td>';
+            return element;
+        }
+        function createCellWithCoupon() {
+            var element = '<td class="text-left p-1 px-1"><button class="btn btn-success p-1" style="font-size:12px;" data-toggle="modal" data-target="#couponModal">Coupon</button></td>';
+            return element;
+        }
+        function createCellWithOrderBtn() {
+            var element = '<td class="text-left p-1 px-1"><button class="btn btn-primary p-1" style="white-space: nowrap;font-size:12px;">Order Now</button></td>';
+            return element;
+        }
+
+        //Toggle Div
+        function toggleElement(id) {
+            $("#" + id.id).slideToggle().toggleClass();
+        }
+    </script>
+    <script src="~/Scripts/client/search.js"></script>
+ }
+
+
+
+

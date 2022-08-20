@@ -1,0 +1,171 @@
+﻿@model Binke.Model.Pharmacy
+@{
+    ViewBag.Title = "Pharmacy Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-home"></i> Pharmacy Profile </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Pharmacy"> Pharmacy </a></li>
+            <li class="active"> Profile </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+        <div class="panel">
+            <div class="panel-body np">
+                <img src="@Model.PharmacyUser.ProfilePicture" alt="Cover" class="img-responsive">
+                <div class="text-center">
+                    <!-- panel body -->
+                    <h4 class="text-lg text-overflow mar-top">@Model.PharmacyUser.FullName</h4>
+                    <p class="text-sm"></p>
+                    <!--/ panel body -->
+                    <div class="pad-ver">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+        <div class="panel">
+            <div class="panel-body pad-no">
+                <!--Default Tabs (Left Aligned)-->
+                <!--===================================================-->
+                <div class="tab-base">
+                    <!--Nav Tabs-->
+                    <ul class="nav nav-tabs">
+                        <li class="active"> <a data-toggle="tab" href="#UserInformation"> <i class="fa fa-lg fa-user"> </i> Pharmacy Information</a> </li>
+                        <li> <a data-toggle="tab" href="#Address"> <i class="fa fa-lg fa-home"> </i> Address </a> </li>
+                        <li> <a data-toggle="tab" href="#Drugs"> <i class="fa fa-lg fa-home"> </i> Drugs</a> </li>
+                        <li class="pull-right"> <a href="/PharmacyBasicInformation/@Model.PharmacyId"> <i class="fa fa-lg fa-edit"> </i> Edit </a> </li>
+                    </ul>
+                    <!--Tabs Content-->
+                    <div class="tab-content">
+                        <div id="UserInformation" class="tab-pane fade active in">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td><b> Pharmacy Name </b></td>
+                                                <td>@Model.PharmacyName</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b> Name </b></td>
+                                                <td>@Model.PharmacyUser.FullName</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b> Email </b></td>
+                                                <td><a href="mailto:@Model.PharmacyUser.Email"> @Model.PharmacyUser.Email</a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b> Phone No. </b></td>
+                                                <td>@Model.PharmacyUser.PhoneNumber</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b> Fax No. </b></td>
+                                                <td>@Model.PharmacyUser.FaxNumber</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Address" class="tab-pane fade">
+                            <div class="panel-body">
+                                @if (Model.Address.Any())
+                                {
+                                    var address = Model.Address.FirstOrDefault();
+
+                                    <div class="mapouter">
+                                        <div class="gmap_canvas">
+                                            <iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=@address.FullAddress&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div id="Drugs" class="tab-pane fade">
+                            <!--Hover Rows-->
+                            <!--===================================================-->
+                            <div class="panel-body">
+                                <table id="dtDrugs" class="table table-hover table-vcenter">
+                                    <thead>
+                                        <tr>
+                                            <th>Drug</th>
+                                            <th>Manufacture</th>
+                                            <th>Unitory Price</th>
+                                            <th>Selling Price</th>
+                                            <th>Description</th>
+                                            <th>Expiry Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.Drugs.Any())
+                                        {
+                                            foreach (var item in Model.Drugs)
+                                            {
+                                                <tr>
+                                                    <td>@item.DrugName</td>
+                                                    <td>@item.ManufactureName</td>
+                                                    <td>@item.UnitoryPrice</td>
+                                                    <td>@item.SellingPrice</td>
+                                                    <td>@item.Description</td>
+                                                    <td>@item.ExpiryDate</td>
+                                                    <td>'<a href="javascript:;" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="@item.DrugId" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Hover Rows-->
+                        </div>
+                    </div>
+                </div>
+                <!--===================================================-->
+                <!--End Default Tabs (Left Aligned)-->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section pagespecific {
+    <script src="~/Scripts/admin/plugins/moment/moment.min.js"></script>
+    <script type="text/javascript">
+
+        $('#dtDrugs').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).attr("data-flag");
+            var id = $(e.currentTarget).attr("data-Id");
+            switch (flag) {
+                case "edit":
+                    AddEditDrug(id);
+                    break;
+                default:
+            }
+        });
+
+        function AddEditDrug(id) {
+            $("#modalContent").load("/MyPharmacyDrugs/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+    </script>
+}

@@ -1,0 +1,276 @@
+﻿@model Binke.ViewModels.OrganisationProfileViewModel
+@{
+    ViewBag.Title = " Senior Care Profile";
+}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.OrganisationId == 0 ? "Add  Senior Care Profile" : "Edit  Senior Care Profile")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditSeniorCareProfile", "SeniorCare", FormMethod.Post, new { id = "frmSeniorCareProfile", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizationTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        @Html.HiddenFor(model => model.UserId)
+        if (ViewBag.ID > 0)
+        {
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.CreatedBy)
+        }
+        @Html.HiddenFor(model => model.IsDeleted)
+        @Html.HiddenFor(model => model.ApplicationUser_Id)
+        @Html.HiddenFor(model => model.LogoFilePath)
+
+        @Html.HiddenFor(model => model.Status)
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>NPI</b></label>
+                        @Html.TextBoxFor(model => model.NPI, new { @class = "form-control txt", placeholder = "Enter Unique NPI" })
+                        @Html.ValidationMessageFor(model => model.NPI, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Organization EIN</b></label>
+                        @Html.TextBoxFor(model => model.OrganizatonEIN, new { @class = "form-control txt", placeholder = "Enter Organization EIN" })
+                        @Html.ValidationMessageFor(model => model.OrganizatonEIN, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Enumeration Date</b></label>
+                        @Html.TextBoxFor(model => model.EnumerationDate, new { @class = "form-control txt datepicker", placeholder = "Enter Enumeration Date" })
+                        @Html.ValidationMessageFor(model => model.EnumerationDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Senior Care Name</b></label>
+                        @Html.TextBoxFor(model => model.OrganisationName, new { @class = "form-control txt", placeholder = "Enter Senior Care Name" })
+                        @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Alias Business Name</b></label>
+                        @Html.TextBoxFor(model => model.AliasBusinessName, new { @class = "form-control txt", placeholder = "Enter Alias Business Name" })
+                        @Html.ValidationMessageFor(model => model.AliasBusinessName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Senior Care Subpart</b></label>
+                        @Html.TextBoxFor(model => model.OrganisationSubpart, new { @class = "form-control txt", placeholder = "Enter Senior Care Subpart" })
+                        @Html.ValidationMessageFor(model => model.OrganisationSubpart, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Name Prefix</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialNamePrefix, new { @class = "form-control txt", placeholder = "Enter Official Name Prefix" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialNamePrefix, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>First Name</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialFirstName, new { @class = "form-control txt", placeholder = "Enter Official First Name" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialFirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Last Name</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialLastName, new { @class = "form-control txt", placeholder = "Enter Official Last Name" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialLastName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Credential</b></label>
+                        @Html.TextBoxFor(model => model.AuthorisedOfficialCredential, new { @class = "form-control txt", placeholder = "Enter Official Credential" })
+                        @Html.ValidationMessageFor(model => model.AuthorisedOfficialCredential, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Title Or Position</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialTitleOrPosition, new { @class = "form-control txt", placeholder = "Enter Title Or Position" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialTitleOrPosition, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Telephone Number</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialTelephoneNumber, new { @class = "form-control txt", placeholder = "Enter Official Telephone" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialTelephoneNumber, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Short Description</b></label>
+                        <textarea id="ShortDescription" name="ShortDescription" class="form-control editor" onupdated="$('#ShortDescription').summernote('code', this.data.value);" rows="4">@Model.ShortDescription</textarea>
+                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Long Description</b></label>
+                        <textarea id="LongDescription" name="LongDescription" class="form-control editor" onupdated="$('#LongDescription').summernote('code', this.data.value);" rows="4">@Model.LongDescription</textarea>
+
+                        @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 single-input">
+                        <label for="IsActive">Is Active</label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsActive" name="IsActive" @(Model.OrganisationId > 0 ? Model.IsActive == true ? "checked" : string.Empty :  "checked") data-Id="IsActive" />&nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 single-input">
+                        <label for="EnabledBooking">Enabled Booking</label>
+                        <label class="switch">
+                            <input type="checkbox" id="EnabledBooking" name="EnabledBooking" @(Model.OrganisationId > 0 ? Model.EnabledBooking == true ? "checked" : string.Empty :  "checked") data-Id="EnabledBooking" />&nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" id="btnCencel" class="btn btn-primary">Cancel</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+    $(document).ready(function () {
+
+        $('.datepicker').datepicker({
+            format: 'dd-MM-yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        //$("#OrganizationTypeID").val('1007');
+        //$("#UserTypeID").val('5');
+        $("#Status").val(' ');
+
+        var ID = "@ViewBag.ID";
+
+
+        if (ID == 0) {
+            $("#IsDeleted").val('false');
+        }
+
+        $(".editor").summernote();
+
+        //$('#divShortDescription').summernote({ height: 60 });
+        //$('#divLongDescription').summernote({ height: 60 });
+
+        function ResetAllFields() {
+            if (ID == 0) {
+                $(".txt").each(function () {
+                    $(this).val('');
+                });
+
+
+                $("#OrganisationId").val('');
+                $(".note-editable").text('');
+                $("#IsActive").prop("checked", false);
+                $("#EnabledBooking").prop("checked", false);
+            }
+            else {
+                $(".txt").each(function () {
+                    $(this).val('');
+                });
+
+
+                $("#OrganisationId").val('');
+                $(".note-editable").text('');
+                $("#IsActive").prop("checked", true);
+                $("#EnabledBooking").prop("checked", true);
+            }
+        }
+
+        $("#btnCencel").click(function () {
+            window.location.href = '/SeniorCare';
+        });
+
+        $("#btnSave").click(function () {
+            var frmerr = true;
+            $('#NPI').css("border-color", "");
+            $('#OrganisationName').css("border-color", "");
+            $('#AuthorizedOfficialFirstName').css("border-color", "");
+            $('#AuthorizedOfficialLastName').css("border-color", "");
+
+            if ($('#NPI').val() == "") {
+                $('#NPI').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if ($('#OrganisationName').val() == "") {
+                $('#OrganisationName').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if ($('#AuthorizedOfficialFirstName').val() == "") {
+                $('#AuthorizedOfficialFirstName').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if ($('#AuthorizedOfficialLastName').val() == "") {
+                $('#AuthorizedOfficialLastName').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if (frmerr) {
+
+                if ($('#IsActive').is(':checked')) {
+                    $('#IsActive').val('true');
+                }
+                else {
+                    $('#IsActive').val('false');
+                }
+
+                if ($('#EnabledBooking').is(':checked')) {
+                    $('#EnabledBooking').val('true');
+                }
+                else {
+                    $('#EnabledBooking').val('false');
+                }
+
+                $.validator.unobtrusive.parse($('#frmSeniorCareProfile'));
+                $('#ShortDescription').val(encodeURIComponent($("#ShortDescription").summernote('code')));
+                $('#LongDescription').val(encodeURIComponent($('#LongDescription').summernote('code')));
+                //if ($("#frmSeniorCareProfile").valid()) {
+                $.post("@Url.Action("AddEditSeniorCareProfile")", $("#frmSeniorCareProfile").serialize(), function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        if (response.Status == 1) {
+                            bindActiveSeniorCareList(true);
+                            ResetAllFields();
+                            closeModal();
+                        } else {
+                            location.reload();
+                        }
+                    }
+                });
+                //}
+            }
+        });
+
+    });
+</script>

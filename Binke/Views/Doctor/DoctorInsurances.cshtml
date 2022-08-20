@@ -1,0 +1,237 @@
+﻿@model Doctyme.Model.DoctorInsurancesViewModel
+@{
+                /**/
+
+                ViewBag.Title = "Insurances";
+                Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+@section pageheader{
+    <div class="col-md-12" style="margin-bottom:25px;">
+        <div class="col-md-3">
+            <h3><i class="fa fa-user-md"></i> Insurances </h3>
+        </div>
+        <div class="col-md-5 text-center" style="top:10px">
+            <h3>@Convert.ToString(Session["DoctorName"])</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="breadcrumb-wrapper" style="top:15px;">
+                <span class="label">You are here:</span>
+
+                <ol class="breadcrumb">
+                    <li> <a href='@("/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]))'> Doctor </a></li>
+                    <li class="active"> Insurances </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    #dtInsurances_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtInsurances_length {
+        float: left;
+    }
+</style>
+<style>
+    label.switch {
+        position: relative;
+        display: inline-block;
+        height: 23px;
+        padding-left: 2.8em !important;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+<div class="panel" style="margin-top:20px;">
+
+    <div class="panel-body">
+        <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addInsurances">Add  Insurances</button>
+        <table id="dtInsurances" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+
+                    <th>Insurance  Plan Name</th>
+                    <th>Reference Name</th>
+                    <th>State</th>
+                    <th>Active</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindInsurancesList();
+        });
+
+        $(document).on("click", "#addInsurances", function () {
+            window.location.href = '/AddEditDoctorInsurances/';
+            //AddEditInsurances(0);
+        });
+
+        function AddEditInsurances(id) {
+            window.location.href = '/AddEditDoctorInsurances/' + id;
+            //$("#modalContent").load("/AddEditDoctorInsurances/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function AddEditViewInsurances(id) {
+            window.location.href = '/AddEditViewDoctorInsurances/' + id;
+            //$("#modalContent").load("/AddEditDoctorInsurances/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function ViewInsurances(id) {
+            $("#modalContent").load("/_DoctorInsurancesView/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        function bindInsurancesList() {
+            if ($.fn.DataTable.isDataTable("#dtInsurances")) {
+                $('#dtInsurances').DataTable().destroy();
+            }
+            var table = $('#dtInsurances')
+                .DataTable({
+                    "sAjaxSource": "/GetDoctorInsurancesList/",
+                    "columns": [
+
+                        {
+                            "data": "InsurancePlanName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ReferenceName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "StateId",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> ';
+                                content += '<label class="switch" style="pointer-events:none">';
+                                content += '<input onchange="ActiveDeactiveInsurances(this)"  type="checkbox" ' + value + ' data-DocId="' + row.InsurancesId + '" data-Id= "IsActive" />';
+                                content += '<span class="slider round"style="width:35px;"></span>';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "DocOrgInsuranceId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div><a href="javascript:;" onclick="AddEditInsurances(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="AddEditViewInsurances(' + data + ')" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="RemoveInsurances(' + data + ')" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;</div>'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+        var ActiveDeactiveInsurances = function (ctrl) {
+            var flag = $(ctrl).is(":checked");
+
+            var id = $(ctrl).data("docid");
+            switch (flag) {
+                case false:
+                    DeactivateInsurances(id, true);
+                    break;
+                case true:
+                    DeactivateInsurances(id, false);
+                default:
+            }
+        }
+        function DeactivateInsurances(id, flag) {
+            var title = flag ? "De Activate" : "Re Activate";
+            var message = "Are you sure you want to <b> " + title + " </b> this  Insurances";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeInsurances/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindInsurancesList();
+
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        $('#dtInsurances').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "edit":
+                    AddEditInsurances(id);
+                    break;
+                case "delete":
+                    RemoveInsurances(id);
+                    break;
+                case "View":
+                    ViewInsurances(id);
+                    break;
+            }
+        });
+
+        function RemoveInsurances(id) {
+            var message = "Are you sure you want to <b> Remove  Insurances </b> ";
+            BinkeDialog.Confirmation("Remove  Insurances", message, function () {
+                $.ajax({
+                    url: "/RemoveDoctorInsurances/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindInsurancesList();
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+    </script>
+}

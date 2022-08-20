@@ -1,0 +1,709 @@
+﻿@using Doctyme.Repository.Enumerable;
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Booking";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>
+<script src="~/Scripts/admin/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Booking</h3>
+        </div>
+        <div class="col-lg-7 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-3">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Facility/"> Facility</a></li>
+                    <li class="active"> Booking </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+
+    #dtSlot_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtSlot_length {
+        float: left;
+    }
+
+    label.error {
+        color: red;
+        font-weight: normal !important;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">Add/Edit Facility Booking</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="frmSlot">
+                    <fieldset id="bookingFieldSet">
+                        <input type="hidden" name="SlotId" id="SlotId" />
+                        <input type="hidden" name="ReferenceId" id="ReferenceId" />
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="PatientName">Patient Name</label>
+                            <input type="text" class="form-control" id="PatientName" name="PatientName" required title="Patient name is required!" placeholder="Enter Patient firstname, lastname" />
+                            <input type="hidden" id="BookedFor" name="BookedFor" />
+                        </div>
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="Email">Email</label>
+                            <input type="text" class="form-control" id="Email" name="Email" readonly />
+                        </div>
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="PhoneNumber">Contact No</label>
+                            <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" readonly />
+                        </div>
+
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="Address">Doctor Name</label>
+                            <select class="form-control chosen-select" id="DoctorID" name="DoctorID" required title="Doctor name is required!">
+                                <option value="">Select Doctor</option>
+                            </select>
+                            <span class="text-danger" style="display:none" id="DoctorNameError">Doctor is required!</span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="Address">Address</label>
+                            <select class="form-control chosen-select" id="AddressId" name="AddressId" required title="Address is required!">
+                                <option value="">Select Address</option>
+                            </select>
+                            <span class="text-danger" style="display:none" id="AddressError">Address is required!</span>
+                        </div>
+
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="SlotDate">Booking Date</label>
+                            <input type="text" class="form-control" id="SlotDate" name="SlotDate" required title="Booking date is required!" placeholder="Select Booking Date" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="SlotTime">Booking Time</label>
+                            <input type="text" class="form-control" id="SlotTime" name="SlotTime" required title="Booking time is required!" placeholder="Select Booking Time" />
+                        </div>
+
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="col-lg-12 col-md-12 single-input">
+                            <label for="Description">Reason</label>
+                            <input type="text" class="form-control" id="Description" name="Description" placeholder="Booking description" />
+                        </div>
+
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="InsuranceTypeId">Insurance Type</label>
+                            <select class="form-control chosen-select" id="InsuranceTypeId" name="InsuranceTypeId">
+                                <option>Select Insurance Type</option>
+                            </select>
+                            <span class="text-danger" style="display:none" id="InsuranceTypeError">Insurance type is required!</span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 single-input">
+                            <label for="InsurancePlanId">Insurance Plan</label>
+                            <select class="form-control chosen-select" id="InsurancePlanId" name="InsurancePlanId" required title="Insurance plan is required!">
+                                <option>Select Insurance Plan</option>
+                            </select>
+                            <span class="text-danger" style="display:none" id="InsurancePlanError">Insurance plan is required!</span>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="IsBooked">Is Booked</label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsBooked" name="IsBookedString" checked data-Id="IsBooked" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="IsEmailReminder">Email Reminder</label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsEmailReminder" name="IsEmailReminderString" checked data-Id="IsEmailReminder" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="City">Text Reminder</label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsTextReminder" name="IsTextReminderString" checked data-Id="IsTextReminder" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="State">Insurance Changed</label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsInsuranceChanged" name="IsInsuranceChangedString" checked data-Id="IsInsuranceChanged" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="col-lg-3 col-md-3 single-input">
+                            <label for="IsActive">Is Active</label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActiveString" checked data-Id="IsActive" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+
+                        <div class="col-lg-9">
+                            <button type="button" id="btnSubmit" class="btn btn-primary pull-right mr-2">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 clearfix">&nbsp;</div>
+<div class="panel">
+    <div class="panel-body">
+        <div id="renderAddEditBooking"></div>
+        <br />
+        @*<button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addSlot">Add Slot</button>*@
+        <table id="dtSlot" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th width="10%">Slot Date</th>
+                    <th width="10%">Slot Time</th>
+                    <th width="15%">Patient Full Name</th>
+                    <th width="15%">Doctor Name</th>
+                    <th width="15%">Facility Address</th>
+                    <th width="17%">Description </th>
+                    <th width="8%">Active</th>
+                    <th width="10%">Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT -->
+@Scripts.Render("~/bundles/jqueryval")
+@section pagespecific {
+    <script type="text/javascript">
+        var dataList = [];
+        var id = localStorage.getItem("organisationId");
+         var isDashboardAdd = false;
+        if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+            isDashboardAdd = true;
+        var dateToday = new Date();
+        $(document).ready(function () {
+            $("#header").text(localStorage.getItem("SelectedOrgName"))
+            $('#SlotDate').datepicker({
+                format: 'mm-dd-yyyy',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                autoclose: true,
+                todayHighlight: true,
+                startDate: dateToday,
+            });
+
+            
+            $('#SlotDate').on('changeDate', function (ev) {
+                if (dateToday.toLocaleDateString() == ev.date.toLocaleDateString()) {
+                    $('#SlotTime').val('');    
+                }
+            });
+
+            function minFromMidnight(tm) {
+                if (tm) {
+                    var ampm = tm.substr(-2)
+                    var clk = tm.substr(0, 5);
+                    var m = parseInt(clk.match(/\d+/g)[1])
+                    var h = parseInt(clk.match(/\d+/g)[0])
+                    h += (ampm.match(/pm/i)) ? 12 : 0;
+                    return h * 60 + m;
+                }
+            }
+
+            function getCurrentTime(date) {
+                var hours = date.getHours(),
+                    minutes = date.getMinutes(),
+                    ampm = hours >= 12 ? 'PM' : 'AM';
+
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+
+                return hours + ':' + minutes + ' ' + ampm;
+            }
+
+            function checkTime() {
+                var currentTime = getCurrentTime(new Date());
+                var selectedTime = $('#SlotTime').val();
+                var ct = minFromMidnight(currentTime);
+                var st = minFromMidnight(selectedTime);
+                console.log(moment())
+                if ($('#SlotDate').val() == moment().format("MM-DD-YYYY")) {
+                    if (st < ct) {
+                        alert("you cannot select past time for selected date");
+                        $('#SlotTime').val('');
+                    }
+                }
+            }
+
+            $('#SlotTime').timepicker({
+                'showMeridian': false,
+                change:checkTime
+            });
+            $("#ReferenceId").val(id);
+            if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+                AddIndividualSubmenuItems("Booking");
+            else
+                AddSubmenuItems("Booking", isDashboardAdd);
+            bindSlotList();
+        });
+        $("#InsuranceTypeId").chosen();
+        $("#InsuranceTypeId_chosen").css("width", "100%");
+        $("#InsurancePlanId").chosen();
+        $("#InsurancePlanId_chosen").css("width", "100%");
+
+        $("#DoctorID").chosen();
+        $("#DoctorID_chosen").css("width", "100%");
+        $("#AddressId").chosen();
+        $("#AddressId_chosen").css("width", "100%");
+        function bindSlotList() {
+            if ($.fn.DataTable.isDataTable("#dtSlot")) {
+                $('#dtSlot').DataTable().destroy();
+            }
+
+            dataList = [];
+
+            var table = $('#dtSlot')
+                .DataTable({
+                    "sAjaxSource": "/GetBookingList/" + id,
+                    "columns": [
+                        {
+                            "data": "SlotDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "SlotTime",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "FullName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "DoctorName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "FullAddress",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "width": "80px",
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> &nbsp;';
+                                content += '<label class="switch" style="padding-left:1.8em !important;">&nbsp;';
+                                content += '<input data-name="IsActive" disabled data-id="' + row.SlotId + '" onchange="UpdateSwitch(this)" type="checkbox" ' + value + ' data-Id= "IsActive" />&nbsp;';
+                                content += '<span class="slider round"style="width:35px;"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "SlotId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                dataList.push(row)
+                                var content = '<div style="display:flex"><a href="javascript:;" onclick="EditSlot(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" onclick="ViewSlot(' + data + ')" data-toggle="tooltip" data-original-title="View" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-name="IsDeleted" data-id="' + row.SlotId + '" onclick="UpdateSwitch(this)" data-toggle="tooltip" data-original-title="Delete" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        var ResetForm = function () {
+            $("#bookingFieldSet").removeAttr("disabled")
+            $(".chosen-select").attr('disabled', false).trigger("chosen:updated")
+            $('#frmSlot').each(function () {
+                this.reset();
+            });
+            $(".single-input input:checkbox").prop("checked", true);
+            $("#ReferenceId").val(id);
+            $("#InsurancePlanId option").remove();
+            $("#InsuranceTypeId").val("");
+            $("#AddressId").val("");
+            $("#DoctorID").val("");
+            $("#InsuranceTypeId").trigger("chosen:updated");
+            $("#InsurancePlanId").trigger("chosen:updated");
+            $("#AddressId").trigger("chosen:updated");
+            $("#DoctorID").trigger("chosen:updated");
+            $(".panel-title").text("Add/Edit Facility Booking")
+        }
+
+        var ViewSlot = function (slotId) {
+            $("#bookingFieldSet").attr("disabled", "disabled")
+            $(".chosen-select").attr('disabled', true).trigger("chosen:updated")
+            $(".panel-title").text("View Facility Booking")
+            EditSlot(slotId, true);
+        }
+
+        var UpdateSwitch = function (ctrl) {
+            var tableName = "Slot";
+            var primaryKeyName = "SlotId";
+            var flag = $(ctrl).is(":checked");
+            var fieldName = $(ctrl).data("name");
+            if (fieldName == "IsDeleted")
+                flag = true;
+            var primaryKeyValue = $(ctrl).data("id");
+            $.ajax({
+                url: "/Facility/UpdateSwitch/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    TableName: tableName, PrimaryKeyName: primaryKeyName, PrimaryKeyValue: primaryKeyValue, FieldToUpdateName: fieldName,
+                    FieldToUpdateValue: flag
+                },
+                success: function (data) {
+                    ResetForm();
+                    bindSlotList();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function EditSlot(slotId, isView) {
+            if (!isView) {
+                $(".panel-title").text("Add/Edit Facility Booking")
+                $("#bookingFieldSet").removeAttr("disabled")
+                $(".chosen-select").attr('disabled', false).trigger("chosen:updated")
+                $("#PatientName").attr('readonly', true);
+                 
+            }
+            var slotObj = $.grep(dataList, function (a) {
+                return a.SlotId == slotId;
+            });
+            $("#SlotDate").val(slotObj[0].SlotDate)
+            $("#ReferenceId").val(slotObj[0].ReferenceId)
+            $("#SlotTime").val(slotObj[0].SlotTime)
+            $("#SlotId").val(slotObj[0].SlotId)
+            $("#AddressId").val(slotObj[0].AddressId)
+            $("#BookedFor").val(slotObj[0].BookedFor)
+            $("#Email").val(slotObj[0].Email)
+            $("#PhoneNumber").val(slotObj[0].PhoneNumber)
+            $("#PatientName").val(slotObj[0].FullName)
+            $("#Description").val(slotObj[0].Description)
+            $("#DoctorID").val(slotObj[0].DoctorId)
+            $("#InsuranceTypeId").val(slotObj[0].InsuranceTypeId)
+            $("#InsuranceTypeId").trigger("chosen:updated");
+            $("#AddressId").trigger("chosen:updated");
+            $("#DoctorID").trigger("chosen:updated");
+            getInsurancePlanById(slotObj[0].InsurancePlanId)
+            //getInsurancePlanByType(slotObj[0].InsuranceTypeId, slotObj[0].InsurancePlanId)
+            if (slotObj[0].IsEmailReminder == true)
+                $("#IsEmailReminder").attr("checked", "checked")
+            else
+                $("#IsEmailReminder").removeAttr("checked")
+
+            if (slotObj[0].IsTextReminder == true)
+                $("#IsTextReminder").attr("checked", "checked")
+            else
+                $("#IsTextReminder").removeAttr("checked")
+
+            if (slotObj[0].IsInsuranceChanged == true)
+                $("#IsInsuranceChanged").attr("checked", "checked")
+            else
+                $("#IsInsuranceChanged").removeAttr("checked")
+
+            if (slotObj[0].IsBooked == true)
+                $("#IsBooked").attr("checked", "checked")
+            else
+                $("#IsBooked").removeAttr("checked")
+
+            if (slotObj[0].IsActive == true)
+                $("#IsActive").attr("checked", "checked")
+            else
+                $("#IsActive").removeAttr("checked")
+
+            var slDate = $("#SlotDate").val();
+            var slTime = $("#SlotTime").val();
+            var currentDate = "@DateTime.Now.Date.ToString("yyyy-MM-dd")";
+                var currentTime = "@DateTime.Now.ToString("hh:mm tt")";
+                if (new Date(slDate) < new Date(currentDate)) {
+                    $("#SlotDate").attr('readonly', true);
+                    $("#SlotTime").attr('readonly', true);
+                }
+                else if (new Date(slDate) == new Date(currentDate)) {
+                    if (Date.parse('01/01/2011 ' + slTime) < Date.parse('01/01/2011 ' + currentTime)) {
+                        $("#SlotTime").attr('readonly', true);
+                    }
+                    else {
+                        $("#SlotTime").attr('readonly', false);
+                    }
+                }
+                else {
+                    $("#SlotDate").attr('readonly', false);
+                    $("#SlotTime").attr('readonly', false);
+                }
+        }
+
+        function ShowHideError(isShowError, idToShowHide) {
+            if (isShowError) {
+                $("#" + idToShowHide).show()
+            }
+            else
+                $("#" + idToShowHide).hide();
+        }
+
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+
+        var form = $("#frmSlot");
+        form.validate();
+        $("#btnSubmit").click(function () {
+            var isAllValidate = true;
+            if (!$("#InsurancePlanId").val() || $("#InsurancePlanId").val() == "Select Insurance Plan") {
+                isAllValidate = false;
+                ShowHideError(true, "InsurancePlanError");
+            }
+
+            if (!$("#InsuranceTypeId").val() || $("#InsuranceTypeId").val() == "Select Insurance Type") {
+                isAllValidate = false;
+                ShowHideError(true, "InsuranceTypeError");
+            }
+
+            if (!$("#AddressId").val() || $("#AddressId").val() == "Select Insurance Type") {
+                isAllValidate = false;
+                ShowHideError(true, "AddressError");
+            }
+
+            if (!$("#DoctorID").val() || $("#DoctorID").val() == "Select Doctor") {
+                isAllValidate = false;
+                ShowHideError(true, "DoctorNameError");
+            }
+            if (!form.valid() || !isAllValidate) {
+                return;
+            }
+
+            var data = $("#frmSlot").serialize();
+
+            if (!$("#SlotId").val()) {
+                 $.post("@Url.Action("CreateBooking", "Facility")",
+                    data,
+                    function (response) {
+                        HandleResponse(response);
+                        if (response.Status == 1) {
+                            ResetForm();
+                            bindSlotList();
+                        }
+                    });
+            }
+            else {
+                $.post("@Url.Action("UpdateBooking", "Facility")",
+                    data,
+                    function (response) {
+                        console.log(response);
+                        HandleResponse(response);
+                        if (response.Status == 1) {
+                            ResetForm();
+                            bindSlotList();
+                        }
+                    });
+            }
+        });
+
+        $.ajax({
+            url: "/GetDrpAddressList/" + id,
+            type: "POST",
+            dataType: "json",
+            data: { Prefix: "" },
+            success: function (data) {
+                $("#AddressId option").remove();
+                var options = '';
+                options += '<option value="">Select Address</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].AddressId + '">' + data[i].Address + '</option>';
+                }
+                $('#AddressId').html(options);
+                $("#AddressId").trigger("chosen:updated");
+                //$.each(data, function (data, value) {
+                //    $("#AddressId").append($("<option></option>").val(value.AddressId).html(value.Address));
+                //})
+            }
+        })
+
+        $.ajax({
+            url: "/GetDrpDoctorList/" + id,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#DoctorID option").remove();
+                var options = '';
+                options += '<option value="">Select Doctor</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].DoctorId + '">' + data[i].DisplayName + '</option>';
+                }
+                $('#DoctorID').html(options);
+                $("#DoctorID").trigger("chosen:updated");
+
+                //$.each(data, function (data, value) {
+                //    $("#DoctorID").append($("<option></option>").val(value.DoctorId).html(value.DisplayName));
+                //})
+            }
+        })
+
+        $.ajax({
+            url: "/GetDrpInsuranceTypeList",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#InsuranceTypeId option").remove();
+                var options = '';
+                options += '<option value="">Select Insurance Type</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].InsuranceTypeId + '">' + data[i].Name + '</option>';
+                }
+                $('#InsuranceTypeId').html(options);
+                $("#InsuranceTypeId").trigger("chosen:updated");
+            }
+        })
+
+        $("#PatientName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/GetDrpUserList",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        console.log(data)
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.FullName, value: item.FullName, dataId: item.PatientId, dataPhone:item.PhoneNumber, dataEmail:item.Email };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                $(this).val(ui.item.label);
+                $("#BookedFor").val(ui.item.dataId);
+                $("#Email").val(ui.item.dataEmail);
+                $("#PhoneNumber").val(ui.item.dataPhone);
+            }
+        });
+
+        $("#InsurancePlanId").change(function () {
+            ShowHideError(false, "InsurancePlanError");
+        });
+
+        function getInsurancePlanByType(TypeId, PlanId) {
+            $.ajax({
+                url: "/GetDrpInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { TypeId: TypeId },
+                success: function (data) {
+
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Insurance Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i]);
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+                    if (PlanId != "") {
+                        $('#InsurancePlanId').val(PlanId);
+                    }
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        }
+
+        function getInsurancePlanById(PlanId) {
+            $.ajax({
+                url: "/GetDrpInsurancePlanByPlanId",
+                type: "POST",
+                dataType: "json",
+                data: { PlanId: PlanId },
+                success: function (data) {
+
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Insurance Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i]);
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+                    if (PlanId != "") {
+                        $('#InsurancePlanId').val(PlanId);
+                    }
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        }
+
+        $("#InsuranceTypeId").change(function () {
+            ShowHideError(false, "InsuranceTypeError");
+            $("#InsurancePlanId option").remove();
+            $('#InsurancePlanId').html('<option value="">Select Insurance Plan</option>');
+            $("#InsurancePlanId").trigger("chosen:updated");
+            getInsurancePlanByType($(this).val())
+        });
+
+    </script>
+}

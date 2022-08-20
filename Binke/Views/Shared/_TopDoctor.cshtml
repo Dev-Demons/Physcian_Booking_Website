@@ -1,0 +1,22 @@
+﻿@model List<Binke.ViewModels.FeaturedDoctorViewModel>
+
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <li>
+            <div class="media">
+                @{string DoctorUrl = string.IsNullOrEmpty(item.DoctorName) ? "/Search/doctor/" : ("/Search/doctor/" + (item.DoctorName.Split(' ')[1])); }
+                <a href="@DoctorUrl" class="pull-left mr-2" style="">
+                    @*<img src="https://placehold.it/64x64" alt="" >*@
+                    <img src="@item.ProfilePicture" width="64" class="media-object" alt="No Image">
+                </a>
+                <div class="media-body">
+                    <h6 class="media-heading mb-0"><a href="/Profile/Doctor/@item.DoctorName.Replace("&","").Replace(" ","")-@item.NPI">@item.DoctorName</a></h6>                    
+                    <p> @item.SpecialityName <br />  (@item.Reviews Reviews)</p>
+                </div>
+            </div>
+        </li>
+    }
+}

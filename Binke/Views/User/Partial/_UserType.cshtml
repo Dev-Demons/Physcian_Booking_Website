@@ -1,0 +1,80 @@
+﻿@model Binke.ViewModels.UserTypeViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.UserTypeId == 0 ? "Add User Type" :Model.IsViewMode?"View User Type": "Edit User Type")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditUserType", "User", FormMethod.Post, new { id = "frmUserType" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.UserTypeId)
+      
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>User Type Name</b></label>
+                <div class="form-group">
+                    @if (Model.IsViewMode)
+                    {@Html.TextBoxFor(m => m.UserTypeName, new { @class = "form-control", placeholder = "Enter User Type Name",@readonly="readonly" })
+
+                }
+                else
+                {@Html.TextBoxFor(m => m.UserTypeName, new { @class = "form-control", placeholder = "Enter User Type Name" })
+
+            }
+
+                    @Html.ValidationMessageFor(m => m.UserTypeName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Description</b></label>
+                <div class="form-group">
+                    @if (Model.IsViewMode)
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description",@readonly="readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description" })
+                    }
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+           
+        </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" style='@(Model.IsViewMode?"display:none":"")' class="btn btn-primary">Submit</button>
+</div>
+
+@Scripts.Render("~/scripts/full-calendar")
+
+<script type="text/javascript">
+ 
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmUserType'));
+        if ($("#frmUserType").valid()) {
+            $.post("@Url.Action("AddEditUserType")", $("#frmUserType").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "UserType") {
+                        bindExperienceList();
+                        closeModal();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+   
+
+</script>

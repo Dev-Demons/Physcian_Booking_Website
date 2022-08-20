@@ -1,0 +1,535 @@
+﻿@model Doctyme.Model.DoctorViewModel
+@using Binke.App_Helpers
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<style type="text/css">
+    .mr-10px {
+        margin-right: 10px;
+    }
+
+    .header-title {
+        padding: 6px;
+        margin-left: 6px;
+    }
+</style>
+<!-- Latest compiled JavaScript -->
+@section pageheader{
+    <div class="col-md-12" style="margin-bottom:25px;">
+        <div class="col-md-3">
+            <h3><i class="fa fa-user-md"></i>Profile </h3>
+        </div>
+        <div class="col-md-5 text-center" style="top:10px">
+            <h3>@Convert.ToString(Session["DoctorName"])</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="breadcrumb-wrapper" style="top:15px;">
+                <span class="label">You are here:</span>
+
+                <ol class="breadcrumb">
+                    <li> <a href='@("/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]))'> Doctor </a></li>
+                    <li class="active"> Profile </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row" style="margin-top:25px">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-heading box-header" style="display:flex">
+                <h4 class="title header-title" style="width:50%;">
+                    @(Model.DoctorId == 0 ? "Add Doctor Profile" : Model.IsViewMode ? "View Doctor Profile" : "Edit Doctor Profile")
+                </h4>
+
+
+            </div>
+
+
+            @using (Html.BeginForm("AddEditDoctor", "Doctor", FormMethod.Post, new { id = "frmDoctor", }))
+            {
+
+                @Html.HiddenFor(m => m.DoctorId)
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+                            @if (Model.IsViewMode)
+                            {
+                                <div class="col-md-3 mar-btm">
+                                    <label class="control-label"><b>Profile Picture</b></label>
+                                    @Html.HiddenFor(model => model.LogoFilePath)
+                                </div>
+                                if (Model.LogoFilePath != null)
+                                {
+                                    <div class="col-md-9 mar-btm">
+                                        <img src="~/Uploads/DoctorSiteImages/@Model.LogoFilePath" class="img img-responsive" style="width:100px;height:100px" alt="Doctor-icon" />
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-md-3 mar-btm">
+                                    <label class="control-label"><b>Profile Picture</b></label>
+                                    <input type="file" id="Image1" name="Image1" class="form-control" />
+                                    @Html.HiddenFor(model => model.LogoFilePath)
+                                    @Html.ValidationMessageFor(model => model.LogoFilePath, "", new { @class = "text-danger" })
+                                </div>
+                                if (Model.LogoFilePath != null)
+                                {
+                                    <div class="col-md-9 mar-btm">
+                                        <img src="~/Uploads/DoctorSiteImages/@Model.LogoFilePath" class="img img-responsive" style="width:100px;height:100px" alt="Doctor-icon" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>NPI</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.NPI, new { @class = "form-control", placeholder = "Enter NPI", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.NPI, new { @class = "form-control", placeholder = "Enter NPI" })
+                                    @Html.ValidationMessageFor(m => m.NPI, "", new { @class = "text-danger" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Enter Name Prefix</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.NamePrefix, new { @class = "form-control", placeholder = "Enter Name Prefix", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.NamePrefix, new { @class = "form-control", placeholder = "Enter Name Prefix" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Enter Name Suffix</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.NameSuffix, new { @class = "form-control", placeholder = "Enter Name Suffix", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.NameSuffix, new { @class = "form-control", placeholder = "Enter Name Suffix" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b> FirstName</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter FirstName", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter FirstName" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b> MiddleName</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", placeholder = "Enter MiddleName", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", placeholder = "Enter MiddleName" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b> LastName</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter LastName", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter LastName" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Phone Number</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
+                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b> Credential</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.Credential, new { @class = "form-control", placeholder = "Enter Credential", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.Credential, new { @class = "form-control", placeholder = "Enter Credential" })
+                                    @Html.ValidationMessageFor(m => m.Credential, "", new { @class = "text-danger" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm" style="display:none">
+                                <label class="control-label"><b> Education</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.Education, new { @class = "form-control", placeholder = "Enter Education", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.Education, new { @class = "form-control", placeholder = "Enter Education" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Enumeration Date *</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.EnumerationDate, new { @class = "form-control datetimepicker", placeholder = "Enter Enumeration Date", @readonly = "true", @type = "text" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.EnumerationDate, new { @class = "form-control datetimepicker", placeholder = "Enter Enumeration Date", @type = "text" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Practice Start Date</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.PracticeStartDate, new { @class = "form-control datetimepicker", placeholder = "Practice Start Date", @readonly = "true", @type = "text" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.PracticeStartDate, new { @class = "form-control datetimepicker", placeholder = "Practice Start Date", @type = "text" })
+
+                                }
+                            </div>
+                            <div class="col-md-12 mar-btm">
+                                <label class="control-label"><b>Short Description</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextAreaFor(m => m.ShortDescription, new { @class = "form-control editor", placeholder = "Enter ShortDescription", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextAreaFor(m => m.ShortDescription, new { @class = "form-control editor", placeholder = "Enter ShortDescription" })
+
+                                }
+                            </div>
+                            <div class="col-md-12 mar-btm">
+                                <label class="control-label"><b>Long Description</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextAreaFor(m => m.LongDescription, new { @class = "form-control editor", placeholder = "Enter Long Description", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextAreaFor(m => m.LongDescription, new { @class = "form-control editor", placeholder = "Enter Long Description" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm" style="display:none">
+                                <label class="control-label"><b>Select Language</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Enter language", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Enter language" })
+                                }
+                            </div>
+                            <div class="col-md-4 mar-btm" style="display:none">
+                                <label class="control-label"><b> Keywords</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.Keywords, new { @class = "form-control", placeholder = "Enter Keywords", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.Keywords, new { @class = "form-control", placeholder = "Enter Keywords" })
+
+                                }
+                            </div>
+
+
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Select Gender</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    <select class="form-control" disabled name="Gender">
+                                        <option value="">Select Gender</option>
+                                        <option @(Model.Gender == "M" ? "selected" : "") value="M">Male</option>
+                                        <option @(Model.Gender == "F" ? "selected" : "") value="F">Female</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select class="form-control" name="Gender">
+                                        <option>Select Gender</option>
+                                        <option @(Model.Gender == "M" ? "selected" : "") value="M">Male</option>
+                                        <option @(Model.Gender == "F" ? "selected" : "") value="F">Female</option>
+                                    </select>
+
+                                }
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 single-input">
+                                <label class="control-label" style="width:250px" for="IsPrimaryCare">Is Active</label>
+                                <label class="switch" for="IsActive">
+                                    <input type="checkbox" id="IsActive" name="IsActive" @(Model.DoctorId > 0 ? Model.IsActive == true ? "checked" : string.Empty : "checked") data-Id="IsActive" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                                @*<input type="hidden" name="IsPrimaryCare" id="IsPrimaryCare" value="@(Model.IsPrimaryCare?1:0)" />*@
+                            </div>
+                            <div class="col-lg-12 col-md-12 single-input">
+                                <label class="control-label" style="width:250px" for="IsPrimaryCare">Is Primary Care</label>
+                                <label class="switch" for="IsPrimaryCare">
+                                    <input type="checkbox" id="IsPrimaryCare" name="IsPrimaryCare" @(Model.DoctorId > 0 ? Model.IsPrimaryCare == true ? "checked" : string.Empty : "checked") data-Id="IsPrimaryCare" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                                @*<input type="hidden" name="IsPrimaryCare" id="IsPrimaryCare" value="@(Model.IsPrimaryCare?1:0)" />*@
+                            </div>
+                            <div class="col-lg-12 col-md-12 single-input">
+                                <label class="control-label" style="width:250px" for="IsNtPcp">Is Nt Pcp</label>
+                                <label id="switchNtPcp" class="switch" for="IsNtPcp">
+                                    <input type="checkbox" id="IsNtPcp" name="IsNtPcp" @(Model.DoctorId > 0 ? Model.IsNtPcp == true ? "checked" : string.Empty : "checked") data-Id="IsNtPcp" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                                @*<input type="hidden" name="IsNtPcp" id="IsNtPcp"  value="@(Model.IsNtPcp?1:0)"/>*@
+                            </div>
+                            <div class="col-lg-12 col-md-12 single-input">
+                                <label class="control-label" style="width:250px" for="IsAllowNewPatient">Is Allow New Patient</label>
+                                <label class="switch" for="IsAllowNewPatient">
+                                    <input type="checkbox" name="IsAllowNewPatient" id="IsAllowNewPatient" @(Model.DoctorId > 0 ? Model.IsAllowNewPatient == true ? "checked" : string.Empty : "checked") data-Id="IsAllowNewPatient" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                                @*<input type="hidden" name="IsAllowNewPatient" id="IsAllowNewPatient" value="@(Model.IsAllowNewPatient?1:0)"/>*@
+                            </div>
+                            <div class="col-lg-12 col-md-12 single-input">
+                                <label class="control-label" style="width:250px" for="EnabledBooking">Enabled Booking</label>
+                                <label class="switch" for="EnabledBooking">
+                                    <input type="checkbox" name="EnabledBooking" id="EnabledBooking" @(Model.DoctorId > 0 ? Model.EnabledBooking.Value == true ? "checked" : string.Empty : "checked") data-Id="EnabledBooking" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                                @*<input type="hidden" name="IsAllowNewPatient" id="IsAllowNewPatient" value="@(Model.IsAllowNewPatient?1:0)"/>*@
+                            </div>
+                            @*<div class="col-lg-12 col-md-12 single-input">
+                                <label class="control-label" style="width:250px" for="EnabledBooking">Enable Booking</label>
+                                <label class="switch">
+                                    @if (Model.EnabledBooking.HasValue)
+                                    {
+                                        @Html.CheckBoxFor(m => m.EnabledBooking.Value, new { @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="form-control" value="EnabledBooking" name="EnabledBooking" />
+                                    }
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                            </div>*@
+                            <div class="col-lg-12 col-md-12 single-input" style="display:none">
+                                <label class="control-label" style="width:250px" for="SoleProprietor">Sole Proprietor</label>
+                                <label class="switch">
+                                    @*@Html.CheckBoxFor(x => x.SoleProprietor)  <input type="checkbox" id="SoleProprietor" name="SoleProprietor" @(Model.SoleProprietor.HasValue ? (Model.SoleProprietor == true ? "checked" : string.Empty) : string.Empty) />&nbsp;*@
+                                    if (Model.SoleProprietor.HasValue)
+                                    {
+                                    @Html.CheckBoxFor(m => m.SoleProprietor.Value, new { @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                    <input type="checkbox" class="form-control" value="SoleProprietor" name="SoleProprietor" />
+                                    }
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-footer text-right">
+                    <button type="button" onclick="window.location.href='/Doctor/'" style="@(User.Identity.GetClaimValue("UserRole").ToString()=="Doctor"?"display:none":"")" id="btnSaveBack" class="btn btn-primary">Back to Listing</button>  <button type="button" id="btnSave" style='@(Model.IsViewMode?"display:none":"")' class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var ChangePatient = function () {
+        if ($('#chkIsAllowNewPatient').is(":checked")) {
+            $('#chkIsAllowNewPatient').removeAttr("checked");
+            $('#chkIsAllowNewPatient').prop("checked", false);
+
+            $('#IsAllowNewPatient').val('0');
+        }
+        else {
+            $('#chkIsAllowNewPatient').attr("checked", "checked");
+            $('#chkIsAllowNewPatient').prop("checked", true);
+            $('#IsAllowNewPatient').val('1');
+        }
+
+    }
+    var IsPrimaryCare = function () {
+        if ($('#chkIsPrimaryCare').prop("checked")==true) {
+            //$('#IsPrimaryCare').removeAttr("checked");
+            //$('#IsPrimaryCare').prop("checked", false);
+            $('#IsPrimaryCare').val('1');
+            //$('#IsAllowNewPatient').val('0');
+        }
+        else {
+            //$('#IsPrimaryCare').attr("checked", "checked");
+            //$('#IsPrimaryCare').prop("checked", true);
+            $('#IsPrimaryCare').val('0');
+            //$('#IsAllowNewPatient').val('1');
+        }
+
+    }
+    var IsNtPcp = function () {
+        if ($('#chkIsNtPcp').is(":checked")) {
+            $('#chkIsNtPcp').removeAttr("checked");
+            $('#chkIsNtPcp').prop("checked", false);
+            $('#IsNtPcp').val('0');
+        }
+        else {
+            $('#chkIsNtPcp').attr("checked", "checked");
+            $('#chkIsNtPcp').prop("checked", true);
+            $('#IsNtPcp').val('1');
+        }
+
+    }
+                    $(document).ready(function () {
+
+                        $(".editor").summernote();
+    });
+      $('input[type="file"]').change(function (e) {
+        var imageX = e.target.files[0];
+        var imgesize = imageX.size;
+        var fileName = e.target.files[0].name;
+
+          if (imgesize < 5242880) {
+            let img = new Image()
+            img.src = window.URL.createObjectURL(imageX)
+
+              img.onload = () => {
+                  $("#LogoFilePath").val(fileName);
+                //w = img.width;
+                //h = img.height;
+                //if (w <= 50 && h <= 50) {
+                //    $("#LogoFilePath").val(fileName);
+                //}
+                //else {
+                //    alert("Image width and height should be less than or equal 50px");
+
+                //    $("#Image1").val('');
+                //}
+            }
+        }
+        else {
+            alert("Image size should be less than 5MB");
+
+            $("#Image1").val('');
+        }
+
+    });
+    $(document).ready(function () {
+        $('#EnumerationDate').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        $('#EnumerationDate').val('@(Model.EnumerationDate==null?"": Convert.ToDateTime(Model.EnumerationDate).ToString("MM/dd/yyyy"))')
+        $('#PracticeStartDate').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        $('#PracticeStartDate').val('@(Model.PracticeStartDate==null?DateTime.Now.ToString("MM/dd/yyyy"):Convert.ToDateTime(Model.PracticeStartDate).ToString("MM/dd/yyyy"))')
+
+    })
+    $("#btnSave").click(function () {
+        setCheckBoxValue("IsActive")
+        setCheckBoxValue("IsPrimaryCare")
+        setCheckBoxValue("IsNtPcp")
+        setCheckBoxValue("IsAllowNewPatient")
+        setCheckBoxValue("EnabledBooking")
+      
+        
+        if ($('#EnumerationDate').val() == "") {
+            alert("Please Select Enumeration Date");
+            return false;
+        }
+        else if ($('#Credential').val() == "") {
+            alert("Please Select Credential");
+            return false;
+        }
+        else {
+            var ed = $.datepicker.formatDate('yy M dd', new Date($('#EnumerationDate').val()));
+            $('#EnumerationDate').val(ed);
+            var ed = $.datepicker.formatDate('yy M dd', new Date($('#PracticeStartDate').val()));
+            $('#PracticeStartDate').val(ed);
+            var form = $('#frmDoctor')[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: '@Url.Action("AddEditDoctorSave")',
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        if ('@User.Identity.GetClaimValue("UserRole")' == "Doctor") {
+                            window.location.reload();
+                        }
+                        else {
+                            window.location.reload();
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+
+            @*$.post("@Url.Action("AddEditDoctorSave")", $("#frmDoctor").serialize(), function (response) {
+
+            }).fail(function (response) {
+                console.log(response)
+                });*@
+        }
+
+    });
+    function setCheckBoxValue(id) {
+        var IsActive = $('#' + id).is(":checked")
+        $('#' + id).val(IsActive)
+    }
+</script>
+

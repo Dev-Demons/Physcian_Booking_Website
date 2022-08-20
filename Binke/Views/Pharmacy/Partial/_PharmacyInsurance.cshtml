@@ -1,0 +1,222 @@
+﻿@model  Binke.ViewModels.OrgInsuranceUpdateViewModel
+@{
+    ViewBag.Title = "Pharmacy Insurance";
+}
+@if (ViewBag.PharmacyID > 0)
+{<h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Session["PharmacyName"]</h4>}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.DocOrgInsuranceId == 0 ? "Add Pharmacy Insurance" : "Edit Pharmacy Insurance")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditPharmacyInsurance", "Pharmacy", FormMethod.Post, new { id = "frmPharmacyInsurance", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.DocOrgInsuranceId)
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizatonTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-12 row">
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Insurance Type</b></label>
+                            @Html.DropDownListFor(model => model.InsuranceTypeId, ViewBag.typeList as SelectList, "- Select -", new { @class = "form-control chosen-select" })
+                            @Html.ValidationMessageFor(model => model.InsuranceTypeId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Insurance Plan</b></label>
+                            @Html.DropDownListFor(model => model.InsurancePlanId, ViewBag.planList as SelectList, "- Select -", new { @class = "form-control chosen-select" })
+                            @Html.ValidationMessageFor(model => model.InsurancePlanId, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-2 mar-btm">
+                            <label class="control-label"><b>Identifier Id</b></label>
+                            @Html.TextBoxFor(model => model.InsuranceIdentifierId, new { @class = "form-control", placeholder = "Enter Identifier Id" })
+                            @Html.ValidationMessageFor(model => model.InsuranceIdentifierId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-2 mar-btm">
+                            <label class="control-label"><b>State</b></label>
+                            @Html.TextBoxFor(model => model.StateId, new { @class = "form-control", placeholder = "Enter State" })
+                            @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+
+                        <div class="col-md-2 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Is Active</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-10 mar-btm" style="margin-top:30px; text-align:right;">
+                            <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+    }
+
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+    $(document).ready(function () {
+
+        $("#OrganisationId").val('@ViewBag.PharmacyID');
+    $("#OrganizatonTypeID").val('1005');
+        $("#UserTypeID").val('3');
+
+        $("#InsuranceTypeId").chosen();
+        $("#InsuranceTypeId_chosen").css("width", "100%");
+
+        $("#InsurancePlanId").chosen();
+        $("#InsurancePlanId_chosen").css("width", "100%");
+
+        var ID = "@ViewBag.ID";
+
+        if (ID > 0) {
+        
+        if ("@Model.IsActive" == 'True') {
+            $("#IsActive").prop('checked', true);
+            $("#IsActive").val(true);
+        }
+        else {
+            $("#IsActive").prop('checked', false);
+            $("#IsActive").val(false);
+            }
+
+
+            $("#InsuranceTypeId").val("@Model.InsuranceTypeId")
+            $("#InsuranceTypeId").trigger("chosen:updated");
+            $("#InsuranceTypeId").trigger('change');
+
+            getInsurancePlanByType("@Model.InsuranceTypeId", "@Model.InsurancePlanId");
+    }
+
+        $(document).on('click', '.slider', function () {
+            var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+            if (chekedstatus == false)
+                $(this).parent().find(":checkbox").val(true);
+            else
+                $(this).parent().find(":checkbox").val(false);
+        });
+
+
+        $("#StateId").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Pharmacy/GetStatesAutocomplete",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.State, value: item.State };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $(this).val(ui.item.label);
+            }
+        });
+
+        $("#InsuranceTypeId").change(function () {
+            $.ajax({
+                url: "/Pharmacy/GetInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { TypeId: $(this).val()},
+                success: function (data) {
+                    
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        });
+
+        function getInsurancePlanByType(TypeId, PlanId) {
+            $.ajax({
+                url: "/Pharmacy/GetInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { TypeId: TypeId },
+                success: function (data) {
+
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+
+                    if (PlanId != "") {
+                        $('#InsurancePlanId').val(PlanId);
+                    }
+
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        }
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmPharmacyInsurance'));
+                if ($("#frmPharmacyInsurance").valid()) {
+                    $.post("@Url.Action("AddEditPharmacyInsurance")", $("#frmPharmacyInsurance").serialize(), function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            if (response.Status == 1) {
+                               window.location.reload();
+                            } else {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+
+    });
+</script>

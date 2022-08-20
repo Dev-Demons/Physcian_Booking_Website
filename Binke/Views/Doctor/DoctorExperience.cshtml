@@ -1,0 +1,257 @@
+﻿@model Binke.ViewModels.DoctorBoardCertificationViewModel
+@{
+    ViewBag.Title = "Experience";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+@section pageheader{
+    <div class="col-md-12" style="margin-bottom:25px;">
+        <div class="col-md-3">
+            <h3><i class="fa fa-user-md"></i> Experience </h3>
+        </div>
+        <div class="col-md-5 text-center" style="top:10px">
+            <h3>@Convert.ToString(Session["DoctorName"])</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="breadcrumb-wrapper" style="top:15px;">
+                <span class="label">You are here:</span>
+
+                <ol class="breadcrumb">
+                    <li> <a href='@("/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]))'> Doctor </a></li>
+                    <li class="active"> Experience </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+
+<style>
+    #dtExperience_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtExperience_length {
+        float: left;
+    }
+</style>
+<style>
+    label.switch {
+        position: relative;
+        display: inline-block;
+        height: 23px;
+        padding-left: 2.8em !important;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+<div class="panel" style="margin-top:20px;">
+
+    <div class="panel-body">
+        <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addExperience">Add  Experience</button>
+        <table id="dtExperience" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+
+                    <th>Designation</th>
+                    <th>Organization</th>
+                    <th>Start Date</th>
+                    <th> End Date</th>
+                    <th>Active</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindExperienceList();
+        });
+
+        $(document).on("click", "#addExperience", function () {
+            window.location.href = '/AddEditDoctorExperience/';
+            //AddEditExperience(0);
+        });
+
+        function AddEditExperience(id) {
+            window.location.href = '/AddEditDoctorExperience/' + id;
+            //$("#modalContent").load("/AddEditDoctorExperience/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function AddEditViewExperience(id) {
+            window.location.href = '/AddEditViewDoctorExperience/' + id;
+            //$("#modalContent").load("/AddEditDoctorExperience/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function ViewExperience(id) {
+            $("#modalContent").load("/_DoctorExperienceView/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        function bindExperienceList() {
+            if ($.fn.DataTable.isDataTable("#dtExperience")) {
+                $('#dtExperience').DataTable().destroy();
+            }
+            var table = $('#dtExperience')
+                .DataTable({
+                    "sAjaxSource": "/GetDoctorExperienceList/",
+                    "columns": [
+
+                        {
+                            "data": "Designation",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Organization",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "StartDate",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                var content = ToJavaScriptDate(data);
+
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "EndDate",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                var content = ToJavaScriptDate(data);
+
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt">';
+                                content += '<label class="switch" style="pointer-events:none">';
+                                content += '<input onchange="ActiveDeactiveExperience(this)"  type="checkbox" ' + value + ' data-DocId="' + row.ExperienceId + '" data-Id= "IsActive" />';
+                                content += '<span class="slider round"style="width:35px;"></span>';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "ExperienceId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div><a href="javascript:;" onclick="AddEditExperience(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="AddEditViewExperience(' + data + ')" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="RemoveExperience(' + data + ')" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;</div>'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+        function ToJavaScriptDate(value) {
+            var pattern = /Date\(([^)]+)\)/;
+            var results = pattern.exec(value);
+            var dt = new Date(parseFloat(results[1]));
+            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+        }
+        var ActiveDeactiveExperience = function (ctrl) {
+            var flag = $(ctrl).is(":checked");
+
+            var id = $(ctrl).data("docid");
+            switch (flag) {
+                case false:
+                    DeactivateExperience(id, true);
+                    break;
+                case true:
+                    DeactivateExperience(id, false);
+                default:
+            }
+        }
+        function DeactivateExperience(id, flag) {
+            var title = flag ? "De Activate" : "Re Activate";
+            var message = "Are you sure you want to <b> " + title + " </b> this  Experience";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeExperience/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindExperienceList();
+
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        $('#dtExperience').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "edit":
+                    AddEditExperience(id);
+                    break;
+                case "delete":
+                    RemoveExperience(id);
+                    break;
+                case "View":
+                    ViewExperience(id);
+                    break;
+            }
+        });
+
+        function RemoveExperience(id) {
+            var message = "Are you sure you want to <b> Remove  Experience </b> ";
+            BinkeDialog.Confirmation("Remove  Experience", message, function () {
+                $.ajax({
+                    url: "/RemoveDoctorExperience/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindExperienceList();
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+    </script>
+}

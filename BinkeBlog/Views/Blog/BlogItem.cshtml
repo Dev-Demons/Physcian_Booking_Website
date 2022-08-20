@@ -1,0 +1,632 @@
+﻿@model  Doctyme.Model.ViewModels.BlogViewModel
+@{
+    ViewBag.Title = "BlogItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .section-padding-top-sm {
+        padding-top: 20px !important
+    }
+
+    a {
+        color: blue;
+    }
+    /* share icons class*/
+    .custom-share .x-entry-share {
+        border-top: 0 !important;
+        /*margin: -10px -10px 25px -10px !important;*/
+        margin: 10px -10px 10px -10px !important;
+        padding: 10px !important;
+        text-align: left !important;
+    }
+    .x-entry-share .x-share-options {
+        display: inline-block !important;
+    }
+    .x-entry-share p {
+        display: inline-block !important;
+        font-weight: 700;
+        padding-right: 15px !important;
+        margin: 0px !important;
+    }
+    .x-entry-share a.x-share {
+        color: #B8B8B8 !important;
+        border: 1px solid #b8b8b8 !important;
+        font-size: 18px !important;
+        border-radius: 10em !important;
+        margin: 0px 2px !important;
+        width: 36px !important;
+        height: 36px !important;
+        line-height: 36px !important;
+        text-align: center !important;
+    }
+    .x-entry-share .x-share {
+        display: inline-block;
+    }
+    /*.entry-header, .entry-content {
+        font-size: 1.6rem;
+    }*/
+    .p-meta {
+        color: #999 !important;
+        font-size: 12px !important;
+        text-transform: capitalize !important;
+        font-weight: 600 !important;
+    }
+    h1.entry-title {
+        /*color: #163877 !important;
+        padding: 0 !important;*/
+        color: #163877 !important;
+        padding: 0 !important;
+        font-family: "Roboto",sans-serif;
+        font-style: normal;
+        font-size: 30px !important;
+        line-height: 2rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 0.75em !important;
+        letter-spacing: 0em;
+    }
+    .single-post .entry-wrap h1 {
+        clear: both !important;
+    }
+    .p-meta > span {
+        display: inline-block;
+    }
+    /*Image class*/
+    .has-post-thumbnail .entry-featured {
+        border-bottom: 1px solid #ddd;
+    }
+    .entry-featured {
+        box-shadow: 0 0.15em 0.35em 0 rgba(0, 0, 0, 0) !important;
+        margin-bottom: 10px !important;
+    }
+    .entry-featured {
+        position: relative;
+        box-shadow: 4px 2px 4px -4px rgba(0,0,0,0.135),-4px 2px 4px -4px rgba(0,0,0,0.135);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    .entry-thumb {
+        background-color: #fff !important;
+    }
+        .entry-thumb img {
+            min-width: 100%;
+            -webkit-transition: opacity 0.75s ease;
+            transition: opacity 0.75s ease;
+        }
+    img {
+        max-width: 100%;
+        height: auto;
+        vertical-align: middle;
+        border: 0;
+        -ms-interpolation-mode: bicubic;
+    }
+
+   
+
+    .p-landmark-sub, .p-meta, input, button, select, textarea {
+        font-family: "Roboto",sans-serif;
+    }
+
+    .p-meta {
+        color: #999 !important;
+        font-size: 12px !important;
+        text-transform: capitalize !important;
+        font-weight: 600 !important;
+    }
+    .single-post .entry-wrap {
+        display: block;
+        padding: 0px 20px 30px;
+        background-color: transparent !important;
+        border-radius: 4px;
+        box-shadow: 0 0.15em 0.35em 0 rgba(0, 0, 0, 0) !important;
+    }
+    .p-landmark-sub, .p-meta, input, button, select, textarea {
+        font-family: "Roboto",sans-serif !important;
+    }
+        .p-meta > span > a {
+            white-space: nowrap;
+        }
+
+        .p-meta a {
+            color: #999 !important;
+            font-size: 12px !important;
+        }
+
+        /*.p-meta > span::after {
+            content: "/";
+            padding: 0 0.5em 0 0.45em;
+        }*/
+        .p-meta a:hover {
+            color: #128CED !important;
+        }
+
+        /*.p-meta > span > a {
+            white-space: nowrap;
+        }*/
+        /*.p-meta span:nth-child(3) {
+            display: inline-block;
+        }*/
+        /*.p-meta > span > a {
+            white-space: nowrap;
+        }*/
+    /*p {
+        font-size: 1.6rem !important;
+        line-height: 2.4rem !important;
+    }*/
+    body {
+        font-style: normal;
+        /*font-weight: 400;*/
+        color: rgb(85,85,85);
+    }
+    .x-share-options p {
+        text-transform: uppercase;
+        color: rgb(85,85,85);
+        font-family: "Roboto",sans-serif;
+    }
+    .x-entry-share {
+        margin: 0 0 1.313em;
+        border: 1px solid #f2f2f2;
+        
+        border-left: 0;
+        border-right: 0;
+      
+        line-height: 1;
+        
+    }
+
+    /*side bar*/
+    /*.nc-meta-compact-wrap .nc-taxonomy-wrap a::after {
+        content: ' / ' !important;
+        font-weight: bold !important;
+        
+        color: #b2b2b2 !important;
+        line-height: 1.3rem !important;
+    }*/
+    .nc-meta-compact-wrap {
+        display: block;
+        font-size: 13px;
+        font-weight: normal;
+        color: #999;
+        text-transform: uppercase;
+        line-height:1.3rem !important;
+    }
+    .x-sidebar .nc-meta-compact-wrap .nc-taxonomy-wrap {
+        display: inline-block !important;
+        margin-bottom: 0px !important;
+    }
+    .nc-taxonomy-wrap a {
+        color: #b2b2b2 !important;
+        /*font-size: 1.3rem !important;*/
+        text-transform: capitalize !important;
+        font-weight: 900 !important;
+        line-height: 1.3rem !important;
+    }
+        /*.nc-taxonomy-wrap a::after {
+            content: ' / ' !important;
+            font-weight: bold !important;
+          
+            color: #b2b2b2 !important;
+            line-height: 1.3rem !important;
+        }*/
+        /*.nc-taxonomy-wrap a::before {
+            content: '' !important;
+        }*/
+    .nc-show-date {
+        color: #b2b2b2 !important;
+      
+        text-transform: capitalize !important;
+        font-weight: 900 !important;
+        line-height: 1.3rem !important;
+    }
+    .ArticleNameSlider {
+        font-weight: 400 !important;
+        letter-spacing: 0px !important;
+        line-height: 1.333 !important;
+        text-transform: capitalize !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        color: #333 !important;
+      
+    }
+    .ArticleNameSlider a :hover {
+        color: blue !important;
+    }
+    .ArticleNameSlider a {
+        color: #333 !important;
+    }
+    .x-sidebar .newscodes ul.newscodes-wrap  h4 a:hover {
+        color: #128bed !important;
+    }
+    .x-nav-articles {
+        width: 180px;
+        margin: 20px auto 0px !important;
+        float: none !important;
+    }
+    .x-nav-articles a {
+        font-size: 15px;
+    }
+    
+    .x-nav-articles a {
+        margin: 10px;
+    }
+        .x-nav-articles a {
+            color: #128bed
+        }
+            .x-nav-articles a:hover {
+                color: #b2b2b2
+            }
+            /*written By*/
+    .e63126-1.x-section, .e63126-11.x-section, .e63126-15.x-section {
+        background-color: transparent;
+        z-index: 1;
+    }
+    .e63126-15.x-section {
+        margin: 0px 0em 0em 0em;
+        padding: 0px 0px 2.5em 0px;
+    }
+    .x-section {
+        position: relative;
+        margin: 0 0 1.313em;
+        padding: 45px 0;
+    }
+        .x-section::before, .x-section::after {
+            content: " ";
+            display: table;
+        }
+    .e63126-5.x-container, .e63126-2.x-container, .e63126-12.x-container, .e63126-16.x-container {
+        background-color: transparent;
+        z-index: 1;
+    }
+    .e63126-12.x-container, .e63126-16.x-container {
+        padding: 0em 0em 2em 0em;
+    }
+
+    .e63126-2.x-container, .e63126-12.x-container, .e63126-16.x-container {
+        margin: 0em auto 0em auto;
+    }
+
+    .x-container.max {
+        max-width: 1330px;
+    }
+
+    .x-container.width {
+        width: 96%;
+    }
+    .e63126-3.x-column, .e63126-13.x-column, .e63126-17.x-column {
+        background-color: transparent;
+        z-index: 1;
+    }
+
+    .x-column.last, .x-column:last-of-type {
+        margin-right: 0;
+    }
+
+    .x-column.x-1-1 {
+        width: 100%;
+    }
+
+    .x-column {
+        position: relative;
+        z-index: 1;
+        float: left;
+        margin-right: 4%;
+    }
+    .e63126-18.x-text {
+        border-width: 2px;
+        border-style: dotted;
+        border-color: rgba(0,0,0,0.15);
+        padding: 1em 1em 0em 1em;
+        font-style: italic;
+        font-weight: 300;
+    }
+
+    .e63126-4.x-text, .e63126-10.x-text, .e63126-14.x-text, .e63126-18.x-text {
+        margin: 0em;
+        line-height: 1.4;
+        letter-spacing: 0em;
+        text-transform: none;
+        background-color: transparent;
+    }
+
+    .entry-content p, .x-text {
+        font-size: 1.6rem !important;
+        line-height: 2.4rem !important;
+        color: #555 !important;
+    }
+
+    .x-text {
+        min-width: 1px;
+    }
+    .entry-content p, .x-text {
+        font-size: 1.6rem !important;
+        line-height: 2.4rem !important;
+        color: #555 !important;
+    }
+    b, strong {
+        font-weight: bold;
+    }
+    .addSlashbefore:before {
+        content: ' / ' !important;
+        font-weight: bold !important;
+        color: #b2b2b2 !important;
+        line-height: 1.3rem !important;
+    }
+
+</style>
+
+<div class="bk-section doctors-profile-area section-padding-top-sm section-padding-bottom-sm">
+    @Html.HiddenFor(i=>i.blogItem.Content,new {id="txtcontent" })
+    <div class="container single-page">
+        <div class="row">
+            <div class="col-md-8">             
+                <div class="entry-featured">
+                    <div class="entry-thumb">
+                        <img src="@Model.blogItem.ImagePath" class="attachment-entry size-entry wp-post-image" alt="" width="940" height="529">
+                    </div>
+                    <div class="entry-caption"></div>
+                </div>
+                <div class="entry-wrap">
+                    <header class="entry-header">
+                        <p class="p-meta">
+                            <span><time class="entry-date">@Model.blogItem.DateString</time> / </span>
+                            <span>
+                                @if (!string.IsNullOrEmpty(Model.blogItem.CategoryName))
+                                {
+                                    <a  href="/Blog/Category/@Model.blogItem.CategoryNameReplace" @*href="@Url.Action("Category","Blog",new {CategoryId=Model.blogItem.CategoryId })*@ title="View all posts in: @Model.blogItem.CategoryName">@Model.blogItem.CategoryName</a>
+
+                                }
+                                @if (!string.IsNullOrEmpty(Model.blogItem.SubCategoryName))
+                                {
+                                    <a href="/Blog/SubCategory/@Model.blogItem.SubCategoryNameReplace" @*href="@Url.Action("SubCategory","Blog",new {SubCategoryId=Model.blogItem.SubCategoryId })"*@ title="View all posts in: @Model.blogItem.SubCategoryName">/ &nbsp; @Model.blogItem.SubCategoryName</a>
+                                }
+                            </span>
+                        </p>
+                        <h1 class="entry-title">@Model.blogItem.ArticleName</h1>
+                        <div class="custom-share">
+                            <div class="x-entry-share man">
+                                <div class="x-share-options">
+                                    <p>Share:</p>
+                                    @{
+                                        if (!string.IsNullOrEmpty(Model.blogItem.FaceBookLink))
+                                        {
+
+                                            <a href="@Model.blogItem.FaceBookLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                                <i class="fa fa-facebook"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-facebook"></i></a>
+                                        }
+
+                                        if (!string.IsNullOrEmpty(Model.blogItem.LinkedInLink))
+                                        {
+                                            <a href="@Model.blogItem.LinkedInLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                                <i class="fa fa-linkedin"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-linkedin"></i></a>
+
+                                        }
+
+                                        if (!string.IsNullOrEmpty(Model.blogItem.GooglePlusLink))
+                                        {
+                                            <a href="@Model.blogItem.GooglePlusLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                                <i class="fa fa-google-plus"></i>
+                                            </a>
+                                            @*<a href="@Model.blogItem.GooglePlusLink"><i class="fa pl  fa-google-plus-square fa-3x"></i></a>*@
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-google-plus"></i></a>
+                                            @*<a href="#"><i class="fa pl  fa-google-plus-square fa-3x"></i></a>*@
+                                        }
+
+                                        if (!string.IsNullOrEmpty(Model.blogItem.TwitterLink))
+                                        {
+                                            <a href="@Model.blogItem.TwitterLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-twitter"></i></a>
+                                        }
+
+                                        if (!string.IsNullOrEmpty(Model.blogItem.YoutubeLink))
+                                        {
+                                            <a href="@Model.blogItem.YoutubeLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                                <i class="fa fa-youtube"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-youtube"></i></a>
+                                        }
+
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </header>
+                </div>
+
+
+
+                @*<hr>*@
+                <div class="blog-text">
+                    @*<P>@Model.blogItem.DateString  <span><a href="#">Health</a></span>/ <span><a href="#">@Model.blogItem.CategoryName</a></span></P>*@
+
+                    <div id="dvContent">
+
+                    </div>
+
+                </div>
+
+                <div class="read-more">
+                    <h3>Read more:</h3>
+                    <ul>
+                        @foreach (var item in Model.OtherRelatedArticles)
+                        {
+                            <li><a href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem","Blog",new {Id=item.ArticleId })"*@>@item.ArticleName</a></li>
+                        }
+                    </ul>
+                </div>
+                @*<div class="e63126-15 x-section">
+
+                    <div class="e63126-16 x-container max width" id="skip-links-content">
+
+                        <div class="e63126-17 x-column x-sm x-1-1">
+
+                            <div class="e63126-18 x-text legacy-author">
+                                <p>
+                                    <strong>By: Dr. Katy Nelson, DVM</strong><br>
+                                    <span>Dr. Katy Nelson is an associate veterinarian at the Belle Haven Animal Medical Centre in Alexandria, VA, and Chewy’s resident veterinarian. A proud mom to six (two humans, two dogs and two birds), a lover of travel, and a dedicated animal rescue advocate, Dr. Nelson still carves out time for family, friends and numerous charitable organizations in the D.C. area and beyond.&nbsp;</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+                <div class="x-entry-share" style="text-align: center;padding: 5px;margin-top:50px">
+                    <p style="text-transform: uppercase;">Share:</p>
+                    <div class="x-share-options">
+                        @{
+                            if (!string.IsNullOrEmpty(Model.blogItem.FaceBookLink))
+                            {
+
+                                <a href="@Model.blogItem.FaceBookLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-facebook"></i></a>
+                            }
+
+                            if (!string.IsNullOrEmpty(Model.blogItem.LinkedInLink))
+                            {
+                                <a href="@Model.blogItem.LinkedInLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-linkedin"></i></a>
+
+                            }
+
+                            if (!string.IsNullOrEmpty(Model.blogItem.GooglePlusLink))
+                            {
+                                <a href="@Model.blogItem.GooglePlusLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+
+                            }
+                            else
+                            {
+                                <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-google-plus"></i></a>
+
+                            }
+
+                            if (!string.IsNullOrEmpty(Model.blogItem.TwitterLink))
+                            {
+                                <a href="@Model.blogItem.TwitterLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-twitter"></i></a>
+                            }
+
+                            if (!string.IsNullOrEmpty(Model.blogItem.YoutubeLink))
+                            {
+                                <a href="@Model.blogItem.YoutubeLink" class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover">
+                                    <i class="fa fa-youtube"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="x-share" data-toggle="tooltip" data-placement="bottom" data-trigger="hover"><i class="fa fa-youtube"></i></a>
+                            }
+
+                        }
+                    </div>
+                </div>
+
+                <div class="x-nav-articles">
+                    @{
+
+                    <a href="/Blog/BlogItem/@Model.PrevArticleName" @*href="@Url.Action("BlogItem","Blog",new {Id=Model.PrevArticleId })"*@ title="" class="prev">
+                        <i class="fa fa-arrow-left" data-x-icon=""></i> Previous
+                    </a>
+
+                    <a href="/Blog/BlogItem/@Model.NextArticleName" @*href="@Url.Action("BlogItem", "Blog", new { Id = Model.NextArticleId })"*@ title="" class="next">
+                        Next <i class="fa fa-arrow-right" data-x-icon=""></i>
+                    </a>
+                        }
+
+                </div>
+                @*<div>
+            @Html.Raw(Model.blogItem.Content);
+        </div>*@
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                <div class="head">
+                    <h3>Related Articles</h3>
+                    <hr>
+                </div>
+               
+                @foreach (var item in Model.RelatedTopArticles)
+                {
+                <div class="one-artical">
+                    <div class="blog-picture">
+                        <a href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem","Blog",new { id=item.ArticleId})"*@>
+                            <img class="img-responsive" src="@item.ImagePath" alt="picture">
+                        </a>
+                    </div>
+
+                    @*<p><a href="#">Health</a> / <a href="#">@item.CategoryName</a></p>*@
+                    <div class="nc-meta-compact-wrap">
+                        <span class="nc-taxonomy-wrap">
+                           
+                            <a href="/Blog/Category/@item.CategoryNameReplace" @*href="@Url.Action("Category","Blog",new {CategoryId=item.CategoryId })"*@ 
+                               title="@item.CategoryName" class="nc-show-taxonomy">@item.CategoryName</a>
+                            @if (!string.IsNullOrEmpty(item.SubCategoryName))
+                            {
+                            <a href="/Blog/SubCategory/@item.SubCategoryNameReplace" @*href="@Url.Action("SubCategory", "Blog", new { SubCategoryId = item.SubCategoryId })"*@ title="@item.SubCategoryName" class="nc-show-taxonomy addSlashbefore">@item.SubCategoryName</a>
+                            }
+                        </span>
+
+                        <h5 class="ArticleNameSlider"><a href="/Blog/BlogItem/@item.ArticleNameReplace">@item.ArticleName</a></h5>
+                        <span class="nc-show-date">@item.DateString</span>
+                    </div>
+                </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+   
+    $(document).ready(function () {
+        //alert("hi");
+       
+        var content = $('#txtcontent').val();
+        var conent1 = content;
+        //console.log(content);
+        //$("#dvContent").html(conent1);
+        //$('#dvContent').html(conent1);
+        $('#dvContent').empty().append(conent1);
+    })
+</script>

@@ -1,0 +1,29 @@
+﻿@*@Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/jqueryval");*@
+@*@Scripts.Render("~/bundles/clientBootstrapjs");*@
+<script src="~/Scripts/client/vendor/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/system/jquery.validate.min.js"></script>
+<script src="~/Scripts/system/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/client/bootstrap_4.3.1.min.js"></script>
+<script src="~/Scripts/custom/dialogs.js"></script>
+<script src="~/Scripts/custom/toastr.min.js"></script>
+<script src="~/Scripts/custom/jquery.blockUI.min.js"></script>
+<script src="~/Scripts/custom/app.client.js"></script>
+<script type="text/javascript" src="//maps.google.com/maps/api/js?key=AIzaSyAnav7GETkI7Wpe5zI_JDwZhykupEKlfFM&libraries=places"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+    $(document).ajaxStart(function (e) {
+        blockPage();
+    });
+
+    $(document).ajaxStop(function () {
+        unblockPage();
+    });
+
+</script>
+@if (@Model is HelperResult)
+{
+    @Model
+}

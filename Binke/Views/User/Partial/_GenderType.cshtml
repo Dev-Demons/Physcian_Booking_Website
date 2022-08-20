@@ -1,0 +1,80 @@
+﻿@model Binke.ViewModels.GenderTypeViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.Id == 0 ? "Add Gender Type" : Model.IsViewMode ? "View Gender Type" : "Edit Gender Type")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditGenderType", "User", FormMethod.Post, new { id = "frmGenderType" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Gender Type Name</b></label>
+                <div class="form-group">
+                    @if (Model.IsViewMode)
+                    {
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Gender Type Name",@readonly="readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Gender Type Name" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Description</b></label>
+                <div class="form-group">
+                    @if (Model.IsViewMode)
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description",@readonly="readonly" })
+                       
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+           
+        </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" style='@(Model.IsViewMode?"display:none":"")' id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+@Scripts.Render("~/scripts/full-calendar")
+
+<script type="text/javascript">
+ 
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmGenderType'));
+        if ($("#frmGenderType").valid()) {
+            $.post("@Url.Action("AddEditGenderType")", $("#frmGenderType").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "GenderType") {
+                        bindExperienceList();
+                        closeModal();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+   
+
+</script>

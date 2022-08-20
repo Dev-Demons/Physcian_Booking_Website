@@ -1,0 +1,76 @@
+﻿
+@model Doctyme.Model.ApplicationUser
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel"></h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+</div>
+<div class="modal-body">
+
+        <div class="appointment-box pg-appointment-box">
+            @using (Html.BeginForm("EditUserInfo", "Account", FormMethod.Post, new {id = "frmReg", @class = "appointment-form mt-3", role = "form"}))
+            {
+                @Html.AntiForgeryToken()
+               
+                <p class="form-message">
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                </p>
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <div class="form-group">
+                            <label for="FirstName">First Name(*)</label>
+                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <div class="form-group">
+                            <label for="MiddleName">Middle Name</label>
+                            @Html.TextBoxFor(m => m.MiddleName, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <div class="form-group">
+                            <label for="LastName">Last Name(*)</label>
+                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <div class="form-group">
+                            <label for="Email">Email (*)</label>
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                        </div> 
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <div class="form-group">
+
+                            <button type="button" class="btn btn-danger pull-right " style="margin-top:40px;" >Close</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <div class="form-group">
+                            <button type="submit" id="btnSubmit" class="btn btn-default" style="padding:.375rem .75rem;">Submit</button>
+                        </div>
+                        </div> 
+
+
+                    </div>
+
+             
+                    }
+                </div>
+
+</div>

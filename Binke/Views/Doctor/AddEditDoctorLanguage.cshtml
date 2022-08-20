@@ -1,0 +1,95 @@
+﻿
+@model Doctyme.Model.DoctorLanguageViewModel
+@using Binke.Utility
+@using Binke.App_Helpers
+@{
+    ViewBag.Title = "AddEditLanguage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var isDoctor = User.Identity.GetClaimValue("UserRole") == "Doctor";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+<style type="text/css">
+    .mr-10px {
+        margin-right: 10px;
+    }
+
+    .header-title {
+        padding: 6px;
+        margin-left: 6px;
+    }
+</style>
+<!-- Latest compiled JavaScript -->
+@*<h4 style='margin-top:10px;margin-bottom:15px; text-align:center;@(User.Identity.GetClaimValue("UserRole").ToString()=="Doctor"?"display:none":"")'>@Model.DoctorName</h4>*@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-heading box-header" style="display:flex">
+                <h4 class="title header-title" style="width:50%">
+                    @(Model.LanguageId == 0 ? "Add Language" : Model.IsViewMode ? "View Language" : "Edit Language")
+                </h4>
+                
+            </div>
+            @using (Html.BeginForm("AddEditLanguage", "Doctor", FormMethod.Post, new { id = "frmLanguage" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.DoctorLanguageId)
+                @Html.HiddenFor(m => m.DoctorId)
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Select Language</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.DropDownListFor(x => x.LanguageId, Model.LanguagesList.Select(x => new SelectListItem { Text = x.Value, Value = x.Key.ToString(), Selected = (x.Key == Model.LanguageId) }), new { @class = "form-control", @readonly = "true", @style = "pointer-events:none" })
+                                }
+                                else
+                                { @Html.DropDownListFor(x => x.LanguageId, Model.LanguagesList.Select(x => new SelectListItem { Text = x.Value, Value = x.Key.ToString(), Selected = (x.Key == Model.LanguageId) }), new { @class = "form-control" })
+
+                            }
+
+                            </div>
+                            <div class="col-md-12 mar-btm" style="margin-top:30px;">
+                                <label class="control-label" style="width:250px" for="IsActive">Is Active</label>
+                                <label id="switchNtPcp" class="switch" for="IsActive">
+                                    <input type="checkbox" id="IsActive" name="IsActive" @( Model.IsActive == true ? "checked" : string.Empty) data-Id="IsActive" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-right">
+                    <button type="button" id="btnSave" style='@(Model.IsViewMode?"display:none":"")' class="btn btn-primary">Save</button> <a href="/DoctorLanguage/@Model.DoctorId" style="color:white" class="btn btn-primary">Back</a>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmLanguage'));
+        if ($("#frmLanguage").valid()) {
+            $.post("@Url.Action("AddEditDoctorLanguage")", $("#frmLanguage").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    window.location.href = "/DoctorLanguage/"+@Model.DoctorId;
+                }
+            });
+        }
+    });
+
+</script>
+

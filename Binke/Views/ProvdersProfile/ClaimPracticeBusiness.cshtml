@@ -1,0 +1,225 @@
+﻿@model Doctyme.Model.ViewModels.ClaimPractice
+@{
+    ViewBag.Title = "ClaimPracticeBusiness";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "keywords",
+        Content = "Facility Name - City Name, Facility Name - City Name Facility Name - City Name in City Name, State Name"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "twitter:image",
+        Content = "logo image url"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:url",
+        Content = "https://www.doctyme.com/"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:title",
+        Content = "Read Doctor Reviews, Compare Doctors &amp; Book Appointments"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:description",
+        Content = "Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:type",
+        Content = "website"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:title",
+        Content = "Search & Review Doctors, Hospital, Senior Care, Pharmacy and Book an appointment online."
+    });
+    TempData["metaInfo"] = meta;
+}
+<head>
+    @*<link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>
+        <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>*@
+    @*<meta name="keywords" content="Facility Name - City Name, Facility Name - City Name Facility Name - City Name in City Name, State Name" />
+    <meta name="twitter:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+    <meta property="og:url" content="https://www.doctyme.com/">
+    <meta property="og:site_name" content="DocTyme">
+    <meta property="og:title" content="Read Doctor Reviews, Compare Doctors &amp; Book Appointments">
+    <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+    <meta property="og:description" content="Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme.">
+    <meta property="og:type" content="website">
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />*@
+
+</head>
+<div class="bk-section doctors-profile-area section-padding-top-sm section-padding-bottom-sm" data-id="@Model.OrganizationId">
+
+    @*<div class="row">
+            <a href="http://coshomebuilders.com/claim-your-business/" target="_blank" name="redirecDoc">http://coshomebuilders.com/claim-your-business/</a>
+        </div>*@
+    <div class="container" style="padding-left: 200px;padding-right: 100px;">
+        <div class="row" style="margin-bottom:20px">
+
+            <div class="col-md-6 offset-md-2">
+                <h3 style="color:#3498db">Claim Practice/Business</h3>
+            </div>
+
+        </div>
+
+        @using (Html.BeginForm("ClaimPracticeBusiness", "ProvdersProfile", FormMethod.Post, new { id = "frmClaimPracticeBusiness", enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(i => i.OrganizationId)
+            @Html.HiddenFor(i => i.OrganizationName)
+            @Html.HiddenFor(i => i.DoctorId)
+            @Html.HiddenFor(i => i.DocumentName)
+            @Html.HiddenFor(i => i.ClaimType)
+            @Html.HiddenFor(i => i.ReturnUrl)
+            @Html.HiddenFor(i => i.Npi)
+            @Html.HiddenFor(i => i.DoctorName)
+            @Html.HiddenFor(i => i.ReferenceId)
+            @Html.HiddenFor(i => i.PhoneNumber)
+            @Html.HiddenFor(i => i.Email)
+
+            @Html.HiddenFor(i => i.State)
+            @Html.HiddenFor(i => i.Address1)
+            @Html.HiddenFor(i => i.Address2)
+            @Html.HiddenFor(i => i.City)
+            @Html.HiddenFor(i => i.ZipCode)
+            @Html.HiddenFor(i => i.FileName)
+
+            <div class="row">
+
+                <div class="col-xs-6 col-sm-6 col-md-2 col=lg-2">
+                    <label>Business Name :</label>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-10 col=lg-10">
+                    @Html.DisplayFor(i => i.OrganizationName)
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                    <label>Address :</label>
+
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-4 col=lg-4">
+                    <p>
+                        <span> @Html.DisplayFor(i => i.Address1)</span>
+                        <span> @Html.DisplayFor(i => i.Address2),</span>
+                        <span> @Html.DisplayFor(i => i.State),</span>
+                        <span> @Html.DisplayFor(i => i.City),</span>
+                        <span> @Html.DisplayFor(i => i.ZipCode)</span>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-2 col=lg-2">
+                    <label>Phone# :</label>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-4 col=lg-4">
+                    @Html.DisplayFor(i => i.PhoneNumber)
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-6 col-sm-6 col-md-2 col=lg-2">
+                    <label>Email :</label>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-4 col=lg-4">
+                    @Html.DisplayFor(i => i.Email)
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                    <span style="color:red">*</span>DocumentVerification:
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-4 col=lg-4">
+                    @*@Html.EditorFor(i => i.PostedFile, new { htmlAttributes = new { type = "file", @class = "form-control" } })*@
+
+
+                    @Html.TextBoxFor(m => m.PostedFile, new { type = "file", @class = "form-control" })
+                    @Html.ValidationMessageFor(i => i.FileName, "Upload Document is required to claim. ")
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <p>
+                        <small>
+                            Provide a scanned or photographed copy of a utility or phone bill that includes your business name and business address.
+                        </small>
+                    </p>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                    @Html.CheckBoxFor(i => i.Isagree) &nbsp;&nbsp; I hereby certify under penalty of perjury that i am authorized to act on behalf of this business.I understand that if I am not an authorized representative of this business or if I am misappropriating the official documentation referenced above, then I am in violation of law and I further acknowledge that DocTyme may take action against me (including suspending or permanently disabling my DocTyme account).
+                </div>
+
+            </div>
+            <div class="row justify-content-between" style="margin-top:10px">
+                <div class="col-6">
+                    <a class=" btn  btn-sm btn-small btn-default border" style="font-size:16px;padding:4px 10px;" href="@Model.ReturnUrl">Back</a>
+                </div>
+                <div class="col-6">
+                    <input class="btn btn-sm btn-primary" type="submit" value="Submit" id="btnsubmit" />
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        //$("#btnsubmit").click(function () {
+        //    alert("hi");
+        //    $.validator.unobtrusive.parse($('#frmClaimPracticeBusiness'));
+        //    if ($("#frmClaimPracticeBusiness").valid()) {
+        //        var form = $('#frmClaimPracticeBusiness')[0];
+        //        var formData = new FormData(form);
+        //    }
+        //});
+
+        $('input[type="file"]').change(function (e) {
+
+            var fileName = e.target.files[0].name;
+            $("#FileName").val(fileName);
+
+        })
+
+    })
+</script>
+

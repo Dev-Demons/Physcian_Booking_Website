@@ -1,0 +1,2 @@
+E:\11111_EDK_Working Project\Freelancer\asp.net mvc issue\DocTyme\DocTyme\Binke\obj\Debug\Binke.csproj.AssemblyReference.cache
+E:\11111_EDK_Working Project\Freelancer\asp.net mvc issue\DocTyme\DocTyme\Binke\obj\Debug\Binke.csproj.CoreCompileInputs.cache

@@ -1,0 +1,219 @@
+﻿@using Binke.Utility
+@using Binke.App_Helpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> @ViewBag.Title | Doctyme</title>
+    <link rel="shortcut icon" href="~/Content/admin/img/favicon.ico">
+    <!--STYLESHEET-->
+    <!--=================================================-->
+    <!--Roboto Slab Font [ OPTIONAL ] -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:500,400italic,100,700italic,300,700,500italic,400" rel="stylesheet">
+    <!--Bootstrap Stylesheet [ REQUIRED ]-->
+    @*@Styles.Render("~/content/smartadmin")*@
+    <link href="~/content/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/content/admin/css/style.css" rel="stylesheet" />
+
+    <link href="~/Content/client/css/plugins/font-awesome.min.css" rel="stylesheet" />
+    @*<link href="~/scripts/admin/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />*@
+    <link href="~/scripts/admin/plugins/switchery/switchery.min.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet" />
+    <link href="~/content/admin/css/demo/jquery-steps.min.css" rel="stylesheet" />
+    <link href="~/content/admin/css/demo/jasmine.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/pace/pace.min.css" rel="stylesheet" />
+    <link href="~/content/admin/css/your_style.min.css" rel="stylesheet" />
+
+    <link href="~/Scripts/admin/plugins/select2/select2.css" rel="stylesheet" />
+    <link href="~/Content/client/css/style11.css" rel="stylesheet" />
+    <link href="~/Content/custom/toastr.min.css" rel="stylesheet" />
+    <script src="~/Scripts/admin/plugins/pace/pace.min.js"></script>
+    <!-- Modernizer js -->
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    <script src="~/Scripts/system/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/client/Chart.js"></script>
+</head>
+<body>
+    <div class="col-12 col-sm-12">
+
+
+        <div id="container" class="effect mainnav-full">
+            <!--NAVBAR-->
+            <!--===================================================-->
+            @{ Html.RenderPartial("_HeaderAdmin"); }
+            <!--===================================================-->
+            <!--END NAVBAR-->
+            <div class="boxed">
+                <!--CONTENT CONTAINER-->
+                <!--===================================================-->
+                <div id="content-container">
+                    <div id="profilebody">
+                        <div class="pad-all animated fadeInDown">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6 col-md-6 col-xs-12">
+                                    <div class="panel panel-default mar-no">
+                                        <div class="panel-body">
+                                            <a href="JavaScript:void(0);">
+                                                <div class="pull-left">
+                                                    <p class="profile-title text-bricky">Users</p>
+                                                </div>
+                                                <div class="pull-right text-bricky"> <i class="fa fa-users fa-4x"></i> </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-md-6 col-xs-12">
+                                    <div class="panel panel-default mar-no">
+                                        <div class="panel-body">
+                                            <a href="JavaScript:void(0);">
+                                                <div class="pull-left">
+                                                    <p class="profile-title text-bricky">Inbox</p>
+                                                </div>
+                                                <div class="pull-right text-bricky"> <i class="fa fa-envelope fa-4x"></i> </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-md-6 col-xs-12">
+                                    <div class="panel panel-default mar-no">
+                                        <div class="panel-body">
+                                            <a href="JavaScript:void(0);">
+                                                <div class="pull-left">
+                                                    <p class="profile-title text-bricky">FAQ</p>
+                                                </div>
+                                                <div class="pull-right text-bricky"> <i class="fa fa-headphones fa-4x"></i> </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-md-6 col-xs-12">
+                                    <div class="panel panel-default mar-no">
+                                        <div class="panel-body">
+                                            <a href="JavaScript:void(0);">
+                                                <div class="pull-left">
+                                                    <p class="profile-title text-bricky">Settings</p>
+                                                </div>
+                                                <div class="pull-right text-bricky"> <i class="fa fa-cogs fa-4x"></i> </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-md-6 col-xs-12">
+                                    <div class="panel panel-default mar-no">
+                                        <div class="panel-body">
+                                            <a href="JavaScript:void(0);">
+                                                <div class="pull-left">
+                                                    <p class="profile-title text-bricky">Calender</p>
+                                                </div>
+                                                <div class="pull-right text-bricky"> <i class="fa fa-calendar fa-4x"></i> </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-md-6 col-xs-12">
+                                    <div class="panel panel-default mar-no">
+                                        <div class="panel-body">
+                                            <a href="JavaScript:void(0);">
+                                                <div class="pull-left">
+                                                    <p class="profile-title text-bricky">Pictures</p>
+                                                </div>
+                                                <div class="pull-right text-bricky"> <i class="fa fa-picture-o fa-4x"></i> </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Page Title-->
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+                    <div class="col-md-2 col-lg-2 col-sm-12">
+                        
+                            @{ Html.RenderPartialIf("_TopMenu", Request.IsAuthenticated);}
+                        
+                       
+                    </div>
+
+
+                    <div class="col-md-10 col-lg-10 col-sm-12">
+                        <div class="pageheader">
+                            @RenderSection("pageheader", required: false)
+                        </div>
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!--End page title-->
+                        <!--Page content-->
+                        <!--===================================================-->
+                        <div id="page-content">
+
+
+
+
+                            @RenderBody()
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="divModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div id="modalContent"></div>
+
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                            <!-- Modal -->
+                        </div>
+                        <!--===================================================-->
+                        <!--End page content-->
+                    </div>
+                    <!--===================================================-->
+                    <!--END CONTENT CONTAINER-->
+
+                </div>
+                @if (Request.IsAuthenticated)
+                {
+                    Html.RenderPartial("_FooterAdmin");
+                }
+
+                <!-- SCROLL TOP BUTTON -->
+                <!--===================================================-->
+                <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
+                <!--===================================================-->
+            </div>
+        </div>
+        @{ Html.RenderPartial("_Scripts", RenderSection("pagespecific", false)); }
+        <!--===================================================-->
+        <!-- END OF CONTAINER -->
+        <!--JAVASCRIPT-->
+        <!--=================================================-->
+        <!--jQuery [ REQUIRED ]-->
+        @*<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>*@
+        <script type="text/javascript">
+        $(document).ready(function() {
+            @if (TempData["Alerts"] != null)
+        {
+            foreach (Common.JsonModel jsonModel in (List<Common.JsonModel>) TempData["Alerts"])
+            {
+                <text>
+                    var alert = { AlertType: '@jsonModel.AlertType.ToLower()', Message: '@jsonModel.Message', Title: '@jsonModel.Title' };
+                    showAlert(alert);
+                </text>
+            }
+        }
+        });
+        var originalModal = $("#divModal").clone();
+        $("#divModal").on("hidden.bs.modal", function () {
+            $("#divModal").remove();
+            var myClone = originalModal.clone();
+            $("body").append(myClone);
+        });
+        </script>
+    </div>
+</body>
+</html>

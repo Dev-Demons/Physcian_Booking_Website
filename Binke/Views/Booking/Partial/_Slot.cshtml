@@ -1,0 +1,111 @@
+﻿@model Binke.ViewModels.SlotViewModel
+
+<style type="text/css">
+    .bootstrap-timepicker-widget.dropdown-menu {
+        z-index: 99999 !important;
+    }
+    .bootstrap-timepicker-widget table td input {
+        width: 48px !important;
+    }
+</style>
+<link href="@Url.Content("~/Scripts/admin/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css")" rel="stylesheet" />
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.SlotId == 0 ? "Add Booking" : "Edit Booking")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditSlotBooking", "Booking", FormMethod.Post, new { id = "frmSlot" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.SlotId)
+        @Html.HiddenFor(m => m.ReferenceId)
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4 mar-btm">
+                    <label class="control-label"><b>Slot Date</b></label>
+                    @Html.TextBoxFor(m => m.SlotDate, new { @class = "form-control", placeholder = "Slot Date", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.SlotDate, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4 mar-btm">
+                    <label class="control-label"><b>Slot Time</b></label>
+                    @Html.TextBoxFor(m => m.SlotTime, new { @class = "form-control", placeholder = "Slot Time" })
+                </div>
+                <div class="col-md-4 mar-btm">
+                    <label class="control-label"><b>Description</b></label>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
+                </div>
+                 
+                <div class="col-md-4 mar-btm">
+                    @Html.LabelFor(m => m.IsBooked, new { style = "margin-top:10px;" })
+                    @Html.CheckBoxFor(m => m.IsBooked, new { @class = "text-danger", style = "width:18px;margin-top:17px;float: left;margin-right: 3px" })
+                </div>
+                <div class="col-md-4 mar-btm">
+                    @Html.LabelFor(m => m.IsEmailReminder, new { style = "margin-top:10px;" })
+                    @Html.CheckBoxFor(m => m.IsEmailReminder, new { @class = "text-danger", style = "width:18px;margin-top:17px;float: left;margin-right: 3px" })
+                </div>
+                <div class="col-md-4 mar-btm">
+                    @Html.LabelFor(m => m.IsTextReminder, new { style = "margin-top:10px;" })
+                    @Html.CheckBoxFor(m => m.IsTextReminder, new { @class = "text-danger", style = "width:18px;margin-top:17px;float: left;margin-right: 3px" })
+                </div>
+                <div class="col-md-4 mar-btm">
+                    @Html.LabelFor(m => m.IsInsuranceChanged, new { style = "margin-top:10px;" })
+                    @Html.CheckBoxFor(m => m.IsInsuranceChanged, new { @class = "text-danger", style = "width:18px;margin-top:17px;float: left;margin-right: 3px" })
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+<script src="@Url.Content("~/Scripts/admin/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js")"></script>
+<script src="@Url.Content("~/Scripts/admin/js/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.js")"></script>
+
+
+<script type="text/javascript">
+    $('#SlotDate').datepicker({
+        format: 'dd-M-yyyy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#SlotTime').timepicker({});
+ 
+
+    $("#btnSave").click(function () {
+        var iserr = true;
+        $('#SlotDate').css("border-color", "");
+        if ($("#SlotDate").val() == "") {
+            if (iserr) { iserr = false; }
+            $('#SlotDate').css("border-color", "red");
+        }
+
+        $('#SlotTime').css("border-color", "");
+        if ($("#SlotTime").val() == "") {
+            if (iserr) { iserr = false; }
+            $('#SlotTime').css("border-color", "red");
+        }
+        if (!iserr) { return false; }
+
+        $.validator.unobtrusive.parse($('#frmSlot'));
+        if ($("#frmSlot").valid()) {
+
+            $.post("@Url.Action("AddEditSlotBooking", "Booking")", $("#frmSlot").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindSlotList();
+                    closeModal();
+                }
+            });
+        }
+    });
+</script>

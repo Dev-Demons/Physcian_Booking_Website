@@ -1,0 +1,186 @@
+﻿@using Doctyme.Repository.Enumerable;
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Social Media";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>
+
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Social Media</h3>
+        </div>
+        <div class="col-lg-7 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-3">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Facility/"> Facility</a></li>
+                    <li class="active"> Social Media </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+
+    #dtPharmacySocialMedia_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtPharmacySocialMedia_length {
+        float: left;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">Add/Edit Facility Social Media</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="frmSocialMedia">
+                    <fieldset id="smFieldSet">
+                        <input type="hidden" name="SocialMediaId" id="SocialMediaId" />
+                        <input type="hidden" name="OrganisationId" id="OrganisationId" />
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="Facebook">Facebook</label>
+                            <input type="text" class="form-control" id="Facebook" name="Facebook" placeholder="Facebook" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="Twitter">Twitter</label>
+                            <input type="text" class="form-control" id="Twitter" name="Twitter" placeholder="Twitter" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="LinkedIn">LinkedIn</label>
+                            <input type="text" class="form-control" id="LinkedIn" name="LinkedIn" placeholder="LinkedIn" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="Instagram">Instagram</label>
+                            <input type="text" class="form-control" id="Instagram" name="Instagram" placeholder="Instagram" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="Youtube">Youtube</label>
+                            <input type="text" class="form-control" id="Youtube" name="Youtube" placeholder="Youtube" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="Instagram">Pinterest</label>
+                            <input type="text" class="form-control" id="Pinterest" name="Pinterest" placeholder="Pinterest" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="Youtube">Tumblr</label>
+                            <input type="text" class="form-control" id="Tumblr" name="Tumblr" placeholder="Tumblr" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <br />
+                            <label for="IsActive">Active</label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActiveString" checked="checked" data-Id="IsActive" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                        <div class="col-lg-4">
+                            <br />
+                            <button type="button" id="btnSubmit" class="btn btn-primary pull-right mr-2">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+         var isDashboardAdd = false;
+        if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+            isDashboardAdd = true;
+        $(document).ready(function () {
+             if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+                AddIndividualSubmenuItems("SocialMedia");
+            else
+                AddSubmenuItems("SocialMedia", isDashboardAdd);
+            $("#OrganisationId").val(id);
+            $("#header").text(localStorage.getItem("SelectedOrgName"))
+                LoadAllFieldForFacilityUser();
+        });
+
+        var id = localStorage.getItem("organisationId");
+        var dataList = [];
+        function LoadAllFieldForFacilityUser() {
+            $.ajax({
+                url: "/GetSocialMedia/" + id,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data.aaData && data.aaData.length > 0) {
+                        var socialMediaObj = data.aaData;
+                        console.log(socialMediaObj[0])
+                        $("#SocialMediaId").val(socialMediaObj[0].SocialMediaId)
+                        $("#OrganisationId").val(socialMediaObj[0].OrganisationId)
+                        $("#Facebook").val(socialMediaObj[0].Facebook)
+                        $("#Twitter").val(socialMediaObj[0].Twitter)
+                        $("#LinkedIn").val(socialMediaObj[0].LinkedIn)
+                        $("#Instagram").val(socialMediaObj[0].Instagram)
+                        $("#Youtube").val(socialMediaObj[0].Youtube)
+                        $("#Pinterest").val(socialMediaObj[0].Pinterest)
+                        $("#Tumblr").val(socialMediaObj[0].Tumblr)
+                        if (socialMediaObj[0].IsActive == true) {
+                            $("#IsActive").attr("checked", "checked")
+                            $("#IsActive").val("on")
+                        }
+                        else {
+                            $("#IsActive").removeAttr("checked")
+                            $("#IsActive").val("")
+                        }
+                    }
+                }
+            });
+        }
+        var ResetForm = function () {
+            $('#frmSocialMedia').each(function () {
+                this.reset();
+            });
+            $(".single-input input:checkbox").prop("checked", true);
+            $("#OrganisationId").val(id);
+        }
+
+        $("#btnSubmit").click(function () {
+            var data = $("#frmSocialMedia").serialize();
+            if (!$("#SocialMediaId").val()) {
+                $.post("@Url.Action("CreateSocialMedia", "Facility")",
+                    data,
+                    function (response) {
+                        HandleResponse(response);
+                        if (response.Status == 1) {
+                                LoadAllFieldForFacilityUser();
+                        }
+                    });
+            }
+            else {
+                $.post("@Url.Action("UpdateSocialMedia", "Facility")",
+                    data,
+                    function (response) {
+                        HandleResponse(response);
+                        if (response.Status == 1) {
+                                LoadAllFieldForFacilityUser();
+                        }
+                    });
+            }
+        });
+    </script>
+}

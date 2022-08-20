@@ -1,0 +1,557 @@
+﻿@using Doctyme.Repository.Enumerable;
+@{
+    ViewBag.Title = "Insurance Plan";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Insurance Plan</h3>
+        </div>
+        <div class="col-lg-6 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-4">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    @if (User.IsInRole(UserRoles.Admin))
+                    {
+                        <li> <a href="/SeniorCare/"> SeniorCare</a></li>
+                    }
+                    <li class="active"> Insurance Plan </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+
+    #dtInsurancePlan_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtInsurancePlan_length {
+        float: left;
+    }
+
+    label.error {
+        color: red;
+        font-weight: normal !important;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title" id="TitleHeader">Add/Edit Insurance Plan</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="frmInsurancePlan">
+                    <fieldset id="ipFieldSet">
+                        <input type="hidden" name="DocOrgInsuranceId" id="DocOrgInsuranceId" />
+                        <input type="hidden" name="ReferenceId" id="ReferenceId" />
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="InsuranceTypeId">Insurance Type</label>
+                            <select class="form-control chosen-select" id="InsuranceTypeId" name="InsuranceTypeId" required title="Insurance type is required">
+                                <option>Select Insurance Type</option>
+                            </select>
+                            <span class="text-danger" style="display:none" id="InsuranceTypeError">Insurance type is required!</span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="InsurancePlanId">Insurance Plan</label>
+                            <select class="form-control chosen-select" id="InsurancePlanId" name="InsurancePlanId" required title="Insurance type is required">
+                                <option>Select Insurance Plan</option>
+                            </select>
+                            <span class="text-danger" style="display:none" id="InsurancePlanError">Insurance plan is required!</span>
+                        </div>
+                        <div class="col-lg-2 col-md-2 single-input">
+                            <label for="InsuranceIdentifierId">Identifier ID</label>
+                            <input class="form-control" id="InsuranceIdentifierId" required title="Identifier ID is required!" name="InsuranceIdentifierId" placeholder="Identifier ID" type="text">
+                        </div>
+                        <div class="col-lg-2 col-md-2 single-input">
+                            <label for="StateId">State</label>
+                            <select class="form-control chosen-select" required title="State is required" id="StateId" name="StateId"></select>
+                            <span class="text-danger" style="display:none" id="StateError">State is required!</span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <br />
+                            <label for="IsActive">Active</label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActiveString" checked data-Id="IsActive" />&nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                        </div>
+                        <div class="col-lg-8 single-input">
+                            <br />
+                            <button type="button" class="btn btn-default pull-right" id="btnCancel" onclick="cancelClick()">Cancel</button>
+                            <button type="button" id="btnSubmit" class="btn btn-primary pull-right mr-2">Submit</button>
+                        </div>
+                     </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">&nbsp;</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            @*<div class="panel-heading">
+                    <div class="panel-control py-10px">
+                    </div>
+                </div>*@
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="insurancePlan" class="tab-pane fade active in">
+                    <table id="dtInsurancePlan" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="15%">Insurance Type</th>
+                                <th width="30%">Insurance Plan</th>
+                                <th width="20%">Identifier ID</th>
+                                <th width="12%">State</th>
+                                <th width="8%">Active</th>
+                                <th width="15%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        var id = localStorage.getItem("SeniorcareOrganisationId");
+         var dataList = [];
+        $(document).ready(function () {
+            //AddSubmenuItems("InsurancePlan");
+            AddSeniorcareSubmenu()
+            bindInsurancePlan(true);
+            $("#ReferenceId").val(id);
+            $("#header").text(localStorage.getItem("SeniorcareOrganisationName"))
+        });
+
+     
+
+        $(document).on('click', '.removeInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            DeletePharmacyInsurance(ItemId);
+        });
+
+
+
+        $("#InsuranceTypeId").chosen();
+        $("#InsuranceTypeId_chosen").css("width", "100%");
+        $("#InsurancePlanId").chosen();
+        $("#InsurancePlanId_chosen").css("width", "100%");
+        $("#StateId").chosen();
+        $("#StateId_chosen").css("width", "100%");
+
+        $.ajax({
+            url: "/SeniorCare/GetDrpInsuranceTypeList",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#InsuranceTypeId option").remove();
+                var options = '';
+                options += '<option value="">Select Insurance Type</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].InsuranceTypeId + '">' + data[i].Name + '</option>';
+                }
+                $('#InsuranceTypeId').html(options);
+                $("#InsuranceTypeId").trigger("chosen:updated");
+            }
+        })
+
+        $("#StateId").change(function () {
+
+            if (!$("#StateId").val() || $("#StateId").val() == "Select State")
+                ShowHideError(true, "StateError");
+            else
+                ShowHideError(false, "StateError");
+        });
+        $("#InsurancePlanId").change(function () {
+            if (!$("#InsurancePlanId").val() || $("#InsurancePlanId").val() == "Select Insurance Plan")
+                ShowHideError(true, "InsurancePlanError");
+            else
+                ShowHideError(false, "InsurancePlanError");
+        });
+        $("#InsuranceTypeId").change(function () {
+
+            if (!$("#InsuranceTypeId").val() || $("#InsuranceTypeId").val() == "Select Insurance Type")
+                ShowHideError(true, "InsuranceTypeError");
+            else
+                ShowHideError(false, "InsuranceTypeError");
+
+                getInsurancePlanByType($(this).val());
+        });
+        var ResetForm = function () {
+            $('#frmInsurancePlan').each(function () {
+                this.reset();
+            });
+            $("#ipFieldSet").removeAttr("disabled")
+            $(".chosen-select").attr('disabled', false).trigger("chosen:updated")
+            $(".single-input input:checkbox").prop("checked", true);
+            $("#InsurancePlanId option").remove();
+            $("#InsuranceTypeId").val("");
+            $("#ReferenceId").val(id);
+            $("#DocOrgInsuranceId").val("")
+            $("#StateId").val("")
+            $("#InsuranceTypeId").trigger("chosen:updated");
+            $("#InsurancePlanId").trigger("chosen:updated");
+            $("#StateId").trigger("chosen:updated");
+            $(".panel-title").text("Add/Edit Insurance Plan")
+        }
+
+        function getInsurancePlanByType(TypeId,PlanId) {
+            if (!TypeId)
+                return;
+            $.ajax({
+                url: "/SeniorCare/GetDrpInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { TypeId: TypeId },
+                success: function (data) {
+
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Insurance Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+
+                    if (PlanId != "") {
+                        $('#InsurancePlanId').val(PlanId);
+                    }
+
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        }
+
+        function bindInsurancePlan(flag) {
+            dataList = [];
+            if ($.fn.DataTable.isDataTable("#dtInsurancePlan")) {
+                $('#dtInsurancePlan').DataTable().destroy();
+            }
+            var table = $('#dtInsurancePlan')
+                .DataTable({
+                    "sAjaxSource": "/SeniorCare/GetInsurancePlan/" + id,
+                    "columns": [
+                        {
+                            "data": "InsuranceTypeName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "InsuranceIdentifierId",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "StateId",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> &nbsp;';
+                                content += '<label class="switch" style="padding-left:30px;">';
+                                content += '<input  disabled="disabled" data-name="IsActive" data-id="' + row.DocOrgInsuranceId + '" onchange="UpdateSwitch(this)" type="checkbox" ' + value + ' data-Id= "IsActive" />&nbsp;';
+                                content += '<span class="slider round"style="width:35px;"></span>';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+
+                        {
+                            "data": "DocOrgInsuranceId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                dataList.push(row);
+                                //var content = '<a href="/FacilityProfile/' + data + '" data-toggle="tooltip" data-original-title="View Profile" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                var content = '<a href="javascript:;" data-toggle="tooltip" onclick="EditInsurancePlan(' + data + ')" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                //content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+                                content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action viewInfo"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="Delete" data-flag="DeActivate" data-Id="' + data + '" class="btn btn-danger btn-sm action removeInfo"><i class="fa fa-times"></i></a> &nbsp;</div>';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+        var UpdateSwitch = function (ctrl) {
+            var tableName = "DocOrgInsurances";
+            var primaryKeyName = "DocOrgInsuranceId";
+            var flag = $(ctrl).is(":checked");
+            var fieldName = $(ctrl).data("name");
+            var primaryKeyValue = $(ctrl).data("id");
+            $.ajax({
+                url: "/SeniorCare/UpdateSwitch/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    TableName: tableName, PrimaryKeyName: primaryKeyName, PrimaryKeyValue: primaryKeyValue, FieldToUpdateName: fieldName,
+                    FieldToUpdateValue: flag
+                },
+                success: function (data) {
+                    ResetForm();
+                    HandleResponse(data);
+                }
+            });
+        }
+        function EditInsurancePlan(row) {
+
+            $("#frmInsurancePlan").find('input, textarea, button, select').attr("disabled", false);  
+            var insurancePlanObj = jQuery.grep(dataList, function (a) {
+                return a.DocOrgInsuranceId == row;
+             });
+
+             $("#InsuranceTypeId").val(insurancePlanObj[0].InsuranceTypeId)
+             $("#InsuranceTypeId").trigger("chosen:updated");
+             //$("#InsuranceTypeId").trigger('change');
+             getInsurancePlanByType(insurancePlanObj[0].InsuranceTypeId, insurancePlanObj[0].InsurancePlanId)
+
+             $("#InsuranceIdentifierId").val(insurancePlanObj[0].InsuranceIdentifierId)
+             $("#StateId").val(insurancePlanObj[0].StateId)
+             $("#StateId").trigger("chosen:updated");
+             $("#ReferenceId").val(insurancePlanObj[0].ReferenceId)
+             $("#DocOrgInsuranceId").val(insurancePlanObj[0].DocOrgInsuranceId)
+
+            $('#TitleHeader').html('Add/Edit Insurance Plan');
+
+            if (insurancePlanObj[0].IsActive == true)
+                $("#IsActive").prop("checked", true);
+            else
+                $("#IsActive").prop("checked", false);
+        }
+        $(document).on('click', '.viewInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $("#frmInsurancePlan").find('input, textarea, button, select').attr("disabled", true);
+            var insurancePlanObj = jQuery.grep(dataList, function (a) {
+                return a.DocOrgInsuranceId == ItemId;
+            });
+
+            $("#InsuranceTypeId").val(insurancePlanObj[0].InsuranceTypeId)
+            $("#InsuranceTypeId").trigger("chosen:updated");
+            //$("#InsuranceTypeId").trigger('change');
+            getInsurancePlanByType(insurancePlanObj[0].InsuranceTypeId, insurancePlanObj[0].InsurancePlanId)
+
+            $("#InsuranceIdentifierId").val(insurancePlanObj[0].InsuranceIdentifierId)
+            $("#StateId").val(insurancePlanObj[0].StateId)
+            $("#StateId").trigger("chosen:updated");
+            $("#ReferenceId").val(insurancePlanObj[0].ReferenceId)
+            $("#DocOrgInsuranceId").val(insurancePlanObj[0].DocOrgInsuranceId)
+
+            $('#TitleHeader').html('View Insurance Plan');
+            //if (insurancePlanObj[0].IsActive == true)
+            //    $("#IsActive").attr("checked", "checked")
+            //else
+            //    $("#IsActive").removeAttr("checked")    
+
+            if (insurancePlanObj[0].IsActive == true)
+                $("#IsActive").prop("checked", true);
+            else
+                $("#IsActive").prop("checked", false);
+        });
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+
+        function ShowHideError(isShowError, idToShowHide) {
+            if (isShowError) {
+                $("#" + idToShowHide).show()
+            }
+            else
+                $("#" + idToShowHide).hide();
+        }
+
+
+        var form = $("#frmInsurancePlan");
+        form.validate();
+        $("#btnSubmit").click(function () {
+            var isAllValidate = true;
+            if (!$("#InsurancePlanId").val() || $("#InsurancePlanId").val() == "Select Insurance Plan") {
+                isAllValidate = false;
+                ShowHideError(true, "InsurancePlanError");
+            }
+
+            if (!$("#InsuranceTypeId").val() || $("#InsuranceTypeId").val() == "Select Insurance Type") {
+                isAllValidate = false;
+                ShowHideError(true, "InsuranceTypeError");
+            }
+
+            if (!$("#StateId").val() || $("#StateId").val() == "Select State") {
+                isAllValidate = false;
+                ShowHideError(true, "StateError");
+            }
+
+            if (!form.valid() || !isAllValidate) {
+                return;
+            }
+
+            var data = $("#frmInsurancePlan").serialize();
+
+            if (!$("#DocOrgInsuranceId").val()) {
+                 $.post("@Url.Action("CreateInsurancePlan", "SeniorCare")",
+                    data,
+                     function (response) {
+                         ResetForm();
+                        HandleResponse(response);
+
+                        if (response.Status == 1) {
+                            $("#InsurancePlanId").val(id);
+                            $("#ReferenceId").val(id);
+                            $("#DocOrgInsuranceId").val("")
+                            $("#InsuranceIdentifierId").val("")
+                            $("#StateId").val("")
+                            bindInsurancePlan(true);
+                         }
+                         $("#frmInsurancePlan").find('input, textarea, button, select').attr("disabled", false);
+                    });
+            }
+            else {
+                $.post("@Url.Action("UpdateInsurancePlan", "SeniorCare")",
+                    data,
+                    function (response) {
+                        ResetForm();
+                        HandleResponse(response);
+
+                        if (response.Status == 1) {
+                            $("#InsurancePlanId").val(id);
+                            $("#ReferenceId").val(id);
+                            $("#DocOrgInsuranceId").val("")
+                            $("#InsuranceIdentifierId").val("")
+                            $("#StateId").val("")
+                            bindInsurancePlan(true);
+                        }
+                        $("#frmInsurancePlan").find('input, textarea, button, select').attr("disabled", false);
+                    });
+            }
+        });
+ 
+        $.get("@Url.Action("GetDrpStateList", "SeniorCare")", function (data) {
+            $("#StateId option").remove();
+            var options = '';
+            options += '<option value="">Select State</option>';
+            for (var i = 0; i < data.length; i++) {
+                options += '<option value="' + data[i].State + '">' + data[i].State + '</option>';
+            }
+            $('#StateId').html(options);
+            $("#StateId").trigger("chosen:updated");
+
+        });
+
+        //$.ajax({
+        //    url: "/GetDrpInsurancePlanList/",
+        //    type: "GET",
+        //    dataType: "json",
+        //    data: { Prefix: "" },
+        //    success: function (data) {
+        //        $.each(data, function (data, value) {
+        //            $("#InsurancePlanId").append($("<option></option>").val(value.InsurancePlanId).html(value.Name));
+        //        })
+        //    }
+        //});
+
+         function AddSeniorcareSubmenu() {
+             var SeniorOrgId = localStorage.getItem("SeniorcareOrganisationId");
+             var isSeniorCareUser = localStorage.getItem("isSeniorCareUser");
+
+            var submenuHtml = '';
+            if (isSeniorCareUser == 1) {
+                $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '/1/1');
+                submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/1/1" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li >';
+            }
+            else {
+                $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId +'');
+                submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/0" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li >';
+            }
+
+            submenuHtml += '<li class="nav-item"><a href="/OrganizationAmenityOption/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Amenities/Options</p></a></li>';
+            @*if ('@User.IsInRole(UserRoles.Admin)' == 'True') {*@
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Booking" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Booking</p></a></li>';
+            //}
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Cost" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Cost</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SiteImage" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Images</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Reviews" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Reviews</p></a></li>';
+             submenuHtml += '<li class="nav-item"><a href="/SeniorCare/InsurancePlan" class="nav-link"><i class="far fa-dot-circle-o nav-icon"></i><p>Insurance Plan</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/OpeningHours" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Opening Hours</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Address" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Address</p></a></li>';
+             submenuHtml += '<li class="nav-item"><a href="/SeniorCare/SocialMedia" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Social Media</p></a></li>';
+             submenuHtml += '<li class="nav-item"><a href="/SeniorCare/StateLicense" class="nav-link"><i class="far fa-circle nav-icon"></i><p>State License</p></a></li>';
+             submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Taxonomy" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Taxonomy</p></a></li>';
+            submenuHtml += '</ul>'
+            $('.seniorcare-tree-parent').addClass("active");
+            $('.seniorcare-tree-parent').addClass("open");
+            $('.seniorcare-tree-parent').addClass("menu-open");
+            $('.seniorcare-tree-parent').append(submenuHtml);
+        }
+        $("#MnuSeniorCare").click(function () {
+            window.location.href = '/SeniorCare/';
+        });
+        function DeletePharmacyInsurance(id) {
+            var title = "Delete ?";
+            var message = "Are you sure you want to <b> " + title + " </b> this Pharmacy Insurance Info";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/DeletePharmacyInsurance/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        ResetForm();
+                        HandleResponse(data);
+                        bindInsurancePlan(true);
+                        closeModal();
+                        //$('#TopFormBlock').load('@Url.Action("PharmacyInsurance", "Pharmacy")');
+                        $("#frmInsurancePlan").find('input, textarea, button, select').attr("disabled", false); 
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        function cancelClick() { ResetForm(); }
+    </script>
+}
+

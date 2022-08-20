@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Pharmacy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<div class="banner-single" style="background-image: url(/Content/client/images/banner/banner-image-1.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="main_menu">
+                <div class="row">
+                    <div id="divDOCTOR" class="col-md-offset-2 col-md-6 col-sm-offset-1 col-xs-offset-0 section-title ">
+                        <h3>DISCOVER PERFECT<span class="spnWebDocHeader"> PHARMACY</span></h3>
+                        <p>
+                            <span class="spnWebDocBody">
+                                Pharmacy Search for nearest and best
+                                pharmacy in your area.
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="main_form  col-md-offset-2 col-sm-offset-1 col-xs-offset-0">
+                    <div class="form-inline">
+                        <select class="form-group col-lg-2 col-md-6 col-sm-6 col-xs-12" name="location">
+                            <option value="">State / Region</option>
+                        </select>
+                        <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control" id="searchBox" placeholder="Search Pharmacy" name="searchBox">
+                        </div>
+                        <button type="submit" id="btnSearch" class="btn btn-default form-control"><span class="glyphicon glyphicon-search"></span> Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

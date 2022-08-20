@@ -1,0 +1,244 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "State License";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<style>
+    label.switch {
+        position: relative;
+        display: inline-block;
+        height: 23px;
+        padding-left: 2.8em !important;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+@section pageheader{
+    <div class="col-md-12" style="margin-bottom:25px;">
+        <div class="col-md-3">
+            <h3><i class="fa fa-user-md"></i> State License </h3>
+        </div>
+        <div class="col-md-5 text-center" style="top:10px">
+            <h3>@Convert.ToString(Session["DoctorName"])</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="breadcrumb-wrapper" style="top:15px;">
+                <span class="label">You are here:</span>
+
+                <ol class="breadcrumb">
+                    <li> <a href='@("/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]))'> Doctor </a></li>
+                    <li class="active"> State License </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-lg-12">
+        <div id="TopFormBlock" class="box-primary"></div>
+        <div class="tab-base">
+            @*<div class="panel-heading">
+                 <div class="panel-control py-10px">
+                     <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddDoctor">Add Doctor</button>
+                 </div>
+                <h3 class="panel-title">Language</h3>
+                </div>*@
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="DoctorStateLicenses" class="tab-pane fade active in">
+                    <table id="dtDoctorStateLicenses" class="table table-striped table-bordered table-hover" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Taxonomy Code</th>
+                                <th>License Number</th>
+                                <th>State Code</th>
+                                <th>Date Modified</th>
+                                <th>Is Primary Taxonomy</th>
+                                <th>Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        //$("#MnuDoctor").addClass('menu-open');
+        //$("#MnuDoctor ul li a p").each(function () {
+        //    var text = $(this).text();
+        //    if (text == "State License") {
+        //        $(this).parent().addClass('active-sub-menu-item');
+        //        $(this).parent().find('i').removeClass('far fa-circle');
+        //        $(this).parent().find('i').addClass('far fa-dot-circle-o');
+        //    }
+        //    else {
+        //        $(this).parent().removeClass('active-sub-menu-item');
+        //        $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+        //        $(this).parent().find('i').addClass('far fa-circle');
+        //    }
+        //});
+
+        $('#TopFormBlock').load('/StateLicense/');
+
+        $(document).ready(function () {
+            bindDoctorStateLicensesList(true, 0);
+        });
+
+
+        $(document).on('click', '.editInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $('#TopFormBlock').load('/StateLicense/'+ItemId);
+        });
+
+        $(document).on('click', '.viewInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $('#TopFormBlock').load('/StateViewLicense/' + ItemId, function () {
+                $("#TopFormBlock").find('input, textarea, button, select').attr("disabled", true);
+            });
+
+        });
+
+        $(document).on('click', '.removeInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            var dataFlag = $(this).attr('data-flag');
+
+            if (dataFlag == "Activate")
+                DeactivateDoctorStateLicense(ItemId, true);
+            else
+                DeactivateDoctorStateLicense(ItemId, false);
+        });
+
+
+        function bindDoctorStateLicensesList(flag, start) {
+            if ($.fn.DataTable.isDataTable("#dtDoctorStateLicenses")) {
+                $('#dtDoctorStateLicenses').DataTable().destroy();
+            }
+
+            var table = $('#dtDoctorStateLicenses')
+                .DataTable({
+                    "displayStart": start,
+                    "sAjaxSource": "/GetDoctorStateLicenseList/" + flag + "/@ViewBag.DoctorID",
+                    "columns": [
+                        {
+                            "data": "HealthCareProviderTaxonomyCode",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ProviderLicenseNumber",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ProviderLicenseNumberStateCode",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "HealthcareProviderPrimaryTaxonomySwitch",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<label class="switch" style="pointer-events:none">';
+                                content += '<input type="checkbox" ' + value + ' data-Id= "HealthcareProviderPrimaryTaxonomySwitch" />';
+                                content += '<span class="slider round"style="width:35px;"></span> ';
+                                content += ' ';
+                                content += '</label >';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<label class="switch" style="pointer-events:none">';
+                                content += '<input type="checkbox" ' + value + ' data-Id= "IsActive" />';
+                                content += '<span class="slider round"style="width:35px;"></span>';
+                                content += ' ';
+                                content += '</label >';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "DocOrgStateLicenseId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div><a href="JavaScript:" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action editInfo"><i class="fa fa-edit"></i></a> &nbsp; ';
+                                content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action viewInfo"><i class="fa fa-eye"></i></a> &nbsp;';
+                                if (row.IsDeleted == false)
+                                    content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="Delete" data-flag="DeActivate" data-Id="' + data + '" class="btn btn-danger btn-sm action removeInfo"><i class="fa fa-times"></i></a> &nbsp;</div>'
+                                else
+                                    content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="Re Activate" data-flag="Activate" data-Id="' + data + '" class="btn btn-danger btn-sm action removeInfo"><i class="fa fa-check"></i></a> &nbsp;</div>'
+
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function CurrentPageStart() {
+            var table = $('#dtDoctorStateLicenses').DataTable();
+            var info = table.page.info();
+            return info.start;
+        }
+
+        function DeactivateDoctorStateLicense(id, flag) {
+            var title = flag ? "ReActivate" : "Delete";
+            var message = "Are you sure you want to <b> " + title + " </b> this Doctor State License Info";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeActiveDoctorStateLicense/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+
+
+    </script>
+}

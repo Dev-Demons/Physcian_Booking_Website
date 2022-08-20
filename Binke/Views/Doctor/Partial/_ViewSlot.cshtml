@@ -1,0 +1,32 @@
+﻿@model List<Binke.Model.Slot>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        View Slot
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        @{ int i = 0; }
+        @foreach (var item in Model)
+        {
+            <div class="col-md-2 py-10px">
+                <button type="button" class="btn btn-sm btn-primary">
+                    <i class="fa fa-clock-o"></i> @item.SlotTime.ToString("hh:mm tt")
+                </button>
+            </div>
+            if (i == 5)
+            {
+                <div class="clearfix"></div>
+            }
+            i = i + 1;
+        }
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    @*<button type="button" id="btnSave" class="btn btn-primary">Submit</button>*@
+</div>

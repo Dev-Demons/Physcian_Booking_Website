@@ -1,0 +1,258 @@
+﻿
+@{
+    ViewBag.Title = "Drug Details";
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Drug Details";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Drug Details </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li class="active"> Drug Details </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="IsActiveDrugDetails(true)">
+                    <a data-toggle="tab" href="#activeDrugDetails"> Active Drugs</a>
+                </li>
+                @*<li onclick="IsActiveDrugDetails(false)">
+                        <a data-toggle="tab" href="#deActivetDrugDetails">Deactive Drugs</a>
+                    </li>*@
+                <li class="pull-right">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddDrugDetails">Add Drug</button>
+                </li>
+            </ul>
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="activeDrugDetails" class="tab-pane fade active in">
+                    <table id="dtActiveDrugDetails" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Drug Name</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="deActivetDrugDetails" class="tab-pane fade">
+                    <table id="dtDeActivetDrugDetails" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Drug Name</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="modalTitle" class="modal-title">Edit Drug</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label id="labelName" class="control-label"><b>Drug Name</b></label>
+                        <div class="form-group">
+                            <input class="form-control" id="DrugDetails" name="Name" placeholder="Enter Drug Name" type="text">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                            <input type="hidden" id="hiddenId" value="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="saveDrugDetails" onclick="updateData()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="modalTitle" class="modal-title">Confirm</h4>
+                <hr />
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label id="labelName" class="control-label"><b>Are you sure you want to update the drug?</b></label>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="confirmUpdate" onclick="confirmUpdate()" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        var addLabel = "Add Drug Name";
+        var editLabel = "Edit Drug Name";
+        var flag = true;
+        var deactiveTable = "dtDeActivetDrugDetails";
+        var tableId = "dtActiveDrugDetails";
+        var toolTip = "De Activate";
+        var atoolTip = "Activate";
+        var methodResponse = { Status: 0, Message: "", Data: null };
+
+        $(function () {
+            bindDrugDetailsGrid(flag);
+        });
+
+        function IsActiveDrugDetails(value) {
+            flag = value;
+            if (!value) {
+                tableId = deactiveTable;
+            }
+            toolTip = value ? toolTip : atoolTip;
+            bindDrugDetailsGrid(flag);
+        }
+        var currentable = ''
+        function bindDrugDetailsGrid(flag) {
+            if ($.fn.DataTable.isDataTable("#dtActiveDrugDetails")) {
+                $('#dtActiveDrugDetails').DataTable().destroy();
+            }
+            currentable = $('#' + tableId)
+                .DataTable({
+                    "sAjaxSource": "/Drug/GetDrugDetails?isActive=" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "MedicineName",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugDetailId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a onclick="action(' + row.DrugDetailId + ')" data-toggle="tooltip" data-original-title="Edit" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a onclick="actionOnDB(' + row.DrugDetailId + ')" href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-close"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        var updateIdOnConfirm = 0;
+        function action(actionId) {
+            updateIdOnConfirm = actionId;
+            $("#confirmPopup").modal('show');
+        };
+
+        function confirmUpdate() {
+            window.location = "/DrugInformation/" + updateIdOnConfirm;
+        }
+
+        function actionOnDB(drugId) {
+            //logic to deactivate
+
+            $.ajax({
+                url: "/Drug/DeActivateDrug?drugDetailId=" + drugId,
+                type: "GET",
+                //cache: false,
+                success: function (response) {
+                    if (response.Status == 200) {
+                        methodResponse.Message = response.Message;
+                        methodResponse.Status = 1;
+                        bindDrugDetailsGrid(true);
+                        HandleResponse(methodResponse);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function updateData() {
+            var currentCellId = $("#hiddenId").val();
+            $("#" + currentCellId).text($("#DrugDetails").val());
+
+            //logic to call API and save data
+        }
+
+        function createModal(Title, textValue) {
+            $("#modalTitle").text(Title);
+            $("#DrugDetails").val(textValue);
+        }
+
+        $("#AddDrugDetails").click(function () {
+            window.location = "/DrugInformation/"
+        });
+
+    </script>
+}

@@ -1,0 +1,721 @@
+﻿@using Doctyme.Repository.Enumerable;
+@model Binke.ViewModels.OrganisationProfileViewModel
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@*<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+<style type="text/css">
+    .mr-10px {
+        margin-right: 10px;
+    }
+
+    .header-title {
+        padding: 6px;
+        margin-left: 6px;
+    }
+</style>
+@section pageheader{
+    <h3><i class="fa fa-home"></i>Profile </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            @if (User.IsInRole(UserRoles.Admin))
+            {
+                <li> <a href="~/SeniorCare/"> Senior Care </a></li>
+                <li class="active"> Profile </li>
+            }
+            else
+            {
+                <li> <a href="~/Dashboard/SeniorCare"> Profile </a></li>
+            }
+        </ol>
+    </div>
+}
+<h5 id="lblSeniorcareOrganisationName" style="text-align:center;font-weight:600;color:#337ab7;margin-top: -50px;margin-bottom: 40px;margin-top: -87px;margin-bottom: 40px;"></h5>
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12" style="display:none;">
+        <div class="panel">
+            <div class="panel-body np">
+                <img src="@Model.LogoFilePath" alt="Cover" class="img-responsive">
+                <div class="text-center">
+                    <!-- panel body -->
+                    <h4 class="text-lg text-overflow mar-top">@*@Model.SeniorCareUser.FullName*@</h4>
+                    <p class="text-sm"></p>
+                    <!--/ panel body -->
+                    <div class="pad-ver">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-9 col-sm-8 col-xs-12">
+        <div class="panel">
+
+            <!--Default Tabs (Left Aligned)-->
+            <!--===================================================-->
+            <!--Nav Tabs-->
+            <div class="panel-heading box-header">
+                <h4 class="title header-title">
+                    @(Model.OrganisationId == 0 ? "Add Profile" : ViewBag.flag == 0 ? "View Profile" : "Edit Profile")
+                </h4>
+            </div>
+            <!--Tabs Content-->
+            <div class=" ">
+                <div id="UserInformation" class="tab-pane fade active in">
+                    <div class="panel">
+                        <div class="panel-body">
+
+                            <div class="modal-body">
+
+                                @using (Html.BeginForm("AddEditSeniorCareProfile", "SeniorCare", FormMethod.Post, new { id = "frmSeniorCareProfile", @class = "form-horizontal form-bordered" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.OrganisationId)
+                                    @Html.HiddenFor(model => model.OrganizationTypeID)
+                                    @Html.HiddenFor(model => model.UserTypeID)
+                                    @Html.HiddenFor(model => model.UserId)
+                                    if (ViewBag.ID > 0)
+                                    {
+                                        @Html.HiddenFor(model => model.CreatedDate)
+                                        @Html.HiddenFor(model => model.CreatedBy)
+                                    }
+                                    @Html.HiddenFor(model => model.IsDeleted)
+                                    @Html.HiddenFor(model => model.ApplicationUser_Id)
+                                    @Html.HiddenFor(model => model.LogoFilePath)
+
+                                    @Html.HiddenFor(model => model.Status)
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="col-md-3 mar-btm">
+                                                <label class="control-label"><b>Logo</b></label>
+                                                <input type="file" id="Image1" name="Image1" class="form-control" />
+                                                <label class="control-label">(Recommended Size - 500 kb)</label>
+                                                @Html.HiddenFor(model => model.LogoFilePath)
+                                                @Html.ValidationMessageFor(model => model.LogoFilePath, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-md-2 mar-btm">
+                                                @if (Model.LogoFilePath != null && Model.LogoFilePath !="")
+                                                {
+                                                    <img src="~/Uploads/SeniorCareProfile/@Model.LogoFilePath" id="imgUploadPriv" class="img img-responsive" style="width:100px;height:100px" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Uploads/SeniorCareProfile/@Model.LogoFilePath" id="imgUploadPriv"  class="img img-responsive" style="display:none" />
+                                                }
+                                            </div>
+                                            <div class="col-md-7 mar-btm d-flex align-items-center">
+                                                <div>
+                                                    <a href="javascript:void(0)" id="removeImageUploadPriv" onclick="removeImage()" style="color:red;"><b>Remove</b></a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>NPI</b></label>
+                                                @Html.TextBoxFor(model => model.NPI, new { @class = "form-control txt", placeholder = "Enter Unique NPI" })
+                                                @Html.ValidationMessageFor(model => model.NPI, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Organization EIN</b></label>
+                                                @Html.TextBoxFor(model => model.OrganizatonEIN, new { @class = "form-control txt", placeholder = "Enter Organization EIN" })
+                                                @Html.ValidationMessageFor(model => model.OrganizatonEIN, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Enumeration Date</b></label>
+                                                @Html.TextBoxFor(model => model.EnumerationDate, new { @class = "form-control txt datepicker", placeholder = "Enter Enumeration Date" })
+                                                @Html.ValidationMessageFor(model => model.EnumerationDate, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Senior Care Name</b></label>
+                                                @Html.TextBoxFor(model => model.OrganisationName, new { @class = "form-control txt", placeholder = "Enter Senior Care Name" })
+                                                @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Alias Business Name</b></label>
+                                                @Html.TextBoxFor(model => model.AliasBusinessName, new { @class = "form-control txt", placeholder = "Enter Alias Business Name" })
+                                                @Html.ValidationMessageFor(model => model.AliasBusinessName, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Senior Care Subpart</b></label>
+                                                @Html.TextBoxFor(model => model.OrganisationSubpart, new { @class = "form-control txt", placeholder = "Enter Senior Care Subpart" })
+                                                @Html.ValidationMessageFor(model => model.OrganisationSubpart, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Name Prefix</b></label>
+                                                @Html.TextBoxFor(model => model.AuthorizedOfficialNamePrefix, new { @class = "form-control txt", placeholder = "Enter Official Name Prefix" })
+                                                @Html.ValidationMessageFor(model => model.AuthorizedOfficialNamePrefix, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>First Name</b></label>
+                                                @Html.TextBoxFor(model => model.AuthorizedOfficialFirstName, new { @class = "form-control txt", placeholder = "Enter Official First Name" })
+                                                @Html.ValidationMessageFor(model => model.AuthorizedOfficialFirstName, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Last Name</b></label>
+                                                @Html.TextBoxFor(model => model.AuthorizedOfficialLastName, new { @class = "form-control txt", placeholder = "Enter Official Last Name" })
+                                                @Html.ValidationMessageFor(model => model.AuthorizedOfficialLastName, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Credential</b></label>
+                                                @Html.TextBoxFor(model => model.AuthorisedOfficialCredential, new { @class = "form-control txt", placeholder = "Enter Official Credential" })
+                                                @Html.ValidationMessageFor(model => model.AuthorisedOfficialCredential, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Title Or Position</b></label>
+                                                @Html.TextBoxFor(model => model.AuthorizedOfficialTitleOrPosition, new { @class = "form-control txt", placeholder = "Enter Title Or Position" })
+                                                @Html.ValidationMessageFor(model => model.AuthorizedOfficialTitleOrPosition, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-4 mar-btm">
+                                                <label class="control-label"><b>Telephone Number</b></label>
+                                                @Html.TextBoxFor(model => model.AuthorizedOfficialTelephoneNumber, new { @class = "form-control txt", placeholder = "Enter Official Telephone" })
+                                                @Html.ValidationMessageFor(model => model.AuthorizedOfficialTelephoneNumber, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-12 mar-btm">
+                                                <label class="control-label"><b>Short Description</b></label>
+                                                <textarea id="ShortDescription" name="ShortDescription" class="form-control editor" onupdated="$('#ShortDescription').summernote('code', this.data.value);" rows="4">@Model.ShortDescription</textarea>
+                                                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-md-12 mar-btm">
+                                                <label class="control-label"><b>Long Description</b></label>
+                                                <textarea id="LongDescription" name="LongDescription" class="form-control editor" onupdated="$('#LongDescription').summernote('code', this.data.value);" rows="4">@Model.LongDescription</textarea>
+
+                                                @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 single-input">
+                                                <label for="IsActive">Is Active</label>
+                                                <label class="switch">
+                                                    <input type="checkbox" id="IsActive" name="IsActive" @(Model.OrganisationId > 0 ? Model.IsActive == true ? "checked" : string.Empty : "checked") data-Id="IsActive" />&nbsp;
+                                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                                </label>
+                                            </div>
+                                            @if (User.IsInRole(UserRoles.Admin))
+                                            {
+                                                <div class="col-lg-4 col-md-4 single-input">
+                                                    <label for="EnabledBooking">Enabled Booking</label>
+                                                    <label class="switch">
+                                                        <input type="checkbox" id="EnabledBooking" name="EnabledBooking" @(Model.OrganisationId > 0 ? Model.EnabledBooking == true ? "checked" : string.Empty : "checked") data-Id="EnabledBooking" />&nbsp;
+                                                        <span class="slider round" style="width:35px;"></span> &nbsp;
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                            @*@if (ViewBag.flag != 0)
+                                {*@
+                            @if (User.IsInRole(UserRoles.Admin))
+                            {
+                                //if (ViewBag.flag == 1)
+                                //{
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCencel" class="btn btn-primary">@(ViewBag.flag == 0 ? "Back to Listing" : "Cancel")</button>
+                                    <button type="button" id="btnSave" style="@(ViewBag.flag == 0 ? "display:none" : "")" class="btn btn-primary">Submit</button>
+                                </div>
+                                //}
+                            }
+                            else
+                            {
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCencel" class="btn btn-default">Cancel</button>
+                                    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                                </div>
+                            }
+                            @*}*@
+
+                            @*@using (Html.BeginForm("SaveSeniorCareProfile", "SeniorCare", FormMethod.Post, new { id = "frmSeniorCareProfile", enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(m => m.OrganisationId)
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group ">
+                                                <label class="control-label"><b>NPI</b></label>
+                                                <input type="text" id="NPI" name="NPI" value="@Model.NPI" class="form-control" @(ViewBag.flag == 0 ? "readonly=readonly" : "readonly=readonly" ) />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label"><b>Organisation Name</b></label>
+                                                <input type="text" id="OrganisationName" placeholder="Organisation Name" name="OrganisationName" value="@Model.OrganisationName" class="form-control" @(ViewBag.flag == 0 ? "readonly=readonly" : string.Empty ) />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group ">
+                                                <label class="control-label"><b>Authorize First Name</b></label>
+                                                <input type="text" placeholder="Authorize First Name" id="AuthorizedOfficialFirstName" name="AuthorizedOfficialFirstName" value="@Model.AuthorizedOfficialFirstName" class="form-control" @(ViewBag.flag == 0 ? "readonly=readonly" : string.Empty ) />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label"><b>Authorize Last Name</b></label>
+                                                <input type="text" placeholder="Authorize Last Name" id="AuthorizedOfficialLastName" name="AuthorizedOfficialLastName" value="@Model.AuthorizedOfficialLastName" class="form-control" @(ViewBag.flag == 0 ? "readonly=readonly" : string.Empty ) />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group ">
+                                                <label class="control-label"><b>Title/Position</b></label>
+                                                <input type="text" placeholder="Title/Position" id="AuthorizedOfficialTitleOrPosition" name="AuthorizedOfficialTitleOrPosition" value="@Model.AuthorizedOfficialTitleOrPosition" class="form-control" @(ViewBag.flag == 0 ? "readonly=readonly" : string.Empty ) />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label"><b>Phone No.</b></label>
+                                                <input type="text" placeholder="Phone No" id="AuthorizedOfficialTelephoneNumber" name="AuthorizedOfficialTelephoneNumber" value="@Model.AuthorizedOfficialTelephoneNumber" class="form-control" @(ViewBag.flag == 0 ? "readonly=readonly" : string.Empty ) />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" @(ViewBag.flag == 0 ? "style=pointer-events:none" : string.Empty )>
+                                            <label class="control-label"><b>Short Description</b></label>
+                                            <input type="hidden" id="ShortDescription" name="ShortDescription" />
+                                            <div id="divShortDescription"><p>@Html.Raw(Model.ShortDescription)</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" @(ViewBag.flag == 0 ? "style=pointer-events:none" : string.Empty )>
+                                            <label class="control-label"><b>Long Description</b></label>
+                                            <input type="hidden" id="LongDescription" name="LongDescription" />
+                                            <div id="divLongDescription"><p>@Html.Raw(Model.LongDescription)</p></div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (ViewBag.flag == 1)
+                                {
+                                    <div class="modal-footer" @(ViewBag.flag == 0 ? "style=display:none;text-align:left" : "style=text-align:left" )>
+                                        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                                        <button type="button" id="btnCancel" class="btn btn-primary">Cancel</button>
+                                    </div>
+                                }*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+@section pagespecific{
+    <script type="text/javascript">
+
+        var filetypes = ['jpg', 'jpeg', 'png'];
+        $("#Image1").change(function () {
+            var files = $("#Image1").get(0).files;
+            if (parseInt($("#SiteImageId").val()) === 0 && files.length <= 0) {
+                $("#frmSeniorCareProfile").find('span[data-valmsg-for="Image1"]').html("");
+                $("#frmSeniorCareProfile").find('span[data-valmsg-for="Image1"]')
+                    .append('<span for="Image1" class="">please select file</span>');
+            } else {
+                $("#frmSeniorCareProfile").find('span[data-valmsg-for="Image1"]').html("");
+                var fileName = $('#Image1').val();
+                var getExt = fileName.split('.');
+                getExt = getExt.reverse();
+                if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                    $("#frmSeniorCareProfile").find('span[data-valmsg-for="Image1"]').html("");
+                    $("#frmSeniorCareProfile").find('span[data-valmsg-for="Image1"]')
+                        .append('<span for="Image1" class="">The filetype you are attempting to upload is not allowed.</span>');
+                } else {
+                    var response = { Status: 0, Message: "", Data: null };
+                    var img = new Image();
+                    var imgwidth = 0;
+                    var imgheight = 0;
+                    var maxwidth = 50;
+                    var maxheight = 50;
+
+                    if (FileReader && files && files.length) {
+                        var fr = new FileReader();
+                        fr.onload = function () {
+                            img.src = fr.result;
+                        }
+                        fr.readAsDataURL(files[0]);
+                    }
+
+                    img.onload = function () {
+
+                        var file_size = files[0].size;
+                        if (file_size > 524288) {
+                            response.Message = "Image Size Maximum- 500 kb";
+                            HandleResponse(response);
+                            $("#Image1").val('');
+                            return false;
+                        }
+                        else {
+                            return true;
+                        }
+
+                        //imgwidth = this.width;
+                        //imgheight = this.height;
+                        //$("#width").text(imgwidth);
+                        //$("#height").text(imgheight);
+                        //if (imgwidth <= maxwidth && imgheight <= maxheight) {
+                        //    return true;
+                        //} else {
+                        //    response.Message = "Image size must be " + maxwidth + "X" + maxheight;
+                        //    HandleResponse(response);
+                        //    $("#Image1").val('');
+                        //    return false;
+                        //}
+                    }
+                }
+            }
+        });
+
+
+        $.validator.setDefaults({ ignore: null });
+        $(document).ready(function () {
+
+            if (@ViewBag.flag == 0) {
+                $('#frmSeniorCareProfile').find('input, textarea, select').attr("disabled", true);
+            }
+
+            $('#lblSeniorcareOrganisationName').html(localStorage.getItem("SeniorcareOrganisationName"));
+            if ('@Model.OrganisationId' > 0) {
+                if ('@Model.EnumerationDate' != null && '@Model.EnumerationDate' != '') {
+                    $('#EnumerationDate').val('@Convert.ToDateTime(Model.EnumerationDate).ToString("dd-MMM-yyyy")');
+                }
+            }
+
+            if ('@ViewBag.isSeniorCareUser' == 'True') {
+                localStorage.setItem("IsSeniorcareMenuAdded", true);
+                localStorage.setItem("SeniorcareOrganisationId", '@ViewBag.orgId');
+                localStorage.setItem("SeniorcareOrganisationName", '@ViewBag.orgname');
+                localStorage.setItem("SeniorcareOrganisationNPI", '@ViewBag.orgnpi');
+            }
+
+
+            $(".editor").summernote();
+            AddSeniorcareSubmenu();
+
+            if ('@ViewBag.flag' == 0) {
+                $('.note-editable').css('background-color', '#e9ecef');
+            }
+
+            $('.datepicker').datepicker({
+                format: 'dd-MM-yyyy',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            //$("#OrganizationTypeID").val('1007');
+            //$("#UserTypeID").val('5');
+            $("#Status").val(' ');
+
+            var ID = "@ViewBag.ID";
+
+
+            if (ID == 0) {
+                $("#IsDeleted").val('false');
+            }
+
+
+            //$('#divLongDescription').summernote({ height: 200 });
+            //$('.note-codable').attr('name', 'body').html('{{old('body')}}');
+           // $('#divLongDescription').summernote({ height: 170 });
+            //$('#divShortDescription').summernote({ height: 170 });
+            //AddSeniorcareSubmenu()
+            //var markup = $('#divLongDescription').summernote('code')
+
+            @*if ('@ViewBag.flag' == 0) {
+                $('.note-editable').css('background-color', '#e9ecef');
+            }*@
+        });
+
+        @*$('#btnCancel').on("click", function (e) {
+            window.location.href = "/SeniorCare";
+        });
+        $("#btnSave").click(function () {
+            $.validator.unobtrusive.parse($('#frmSeniorCareProfile'));
+
+            $('#OrganisationName').css("border-color", "");
+            $('#OrganisationName').css("border-color", "");
+            $('#AuthorizedOfficialLastName').css("border-color", "");
+
+            var frmerr = true;
+            if ($('#OrganisationName').val() == "") {
+                $('#OrganisationName').css("border-color", "red");
+                if (frmerr == true) {
+                    return false;
+                }
+            }
+            else if ($('#AuthorizedOfficialFirstName').val() == "") {
+                $('#AuthorizedOfficialFirstName').css("border-color", "red");
+                if (frmerr == true) {
+                    return false;
+                }
+            }
+            else if ($('#AuthorizedOfficialLastName').val() == "") {
+                $('#AuthorizedOfficialLastName').css("border-color", "red");
+                if (frmerr == true) {
+                    return false;
+                }
+            }
+            else if ($('#AuthorizedOfficialTitleOrPosition').val() == "") {
+                $('#AuthorizedOfficialTitleOrPosition').css("border-color", "red");
+                if (frmerr == true) {
+                    return false;
+                }
+            }
+            if (frmerr) {
+                $('#ShortDescription').val(encodeURIComponent($("#divShortDescription").summernote('code')));
+                $('#LongDescription').val(encodeURIComponent($('#divLongDescription').summernote('code')));
+                if ($("#frmSeniorCareProfile").valid()) {
+                    $.post("@Url.Action("SaveSeniorCareProfile", "SeniorCare")", $("#frmSeniorCareProfile").serialize(), function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                        }
+                    });
+                }
+            }
+        });*@
+
+        $("#btnCencel").click(function () {
+            if ('@User.IsInRole(UserRoles.Admin)' == 'True') {
+                window.location.href = '/SeniorCare/';
+            }
+            else {
+                window.location.href = '/Dashboard/SeniorCare';
+            }
+
+        });
+
+
+        $("#btnSave").click(function () {
+            var frmerr = true;
+            $('#NPI').css("border-color", "");
+            $('#OrganisationName').css("border-color", "");
+            $('#AuthorizedOfficialFirstName').css("border-color", "");
+            $('#AuthorizedOfficialLastName').css("border-color", "");
+
+            if ($('#NPI').val() == "") {
+                $('#NPI').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if ($('#OrganisationName').val() == "") {
+                $('#OrganisationName').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if ($('#AuthorizedOfficialFirstName').val() == "") {
+                $('#AuthorizedOfficialFirstName').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if ($('#AuthorizedOfficialLastName').val() == "") {
+                $('#AuthorizedOfficialLastName').css("border-color", "red");
+                if (frmerr == true) {
+                    frmerr = false;
+                }
+            }
+            if (frmerr) {
+
+                if ($('#IsActive').is(':checked')) {
+                    $('#IsActive').val('true');
+                }
+                else {
+                    $('#IsActive').val('false');
+                }
+
+                if ($('#EnabledBooking').is(':checked')) {
+                    $('#EnabledBooking').val('true');
+                }
+                else {
+                    $('#EnabledBooking').val('false');
+                }
+
+                $.validator.unobtrusive.parse($('#frmSeniorCareProfile'));
+                $('#ShortDescription').val(encodeURIComponent($("#ShortDescription").summernote('code')));
+                $('#LongDescription').val(encodeURIComponent($('#LongDescription').summernote('code')));
+                //if ($("#frmSeniorCareProfile").valid()) {
+                var form = $('#frmSeniorCareProfile')[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    url: "@Url.Action("AddEditSeniorCareProfile")",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        HandleResponse({ Status: 1, Message: "SeniorCare profile save successfully" });
+                       if (response.Status) {
+                        if (response.Status > 0) {
+                            localStorage.setItem("SeniorcareOrganisationId", response.Status);
+                            localStorage.setItem("SeniorcareOrganisationName", $('#OrganisationName').val());
+                            window.location.href = '/SeniorCareProfile/' + response.Status + '/' + 1;
+                            //bindActiveSeniorCareList(true);
+                            //ResetAllFields();
+                            //if ('@User.IsInRole(UserRoles.Admin)' =='True') {
+                                //window.location.href = '/SeniorCare/';
+                            //}
+                            //else {
+                                //window.location.href = '/Dashboard/SeniorCare';
+                            //}
+
+                            closeModal();
+                        }
+                        else {
+                            location.reload();
+                        }
+                    }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+
+                   @*$.post("@Url.Action("AddEditSeniorCareProfile")", $("#frmSeniorCareProfile").serialize(), function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        if (response.Status > 0) {
+                            localStorage.setItem("SeniorcareOrganisationId", response.Status);
+                            localStorage.setItem("SeniorcareOrganisationName", $('#OrganisationName').val());
+                            window.location.href = '/SeniorCareProfile/' + response.Status;
+                            //bindActiveSeniorCareList(true);
+                            //ResetAllFields();
+                            //if ('@User.IsInRole(UserRoles.Admin)' =='True') {
+                                //window.location.href = '/SeniorCare/';
+                            //}
+                            //else {
+                                //window.location.href = '/Dashboard/SeniorCare';
+                            //}
+
+                            closeModal();
+                        }
+                        else {
+                            location.reload();
+                        }
+                    }
+                });*@
+
+                //}
+            }
+        });
+
+        function ResetAllFields() {
+            //if (ID == 0) {
+            //    $(".txt").each(function () {
+            //        $(this).val('');
+            //    });
+
+
+            //    $("#OrganisationId").val('');
+            //    $(".note-editable").text('');
+            //    $("#IsActive").prop("checked", false);
+            //    $("#EnabledBooking").prop("checked", false);
+            //}
+            //else {
+                $(".txt").each(function () {
+                    $(this).val('');
+                });
+
+
+                $("#OrganisationId").val('');
+                $(".note-editable").text('');
+                $("#IsActive").prop("checked", true);
+                $("#EnabledBooking").prop("checked", true);
+            //}
+        }
+        function AddSeniorcareSubmenu() {
+
+            var SeniorOrgId = localStorage.getItem("SeniorcareOrganisationId");
+            var isSeniorCareUser = localStorage.getItem("isSeniorCareUser");
+            var submenuHtml = '';
+            if ('@User.IsInRole(UserRoles.Admin)' == 'True') {
+
+                if ('@Model.OrganisationId' > 0) {
+                    //$('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '/1');
+                    submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/1" class="nav-link"><i class="far fa-dot-circle-o nav-icon"></i><p>Profile</p></a></li >';
+                }
+                else {
+                    submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/" class="nav-link"><i class="far fa-dot-circle-o nav-icon"></i><p>Profile</p></a></li >';
+                }
+            }
+            else {
+                $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '/1/1');
+                submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/1/1" class="nav-link"><i class="far fa-dot-circle-o nav-icon"></i><p>Profile</p></a></li >';
+            }
+            //Changes made against Issue#25
+            if ('@Model.OrganisationId' > 0 && '@Model.EnumerationDate' != '') {
+
+                submenuHtml += '<li class="nav-item"><a href="/OrganizationAmenityOption/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Amenities/Options</p></a></li>';
+                @*if ('@User.IsInRole(UserRoles.Admin)' == 'True') {*@
+                    submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Booking" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Booking</p></a></li>';
+                //}
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Cost" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Cost</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SiteImage" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Images</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Reviews" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Reviews</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/InsurancePlan" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Insurance Plan</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/OpeningHours" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Opening Hours</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Address" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Address</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/SocialMedia" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Social Media</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/StateLicense" class="nav-link"><i class="far fa-circle nav-icon"></i><p>State License</p></a></li>';
+                submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Taxonomy" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Taxonomy</p></a></li>';
+            }
+            submenuHtml += '</ul>'
+            $('.seniorcare-tree-parent').addClass("active");
+            $('.seniorcare-tree-parent').addClass("open");
+            $('.seniorcare-tree-parent').addClass("menu-open");
+            $('.seniorcare-tree-parent').append(submenuHtml);
+        }
+        $("#MnuSeniorCare").click(function () {
+            window.location.href = '/SeniorCare/';
+        });
+
+        function removeImage() {
+            //$("#LogoFilePath").val('');
+            $("#imgUploadPriv").attr('src', '');
+            $("#imgUploadPriv").hide();
+            $('#removeImageUploadPriv').hide();
+
+        }
+
+    </script>
+}
+

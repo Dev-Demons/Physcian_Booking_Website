@@ -1,0 +1,428 @@
+﻿@using Doctyme.Repository.Enumerable;
+@model Doctyme.Model.Organisation
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Profile";
+
+    string dt1 = "";
+    if (Model.EnumerationDate != null)
+    {
+        dt1 = Model.EnumerationDate.Value.ToString("MM/dd/yyyy");
+    }
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>
+
+<style type="text/css">
+    .mr-10px {
+        margin-right: 10px;
+    }
+
+    .header-title {
+        padding: 6px;
+        margin-left: 6px;
+    }
+</style>
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-3">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Profile</h3>
+        </div>
+        <div class="col-lg-5 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-4">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    @if (User.IsInRole(UserRoles.Admin))
+                    {
+                        <li> <a href="/Facility/"> Facility </a></li>
+                        <li class="active"> <a class="active" href="/FacilityBasicInformation/@Model.OrganisationId"> Profile </a></li>
+                    }
+                    else
+                    {
+                        <li> <a href="~/Facility/"> Facility </a></li>
+                    }
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+    .trasicon {
+        margin-left: 84px;
+        position: absolute;
+        z-index: 1;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-heading box-header">
+                <h4 class="title header-title">
+                    @(Model.OrganisationId == 0 ? "Add Faciltity Profile" : ViewBag.Flag == "facility" ? "View Facility Profile" : "Edit Facility Profile")
+                </h4>
+            </div>
+            <!--No Label Form-->
+            <!--===================================================-->
+            @using (Html.BeginForm("BasicInformation", "Facility", FormMethod.Post, new { id = "frmBasicInfo", @class = "form-horizontal form-bordered" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.OrganisationId)
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3 mar-btm">
+                                <label class="control-label"><b>Logo</b></label>
+                                <input type="file" id="Image1" name="Image1" class="form-control" />
+                                @Html.HiddenFor(model => model.LogoFilePath,new { @Class="LogoFilePath"})
+                                @Html.ValidationMessageFor(model => model.LogoFilePath, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-9 mar-btm">
+                                @if (Model.LogoFilePath != null && Model.LogoFilePath != "")
+                                {
+                                    <img src="~/Uploads/FacilitySiteImages/@Model.LogoFilePath" title="@Model.LogoFilePath" class="img imgLogoFilePath img-responsive" style="width:100px;height:100px;position: relative" alt="Facility-icon" />
+                                }
+                               
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>NPI</b></label>
+                                @if (User.IsInRole(UserRoles.Admin))
+                                {
+                                    @Html.TextBoxFor(x => x.NPI, new { @class = "form-control", placeholder = "NPI" })
+                                    @Html.ValidationMessageFor(x => x.NPI, "", new { @class = "text-danger" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.NPI, new { @class = "form-control", placeholder = "NPI", @readonly = true })
+                                    @Html.ValidationMessageFor(x => x.NPI, "", new { @class = "text-danger" })
+                                }
+                            </div>
+
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Organization EIN</b></label>
+                                @Html.TextBoxFor(x => x.OrganizatonEIN, new { @class = "form-control", placeholder = "Organization EIN" })
+                                @Html.ValidationMessageFor(x => x.OrganizatonEIN, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Enumeration Date</b></label>
+                                @Html.TextBoxFor(model => model.EnumerationDate, new { @class = "form-control txt datepicker", placeholder = "Enter Enumeration Date" })
+                                @Html.ValidationMessageFor(model => model.EnumerationDate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-12 mar-btm">
+                                <label class="control-label"><b>Organization Name</b></label>
+                                @Html.TextBoxFor(x => x.OrganisationName, new { @class = "form-control", placeholder = "Organization Name" })
+                                @Html.ValidationMessageFor(x => x.OrganisationName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-12 mar-btm">
+                                <label class="control-label"><b>Alias Business Name</b></label>
+                                @Html.TextBoxFor(x => x.AliasBusinessName, new { @class = "form-control", placeholder = "Alias Business Name" })
+                                @Html.ValidationMessageFor(x => x.AliasBusinessName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-2 mar-btm">
+                                <label class="control-label"><b>Subpart</b></label>
+                                @Html.TextBoxFor(x => x.OrganisationSubpart, new { @class = "form-control", placeholder = "Organization Subpart" })
+                                @Html.ValidationMessageFor(x => x.OrganisationSubpart, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-2 mar-btm">
+                                <label class="control-label"><b>Prefix</b></label>
+                                @Html.TextBoxFor(x => x.AuthorizedOfficialNamePrefix, new { @class = "form-control", placeholder = "Authorized Official Name Prefix" })
+                                @Html.ValidationMessageFor(x => x.AuthorizedOfficialNamePrefix, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>First Name</b></label>
+                                @Html.TextBoxFor(x => x.AuthorizedOfficialFirstName, new { @class = "form-control", placeholder = "Authorized Official First Name" })
+                                @Html.ValidationMessageFor(x => x.AuthorizedOfficialFirstName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Last Name</b></label>
+                                @Html.TextBoxFor(x => x.AuthorizedOfficialLastName, new { @class = "form-control", placeholder = "Authorized Official Last Name" })
+                                @Html.ValidationMessageFor(x => x.AuthorizedOfficialLastName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Credential</b></label>
+                                @Html.TextBoxFor(model => model.AuthorisedOfficialCredential, new { @class = "form-control txt", placeholder = "Enter Official Credential" })
+                                @Html.ValidationMessageFor(model => model.AuthorisedOfficialCredential, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Title Or Position</b></label>
+                                @Html.TextBoxFor(x => x.AuthorizedOfficialTitleOrPosition, new { @class = "form-control", placeholder = "Authorized Official Title Or Position" })
+                                @Html.ValidationMessageFor(x => x.AuthorizedOfficialTitleOrPosition, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Telephone Number</b></label>
+                                @Html.TextBoxFor(x => x.AuthorizedOfficialTelephoneNumber, new { @class = "form-control", placeholder = "Authorized Official Telephone Number" })
+                                @Html.ValidationMessageFor(x => x.AuthorizedOfficialTelephoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                            @*<div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>Status</b></label>
+                                    @Html.TextBoxFor(x => x.Status, new { @class = "form-control", placeholder = "Status" })
+                                    @Html.ValidationMessageFor(x => x.Status, "", new { @class = "text-danger" })
+                                </div>*@
+                            <div class="col-md-12 mar-btm">
+                                <label class="control-label"><b>Short Description</b></label>
+                                <textarea id="ShortDescription" name="ShortDescription" class="form-control editor" onupdated="$('#ShortDescription').summernote('code', this.data.value);" rows="4">@Model.ShortDescription</textarea>
+                                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-12 mar-btm">
+                                <label class="control-label"><b>Long Description</b></label>
+                                <textarea id="LongDescription" name="LongDescription" class="form-control editor" onupdated="$('#LongDescription').summernote('code', this.data.value);" rows="4">@Model.LongDescription</textarea>
+
+                                @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="IsActive">Active</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="IsActive" name="IsActiveString" @(Model.OrganisationId > 0 ? Model.IsActive == true ? "checked" : string.Empty : "checked") data-Id="IsActive" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                            </div>
+                            @if (User.IsInRole(UserRoles.Admin))
+                            {
+                                <div class="col-lg-3 col-md-3 single-input">
+                                    <label for="EnabledBooking">Enabled Booking</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="EnabledBooking" name="EnabledBookingString" @(Model.OrganisationId > 0 ? Model.EnabledBooking == true ? "checked" : string.Empty : "checked") data-Id="EnabledBooking" />&nbsp;
+                                        <span class="slider round" style="width:35px;"></span> &nbsp;
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-right">
+                    <button type="button" onclick="window.location.href='/Facility/'" style="@(ViewBag.Flag == null ? "display:none":"")" id="btnSaveBack" class="btn btn-primary">Back to Listing</button>
+                    <button type="button" id="btnSubmit" style='@(ViewBag.Flag != null ? "display:none":"")' class="btn btn-primary">Submit</button>
+                    @*<button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>*@
+                </div>
+            }
+            <!--===================================================-->
+            <!--End No Label Form-->
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+@section pagespecific{
+    <script type="text/javascript">
+
+        $('.trasicon').click(function () {
+            if (confirm("Are you sure?")) {
+            $('.imgLogoFilePath').attr("src", "")
+                $('.LogoFilePath').val("");
+                $('.trasicon').css("display", "none");
+                $('.imgLogoFilePath').css("display", "none");
+                
+            }
+            return false;
+        })
+        if ('@ViewBag.Flag' == 'facility') {
+            $('#frmBasicInfo').find('input, textarea, select').attr("disabled", true);
+        }
+
+        //$('#NPI').on('focusout', function () {
+        //    $.ajax({
+        //        url: "/Pharmacy/ValidateNPI?NPI=" + $('#NPI').val() + "&OrganisationId=" + $("#OrganisationId").val(),
+        //        type: "GET",
+        //        //data: formData,
+        //        processData: false,
+        //        contentType: false,
+        //        success: function (result) {
+        //            if (!result) {
+        //                var response = { Status: 3, Message: "Aleary NPI exists!" }
+        //                response.Status = 3;
+        //                response.Message = "Aleary NPI exists!";
+        //                HandleResponse(response);
+        //            }
+        //        },
+        //        error: function (result) {
+        //            console.log(result);
+        //        }
+        //    });
+
+        //});
+
+        var isDashboardAdd = false;
+        //Changes made against Issue#25
+        localStorage.setItem("EnumerationDate", "@Model.EnumerationDate")
+        if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+            isDashboardAdd = true;
+        $.validator.setDefaults({ ignore: null });
+        $(document).ready(function () {
+            if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+                AddIndividualSubmenuItems("Profile");
+            else
+                AddSubmenuItems('Profile', isDashboardAdd);
+            localStorage.setItem("SelectedOrgName", "@Model.OrganisationName")
+            $("#header").text(localStorage.getItem("SelectedOrgName"))
+            $(".editor").summernote();
+            $('.datepicker').datepicker({
+                format: 'mm/dd/yyyy',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: true
+            });
+            $("#EnumerationDate").val("@dt1");
+        });
+
+        $('input[type="file"]').change(function (e) {
+            var imageX = e.target.files[0];
+            var imgesize = imageX.size;
+            var fileName = e.target.files[0].name;
+
+            if (imgesize < 5242880) {
+                let img = new Image()
+                img.src = window.URL.createObjectURL(imageX)
+
+                img.onload = () => {
+                    var imagesrc = "~/Uploads/FacilitySiteImages/" + fileName;
+                    $("#ImagePath").val(fileName);
+                    $('.trasicon').css("display", "block");
+                    $('.imgLogoFilePath').css("display", "block");
+                    $('.imgLogoFilePath').attr("src", imagesrc);
+                    //w = img.width;
+                    //h = img.height;
+                    //if (w <= 50 && h <= 50) {
+                    //    var imagesrc = "~/Uploads/FacilitySiteImages/" + fileName;
+                    //    $("#ImagePath").val(fileName);
+                    //    $('.trasicon').css("display", "block");
+                    //    $('.imgLogoFilePath').css("display", "block");
+                    //    $('.imgLogoFilePath').attr("src", imagesrc)
+                    //}
+                    //else {
+                    //    alert("Image width and height should be less than or equal 50px");
+                    //    $("#ImagePath").val('');
+                    //    $("#Image1").val('');
+                    //}
+                }
+            }
+            else {
+                alert("Image size should be less than 5MB");
+                $("#ImagePath").val('');
+                $("#Image1").val('');
+            }
+
+        });
+
+        $(document).on("change", "#AddressView_StateId", function () {
+            var id = $(this).val();
+            var cityId = $("#AddressView_CityId").val();
+            SetCityOnEdit(id, cityId);
+        });
+
+        function SetCityOnEdit(stateId, cityId) {
+            GetCityList(stateId).done(function (response) {
+                if (response.Status) {
+                    var data = response.Data;
+                    $("#AddressView_CityId").empty();
+                    $("<option>", { text: "City", value: "0" }).html("-- Select City --").appendTo("#AddressView_CityId");
+                    $.each(data, function (key, val) {
+                        $("<option>", { text: val.Text, value: val.Value }).html(val.Text).appendTo("#AddressView_CityId");
+                    });
+                    $("#AddressView_CityId").val(cityId).trigger("change.selectpicker");
+                }
+            });
+        }
+
+        $("#btnSubmit").click(function () {
+            $.validator.unobtrusive.parse($('#frmBasicInfo'));
+            var result = { Status: 0, Message: "", valid: true }
+
+            if (!$("#OrganisationName").val().trim()) {
+                result.valid = false;
+                result.Message = "Please enter organisation name";
+            }
+            //if (!$("#Status").val().trim()) {
+            //    result.valid = false;
+            //    result.Message = "Please enter status";
+            //}
+            if (!result.valid) {
+                HandleResponse(result);
+                return;
+            }
+            $('#ShortDescription').val(encodeURIComponent($("#ShortDescription").summernote('code')));
+            $('#LongDescription').val(encodeURIComponent($('#LongDescription').summernote('code')));
+            if ($("#frmBasicInfo").valid()) {
+                var isActive = $("#IsActive").val();
+                var enabledBooking = $("#EnabledBooking").val();
+                var url = "/FacilityBasicInformation/" + isActive + "/" + enabledBooking;
+                var form = $('#frmBasicInfo')[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        GetProfilePictureUpdate();
+                        localStorage.setItem("SelectedOrgName", $("#OrganisationName").val())
+                        $("#header").text(localStorage.getItem("SelectedOrgName"))
+                        if (response.Status == 1 && '@User.IsInRole(UserRoles.Facility)' == 'True')
+                            storeOrgId($("#OrganisationName").val());
+                        if (response.Data > 0)
+                            window.location.href = "/FacilityBasicInformation/" + response.Data;
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+            }
+
+            function GetProfilePictureUpdate() {
+                if ('@User.IsInRole(UserRoles.Facility)' == 'True') {
+                    $.get("/Facility/GetOrgId/",
+                        function (response) {
+                            var url = "/GetProfileLogo/" + response.Data;
+                            $.get(url, function (response) {
+                                if (response.Status == 1 && response.Data) {
+                                    var imageUrl = "/Uploads/FacilitySiteImages/" + response.Data;
+                                    $.get(imageUrl)
+                                        .done(function () {
+                                            $("#profilePicture").prop("src", imageUrl)
+                                        }).fail(function () {
+                                            $("#profilePicture").prop("src", "@StaticFilePath.AdminProfilePicture")
+                                        })
+                                }
+                                else {
+                                    $("#profilePicture").prop("src", "@StaticFilePath.AdminProfilePicture")
+                                }
+                            });
+                        });
+                }
+            }
+
+            function storeOrgId(orgName) {
+
+                if (!localStorage.getItem("organisationId") || localStorage.getItem("organisationId") == 0) {
+                    $.get("/Facility/GetOrgId/",
+                        function (response) {
+                            localStorage.setItem("organisationId", response.Data);
+
+                            AddIndividualSubmenuItems("Profile",true);
+                        });
+                }
+            }
+        });
+    </script>
+}

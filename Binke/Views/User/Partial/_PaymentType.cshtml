@@ -1,0 +1,84 @@
+﻿@model Binke.ViewModels.PaymentTypeViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.Id == 0 ? "Add Payment Type" : Model.IsViewMode ? "View Payment Type" : "Edit Payment Type")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditPaymentType", "User", FormMethod.Post, new { id = "frmPaymentType" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+      
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Payment Type Name</b></label>
+                <div class="form-group">
+                    @if (!Model.IsViewMode)
+                    {
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Payment Type Name" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Payment Type Name",@readonly="true" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Description</b></label>
+                <div class="form-group">
+                    @if (!Model.IsViewMode)
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description",@readonly="true" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+           
+        </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    @if (!Model.IsViewMode)
+    {
+        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+    }
+    </div>
+
+@Scripts.Render("~/scripts/full-calendar")
+
+<script type="text/javascript">
+ 
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmPaymentType'));
+        if ($("#frmPaymentType").valid()) {
+            $.post("@Url.Action("AddEditPaymentType")", $("#frmPaymentType").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "PaymentType") {
+                        bindExperienceList();
+                        closeModal();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+   
+
+</script>

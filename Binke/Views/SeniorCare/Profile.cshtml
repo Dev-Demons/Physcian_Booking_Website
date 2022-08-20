@@ -1,0 +1,170 @@
+﻿@model Binke.ViewModels.DrpUser
+@using Doctyme.Repository.Enumerable;
+@{
+    ViewBag.Title = "User Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>User Profile</h3>
+        </div>
+        <div class="col-lg-7 text-center">
+            <h4 id="header" style="text-align:center; font-weight:600;color:#337ab7; background-color:#f4f6f9; color:#337ab7;display:inline;font-size:18px;"></h4>
+        </div>
+        <div class="col-lg-3">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/SeniorCare/"> SeniorCare</a></li>
+                    <li class="active"> User Profile </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">SeniorCare User</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                @using (Html.BeginForm("EditSeniorCareUser", "SeniorCare", FormMethod.Post, new { id = "frmFacilityUser", @class = "form-horizontal form-bordered" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.Id)
+                <div class="form-group">
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>NPI</b></label>
+                        @Html.TextBoxFor(model => model.Uniquekey, new { @class = "form-control", placeholder = "NPI", @readonly = "readonly" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>First Name</b></label>
+                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "First Name" })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Middle Name</b></label>
+                        @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })
+                        @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Last Name</b></label>
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Last Name" })
+                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Phone Number</b></label>
+                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Email</b></label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <label for="Password">
+                            Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="
+
+&#8226;Passwords must be at least eight characters in length.
+&#8226;Passwords must contain at least one lowercase letter, one uppercase letter, and one number.
+&#8226;The word 'Doctyme' cannot be used.
+&#8226;The name appearing before the@in your login email cannot be used. For example
+&#8226;No more than three consecutive numbers or characters can be used (123 can be used, but not 1234; abc can be used, but not abcd).
+&#8226;No number or letter can be used 4 or more times in a row (5555 cannot be used).
+
+
+
+                                                                                                                      "><i class="fa fa-question-circle text-blue"></i></a>
+                        </label>
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                     
+                    <div class="col-lg-4 col-md-4">
+                        <label for="ConfirmPassword">
+                            Confirm Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Confirm password must be equal to password"><i class="fa fa-question-circle text-blue"></i></a>
+                        </label>
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr />
+                    <div class="col-md-12 mar-btm ">
+                        <button type="button" id="btnSave" class="btn btn-primary pull-right">Submit</button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+
+       $(document).ready(function () {
+           $("#header").text(localStorage.getItem("SeniorcareOrganisationName"))
+           AddSeniorcareSubmenu();
+        });
+
+     $("#btnSave").click(function () {
+         $.validator.unobtrusive.parse($('#frmFacilityUser'));
+         if ($("#frmFacilityUser").valid()) {
+             var email = $('#Email').val();
+             var userName = email.substring(0, email.indexOf("@@"));
+             var password = $('#Password').val();
+             if (password.includes(userName)) {
+                 alert("Password Cannot be email!")
+                 return;
+             }
+             $.post("@Url.Action("EditSeniorCareUser", "SeniorCare")", $("#frmFacilityUser").serialize(), function (response) {
+                HandleResponse(response);
+            });
+        }
+    });
+    function AddSeniorcareSubmenu() {
+        var SeniorOrgId = localStorage.getItem("SeniorcareOrganisationId");
+        var isSeniorCareUser = localStorage.getItem("isSeniorCareUser");
+
+        var submenuHtml = '';
+        if (isSeniorCareUser == 1) {
+            $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '/1/1');
+            submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/1/1" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li >';
+        }
+        else {
+            $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '');
+            submenuHtml += '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/0" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li >';
+        }
+
+        submenuHtml += '<li class="nav-item"><a href="/OrganizationAmenityOption/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Amenities/Options</p></a></li>';
+        @*if ('@User.IsInRole(UserRoles.Admin)' == 'True') {*@
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Booking" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Booking</p></a></li>';
+            //}
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Cost" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Cost</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SiteImage" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Images</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Reviews" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Reviews</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/InsurancePlan" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Insurance Plan</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/OpeningHours" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Opening Hours</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Address" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Address</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/SocialMedia" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Social Media</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/StateLicense" class="nav-link"><i class="far fa-circle nav-icon"></i><p>State License</p></a></li>';
+            submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Taxonomy" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Taxonomy</p></a></li>';
+            submenuHtml += '</ul>'
+            $('.seniorcare-tree-parent').addClass("active");
+            $('.seniorcare-tree-parent').addClass("open");
+            $('.seniorcare-tree-parent').addClass("menu-open");
+            $('.seniorcare-tree-parent').append(submenuHtml);
+        }
+    $("#MnuSeniorCare").click(function () {
+        window.location.href = '/SeniorCare/';
+    });
+</script>

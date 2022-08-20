@@ -1,0 +1,69 @@
+﻿@model  List<Doctyme.Model.ViewModels.Category>
+
+@if (Model != null)
+{
+    var homeCategory = Model.Where(x => x.CategoryName == "Home").FirstOrDefault();
+    if (homeCategory != null)
+    {
+        Model.Remove(homeCategory);
+        //Model.Insert(0, homeCategory);
+    }
+    var parentId = Model.Select(p => new { p.CategoryId, p.ParentCategoryId }).Distinct().ToList().Where(x => x.ParentCategoryId == 0).FirstOrDefault();
+    var parentcategory = Model.Where(i => i.ParentCategoryId == 0).ToList();
+    var parentcategories = Model.Select(p => new { p.ParentCategoryId, p.ParentCategoryName, p.ParentCategoryNameReplace }).Distinct().ToList().OrderBy(x => x.ParentCategoryName)
+        .Where(x => x.ParentCategoryName != null && x.ParentCategoryId != parentId.CategoryId);
+    List<int> lstparentIds = new List<int>();
+    lstparentIds = parentcategories.Select(x => x.ParentCategoryId).ToList();
+    var rootcategories = Model.Select(p => new { p.CategoryId, p.CategoryName, p.CategoryNameReplace, p.ParentCategoryId })
+        .Distinct().ToList()
+       .Where(x => x.ParentCategoryId == parentId.CategoryId || lstparentIds.Contains(x.CategoryId));
+
+    foreach (var item in rootcategories)
+    {
+        if (!string.IsNullOrEmpty(item.CategoryName))
+        {
+            <li style="width: 250px; ">
+                @*<a href="/Blog/Category/@item.CategoryNameReplace">@item.CategoryNameReplace</a>*@
+                @if (lstparentIds.Contains(item.CategoryId))
+                {
+                    <a href="/Blog/Category/@item.CategoryNameReplace">@item.CategoryName</a>
+                }
+                else
+                {
+                    <a href="/Blog/SubCategory/@item.CategoryNameReplace">@item.CategoryName</a>
+                }
+                @{ var lstsub = Model.Where(i => i.ParentCategoryId == item.CategoryId && i.ParentCategoryName != null && i.ParentCategoryId != parentId.CategoryId
+                                                                           ).Select(p => new { p.CategoryId, p.CategoryName, p.CategoryNameReplace, p.ParentCategoryId }).ToList();
+                    if (lstsub.Count() > 0)
+                    {
+
+                        <ul style="width: 300px;padding: 3px">
+                            @foreach (var subitem in lstsub)
+                            {
+                                if (!string.IsNullOrEmpty(subitem.CategoryName))
+                                {
+                                    <li>
+                                        @if (subitem.ParentCategoryId > 0)
+                                    {
+                                            <a href="/Blog/SubCategory/@subitem.CategoryNameReplace">@subitem.CategoryName</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/Blog/Category/@subitem.CategoryNameReplace">@subitem.CategoryName</a>
+                                        }
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+
+                }
+            </li>
+
+
+                            }
+
+                        }
+
+
+                    }

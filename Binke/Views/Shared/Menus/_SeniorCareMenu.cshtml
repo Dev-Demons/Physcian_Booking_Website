@@ -1,0 +1,69 @@
+﻿    <script type="text/javascript">
+    window.onload = function () {
+          if (@ViewBag.SeniorcareId == 0)
+          {
+              alert('Please complete the profile first, before accessing the other features of the site');
+          }
+     }
+    </script>
+<li class="nav-item">
+    <a href="/Dashboard/SeniorCare" class="nav-link">
+        <i class="nav-icon far fa-circle nav-icon" id="seniordashboard"></i>
+        <p>
+            Dashboard
+        </p>
+    </a>
+</li>
+
+<li class="nav-item has-treeview" style="display:none;">
+    <a href="#" class="nav-link">
+        <i class="nav-icon far fa-envelope"></i>
+        <p>
+            My Profile
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="/SeniorCareBasicInformation" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Basic Information</p>
+            </a>
+        </li>
+
+    </ul>
+</li>
+<li class="nav-item has-treeview" style="display:none;">
+    <a href="#" class="nav-link">
+        <i class="nav-icon far fa-envelope"></i>
+        <p>
+            My Images
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="/MyImages" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>My Images</p>
+            </a>
+        </li>
+
+    </ul>
+</li>
+<li class="nav-item has-treeview seniorcare-tree-parent">
+    @*<a href="~/SeniorCare/" class="nav-link">
+            <i class="nav-icon far fa-calendar-alt"></i>
+            <p>
+                Senior Care
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>*@
+
+    @*<ul class="nav nav-treeview">
+            <li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/0" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li>
+            <li class="nav-item"><a href="/OrganizationAmenityOption/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Amenities/Options</p></a></li>
+            <li class="nav-item"><a href="/Booking/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Booking</p></a></li>
+            <li class="nav-item"><a href="/SiteImage" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Images</p></a></li>
+        </ul>*@
+</li>

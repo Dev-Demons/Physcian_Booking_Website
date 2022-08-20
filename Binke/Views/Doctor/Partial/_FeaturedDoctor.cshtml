@@ -1,0 +1,178 @@
+﻿@model Binke.ViewModels.FeaturedDoctorViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.FeaturedDoctorId == 0 ? "Add Featured Doctor" : "Edit Featured Doctor")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Ajax.BeginForm("AddEditFeaturedDoctor", "Doctor", null, new AjaxOptions { HttpMethod = "POST" }, new { id = "frmFeaturedDoctor", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.FeaturedDoctorId)
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Doctor</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.DoctorId, ViewBag.DoctorList as IEnumerable<SelectListItem>, "-- Select Doctor --",
+                                        new {@class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.DoctorId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Profile Pic</b></label>
+                <div class="form-group">
+                    <input type="file" id="ProfilePic" name="ProfilePic" />
+                    <br />
+                    <label class="control-label">(Recommended Size - 400x400 px)</label>
+                    <br />
+                    @Html.ValidationMessageFor(m => m.ProfilePic, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+<script type="text/javascript">
+    var filetypes = ['jpg', 'jpeg', 'png'];
+    //$("#DoctorId").select2({
+    //    ajax: {
+    //        url: "/Doctor/GetDoctorList/",
+    //        dataType: 'json',
+    //        delay: 250,
+    //        data: function (params) {
+    //            return {
+    //                query: params.term, // search term
+    //            };
+    //        },
+    //        placeholder: 'Search for a Doctor',
+    //        minimumInputLength: 4,
+    //    }
+    //});
+    $("#ProfilePic").change(function () {
+        var files = $("#ProfilePic").get(0).files;
+        if (parseInt($("#FeaturedDoctorId").val()) === 0 && files.length <= 0) {
+            $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]').html("");
+            $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]')
+                .append('<span for="ProfilePic" class="">please select file</span>');
+        } else {
+            $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]').html("");
+            var fileName = $('#ProfilePic').val();
+            var getExt = fileName.split('.');
+            getExt = getExt.reverse();
+            if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]').html("");
+                $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]')
+                    .append('<span for="ProfilePic" class="">The filetype you are attempting to upload is not allowed.</span>');
+            } else {
+                var response = { Status: 0, Message: "", Data: null };
+                var img = new Image();
+                var imgwidth = 0;
+                var imgheight = 0;
+                var maxwidth = 400;
+                var maxheight = 400;
+
+                if (FileReader && files && files.length) {
+                    var fr = new FileReader();
+                    fr.onload = function () {
+                        img.src = fr.result;
+                    }
+                    fr.readAsDataURL(files[0]);
+                }
+
+                img.onload = function () {
+                    imgwidth = this.width;
+                    imgheight = this.height;
+                    $("#width").text(imgwidth);
+                    $("#height").text(imgheight);
+                    if (imgwidth <= maxwidth && imgheight <= maxheight) {
+                        return true;
+                    } else {
+                        response.Message = "Image size must be " + maxwidth + "X" + maxheight;
+                        HandleResponse(response);
+                        return false;
+                    }
+                }
+            }
+        }
+    });
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmFeaturedDoctor'));
+
+        var files = $("#ProfilePic").get(0).files;
+        var flag = false;
+
+        if (parseInt($("#FeaturedDoctorId").val()) === 0 && files.length <= 0) {
+            $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]').html("");
+            $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]')
+                .append('<span for="ProfilePic" class="">please select file</span>');
+        } else {
+            $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]').html("");
+            if (files.length !== 0) {
+                var fileName = $('#ProfilePic').val();
+                var getExt = fileName.split('.');
+                getExt = getExt.reverse();
+                if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                    $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]').html("");
+                    $("#frmFeaturedDoctor").find('span[data-valmsg-for="ProfilePic"]')
+                        .append(
+                            '<span for="ProfilePic" class="">The filetype you are attempting to upload is not allowed.</span>');
+                    flag = false;
+                }
+                else {
+                    flag = true;
+                }
+            } else {
+                flag = true;
+            }
+        }
+
+        if ($("#frmFeaturedDoctor").valid()) {
+            if (flag) {
+                if (window.FormData !== undefined) {
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('__RequestVerificationToken', $('input[name=__RequestVerificationToken]').val());
+                    fileData.append('FeaturedDoctorId', $("#FeaturedDoctorId").val());
+                    fileData.append('DoctorId', $("#DoctorId").val());
+
+                    $.ajax({
+                        url: '/AddEditFeaturedDoctor',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (response) {
+                            if (response.Status) {
+                                bindFeaturedDoctorList();
+                                closeModal();
+                            }
+                        },
+                        error: function (response) {
+                            HandleResponse(response);
+                        }
+                    });
+                } else {
+                    GetAlertResponse(0, "FormData is not supported.");
+                }
+            }
+        }
+
+    });
+
+</script>

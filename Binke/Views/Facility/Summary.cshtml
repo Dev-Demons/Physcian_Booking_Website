@@ -1,0 +1,99 @@
+﻿@using Doctyme.Repository.Enumerable;
+@{
+    ViewBag.Title = "Summary";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Summary</h3>
+        </div>
+        <div class="col-lg-7 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-3">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Facility/"> Facility</a></li>
+                    <li class="active"> Summary </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+</style>
+<div class="col-lg-12">
+    <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;"></h4>
+    <hr />
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <form id="frmSummary">
+            <input type="hidden" name="OrganisationId" id="OrganisationId" />
+            <textarea name="ShortDescription" class="form-control" id="ShortDescription"></textarea>
+        </form>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="col-lg-12">
+            @*<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+            <a href="@Url.Action("Facility","Dashboard")" class="btn btn-default pull-right">Close</a>*@
+            <button type="button" id="btnSubmit" class="btn btn-primary pull-right mr-2">Submit</button>
+        </div>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+         var isDashboardAdd = false;
+        if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+            isDashboardAdd = true;
+        $(document).ready(function () {
+             if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+                AddIndividualSubmenuItems("Summary");
+            else
+            AddSubmenuItems("Summary", isDashboardAdd);
+            GetSummary();
+            $("#header").text(localStorage.getItem("SelectedOrgName"))
+        });
+
+        var id = localStorage.getItem("organisationId");
+        function GetSummary() {
+            var url = "/GetSummary/" + id;
+             $.get(url,
+                 function (response) {
+                     if (response.data) {
+                         $("#OrganisationId").val(response.data.OrganisationId);
+                         $("#ShortDescription").val(response.data.ShortDescription);
+                     }
+                });
+        }
+
+        $("#btnSubmit").click(function () {
+            var data = $("#frmSummary").serialize();
+            $.post("@Url.Action("UpdateSummary", "Facility")",
+                $("#frmSummary").serialize(),
+                function(response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+
+                    }
+                });
+        });
+    </script>
+}
+

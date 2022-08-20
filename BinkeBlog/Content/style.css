@@ -1,0 +1,153 @@
+.sectionsOne .box .text {
+    height: 110px;
+    position: relative;
+    margin-left: -20px;
+}
+.head-title {
+    margin: 80px 20px 20px 20px;
+}
+    .head-title h3, .single-page h3 {
+        color: #163877;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+    .head-title hr, .single-page .head hr {
+        border-color: rgba(0,0,0,0.2);
+        margin-top: 0;
+        border-width: 1px;
+    }
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+
+
+.head h3::after {
+    content: '';
+    position: relative;
+    left: 0;
+    bottom: 0;
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: #F8C91C;
+}
+
+
+
+.head-title {
+    margin: 80px 20px 20px 20px
+}
+
+.con {
+    position: relative;
+    border: 8px solid #F4F2F2;
+    transition: all 1s ease;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.can .koko {
+    width: 100%;
+    background-size: cover;
+}
+
+.con .tags {
+    position: absolute;
+    top: 1px;
+    left: 0px;
+}
+
+    .con .tags a {
+        background-color: #163877;
+        padding: 3px 5px;
+        color: #fff;
+        font-weight: bold;
+    }
+
+        .con .tags a:hover {
+            text-decoration: none;
+            color: yellow;
+        }
+
+.con .bottom-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(255,255,255,0.3);
+    width: 100%;
+    transform: scaleY(1);
+    transition: all 0.3s ease;
+    transform-origin: bottom;
+}
+
+    .con .bottom-text h4 {
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+        color: black;
+    }
+.con:hover .bottom-text {
+    transform: scaleY(0);
+}
+
+/*single page */
+.single-page .single-post-image { 
+	margin-top: 30px;
+}
+
+.single-page .social-icons{margin-top:20px; text-align: center;}
+.single-page .social-icons .inline {display: inline-block}
+.single-page .social-icons span {
+}
+
+.single-page .social-icons span .pl {margin-left:5px;}
+.single-page .title p,
+.single-page .sub-title p{margin-left: 10px;margin-bottom: 20px;}
+.single-page .title{margin-top: 20px;}
+.single-page .title h3 {
+	font-size: 30px;
+	font-weight: bold;
+	color:#337AB7;
+	margin-bottom: 20px;
+}
+
+.single-page .sub-title h4{
+	margin-top: 50px;
+	margin-bottom: 10px;
+}
+
+.single-page .read-more{
+	margin-top: 1px;
+}
+.single-page .read-more a { 
+	text-decoration: none;
+}
+
+.single-page .read-more li {margin-top: 20px;}
+.single-page .writen-by{
+	margin-top: 50px;
+	margin-bottom:50px;
+	padding: 10px;
+	border: 2px dotted #444;
+}
+.single-page .right p{margin: 2px;}
+.single-page .right h4{margin:2px;}
+.single-page .right p a{color:#444;}
+.single-page .right h4 a{color:#444;}
+.single-page .right .one-artical{margin-top: 40px;	}
+.single-page .right h4 a:hover{text-decoration: none;color:#337AB7}
+
+.center h4 a{
+    font-size:14px;
+}
+
+.one-artical p{
+    margin:2px;
+}
+.one-artical h4{
+    margin:2px;
+}

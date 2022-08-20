@@ -1,0 +1,776 @@
+﻿@{
+    var IsDoctorSelected = false;
+    var IsNewDoctor = false;
+    if (!string.IsNullOrEmpty(Convert.ToString(Session["DoctorSearch"])))
+    {
+        if (Convert.ToString(Session["DoctorSearch"]) == "0")
+        {
+            IsNewDoctor = true;
+        }
+        else
+        {
+            IsDoctorSelected = true;
+        }
+    }
+    if (ViewContext.Controller.ToString() != "Binke.Controllers.DoctorController")
+    {
+        Session["DoctorSearch"] = "0";
+        IsNewDoctor = true;
+        IsDoctorSelected = false;
+    }
+}
+
+<style>
+    .hid {
+        display: none !important;
+    }
+</style>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<li class="nav-item">
+    <a href="~/Dashboard" class="nav-link ">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+            Dashboard
+
+        </p>
+    </a>
+</li>
+<li onclick="@(IsDoctorSelected?"window.location.href='/Doctor/'":"")" class='nav-item has-treeview @(IsDoctorSelected? "open  menu-open":"")'>
+    <a id="Doc" href='@(IsDoctorSelected?"/Doctor/":"Doctor/")' class='nav-link @(IsDoctorSelected? "open menu-open":"") '>
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+            Doctor
+            <i class="fas fa-angle-left right"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview DoctorMenu @(IsDoctorSelected && !IsNewDoctor? "open active menu-open":"")">
+
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorProfile/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorBoardCertification/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorBoardCertification/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Board Certification</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorExperience/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorExperience/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Experience</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/SocialMedia/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/SocialMedia/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Social Media</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorInsurances/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorInsurances/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Insurances</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorAgeGroup/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorAgeGroup/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Age Group</p>
+            </a>
+        </li>
+        @*<li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorGender/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorGender/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gender</p>
+            </a>
+        </li>*@
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorLanguage/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorLanguage/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Language</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorAffiliations/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorAffiliations/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Affiliation</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorQualification/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorQualification/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Qualification</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/Images/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/MyImages/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Images</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/OpeningHours/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/OpeningHours/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Opening Hours</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorAddress/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorAddress/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Address</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorStateLicense/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorStateLicense/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>State License</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorTaxonomy/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorTaxonomy/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Taxonomy</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/Booking/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/Booking/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Booking</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/Reviews/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/Reviews/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reviews</p>
+            </a>
+        </li>
+
+       
+
+
+    </ul>
+</li>
+
+
+
+
+
+<li id="MnuFacility" class="nav-item has-treeview">
+    <a id="FacilityMain" href="~/Facility/" class="nav-link">
+        <i class="nav-icon fas fa-chart-pie"></i>
+        <p>
+            Facility
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+</li>
+
+
+<li id="MnuPharmacy" class="nav-item has-treeview">
+    <a id="PharmacyMain" href="~/Pharmacy/" class="nav-link">
+        <i class="nav-icon fas fa-tree"></i>
+        <p>
+            Pharmacy
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul id="PharmacySubMenu" class="nav nav-treeview">
+        @*<li class="nav-item">
+            <a href="/Pharmacy/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pharmacy Directory</p>
+            </a>
+        </li>*@
+        @if (TempData["PharmacyData"] == "Yes")
+        {
+            if (ViewBag.PharmacyID > 0)
+            {
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Profile/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Profile</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="~/Pharmacy/AmenityOptions/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Amenity/Options</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Booking/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Booking</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Images/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Images</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Procedure/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Procedures</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Reviews/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Reviews</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Speciality/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Specialties</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/StateLicense/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>State License</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Insurance/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Insurance Plan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/OpeningHours/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Opening Hours</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Featured/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Featured</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Taxonomy/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Taxonomy</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/PatientOrder/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Patient</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Pharmacy/Address/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Addresses</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="~/Pharmacy/SocialMedia/@ViewBag.PharmacyID" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Social Media</p>
+                    </a>
+                </li>               
+            }
+        }
+        @*<li class="nav-item">
+            <a href="~/Pharmacy/Orders" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Orders</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="~/Pharmacy/Coupons" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Coupons</p>
+            </a>
+        </li>*@
+
+    </ul>
+</li>
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-edit"></i>
+        <p>
+            Drug
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="/DrugDetails/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Drug Directory</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/Manufacturer/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manufacturer Directory</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/DrugQuantity/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Quantity Directory</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="/Tablet/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tablet Directory</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="/DrugType/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Type Directory</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li id="MnuPatient" class="nav-item has-treeview">
+    <a id="PatientMain" href="~/Patient" class="nav-link">
+        <i class="nav-icon fas fa-chart-pie"></i>
+        <p>
+            Patient
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    @if (ViewBag.PatientID != null && ViewBag.PatientID > 0)
+    {
+    <li class="nav-item">
+        <a href="/Patient/Profile/@ViewBag.PatientID/true" class='nav-link'>
+            <i class="far fa-circle nav-icon"></i>
+            <p>Profile</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Patient/Booking" class='nav-link'>
+            <i class="far fa-circle nav-icon"></i>
+            <p>Booking</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Patient/Orders" class='nav-link'>
+            <i class="far fa-circle nav-icon"></i>
+            <p>Orders</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Patient/Address/@ViewBag.PatientID" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Addresses</p>
+        </a>
+    </li>
+}
+@*<ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="/Patient" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/Patient/Booking" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Bookings</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/Patient/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Orders</p>
+            </a>
+        </li>
+
+    </ul>*@
+    </li>
+
+    <li id="MnuSeniorCare" class="nav-item has-treeview seniorcare-tree-parent">
+        <a href="~/SeniorCare/" class="nav-link">
+            <i class="nav-icon far fa-calendar-alt"></i>
+            <p>
+                Senior Care
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        @*<ul class="nav nav-treeview">*@
+        @*<li class="nav-item">
+                <a href="~/SeniorCare/" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Senior Care Directory</p>
+                </a>
+            </li>
+            @if (Session["SelRecordId"] != null)
+            {
+            <li class="nav-item clsSeniorSubmenu">
+                <a href="JavaScript:void(0)" onclick="clickEventSubmenu('/SeniorCareProfile','Profile')" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Profile</p>
+                </a>
+            </li>
+            <li class="nav-item clsSeniorSubmenu">
+                <a href="JavaScript:void(0)" onclick="clickEventSubmenu('/OrganizationAmenityOption/Index','AmenitiesOptions')" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Amenities/Options</p>
+                </a>
+            </li>
+            <li class="nav-item clsSeniorSubmenu">
+                <a href="JavaScript:void(0)" onclick="clickEventSubmenu('/Booking/Index','Booking')" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Booking</p>
+                </a>
+            </li>
+            <li class="nav-item clsSeniorSubmenu">
+                <a href="JavaScript:void(0)" onclick="clickEventSubmenu('/SiteImage/Index','SiteImage')" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Images</p>
+                </a>
+            </li>
+            }*@
+        @*<li class="nav-item clsSeniorSubmenu">
+                <a href="~/SeniorCare/Procedures" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Procedures</p>
+                </a>
+            </li>*@
+        @*<li class="nav-item clsSeniorSubmenu" style="display:none">
+                <a href="~/SeniorCare/Reviews" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Reviews</p>
+                </a>
+            </li>
+            <li class="nav-item clsSeniorSubmenu" style="display:none">
+                <a href="~/SeniorCare/AmenityOptions" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Amenity/Options</p>
+                </a>
+            </li>
+            <li class="nav-item clsSeniorSubmenu" style="display:none">
+                <a href="~/SeniorCare/OpeningHours" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Opening Hours</p>
+                </a>
+            </li>*@
+
+        @*</ul>*@
+    </li>
+
+
+
+
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon far fa-image"></i>
+            <p>
+                Speciality
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/Speciality/" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Specialitys</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/FeaturedSpecialitys" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Featured Specialities</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon far fa-envelope"></i>
+            <p>
+                Language
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/Language/" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Language</p>
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+                Web Settings
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/WebSetting/NetworkCount" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Network Count</p>
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li id="Lookup" class="nav-item has-treeview">
+        <a href='@(ViewContext.Controller.ToString() != "Binke.Controllers.UserController"?"/UserType":"")' class="nav-link">
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+                Lookup Tables
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        @if (ViewContext.Controller.ToString() == "Binke.Controllers.UserController")
+        {
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/UserType" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>User Type</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/AddressType" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Address Type</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/AmenityOption" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Amenity Option</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/DrugType" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Drug Type</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/InsuranceType" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Insurance Type</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/GenderType" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Gender Type</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/PaymentType" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Payment Type</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/DrugSymptoms" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Drug Symptoms</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/DrugStrength" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Drug Strength</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/AdvertisementLocation" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Advertisement Location</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/DrugStatus" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Drug Status</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/DrugTabs" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Drug Tabs</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/OrganisationType" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Organisation Types</p>
+                    </a>
+                </li>
+
+                @*
+                    <li class="nav-item">
+                        <a href="/DrugStrength" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Board Certification</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/DrugManufacturer" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Drug Manufcacturer</p>
+                        </a>
+                    </li>*@
+
+
+            </ul>
+        }
+
+    </li>
+    <li id="MnuBlog" class="nav-item has-treeview seniorcare-tree-parent">
+        <a href="~/Blog/" class="nav-link">
+            <i class="nav-icon fas fa-newspaper-o"></i>
+            <p>
+                Blog
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+    </li>
+    <li id="MnuTestimonial" class="nav-item has-treeview seniorcare-tree-parent">
+        <a href="~/Testimonial/" class="nav-link">
+            <i class="nav-icon fas fa-newspaper-o"></i>
+            <p>
+                Testimonial
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+    </li>
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-paper-plane"></i>
+            <p>
+                Submissions
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/Submission/SiteMaps" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Site Maps</p>
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="nav-item has-treeview" style="margin-bottom:50px;">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-ad"></i>
+            <p>
+                Advertisements
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/Advertisement" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Advertisement Directory</p>
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    @*<script type="text/javascript">
+            function clickEventSubmenu(url, flg) {
+                if (flg == "Profile") {
+                    window.location.href = url + "/" + @Session["SelRecordId"];
+                }
+                else if (flg == "AmenitiesOptions") {
+                    window.location.href = url + "/" + @Session["SelRecordId"];
+                }
+                else if (flg == "SiteImage") {
+                    window.location.href = url + "/" + @Session["SelRecordId"];
+                }
+                else if (flg == "Booking") {
+                    window.location.href = url + "/" + @Session["SelRecordId"];
+                }
+            }
+        </script>*@
+    <script>
+    $(document).ready(function () {
+        $(".DoctorMenu").find("a").each(function () {
+            if (window.location.href.indexOf("/Doctor/") != -1) {
+
+            }
+            else {
+                var ctrl = $(this);
+                var windowLocationHref = window.location.href;
+                var windowhref = $(this).attr("href");
+                windowhref = windowhref.split('/');
+                if (window.location.href.indexOf("AddEditDoctorAffiliation") != -1) {
+                    windowLocationHref = window.location.href.replace("AddEditDoctorAffiliation/", "DoctorAffiliations/" + windowhref[2])
+                } else if (window.location.href.indexOf("AddEditDoctorInsurances") != -1) {
+                    windowLocationHref = window.location.href.replace("AddEditDoctorInsurances/", "DoctorInsurances/" + windowhref[2])
+                } else if (window.location.href.indexOf("AddEditDoctorAgeGroup") != -1) {
+                    windowLocationHref = window.location.href.replace("AddEditDoctorAgeGroup/", "DoctorAgeGroup/" + windowhref[2])
+                } else if (window.location.href.indexOf("AddEditDoctorLanguage") != -1) {
+                    windowLocationHref = window.location.href.replace("AddEditDoctorLanguage/", "DoctorLanguage/" + windowhref[2])
+                } else if (window.location.href.indexOf("AddEditDoctorQualification") != -1) {
+                    windowLocationHref = window.location.href.replace("AddEditDoctorQualification/", "DoctorQualification/" + windowhref[2])
+                } else if (window.location.href.indexOf("AddEditDoctorExperience") != -1) {
+                    windowLocationHref = window.location.href.replace("AddEditDoctorExperience/", "DoctorExperience/" + windowhref[2])
+                } else if (window.location.href.indexOf("AddEditDoctorBoardCertification") != -1) {
+                    windowLocationHref = window.location.href.replace("AddEditDoctorBoardCertification/", "DoctorBoardCertification/" + windowhref[2])
+                }
+                if (windowLocationHref.indexOf($(this).attr("href")) != -1) {
+                    //$(ctrl).addClass("active");
+                    $(ctrl).parent().find('i').addClass('fa-dot-circle-o');
+                    $(ctrl).parent().find('i').removeClass('fa-circle');
+                }
+
+            }
+
+        })
+
+        $("#PharmacyMain").click(function () {
+            window.location.href = "/Pharmacy";
+        });
+        $("#FacilityMain").click(function () {
+            window.location.href = "/Facility";
+        });
+        $("#PatientMain").click(function () {
+            window.location.href = "/Patient";
+        });
+        @if (IsDoctorSelected == false)
+        {
+            @: $("#Doc").click(function() {     window.location.href = "/Doctor";});
+        }
+    });
+    </script>

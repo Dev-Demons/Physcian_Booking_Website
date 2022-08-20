@@ -1,0 +1,235 @@
+﻿@model Binke.ViewModels.OrganizationAmenityOptionsUpdateViewModel
+@{
+    ViewBag.Title = "Facility Amenity Option";
+}
+<style>
+    #Image1 {
+        line-height: 1.2!important;
+    }
+</style>
+@if (ViewBag.FacilityID > 0)
+{<h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Session["FacilityName"]</h4>}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.OrganizationAmenityOptionID == 0 ? "Add Facility Amenity Option" : Model.IsViewMode? "View Facility Amenity Option" : "Edit Facility Amenity Option")
+    </h4>
+</div>
+
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditFacilityAmenityOption", "Facility", FormMethod.Post, new { id = "frmFacilityAmenityOption", @class = "form-horizontal form-bordered", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.OrganizationAmenityOptionID)
+        @Html.HiddenFor(model => model.OrganizationID)
+
+        @Html.HiddenFor(model => model.OrganizationTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+                    @*<div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Pharmacy Name</b></label>
+                            @Html.TextBoxFor(model => model.OrganisationName, new { @class = "form-control refName", placeholder = "Enter Pharmacy Name" })
+                            @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.OrganizationID, "", new { @class = "text-danger" })
+                        </div>*@
+
+                    <div class="col-md-6 mar-btm">
+                        <label class="control-label"><b>Name</b></label>
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter Amenity Option Name" })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mar-btm">
+                        <label class="control-label"><b>Description</b></label>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Enter Description" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Image</b></label>
+                        <input type="file" id="Image1" name="Image1" class="form-control" />
+                        @Html.HiddenFor(model => model.ImagePath)
+                        @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="col-md-3 mar-btm">
+                        <div style="height:35px; width:90%; display:block;"></div>
+                        <label class="control-label"><b>Is Option</b></label>
+    
+                        <label class="switch">
+                            <input type="checkbox" id="IsOption" name="IsOption" dataId="IsOption" value="IsOption" />&nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsOption, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-3 mar-btm">
+                        <div style="height:35px; width:90%; display:block;"></div>
+                        <label class="control-label"><b>Is Active</b></label>
+
+                        <label class="switch">
+                            <input type="checkbox" id="IsActive" name="IsActive" dataId ="IsActive" value="IsActive" /> &nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-2 mar-btm" style="text-align:right; margin-top:30px;">
+                        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                    </div>
+
+                    @if (Model.ImagePath != null)
+                    {
+                        <div class="col-md-12 mar-btm">
+                            <img src="~/Uploads/AmenityOptions/@Model.ImagePath" style="max-height:50px; text-align:left;" alt="Amenity-icon"/>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+
+   $(function () {
+       $('.datefield').datepicker({
+            format: 'dd-MM-yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+
+            $("#OrganizationID").val('@ViewBag.FacilityID');
+            $("#OrganizationTypeID").val('1006');
+            $("#UserTypeID").val('4');
+
+            var ID = "@ViewBag.ID";
+
+    if (ID == 0) {
+        $("#IsDeleted").val('false');
+        $("#IsActive").val(false);
+        $("#IsOption").val(false);
+    }
+
+    if (ID > 0) {
+        
+        if ("@Model.IsActive" == 'True') {
+            $("#IsActive").prop('checked', true);
+            $("#IsActive").val(true);
+        }
+        else {
+            $("#IsActive").prop('checked', false);
+            $("#IsActive").val(false);
+        }
+
+        if ("@Model.IsOption" == 'True') {
+            $("#IsOption").prop('checked', true);
+            $("#IsOption").val(true);
+        }
+        else {
+            $("#IsOption").prop('checked', false);
+            $("#IsOption").val(false);
+        }
+        
+    }
+
+    $(document).on('click', '.slider',function () {
+        var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+        if (chekedstatus == false)
+            $(this).parent().find(":checkbox").val(true);
+        else
+            $(this).parent().find(":checkbox").val(false);
+    });
+
+
+    $(".disable").prop("disabled", true);
+
+
+
+   
+    //function ClearAll() {
+    //    $('input:text').each(function () {
+    //        $(this).val('');
+    //    });
+    //    $('input:checkbox').each(function () {
+    //        $(this).prop('checked', false);
+    //    });
+    //}
+
+
+    $('input[type="file"]').change(function (e) {
+        var imageX = e.target.files[0];
+        var imgesize = imageX.size;
+        var fileName = e.target.files[0].name;
+
+        if (imgesize < 5242880) {
+            let img = new Image()
+            img.src = window.URL.createObjectURL(imageX)
+
+            img.onload = () => {
+                $("#ImagePath").val(fileName);
+                //w = img.width;
+                //h = img.height;
+                //if (w <= 50 && h <= 50) {
+                //    $("#ImagePath").val(fileName);
+                //}
+                //else {
+                //    alert("Image width and height should be less than or equal 50px");
+                //    $("#ImagePath").val('');
+                //    $("#Image1").val('');
+                //}
+            }
+        }
+        else {
+            alert("Image size should be less than 5MB");
+            $("#ImagePath").val('');
+            $("#Image1").val('');
+        }
+
+    });
+
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmFacilityAmenityOption'));
+                if ($("#frmFacilityAmenityOption").valid()) {
+                    var form = $('#frmFacilityAmenityOption')[0];
+                    var formData = new FormData(form);
+                    $.ajax({
+                        url: "@Url.Action("AddEditFacilityAmenityOptions")",
+                        type: form.method,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            HandleResponse(response);
+                                if (response.Status == 1) {
+                                   window.location.reload();
+
+                                } else {
+                                    location.reload();
+                                }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                        }
+                    });
+                }
+            });
+
+
+</script>

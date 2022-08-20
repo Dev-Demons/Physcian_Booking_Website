@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/Content/client/images/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Content/client/images/icon.png">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="~/Content/client/css/plugins.css" rel="stylesheet" />
+    <link href="~/Content/client/css/style11.css" rel="stylesheet" />
+
+    <link href="~/Content/client/css/custom.css" rel="stylesheet" />
+    <link href="~/Content/client/css/plugins/slick.min.css" rel="stylesheet" />
+    <link href="~/Content/client/css/change-color.css" rel="stylesheet" />
+    <link href="~/Content/client/Site.css" rel="stylesheet" />
+    <!-- Google font (font-family: 'Lato', sans-serif;) -->
+    <link href="//fonts.googleapis.com/css?family=Lato:300,400,400i,500,700,900" rel="stylesheet">
+    <!-- Google font (font-family: 'Raleway', sans-serif;) -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:300,400,700,800" rel="stylesheet">
+    <link href="~/Content/client/custom/toastr.min.css" rel="stylesheet" />
+    @*<link href="~/Content/fontawesome.min.css" rel="stylesheet" />*@
+    <title>Doctyme|Blog</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+    <link rel="stylesheet" href="~/Content/style.css">
+    <script src="~/Scripts/client/vendor/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/admin/js/moment.js"></script>
+
+    <script src="~/Scripts/system/jquery.validate.js"></script>
+    <script src="~/Scripts/system/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/custom/toastr.min.js"></script>
+
+    <style>
+        .has-search .form-control {
+            padding-left: 2.375rem;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: center;
+            pointer-events: none;
+            color: #aaa;
+        }
+        /*Menu bar*/
+        .e10-1.x-bar, .e10-8.x-bar, .e10-11.x-bar, .e10-17.x-bar {
+            font-size: 16px;
+            /*background-color: rgb(18,140,237);*/
+            z-index: 9999;
+        }
+
+        .x-bar-outer-spacers::before, .x-bar-outer-spacers::after {
+            content: "";
+            flex-grow: 0;
+            flex-shrink: 0;
+            display: block;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .x-bar-outer-spacers::before, .x-bar-outer-spacers::after {
+            content: "";
+            flex-grow: 0;
+            flex-shrink: 0;
+            display: block;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .e10-1.x-bar-outer-spacers::before, .e10-8.x-bar-outer-spacers::before, .e10-1.x-bar-outer-spacers::after, .e10-8.x-bar-outer-spacers::after {
+            flex-basis: 1em;
+            width: 1em;
+            height: 1em;
+        }
+
+        .e10-8.x-bar-content {
+            height: 48px;
+        }
+
+        .e10-1.x-bar-content, .e10-8.x-bar-content, .e10-17.x-bar-content {
+            justify-content: center;
+        }
+
+        .e10-1.x-bar-content, .e10-8.x-bar-content, .e10-11.x-bar-content, .e10-17.x-bar-content {
+            flex-direction: row;
+            align-items: center;
+            flex: 0 1 100%;
+            max-width: 1440px;
+        }
+
+        .x-bar, .x-bar-scroll, .x-bar-scroll-outer, .x-bar-scroll-inner, .x-bar-content, .x-bar-container {
+            min-width: 1px;
+        }
+
+        .x-bar-content {
+            z-index: 5;
+        }
+
+        .x-bar, .x-bar-scroll, .x-bar-scroll-outer, .x-bar-scroll-inner, .x-bar-content {
+            display: flex;
+        }
+
+        .e10-6.x-bar-container, .e10-9.x-bar-container, .e10-15.x-bar-container {
+            flex: 0 1 auto;
+        }
+
+        .e10-2.x-bar-container, .e10-6.x-bar-container, .e10-9.x-bar-container, .e10-12.x-bar-container, .e10-15.x-bar-container {
+            justify-content: space-between;
+        }
+
+        .e10-2.x-bar-container, .e10-4.x-bar-container, .e10-6.x-bar-container, .e10-9.x-bar-container, .e10-12.x-bar-container, .e10-15.x-bar-container, .e10-18.x-bar-container {
+            flex-direction: row;
+            align-items: center;
+            background-color: transparent;
+        }
+
+        .x-bar-h .x-bar-container, .x-bar-h .x-mod-container {
+            height: inherit;
+        }
+
+        .x-bar-container {
+            display: flex;
+            position: relative;
+            z-index: 1;
+        }
+
+        .x-bar, .x-bar-scroll, .x-bar-scroll-outer, .x-bar-scroll-inner, .x-bar-content, .x-bar-container {
+            min-width: 1px;
+        }
+
+        .e10-10.x-menu {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: stretch;
+            flex-wrap: wrap;
+            align-content: stretch;
+            align-self: stretch;
+            flex: 0 0 auto;
+            margin: 0px;
+            font-size: 1em;
+        }
+
+            .e10-10.x-menu > li, .e10-10.x-menu > li > a {
+                flex: 0 1 auto;
+            }
+
+        .x-menu-inline > li {
+            display: flex;
+            flex-direction: inherit;
+            justify-content: inherit;
+            align-items: inherit;
+        }
+
+        .x-menu, .x-menu li {
+            min-width: 1px;
+        }
+
+        .menu-item-has-children {
+            position: relative;
+        }
+
+        e10-10.x-menu > li > .x-anchor {
+            margin: 0em 10px 0em 0px;
+            border-radius: 5px 5px 0em 0em;
+            font-size: 17px;
+            box-shadow: -1px 0em 5px 0em hsla(0,0%,0%,0);
+        }
+
+        .e10-10.x-menu > li, .e10-10.x-menu > li > a {
+            flex: 0 1 auto;
+        }
+
+        .x-anchor, .x-anchor-text-primary, .x-anchor-text-secondary, .x-anchor-sub-indicator {
+            transition-duration: 0.3s;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .x-anchor {
+            display: inline-flex;
+            flex-direction: column;
+            position: relative;
+            min-width: 1px;
+            border-radius: 0;
+            cursor: pointer;
+            transition-property: border-color, background-color, box-shadow, opacity, transform;
+        }
+
+        .e10-10.x-menu > li > .x-anchor .x-anchor-content {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5em 1em 0.5em 1em;
+        }
+
+        .x-anchor-content {
+            display: flex;
+            flex: 1 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: inherit;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .e10-10.x-menu > li > .x-anchor .x-anchor-text {
+            margin: 5px;
+        }
+
+        .x-anchor-text {
+            flex-shrink: 1;
+            min-width: 1px;
+            max-width: 100%;
+        }
+
+        .e10-10.x-menu > li > .x-anchor .x-anchor-text-primary {
+            font-family: "Roboto",sans-serif;
+            font-size: 1.15em;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1;
+            text-transform: lowercase;
+            color: hsl(0,0%,100%);
+        }
+
+        .x-anchor-text-primary, .x-anchor-text-secondary {
+            position: relative;
+            display: block;
+            transition-property: color, text-shadow;
+            z-index: 3;
+        }
+
+        .e10-10.x-menu > li > .x-anchor .x-anchor-sub-indicator {
+            margin: 3px 5px 5px 2px;
+            font-size: 1em;
+            color: rgb(248,201,28);
+        }
+
+        .x-menu, .x-menu .sub-menu {
+            list-style: none;
+        }
+
+        .bk-navigation ul li.bk-dropdown {
+            padding: 1px 0px !important;
+        }
+
+        .header-middle-inner {
+            padding: 18px 0 !important;
+        }
+
+        .bk-navigation ul li div a:hover {
+            color: #007bff !important
+        }
+        /*body {
+            color: rgb(85,85,85) !important;
+            background-color: rgb(244,244,244) !important;
+        }*/
+        .footerLogeSection {
+            margin-top: 25px;
+        }
+
+        .footerLinks {
+            color: white;
+            margin: 5px;
+        }
+
+        #return-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgb(0, 0, 0);
+            background: rgba(0, 0, 0, 0.7);
+            width: 50px;
+            height: 50px;
+            display: block;
+            text-decoration: none;
+            -webkit-border-radius: 35px;
+            -moz-border-radius: 35px;
+            border-radius: 35px;
+            display: none;
+            -webkit-transition: all 0.3s linear;
+            -moz-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+            margin-bottom: 28px;
+        }
+
+            #return-to-top i {
+                color: #fff;
+                margin: 0;
+                position: relative;
+                left: 16px;
+                top: 13px;
+                font-size: 19px;
+                -webkit-transition: all 0.3s ease;
+                -moz-transition: all 0.3s ease;
+                -ms-transition: all 0.3s ease;
+                -o-transition: all 0.3s ease;
+                transition: all 0.3s ease;
+            }
+
+            #return-to-top:hover {
+                background: rgba(0, 0, 0, 0.9);
+            }
+
+                #return-to-top:hover i {
+                    color: #fff;
+                    top: 5px;
+                }
+
+        .socilMediaIcons {
+            font-size: xx-large;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper" class="wrapper">
+        <!-- Header -->
+        <div class="header sticky-header">
+
+            <!-- Header Middle Area -->
+            <div class="header-middle-area d-none d-lg-block" style="box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);">
+                <div class="container">
+                    <div class="header-middle-inner">
+                        <a href="@Url.Action("Index","Blog")" class="header-logo">
+                            <img src="~/Content/client/images/logo/EZHealthPoint.png" alt="Doctyme logo" style="max-width:200px">
+                        </a>
+                        <div class="input-group md-form form-sm form-2 pl-0 pull-left header-logo">
+                            <input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" aria-label="Search" style="width:200px">
+                            <div class="input-group-append">
+                                <span class="input-group-text red lighten-3" id="basic-text1" style="height:38px">
+                                    <i class="fa fa-search text-grey"
+                                       aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--#region  navbar section -->
+                    <nav class="navbar navbar-expand-md bk-navigation">
+                        <div class="container">
+                            <div class="navbar-collapse collapse" id="main-nav-1">
+                                <ul class="navbar-nav">
+                                    @{ Html.RenderAction("GetMenuList", "Blog"); }
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                    <!--#end  navbar section -->
+                </div>
+
+            </div>
+        </div>
+
+        <!--// Header Middle Area -->
+
+    </div>
+    <!-- Page Content -->
+    <main id="page-content">
+        @RenderBody()
+    </main>
+    <!--// Page Content -->
+
+    <div class="footer">
+        <!-- Footer Top Area -->
+        <div class="footer-top-area bg-theme pb-0">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-2 footerLogeSection pr-0">
+                        <a href="http://EZHealthPoint.com/" class="header-logo">
+                            <img src="~/Content/client/images/logo/EZHealthPoint.png" alt="Doctyme logo" style="max-width:190px">
+                        </a>
+
+                    </div>
+                    <div class="col-md-6 pl-0">
+                        <ul class="footer-social-icons">
+                            <li><a href="https://www.facebook.com/"><i class="fa fa-facebook socilMediaIcons"></i></a></li>
+                            <li><a href="https://www.youtube.com/"><i class="fa fa-youtube-play socilMediaIcons"></i></a></li>
+                            <li><a href="https://www.instagram.com/"><i class="fa fa-instagram socilMediaIcons"></i></a></li>
+                            <li><a href="https://twitter.com/"><i class="fa fa-twitter socilMediaIcons"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-2">
+                    <div class="col-md-8">
+                        <p>
+                            Copyright © 2020 Doctyme Inc.
+                            <a href="https://www.doctyme.com/Home/TermsAndConditions" target="_blank" class="footerLinks">Terms of Use</a>
+                            <a href="https://www.doctyme.com/Home/PrivacyPolicy" target="_blank" class="footerLinks">Privacy Policy</a>
+                        </p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <!-- Return to Top -->
+                        <a href="javascript:" id="return-to-top"><i class="fa fa-arrow-up"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// Footer Top Area -->
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+    <!-- JS Files -->
+
+    <script src="~/Scripts/system/jquery.bootpag.min.js"></script>
+    <script src="~/Scripts/client/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="~/Scripts/client/popper_1.14.7.min.js"></script>
+    <script src="~/Scripts/client/plugins.js"></script>
+    <script src="~/Scripts/client/scripts.js"></script>
+    <script src="~/Scripts/client/bootstrap_4.3.1.min.js"></script>
+    <script>
+        // ===== Scroll to Top ====
+        $(window).scroll(function () {
+            if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+                $('#return-to-top').fadeIn(200);    // Fade in the arrow
+            } else {
+                $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+            }
+        });
+        $('#return-to-top').click(function () {      // When arrow is clicked
+            $('body,html').animate({
+                scrollTop: 0                       // Scroll to top of body
+            }, 500);
+        });
+
+    </script>
+</body>
+</html>

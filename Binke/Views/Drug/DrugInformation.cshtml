@@ -1,0 +1,638 @@
+﻿@using Binke.Repository.Enumerable;
+@model Binke.Model.DrugDetail
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Drug Info";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<style type="text/css">
+    .mr-10px {
+        margin-right: 10px;
+    }
+
+    .mt-5px {
+        margin-top: 5px;
+    }
+
+    .basic-Image {
+        cursor: pointer;
+    }
+
+    .display-none {
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        background-color: #5f5b5b;
+        position: inherit;
+    }
+
+    .doctor-radio {
+        width: 15px;
+        margin: -5px 0 0 -20px !important;
+    }
+
+    .no-padding {
+        padding-top: 0px !important;
+    }
+</style>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Drugs Info</h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/DrugDetails/"> Drug Details </a></li>
+            <li class="active"> Drug Information </li>
+        </ol>
+    </div>
+}
+
+
+<div class="col-lg-12">
+    <div class="panel">
+        <div class="panel-body pad-no">
+            <div class="tab-base">
+                <!--Nav Tabs-->
+                <ul class="nav nav-tabs">
+                    <li class="active"> <a id="DrugDiscriptionLi" data-toggle="tab" href="#DrugDiscription"> <i class="fa fa-lg fa-notes-medical"></i>Drug Description </a> </li>
+                    @*<li><a id="drugInformationLi" data-toggle="tab" href="#drugInformation"> <i class="fa fa-lg fa-capsules"> </i>Others Information</a> </li>*@
+                    <li class="hidden" id="pharmacyLi"><a id="pharmacyTableDataLi" data-toggle="tab" href="#pharmacyTableData"> <i class="fa fa-lg fa-capsules"> </i>Pharmacy Information</a> </li>
+                </ul>
+                <!--Tabs Content-->
+                <div class="tab-content">
+                    <div id="DrugDiscription" class="tab-pane fade active in">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label"><b>Drug Name</b></label>
+                                        <input id="MedicineName" class="form-control" data-val="true" placeholder="Enter Medicine Name" type="text" value="">
+                                        <label class="control-label"><b>Short Description</b></label>
+                                        <textarea class="form-control" cols="15" data-val="true" id="ShortDescription" name="ShortDescription" placeholder="Enter Short Description" rows="2"></textarea>
+                                        <label class="control-label"><b>Long Description</b></label>
+                                        <textarea class="form-control" cols="15" data-val="true" id="LongDescription" name="LongDescription" placeholder="Enter Long Description" rows="3"></textarea>
+                                        <label class="control-label"><b>Dosage Description</b></label>
+                                        <textarea class="form-control" cols="15" data-val="true" id="DosageDescription" name="DosageDescription" placeholder="Enter Short Description" rows="3"></textarea>
+                                        <label class="control-label"><b>Side Effect Description</b></label>
+                                        <textarea class="form-control" cols="15" data-val="true" id="SideEffectDescription" name="SideEffectDescription" placeholder="Enter Side Effect Description" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label"><b>Tips Description</b></label>
+                                        <textarea class="form-control" cols="15" data-val="true" id="TipsDescription" name="TipsDescription" placeholder="Enter Tips Description" rows="2"></textarea>
+                                        <label class="control-label"><b>Professional Description</b></label>
+                                        <textarea class="form-control" cols="15" data-val="true" id="ProfessionalDescription" name="ProfessionalDescription" placeholder="Enter Professional Description" rows="3"></textarea>
+
+                                        <label class="control-label"><b>Interaction Description</b></label>
+                                        <textarea class="form-control" cols="15" data-val="true" id="InteractionDescription" name="InteractionDescription" placeholder="Enter Interaction Description" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer text-right">
+                                <button type="button" id="btnSubmit" onclick="saveDrugDetailsData()" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("DrugDetails", "Drug") + "'");">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div id="drugInformation" class="tab-pane fade">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="control-label"><b>Manufacturer</b></label>
+                                                    <div class="form-group">
+                                                        <select class="form-control select2 Manufacturer" id="Manufacturer" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label"><b>Quantity</b></label>
+                                                    <div class="form-group">
+                                                        <select id="Quantity" class="form-control select2 Quantity" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label"><b>Pharmacy</b></label>
+                                                    <div class="form-group">
+                                                        <select id="Pharmacy" class="form-control select2 Pharmacy" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label"><b>Type</b></label>
+                                                    <div class="form-group">
+                                                        <select class="form-control select2 Type" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label"><b>Tablet</b></label>
+                                                    <div class="form-group">
+                                                        <select class="form-control select2 Tablet" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="button" id="btnSubmit" onclick="backToDetails(DrugDiscriptionLi)" class="btn btn-primary">Back</button>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div id="pharmacyTableData" class="tab-pane fade">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <button class="pull-right btn btn-sm btn-primary" onclick="AddOtherDetails()" id="AddDrugDetailsbtn">Add Other Details</button>
+                                <br />
+                                <br />
+                                <table id="pharmacyTable" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr No</th>
+                                            <td>Name</td>
+                                            <td>Type</td>
+                                            <td>Tablet</td>
+                                            <td>Quantity</td>
+                                            <td>Price</td>
+                                            <td>Manufacturer</td>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="panel-footer text-right">
+                                <button type="button" id="btnSubmit" onclick="backToDetails(DrugDiscriptionLi)" class="btn btn-primary">Back</button>
+                                <button type="button" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("DrugDetails", "Drug") + "'");">Cancel</button>
+                                @Html.Hidden("DrugDetailId")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="AddDrugDetails">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="modalTitle" class="modal-title">Other Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Type</b></label>
+                            <select class="form-control Type" style="width:100%">
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Manufacturer</b></label>
+                            <select class="form-control Manufacturer" id="Manufacturer" style="width:100%">
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Quantity</b></label>
+                            <select id="Quantity" class="form-control Quantity" style="width:100%">
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label id="labelName" class="control-label"><b>Price</b></label>
+                            <input class="form-control" id="DrugPrice" name="Name" placeholder="Enter drug price" type="text">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Pharmacy</b></label>
+                            <select id="Pharmacy" class="form-control Pharmacy" style="width:100%">
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Tablet</b></label>
+                            <select class="form-control Tablet" style="width:100%">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="saveOtherDetails" onclick="saveOthersDetails()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        var dropDownResponseData;
+        var drugDetailId = 0;
+        var flag = true;
+        var parameters = {};
+        var methodResponse = { Status: 0, Message: "", Data: null };
+        var otherDetailsObject = {
+            "DrugPharmacyDetailId": 0,
+            "PharmacyId": "",
+            "DrugDetailId": "",
+            "DrugTypeId": "",
+            "TabletPowerId": "",
+            "DrugQuantityId": "",
+            "DrugManufacturerId": "",
+            "Price": ""
+        }
+
+        function backToDetails(redirectId) {
+            $("#" + redirectId.id).trigger("click");
+        }
+
+        $(function () {
+            parameters =
+                {
+                    "DrugDetailId": 0,
+                    "Dosage": "",
+                    "CreatedDate": "",
+                    "Interaction": "",
+                    "ModifiedBy": "",
+                    "IsDeleted": "0",
+                    "IsActive": "1",
+                    "LongDescription": "",
+                    "MedicineName": "",
+                    "Professional": "",
+                    "ShortDescription": "",
+                    "SideEffects": "",
+                    "Tips": "",
+                    "UpdatedDate": "",
+                    "PharmacyList": [],
+                    "DrugTypeList": [],
+                    "DrugManufacturerList": [],
+                    "DrugQuantityList": [],
+                    "TabletPowerList": []
+                };
+
+            GetDrugFliterDroplist();
+            GetPharmacyDroplist();
+            drugDetailId = $("#DrugDetailId").val();
+            if (drugDetailId != 0) {
+                GetDrugDetailById();
+                GetPharmacyByDrugDetailId();
+                $("#pharmacyLi").removeClass('hidden');
+            }
+        });
+
+        function AddOtherDetails() {
+            $("#AddDrugDetails").modal('show');
+            otherDetailsObject.DrugPharmacyDetailId = 0;
+        }
+
+        function GetDrugDetailById() {
+            $.ajax({
+                url: "/Drug/GetDrugDetailById/" + drugDetailId,
+                type: "GET",
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response && response.Status == 200) {
+                        bindUIData(response.Data);
+                        dropDownResponseData = response.Data;
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function bindUIData(response) {
+            $("#MedicineName").val(response.MedicineName);
+            $("#ShortDescription").val(response.ShortDescription);
+            $("#LongDescription").val(response.LongDescription);
+            $("#DosageDescription").val(response.Dosage);
+            $("#SideEffectDescription").val(response.SideEffects);
+            $("#ProfessionalDescription").val(response.Professional);
+            $("#TipsDescription").val(response.Tips);
+            $("#InteractionDescription").val(response.Interaction);
+        }
+
+        function GetDrugFliterDroplist() {
+            $.ajax({
+                url: "/SearchDrug/GetDrugFliterDroplist",
+                type: "Get",
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        BindDropDown(response.Data);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function GetPharmacyDroplist() {
+            $.ajax({
+                url: "/Drug/GetPharmacy?isActive=" + flag,
+                type: "Get",
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        response.Data.forEach(function (value, index) {
+                            var element = '<option value=' + value.PharmacyId + '>' + value.PharmacyName + '</option>'
+                            $(".Pharmacy").append(element);
+                        });
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function BindDropDown(responseData) {
+            if (!responseData) {
+                return false;
+            }
+
+            responseData.DrugType.forEach(function (value, index) {
+                var element = '<option value=' + value.DrugTypeId + '>' + value.Type + '</option>'
+                $(".Type").append(element);
+            });
+            responseData.DrugManufacturer.forEach(function (value, index) {
+                var element = '<option value=' + value.DrugManufacturerId + '>' + value.Manufacturer + '</option>'
+                $(".Manufacturer").append(element);
+            });
+            responseData.DrugQuantity.forEach(function (value, index) {
+                var element = '<option value=' + value.DrugQuantityId + '>' + value.Quantity + '</option>'
+                $(".Quantity").append(element);
+            });
+            responseData.Tablet.forEach(function (value, index) {
+                var element = '<option value=' + value.TabletId + '>' + value.DrugPower + '</option>'
+                $(".Tablet").append(element);
+            });
+
+            //Placeholders
+            //$(".Type").select2({ placeholder: "Select Drug Type" });
+            //$(".Manufacturer").select2({ placeholder: "Select Drug Manufacturer" });
+            //$(".Quantity").select2({ placeholder: "Select Drug Quantity" });
+            //$(".Tablet").select2({ placeholder: "Select Tablet Power" });
+            //$(".Pharmacy").select2({ placeholder: "Select Tablet Pharmacy" });
+
+            //BindDropDownWithEdit(dropDownResponseData);
+        }
+
+        function BindDropDownWithEdit(responseData) {
+            if (!responseData) {
+                return false;
+            }
+            //$(".Type").val(responseData.DrugTypeList).trigger('change');
+            //$(".Manufacturer").val(responseData.DrugManufacturerList).trigger('change');
+            //$(".Quantity").val(responseData.DrugQuantityList).trigger('change');
+            //$(".Tablet").val(responseData.TabletPowerList).trigger('change');
+            //$(".Pharmacy").val(responseData.PharmacyList).trigger('change');
+            //$(".select").trigger('change');
+        }
+
+        function saveDrugDetailsData() {
+            if (createAndUpdateParam() == 1 || (checkIsDrugNameExist())) { return false; }
+            parameters.DrugDetailId = $("#DrugDetailId").val();
+
+            blockPage();
+            $.ajax({
+                url: "/Drug/SaveDrugDetail",
+                type: "POST",
+                cache: false,
+                data: createAndUpdateParam(),
+                success: function (response) {
+                    if (response.Status == 200) {
+                        methodResponse.Message = response.Message;
+                        methodResponse.Status = 1;
+                        HandleResponse(methodResponse);
+                        drugDetailId = response.Data;
+                        $("#DrugDetailId").val(response.Data);
+                        $("#pharmacyLi").removeClass('hidden');
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function checkIsDrugNameExist() {
+            var drugName = $("#MedicineName").val();
+            $.ajax({
+                url: "/Drug/CheckDrug?drugName=" + drugName,
+                type: "GET",
+                contentType: false,
+                //cache: false,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data != null && response.Data != 0) {
+                        methodResponse.Message = response.Message;
+                        methodResponse.Status = 0;
+                        HandleResponse(methodResponse);
+                        return false;
+                    }
+                    return true;
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                    return false;
+                }
+            });
+        }
+
+        function createAndUpdateParam() {
+            //Text Area data
+            parameters.IsActive = true;
+            parameters.MedicineName = $("#MedicineName").val();
+            parameters.ShortDescription = $("#MedicineName").val();
+            parameters.LongDescription = $("#LongDescription").val();
+            parameters.SideEffects = $("#SideEffectDescription").val();
+            parameters.Dosage = $("#DosageDescription").val();
+            parameters.Professional = $("#ProfessionalDescription").val();
+            parameters.Interaction = $("#InteractionDescription").val();
+            parameters.Tips = $("#TipsDescription").val();
+
+            if (!parameters.MedicineName) {
+                methodResponse.Status = 0;
+                methodResponse.Message = "Please enter Drug Name."
+                HandleResponse(methodResponse)
+                $("#drugInformationLi").trigger("click");
+                return 1;
+            }
+            else {
+                return parameters;
+            }
+        }
+
+        function saveOthersDetails() {
+            otherDetailsObject.DrugPharmacyDetailId = otherDetailsObject.DrugPharmacyDetailId ? otherDetailsObject.DrugPharmacyDetailId : 0;
+            otherDetailsObject.DrugDetailId = $("#DrugDetailId").val();
+            otherDetailsObject.DrugManufacturerId = $(".Manufacturer").val();
+            otherDetailsObject.DrugQuantityId = $(".Quantity").val();
+            otherDetailsObject.DrugTypeId = $(".Type").val();
+            otherDetailsObject.PharmacyId = $(".Pharmacy").val();
+            otherDetailsObject.TabletPowerId = $(".Tablet").val();
+            otherDetailsObject.Price = $("#DrugPrice").val();
+
+            if ($("#DrugDetailId").val() == 0 || $("#DrugDetailId").val() == "") {
+                return false;
+                methodResponse.Message = "Please enter Drug Details First";
+                methodResponse.Status = 0;
+                HandleResponse(methodResponse);
+            }
+            $.ajax({
+                url: "/Drug/SavePharmacy",
+                cache: false,
+                type: "POST",
+                data: otherDetailsObject,
+                success: function (response) {
+                    if (response.Status == 200) {
+                        methodResponse.Message = response.Message;
+                        methodResponse.Status = 1;
+                        HandleResponse(methodResponse);
+                        GetPharmacyByDrugDetailId();
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function GetPharmacyByDrugDetailId() {
+            if ($.fn.DataTable.isDataTable("#pharmacyTable")) {
+                $("#pharmacyTable").DataTable().destroy();
+            }
+            $('#pharmacyTable')
+                .DataTable({
+                    "sAjaxSource": "/Drug/GetPharmacyByDrugDetailId?drugDetailId=" + drugDetailId,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "PharmacyName",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugDetailId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "DrugType",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugDetailId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "Tablet",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugDetailId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "DrugQuantity",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugDetailId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "Price",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data && data != 0) return '';
+                                return '<span id="' + row.DrugDetailId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "DrugManufacturer",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugDetailId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "DrugPharmacyDetailId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                console.log(data);
+                                var content = '<a onclick="GetDrugPharmacyDetailsById(' + row.DrugPharmacyDetailId + ')" data-toggle="tooltip" data-original-title="Edit" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function GetDrugPharmacyDetailsById(id) {
+            id = parseInt(id);
+            $.ajax({
+                url: "/Drug/GetDrugPharmacyDetailsById?id=" + id,
+                type: "Get",
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        console.log(response.Data);
+                        otherDetailsObject.DrugPharmacyDetailId = id;
+
+                        //Populate Data on pop up
+                        $(".Manufacturer").val(response.Data.DrugManufacturerId).change();
+                        $(".Type").val(response.Data.DrugTypeId).change();
+                        $(".Pharmacy").val(response.Data.PharmacyId).change();
+                        $(".Quantity").val(response.Data.DrugQuantityId).change();
+                        $(".Tablet").val(response.Data.TabletId).change();
+                        $("#DrugPrice").val(response.Data.Price).change();
+                        $("#AddDrugDetails").modal('show').change();
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+    </script>
+}

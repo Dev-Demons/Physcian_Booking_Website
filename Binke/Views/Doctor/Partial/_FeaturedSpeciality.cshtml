@@ -1,0 +1,173 @@
+﻿@model Binke.ViewModels.FeaturedSpecialityViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.FeaturedSpecialityId == 0 ? "Add Featured Speciality" : "Edit Featured Speciality")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Ajax.BeginForm("AddEditFeaturedSpeciality", "Doctor", null, new AjaxOptions { HttpMethod = "POST" }, new { id = "frmFeaturedSpeciality", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.FeaturedSpecialityId)
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Facility</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.SpecialityId, ViewBag.SpecialityList as IEnumerable<SelectListItem>, "-- Select Speciality --",
+                                        new {@class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.SpecialityId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Description</b></label>
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Profile Pic</b></label>
+                <div class="form-group">
+                    <input type="file" id="ProfilePic" name="ProfilePic" />
+                    <br />
+                    <label class="control-label">(Recommended Size - 400x400 px)</label>
+                    <br />
+                    @Html.ValidationMessageFor(m => m.ProfilePic, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+<script type="text/javascript">
+    var filetypes = ['jpg', 'jpeg', 'png'];
+    $("#ProfilePic").change(function () {
+        var files = $("#ProfilePic").get(0).files;
+        if (parseInt($("#FeaturedSpecialityId").val()) === 0 && files.length <= 0) {
+            $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]').html("");
+            $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]')
+                .append('<span for="ProfilePic" class="">please select file</span>');
+        } else {
+            $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]').html("");
+            var fileName = $('#ProfilePic').val();
+            var getExt = fileName.split('.');
+            getExt = getExt.reverse();
+            if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]').html("");
+                $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]')
+                    .append('<span for="ProfilePic" class="">The filetype you are attempting to upload is not allowed.</span>');
+            } else {
+                var response = { Status: 0, Message: "", Data: null };
+                var img = new Image();
+                var imgwidth = 0;
+                var imgheight = 0;
+                var maxwidth = 400;
+                var maxheight = 400;
+
+                if (FileReader && files && files.length) {
+                    var fr = new FileReader();
+                    fr.onload = function () {
+                        img.src = fr.result;
+                    }
+                    fr.readAsDataURL(files[0]);
+                }
+
+                img.onload = function () {
+                    imgwidth = this.width;
+                    imgheight = this.height;
+                    $("#width").text(imgwidth);
+                    $("#height").text(imgheight);
+                    if (imgwidth <= maxwidth && imgheight <= maxheight) {
+                        return true;
+                    } else {
+                        response.Message = "Image size must be " + maxwidth + "X" + maxheight;
+                        HandleResponse(response);
+                        return false;
+                    }
+                }
+            }
+        }
+    });
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmFeaturedSpeciality'));
+
+        var files = $("#ProfilePic").get(0).files;
+        var flag = false;
+
+        if (parseInt($("#FeaturedSpecialityId").val()) === 0 && files.length <= 0) {
+            $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]').html("");
+            $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]')
+                .append('<span for="ProfilePic" class="">please select file</span>');
+        } else {
+            $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]').html("");
+            if (files.length !== 0) {
+                var fileName = $('#ProfilePic').val();
+                var getExt = fileName.split('.');
+                getExt = getExt.reverse();
+                if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                    $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]').html("");
+                    $("#frmFeaturedSpeciality").find('span[data-valmsg-for="ProfilePic"]')
+                        .append(
+                            '<span for="ProfilePic" class="">The filetype you are attempting to upload is not allowed.</span>');
+                    flag = false;
+                }
+                else {
+                    flag = true;
+                }
+            } else {
+                flag = true;
+            }
+        }
+
+        if ($("#frmFeaturedSpeciality").valid()) {
+            if (flag) {
+                if (window.FormData !== undefined) {
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object
+                    fileData.append('__RequestVerificationToken', $('input[name=__RequestVerificationToken]').val());
+                    fileData.append('FeaturedSpecialityId', $("#FeaturedSpecialityId").val());
+                    fileData.append('Description', $("#Description").val());
+                    fileData.append('SpecialityId', $("#SpecialityId").val());
+
+                    $.ajax({
+                        url: '/AddEditFeaturedSpeciality',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (response) {
+                            HandleResponse(response);
+                            if (response.Status) {
+                                bindFeaturedSpecialityList();
+                                closeModal();
+                            }
+                        },
+                        error: function (response) {
+                            HandleResponse(response);
+                        }
+                    });
+                } else {
+                    GetAlertResponse(0, "FormData is not supported.");
+                }
+            }
+        }
+
+    });
+
+</script>

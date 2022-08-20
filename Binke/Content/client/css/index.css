@@ -1,0 +1,291 @@
+.main {
+    padding: 10px 40px;
+}
+
+.star {
+    color: #ffcc00;
+}
+
+.little-star {
+    font-size: 10px;
+}
+
+.icons {
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+}
+
+.photos {
+    height: 300px;
+}
+
+.desc-header {
+    border-width: 0 0 2px 0;
+    border-style: solid;
+    color: dodgerblue;
+    margin: 20px 0 10px 10px;
+    border-color: #b3cccc;
+    padding-bottom: 10px;
+    padding-left: 0;
+    margin-left: 0;
+    width: 100%;
+    font-size: 25px;
+}
+
+.desc-body {
+    margin: 0px 0 10px 10px;
+    width: 100%;
+    margin-bottom: 40px;
+    /* border-width:0 0 1px 0;
+    border-style:solid;
+    border-color: lightgray; */
+    padding-bottom: 10px;
+}
+
+.img-th {
+    width: 32%;
+    height: 120px;
+    position: relative;
+    cursor: pointer;
+}
+
+    .img-th img {
+        height: 120px;
+        width: 100%;
+    }
+
+    .img-th p {
+        position: absolute;
+        bottom: 0;
+        padding: 3px;
+        background-color: rgba(0,0,0,0.3);
+        color: white;
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+tr, th, td {
+    font-size: 15px;
+    text-align: center;
+}
+
+.btn-size {
+    background-color: rgb(49, 209, 49);
+    color: white;
+    width: 120px;
+}
+
+    .btn-size:hover {
+        color: white;
+    }
+
+.advert-card {
+    width: 30%;
+    box-shadow: 1px 1px 3px black;
+    cursor: pointer;
+}
+
+.map {
+    width: 100%;
+    height: 250px;
+    border: 1px solid lightgray;
+}
+
+#logo {
+    width: 10%;
+    height: 10%;
+}
+
+#logo_head {
+    width: 90%;
+}
+
+.small-font {
+    font-weight: lighter;
+    font-size: 12px;
+    color: rgb(143, 138, 138)
+}
+
+#table_carousel {
+    width: 100%;
+}
+
+.border-concept {
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-color: greenyellow;
+}
+
+.pincode_form {
+    width: 100%;
+}
+
+.marginTop {
+    margin-top: 20px;
+}
+
+.bookNow {
+    width: 100px;
+    margin: 120px 20px 20px 0px;
+}
+
+.img-size {
+    height: 80px;
+}
+
+.title-font {
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+.overflowScroll {
+    height: 350px;
+}
+
+.photos-collection {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+    .photos-collection img {
+        width: 6vw;
+        height: 6vw;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+/* .tab-pane{
+    
+    padding-left:2px;
+    padding-right:2px;
+} */
+@media screen and (max-width:576px) {
+    .main {
+        padding: 10px 0 0 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    sub {
+        display: block;
+    }
+
+    .advert-card {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .advert {
+        flex-direction: column;
+    }
+
+    #logo_head {
+        width: 80%;
+    }
+
+    #logo {
+        width: 20%;
+        height: 20%;
+    }
+
+    .days {
+        font-size: 12px;
+    }
+
+    .small-font {
+        font-size: 10px;
+    }
+
+    .btn-size {
+        font-size: 10px;
+        width: 70px;
+    }
+
+    .pincode_form {
+        width: 100%;
+    }
+
+    .marginTop {
+        margin-top: 5px;
+    }
+
+    .bookNow {
+        width: 100px;
+        margin: 20px 0px 20px 0px;
+    }
+
+    .overflowScroll {
+        height: 450px;
+    }
+
+    #appModal.modal-dialog {
+        margin: 0.15rem auto;
+    }
+
+    .border-concept {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .img-size {
+        height: 100px;
+    }
+
+    .title-font {
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .title-rating {
+        display: block;
+    }
+
+    .title-sub {
+        display: block;
+    }
+
+    .img-th {
+        width: 100%;
+        height: 170px;
+        margin-bottom: 10px;
+    }
+
+        .img-th img {
+            height: 170px;
+        }
+
+    .middle {
+        margin-left: 10px;
+        ;
+        padding-left: 0;
+    }
+
+    .photos {
+        height: 200px;
+    }
+
+    .photos-collection img {
+        width: 10vw;
+        height: 10vw;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+}
+
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        margin: 0.15rem auto;
+    }
+
+    .modal-content {
+    }
+}
+
+/* a.active{
+    color:black;
+    border-width:0 0 2px 0;
+    border-color: red;
+    border-style: solid;
+} */

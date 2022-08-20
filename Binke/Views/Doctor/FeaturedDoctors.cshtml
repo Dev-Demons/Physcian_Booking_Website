@@ -1,0 +1,148 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Featured Doctors";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Featured Doctor </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Doctor/"> Doctor </a></li>
+            <li class="active"> Featured Doctor </li>
+        </ol>
+    </div>
+}
+<div class="panel">
+    <div class="panel-heading">
+        <div class="panel-control py-10px">
+            <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addFeatured">Add Featured</button>
+        </div>
+        @*<h3 class="panel-title">Featured Doctor</h3>*@
+    </div>
+    <div class="panel-body">
+        <table id="dtFeaturedDoctor" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Doctor Name</th>
+                    <th>Profile Pic</th>
+                    <th>Date Created</th>
+                    <th>Date Modified</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindFeaturedDoctorList();
+        });
+
+        $(document).on("click", "#addFeatured", function () {
+            AddEditFeaturedDoctor(0);
+        });
+
+        function AddEditFeaturedDoctor(id) {
+            $("#modalContent").load("/_FeaturedDoctor/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        function bindFeaturedDoctorList() {
+            if ($.fn.DataTable.isDataTable("#dtFeaturedDoctor")) {
+                $('#dtFeaturedDoctor').DataTable().destroy();
+            }
+            var table = $('#dtFeaturedDoctor')
+                .DataTable({
+                    "sAjaxSource": "/GetFeaturedDoctorList/",
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "DoctorName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ProfilePicture",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div><img class="profile-img img-center" src="' + data + '" /></div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a href="javascript:;" data-toggle="tooltip" data-original-title="Remove" data-flag="remove" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        $('#dtFeaturedDoctor').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "edit":
+                    AddEditFeaturedDoctor(id);
+                    break;
+                case "remove":
+                    RemoveFeaturedDoctor(id);
+                    break;
+            }
+        });
+
+        function RemoveFeaturedDoctor(id) {
+            var message = "Are you sure you want to <b> Remove Featured Doctor </b> this";
+            BinkeDialog.Confirmation("Remove Featured Doctor", message, function () {
+                $.ajax({
+                    url: "/RemoveFeaturedDoctor/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindFeaturedDoctorList();
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+    </script>
+}

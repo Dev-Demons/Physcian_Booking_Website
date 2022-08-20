@@ -1,0 +1,124 @@
+﻿@model Doctyme.Model.Organisation
+@{
+    ViewBag.Title = "Facility Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>
+
+@section pageheader{
+    <h3><i class="fa fa-home"></i> Facility Profile </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Facility"> Facility </a></li>
+            <li class="active"> Profile </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+        <div class="panel">
+            <div class="panel-body np">
+                <img src="@Model.LogoFilePath" alt="Cover" class="img-responsive">
+                <div class="text-center">
+                    <!-- panel body -->
+                    <h4 class="text-lg text-overflow mar-top">@Model.OrganisationName</h4>
+                    <p class="text-sm"></p>
+                    <!--/ panel body -->
+                    <div class="pad-ver">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+        <div class="panel">
+            <div class="panel-body pad-no">
+                <!--Default Tabs (Left Aligned)-->
+                <!--===================================================-->
+                <div class="tab-base">
+                    <!--Nav Tabs-->
+                    <ul class="nav nav-tabs">
+                        <li class="active"> <a data-toggle="tab" href="#UserInformation"> <i class="fa fa-lg fa-user"> </i> Facility Information</a> </li>
+                        @*<li> <a data-toggle="tab" href="#Address"> <i class="fa fa-lg fa-home"> </i> Address </a> </li>*@
+                        <li class="pull-right"> @*<a href="/FacilityBasicInformation/@Model.OrganisationId"> <i class="fa fa-lg fa-edit"> </i> Edit </a>*@ </li>
+                    </ul>
+                    <!--Tabs Content-->
+                    <div class="tab-content">
+                        <div id="UserInformation" class="tab-pane fade active in">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td><b> Alias Business Name </b></td>
+                                                <td>@Model.AliasBusinessName</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b> Autorized Official Full Name </b></td>
+                                                <td>
+                                                    @Model.AuthorizedOfficialFirstName &nbsp; @Model.AuthorizedOfficialLastName
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b> Autorized Official Title </b></td>
+                                                <td>@Model.AuthorizedOfficialTitleOrPosition</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b> Phone No. </b></td>
+                                                <td>@Model.AuthorizedOfficialTelephoneNumber</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b> Description </b></td>
+                                                <td>@Model.LongDescription</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b> EIN </b></td>
+                                                <td>@Model.OrganizatonEIN</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div id="Address" class="tab-pane fade">
+                                <div class="panel-body">
+                                    @if (Model..Any())
+                                    {
+                                        var address = Model.Address.FirstOrDefault();
+
+                                        <div class="mapouter">
+                                            <div class="gmap_canvas">
+                                                <iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=@address.FullAddress&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+                <!--===================================================-->
+                <!--End Default Tabs (Left Aligned)-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            AddSubmenuItems('Profile');
+        });
+    </script>
+}

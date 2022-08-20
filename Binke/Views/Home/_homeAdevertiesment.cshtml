@@ -1,0 +1,262 @@
+﻿<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+<style>
+    .imagewidh {
+        width: 19.5%;
+    }
+
+    @@media screen and (max-width: 992px) {
+        .imagewidh {
+            width: 49%;
+        }
+    }
+
+    /* On screens that are 600px or less, set the background color to olive */
+    @@media screen and (max-width: 600px) {
+        .imagewidh {
+            width: 100%;
+        }
+    }
+</style>
+<div class="doctors space" style="padding:40px 0 40px 0">
+    <div class="container">
+        <div class="row justify-content-center mtb-20">
+            <div class="col-lg-offset-3 col-md-offset-2 col-sm-offset-1 col-lg-6 col-md-8 col-sm-10 section-title text-center">
+                <h2>OUR FEATURED<span> DOCTORS</span></h2>
+                <p>@*Doctors &amp; Staf meet the experienced and friendly doctors and staff who make AZ Eye Health the leading provider of vision care products and services in Binke*@</p>
+                <p>Meet our featured doctors, who are leaders in their field and strive to provide you with specialized care based on your needs.</p>
+            </div>
+
+        </div>
+        <!--// Team Member -->
+
+        @if (ViewBag.FeaturedDoctors != null)
+        {
+            var totalRows = 0;
+            var AddPerRows = 5;
+            if (ViewBag.FeaturedDoctors.Count <= 5)
+            {
+                totalRows = 1;
+            }
+            else if (ViewBag.FeaturedDoctors.Count <= 10)
+            {
+                totalRows = 2;
+            }
+            else
+            {
+                totalRows = 3;
+            }
+
+            if (ViewBag.FeaturedDoctors.Count > 15)
+            {
+                AddPerRows = ViewBag.FeaturedDoctors.Count / totalRows;
+            }
+
+            var AddCnts = 0;
+            for (int row = 0; row < totalRows; row++)
+            {
+                var TotalAddPerRows = AddPerRows * (row + 1);
+
+                if (((row + 1) == totalRows) && (((row + 1) * AddPerRows) < ViewBag.FeaturedDoctors.Count || ((row + 1) * AddPerRows) > ViewBag.FeaturedDoctors.Count))
+                {
+                    TotalAddPerRows = ViewBag.FeaturedDoctors.Count;
+                }
+
+
+                <div class="slider-track" style="margin-bottom:-20px;">
+
+                    @for (int AddCnt = AddCnts; AddCnt < TotalAddPerRows; AddCnt++)
+                    {
+                        AddCnts = AddCnt + 1;
+                        var item = ViewBag.FeaturedDoctors[AddCnt];
+
+                        var ratingDCount = (int)Math.Floor(item.ReviewStars);
+
+                        //  var relativePath = "~/files/downloads/" + fileCode + ".pdf";
+
+
+                        <div class="team-member-3 text-center imagewidh" style="display:inline-block">
+                            <div class="team-member-3-thumb">
+
+                                @if (Binke.Utility.Common.IsFileExists(item.ProfileImage))
+                                {
+                                    <img src="@item.ProfileImage" style="width:400px;height:200px;" alt="team member image">
+                                }
+                                else
+                                {
+                                    <img src="\Uploads\ProfilePic\no_picture.png" style="width:400px;height:200px;" alt="Doctor-icon" />
+                                }
+
+                            </div>
+
+                            <div class="team-member-3-content" style="margin-top:-20px;">
+                                <h5><a href="/Profile/Doctor/@item.DoctorURLName.Replace(" ", "-").Replace("--", "-")-@item.Npi">@item.DoctorName</a></h5>
+                                @if (!string.IsNullOrEmpty(item.SpecialityName))
+                                {
+                                    <h6> @item.SpecialityName</h6>
+
+                                }
+                                <div class="social-icons social-icons-rounded">
+                                    <div class="col-lg-12 text-center">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            if (ratingDCount == 0)
+                                            {
+                                                <span class="fa fa-star rate_slider_g"></span>
+                                            }
+                                            else if (i < ratingDCount)
+                                            {
+                                                <span class="fa fa-star rate_slider_c"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star rate_slider_g"></span>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="col-lg-12 text-center">
+                                        <a href="#" class="view_revies">
+                                            @(item.ReviewStars == 0 ? "0 Reviews" : item.ReviewStars.ToString("0") + " Reviews")
+                                        </a>
+                                        <br />
+                                        <ul>
+                                            <li><a href="@item.Facebook"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href="@item.LinkedIn"><i class="fa fa-change fa-change-linkedin fa-linkedin"></i></a></li>
+                                            <li><a href="@item.Twitter"><i class="fa fa-twitter"></i></a></li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" style="height:auto">
+                                <div class="col">
+                                    <h6 class="facility-footer"><a href="/Profile/Doctor/@item.DoctorURLName.Replace(" ", "-").Replace("--", "-")-@item.Npi">@item.DoctorName</a></h6>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            }
+        }
+
+    </div>
+</div>
+<!--// Team Member Area -->
+<!-- Our Feature-->
+<div class="bk-section bg-white cr-border cr-border-top" style="padding:40px 0 40px 0">
+    <div class="container">
+        <div class="row " style="text-align:center">
+            <div class="col-md-12 section-title text-center" style="text-align:center;">
+                <h2>Our Featured<span> FACILITIES &amp; SENIOR CARE</span></h2>
+                <p>@*Do you want to present posts in the best way to highlight interesting moments of your blog? Focus on the latest news!*@</p>
+                <p>View our featured facilities and senior care, to find the best in class service.</p>
+            </div>
+        </div>
+
+        @if (ViewBag.Facilities != null)
+        {
+            var totalRows = 0;
+            var AddPerRows = 5;
+            if (ViewBag.Facilities.Count <= 5)
+            {
+                totalRows = 1;
+            }
+            else if (ViewBag.Facilities.Count <= 10)
+            {
+                totalRows = 2;
+            }
+            else
+            {
+                totalRows = 3;
+            }
+
+            if (ViewBag.Facilities.Count > 15)
+            {
+                AddPerRows = ViewBag.Facilities.Count / totalRows;
+            }
+
+            var AddCnts = 0;
+
+
+            for (int row = 0; row < totalRows; row++)
+            {
+                var TotalAddPerRows = AddPerRows * (row + 1);
+
+                if (((row + 1) == totalRows) && (((row + 1) * AddPerRows) < ViewBag.Facilities.Count || ((row + 1) * AddPerRows) > ViewBag.Facilities.Count))
+                {
+                    TotalAddPerRows = ViewBag.Facilities.Count;
+                }
+
+
+                <div class="slider-track" style="margin-bottom:-20px;">
+
+                    @for (int AddCnt = AddCnts; AddCnt < TotalAddPerRows; AddCnt++)
+                    {
+                        AddCnts = AddCnt + 1;
+                        var item = ViewBag.Facilities[AddCnt];
+                        @*@foreach (var item in ViewBag.Facilities)
+                            {*@
+                        var ratingFCount = (int)Math.Floor(item.ReviewStars);
+                        var hrefUrl = Binke.Utility.Common.GetFeaturedUrl(item.UserTypeId) + "/" + item.FullName.Replace("&", "").Replace(" ", "-").Replace("--", "-") + "-" + item.Npi;
+                        <div class="team-member-3 text-center imagewidh" style="display:inline-block">
+                            <div class="team-member-3-thumb">
+
+
+                                @if (Binke.Utility.Common.IsFileExists(item.ProfileImage))
+                                {
+                                    <img src="@item.ProfileImage" style="width:400px;height:200px;" alt="team member image">
+                                }
+                                else
+                                {
+                                    <img src="\Uploads\ProfilePic\no_picture.png" style="width:400px;height:200px;" alt="Doctor-icon" />
+                                }
+
+                            </div>
+                            <div class="team-member-3-content">
+                                <h5><a href="@hrefUrl" title="@item.FullName">@item.ShortName</a></h5>
+                                <h6>@item.FullAddress</h6>
+                                <div class="social-icons social-icons-rounded">
+                                    <div class="col-lg-12 text-center">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            if (ratingFCount == 0)
+                                            {
+                                                <span class="fa fa-star rate_slider_g"></span>
+                                            }
+                                            else if (i < ratingFCount)
+                                            {
+                                                <span class="fa fa-star rate_slider_c"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star rate_slider_g"></span>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="col-lg-12 text-center">
+                                        <a href="@hrefUrl" class="view_revies">
+                                            @(item.ReviewStars == 0 ? "0 Reviews" : item.ReviewStars.ToString("0") + " Reviews")
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="height:auto">
+                                <div class="col">
+                                    <h6 class="facility-footer"><a href="@hrefUrl" title="@item.FullName" alt="">@item.ShortName</a></h6>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+            }
+        }
+
+    </div>
+</div>

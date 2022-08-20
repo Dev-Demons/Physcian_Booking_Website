@@ -1,0 +1,265 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Addresses";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<style>
+    label.switch {
+        position: relative;
+        display: inline-block;
+        height: 23px;
+        padding-left: 2.8em !important;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+@section pageheader{
+<h3><i class="fa fa-user-md"></i> Addresses </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="~/Dashboard/Pharmacy"> Pharmacy </a></li>
+            <li class="active"> Addresses </li>
+        </ol>
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="TopFormBlock" class="box-primary"></div>
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            @* <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#office"> Office Locations</a>
+                </li>
+            </ul>
+            <!--Nav Tabs-->
+            <div class="panel-heading">
+                <div class="panel-control py-10px">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddPharmacy">Add Pharmacy</button>
+                </div>
+                <h3 class="panel-title">Language</h3>
+        </div>*@
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="pharmacyLocation" class="tab-pane fade active in">
+                    <table id="dtPharmacyLocation" class="table table-striped table-bordered table-hover" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Address 1</th>
+                                <th>Address 2</th>
+                                <th>Zip code</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Country</th>
+                                <th>Date Modified</th>
+                                <th>Is Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $("#MnuPharmacy").addClass('menu-open');
+        $("#MnuPharmacy ul li a p").each(function () {
+            var text = $(this).text();
+            if (text == "Addresses") {
+                $(this).parent().addClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-circle');
+                $(this).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }
+        });
+        $.validator.setDefaults({ ignore: null });
+        $(document).ready(function () {
+            bindPharmacyAddressList(true, 0);
+        });
+
+       
+        $('#TopFormBlock').load('@Url.Action("PharmacyAddress", "Pharmacy")');
+
+        //$("#AddPharmacy").click(function () {
+        //    window.loadRegisterForm("Pharmacy");
+        //});
+
+
+        
+        $(document).on('click', '.editInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $('#TopFormBlock').load('@Url.Action("PharmacyAddress/", "Pharmacy")' + ItemId);
+        });
+
+        $(document).on('click', '.viewInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $('#TopFormBlock').load('@Url.Action("PharmacyAddress/", "Pharmacy")' + ItemId, function () {
+                $("#TopFormBlock").find('input, textarea, button, select').attr("disabled", true);
+                $('.title').text("View Pharmacy Address");
+            });
+            
+        });
+
+        $(document).on('click', '.removeInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            DeletePharmacyAddress(ItemId);
+        });
+
+
+        function bindPharmacyAddressList(flag,start) {
+            if ($.fn.DataTable.isDataTable("#dtPharmacyLocation")) {
+                $('#dtPharmacyLocation').DataTable().destroy();
+            }
+
+            var table = $('#dtPharmacyLocation')
+                .DataTable({
+                    "displayStart": start,
+                    "sAjaxSource": "/GetPharmacyOfficeLocationList/" + flag + "/@ViewBag.PharmacyID",
+                    "columns": [
+                        {
+                            "data": "Address1",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Address2",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ZipCode",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "City",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "State",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Country",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<label class="switch" style="pointer-events:none">&nbsp;';
+                                content += '<input type="checkbox" ' + value + ' data-Id= "IsActive" />&nbsp;';
+                                content += '<span class="slider round"style="width:35px;"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "AddressId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div style="white-space:nowrap"><a href="javaScript:" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action editInfo"><i class="fa fa-edit"></i></a> &nbsp; ';
+                                content += '<a href="javaScript:" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action viewInfo"><i class="fa fa-eye"></i></a> &nbsp;';
+                                if (row.IsDeleted == false)
+                                    content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="Delete" onclick="DeletePharmacyAddresss(' + data + ')" data-Id="' + data + '" class="btn btn-danger btn-sm action "><i class="fa fa-times"></i></a> &nbsp;</div>'
+                                else
+                                    content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="Re Activate" onclick="DeletePharmacyAddresss(' + data + ')" data-Id="' + data + '" class="btn btn-danger btn-sm action "><i class="fa fa-check"></i></a> &nbsp;</div>'
+
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function CurrentPageStart() {
+            var table = $('#dtPharmacyLocation').DataTable();
+            var info = table.page.info();
+            return info.start;
+        }
+
+          function DeletePharmacyAddresss(id) {
+            var title = "Delete ?";
+            var message = "Are you sure you want to <b> " + title + " </b> this Pharmacy Address";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/DeletePharmacyAddress/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindPharmacyAddressList(true, CurrentPageStart());
+                        closeModal();
+                        $('#TopFormBlock').load('@Url.Action("PharmacyAddress", "Pharmacy")');
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        function DeletePharmacyAddress(id) {
+            var title = "Delete ?";
+            var message = "Are you sure you want to <b> " + title + " </b> this Pharmacy Address";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeActivePharmacyAddress/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindPharmacyAddressList(true, CurrentPageStart());
+                        closeModal();
+                        $('#TopFormBlock').load('@Url.Action("PharmacyAddress", "Pharmacy")');
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+
+    </script>
+}

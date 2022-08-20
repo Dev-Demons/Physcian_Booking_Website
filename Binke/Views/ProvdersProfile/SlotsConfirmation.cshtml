@@ -1,0 +1,672 @@
+﻿@model  Doctyme.Model.ViewModels.SlotConfirmation
+@using Binke.Utility
+@{
+    ViewBag.Title = "SlotsConfirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@*<link href="~/Content/custom/toastr.min.css" rel="stylesheet" />*@
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+<style>
+    .marginTop20px {
+        margin-top: 20px;
+    }
+
+    .app-confirm {
+        line-height: 2.2em;
+        background: #d2dcdc;
+        text-align: center;
+    }
+
+
+
+    .slow .toggle-group {
+        transition: left 0.7s;
+        -webkit-transition: left 0.7s;
+    }
+
+    .fast .toggle-group {
+        transition: left 0.1s;
+        -webkit-transition: left 0.1s;
+    }
+
+    .quick .toggle-group {
+        transition: none;
+        -webkit-transition: none;
+    }
+
+    .switchLabel {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 20px;
+    }
+
+        .switchLabel input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .sliderLabel {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .sliderLabel:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .sliderLabel {
+        background-color: #2196F3;
+    }
+
+    input:focus + .sliderLabel {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .sliderLabel:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .sliderLabel.round {
+        border-radius: 34px;
+    }
+
+        .sliderLabel.round:before {
+            border-radius: 50%;
+        }
+
+    .marginbunset {
+        margin-bottom: unset !important;
+    }
+
+    .paddigRightUnset {
+        padding-right: unset !important;
+    }
+    .paddingLeft {
+        padding-left: 5px !important
+    }
+</style>
+<head>
+    @*<link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>*@
+    @{
+        List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "keywords",
+            Content = "Facility Name - City Name, Facility Name - City Name Facility Name - City Name in City Name, State Name"
+        });
+
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "twitter:image",
+            Content = "logo image url"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:url",
+            Content = "https://www.doctyme.com/"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:site_name",
+            Content = "DocTyme"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:title",
+            Content = "Read Doctor Reviews, Compare Doctors &amp; Book Appointments"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:image",
+            Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:description",
+            Content = "Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Property = "og:type",
+            Content = "website"
+        });
+        meta.Add(new Doctyme.Model.ViewModels.Meta
+        {
+            Name = "twitter:title",
+            Content = "Search & Review Doctors, Hospital, Senior Care, Pharmacy and Book an appointment online."
+        });
+
+        TempData["metaInfo"] = meta;
+    }
+    @*<meta name="keywords" content="Facility Name - City Name, Facility Name - City Name Facility Name - City Name in City Name, State Name" />
+        <meta name="twitter:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+        <meta property="og:url" content="https://www.doctyme.com/">
+        <meta property="og:site_name" content="DocTyme">
+        <meta property="og:title" content="Read Doctor Reviews, Compare Doctors &amp; Book Appointments">
+        <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+        <meta property="og:description" content="Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme.">
+        <meta property="og:type" content="website">
+        <link rel='icon' href='favicon.ico' type='image/x-icon' />*@
+</head>
+
+<div class="cr-section blog-page-area section-padding-top-sm section-padding-bottom-sm">
+    @using (Html.BeginForm("SlotsConfirmation", "Profile", FormMethod.Post, new { id = "frmsltc", @class = "appointment-form mt-3", role = "form" }))
+    {
+        <div class="container">
+            @Html.AntiForgeryToken()
+
+            <p class="form-message">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.DoctorId)
+                @Html.HiddenFor(model => model.OrganisationId)
+                @Html.HiddenFor(model => model.SlotDate)
+                @Html.HiddenFor(model => model.SlotTime)
+                @Html.HiddenFor(model => model.IsEmailReminder)
+                @Html.HiddenFor(model => model.IsTextReminder)
+                @Html.HiddenFor(model => model.IsWhantCallUs)
+                @Html.HiddenFor(model => model.UserId)
+                @Html.HiddenFor(model => model.SlotFor)
+
+                @Html.HiddenFor(model => model.FirstName)
+                @Html.HiddenFor(model => model.LastName)
+                @Html.HiddenFor(model => model.AddressId)
+            </p>
+            <div class="row">
+                <div class="col-xl-9 col-12">
+
+                    <h5 class="m-0 fullName">@Model.DoctorName</h5>
+                    <h5 class="m-0 fullName">@Model.OrganisationName</h5>
+                    <span class="small" style="color: #20a5a5;font-size:14px">@Model.FullOrgAddress</span>
+
+
+                </div>
+                <div class="col-xl-3 col-12  pull-right">
+                    @if (!string.IsNullOrEmpty(Model.DoctorProfileImage))
+                    {
+                        <img src="@Common.GetValidProfileImagePath(Model.DoctorProfileImage)" class="logo" alt="Doctor-icon" style="border:1px solid lightgray;max-width:30%" />
+                    }
+                    else
+                    {
+                        <img src="/Uploads/ProfilePic/no_picture.png" class="logo" style="border:1px solid lightgray;max-width:30%" alt="no_picture">
+                    }
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col align-self-center col-xs-6 offset-xs-6 col-md-4 offset-md-4" style="text-align: center;"><b>REVIEW</b></div>
+            </div>
+
+            <div class="row marginTop20px" id="drlogUsr">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="card">
+                        <div class="card-header"> <span>Contact Information</span></div>
+                        @if (!string.IsNullOrEmpty(Model.UserName))
+                        {
+                            @Html.HiddenFor(model => model.UserEmail)
+                            <div class="card-body" style="padding-top: 3px;">
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-8-col-md-10 col-lg-10">
+                                        <div><span>@Html.DisplayFor(model => model.FullName)</span></div>
+                                        <div><span>@Html.DisplayFor(model => model.Address1)</span></div>
+                                        <div><span>@Html.DisplayFor(model => model.PhoneNumber)</span></div>
+
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4-col-md-2 col-lg-2 pull-left">
+                                        @*<a href="#">Edit</a>*@
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12-col-md-12 col-lg-12">
+                                        <span> @Html.DisplayFor(model => model.UserEmail)</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card-body" style="padding-top: 3px;">
+                                <div class="row ">
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset">
+                                        <label for="txtFirstName"><span style="color:red">*</span>First Name</label>
+                                        @Html.EditorFor(model => model.FirstName, "", new { htmlAttributes = new { @id = "txtFirstName", @class = "form-control", @placeholder = "FirstName" } })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "Please enter firstname.", new { })
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="txtLastName"><span style="color:red">*</span>Last Name</label>
+                                        @Html.EditorFor(model => model.LastName, "", new { htmlAttributes = new { @id = "txtLastName", @class = "form-control", @placeholder = "LastName" } })
+                                        @Html.ValidationMessageFor(model => model.LastName, "Please enter lastname.", new { })
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="txtDateOfBirth"><span style="color:red">*</span>DOB</label>
+                                        @Html.EditorFor(model => model.DOB, "", new { htmlAttributes = new { @id = "txtDateOfBirth", @class = "form-control", @placeholder = "DOB" } })
+                                        @Html.ValidationMessageFor(model => model.StateId, "Please enter DOB.", new { })
+                                    </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 form-group marginbunset paddigRightUnset">
+                                        <label for="txtFirstName"><span style="color:red">*</span>Address</label>
+                                        @Html.EditorFor(model => model.Address1, "", new { htmlAttributes = new { @id = "txtAddress", @class = "form-control", @placeholder = "Address", @multile = "true" } })
+                                        @Html.ValidationMessageFor(model => model.Address1, "Please enter address.", new { })
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="ddlState"><span style="color:red">*</span>State</label>
+                                        @Html.DropDownListFor(model => model.State, ViewBag.StateList as IEnumerable<SelectListItem>, "-- Select State --", new { @id = "ddlState", @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.City, "Please select state.", new { })
+
+                                    </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset">
+                                        <label for="ddlCity"><span style="color:red">*</span>City</label>
+                                        @Html.DropDownListFor(model => model.City, ViewBag.CityList as IEnumerable<SelectListItem>, "-- Select City --", new { @id = "ddlCity", @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.City, "Please select city.", new { })
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="ddlZipCode"><span style="color:red">*</span>Zip Code</label>
+                                        @Html.DropDownListFor(model => model.ZipCode, ViewBag.ZipList as IEnumerable<SelectListItem>, "-- Select ZipCode --", new { @id = "ddlZipCode", @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ZipCode, "Please select zipcode.", new { })
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="txtEmail"><span style="color:red">*</span>Email</label>
+                                        @Html.EditorFor(model => model.UserEmail, "", new { htmlAttributes = new { @id = "txtEmail", @class = "form-control", @placeholder = "Email" } })
+                                        @Html.ValidationMessageFor(model => model.UserEmail, "Please enter Email.", new { })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="txtPhoneNumber"><span style="color:red">*</span>Phone</label>
+                                        @Html.EditorFor(model => model.PhoneNumber, "", new { htmlAttributes = new { @id = "txtPhone", @class = "form-control", @placeholder = "Phone Number" } })
+                                        @Html.ValidationMessageFor(model => model.PhoneNumber)
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="txtPassword"><span style="color:red">*</span>Password</label>
+                                        @Html.PasswordFor(model => model.Password, new { @id = "txtPassword", @class = "form-control", placeholder = "Password" })
+                                        @Html.ValidationMessageFor(model => model.Password, "Please enter Password.", new { })
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group marginbunset paddigRightUnset paddingLeft">
+                                        <label for="txtCofonfrimPwd"><span style="color:red">*</span>Confirm Password</label>
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new { @id = "txtCofonfrimPwd", @class = "form-control", placeholder = "Confirm Password" })
+                                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="row">
+                        <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                            <div class="card  border">
+                                <div class="card-header"> <span>Reminders & Updates </span></div>
+                                <div class="card-body">
+                                    <div class="row justify-content-between">
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-md-6" style="border-right:1px solid blue">
+                                            <div class="row">
+                                                <div class="col-12 custom-control custom-switch">
+                                                    Text &nbsp; &nbsp; <label class="switchLabel">
+                                                        <input type="checkbox" id="chkText">
+                                                        <span class="sliderLabel round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-md-6">
+                                            <div class="col-12">
+                                                Email &nbsp; &nbsp;<label class="switchLabel">
+                                                    <input type="checkbox" id="chckEmail">
+                                                    <span class="sliderLabel round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row marginTop20px">
+                                        <div class="col-md-12">
+                                            @{
+                                                DateTime dt = Convert.ToDateTime(Model.SlotDate);
+                                                DateTime dateValue = new DateTime(dt.Year, dt.Month, dt.Day);
+                                                string day = dateValue.ToString("dd");
+                                                string weekName = dateValue.ToString("ddd");
+                                                string month = dateValue.ToString("MMMM");
+
+                                            }
+                                            <span>Note: Standard message and data rates may apply</span>
+                                            <a href="@Model.ReturUrl" class="btn btn-info" style="background:rgb(49, 209, 49);font-size:0.7em; width:100%;">
+                                                @*<button class="btn btn-info" style="background:rgb(49, 209, 49);font-size:0.7em">*@
+                                                Schedule &nbsp;&nbsp;<Sapn>@weekName</Sapn>&nbsp;,&nbsp;@day,&nbsp;<span>@month</span>&nbsp;&nbsp;<span>@dt.Year</span>&nbsp; &nbsp;@Model.SlotTime
+                                                @*</button>*@
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row marginTop20px">
+                        <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @Html.EditorFor(model => model.Comments, "", new { htmlAttributes = new { @id = "txtComments", @class = "form-control", @placeholder = "Comments" } })
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-between marginTop20px">
+                                        <div class="col-4">
+                                            Want us to call you?
+                                        </div>
+                                        <div class="col-4 ">
+                                            <label class="switchLabel pull-right">
+                                                <input type="checkbox" id="chkCall">
+                                                <span class="sliderLabel round"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row marginTop20px">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Insurance Information</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group ">
+                                    <label for="ddlInPlan">Insurance Type</label>
+                                    @Html.DropDownListFor(model => model.InsuranceTypeId, ViewBag.InsurancePlan as IEnumerable<SelectListItem>, "-- Select Insurance Type --", new { @id = "InType", @class = "form-control valid" })
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 form-group">
+                                    <label for="ddlInProvider">Insurance Plan</label>
+                                    @Html.DropDownListFor(model => model.InsuranceProviderId, ViewBag.InsuranceProvider as IEnumerable<SelectListItem>, "-- Select Insurance Provider --", new { @id = "InProvider", @class = "form-control valid" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12" style="padding-left: 0;font-weight: 600;font-size: 86%;">
+                                    This doctor is currently accepting the insurance provided in the list. If you don't see your insurance in this list, It means that doctor is not accepting any other insurance plan
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-between marginTop20px">
+                <div class="col-4">
+                    <a class=" btn  btn-sm btn-small btn-secondary" style="font-size:16px;padding:4px 10px;" href="@Model.ReturUrl">Back</a>
+
+                </div>
+                <div class="col-4">
+                    <button id="btnSubmit" type="button" class="btn btn-sm btn-small btn-default btn-primary" style="font-size:16px;padding:4px 10px;">Confirm</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@Scripts.Render("~/scripts/full-calendar")
+@section scripts {
+    @*<script src="~/Scripts/admin/js/moment.js"></script>*@
+    <script src="~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <link href="~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+    @*<script src="~/Scripts/custom/gmap.js"></script>*@
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+
+    <script type="text/javascript">
+
+        var startDate = new Date();
+        $('#txtDateOfBirth').datepicker({
+            format: 'mm/dd/yyyy',
+            //prevText: '<i class="fa fa-chevron-left"></i>',
+            //nextText: '<i class="fa fa-chevron-right"></i>',
+            endDate: '+0d',
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: true
+        }).on('changeDate', function (selected) {
+            startDate = new Date(selected.date.valueOf());
+            startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        });
+        $(document).ready(function () {
+            $("#ddlState").select2();
+            $("#ddlCity").select2();
+            $("#ddlZipCode").select2();
+
+            $(".toggle ").removeAttr("width").removeAttr("height");
+
+            $('#frmsltc').validate({
+                rules: {
+                    InProviderPln: {
+                        required: false
+
+                    },
+                    InProvider: {
+                        required: false
+
+                    }
+
+                }
+            });
+
+        });
+        $('input:checkbox').prop("checked", false);
+        $('#datetimepicker3').datepicker();
+
+        $('#InType').change(function () {
+            BindInsurancePlanByTypeId($('#InType').val());
+        });
+
+        //$("#InProvider").change(function () {
+        //    BindInsurancePlan($("#InProvider").val());
+        //});
+        $("#ddlState").change(function () {
+            BindCity($("#ddlState").val());
+        });
+        $("#ddlCity").change(function () {
+            bindZipCode($("#ddlState").val(), $("#ddlCity").val());
+        });
+
+        function BindInsurancePlanByTypeId(id) {
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetInsurancePlanByTypeId", "ProvdersProfile")",
+                data: { typeId: id },
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#InProvider option").remove();
+                    $("#InProvider").append("<option>--Select Insurance Provider--</option>");
+                    var options = "";
+                    $.each(response.Data, function (key, value) {
+
+                        options = options + "<option value='" + value.Value + "'> " + value.Text+"</option>";
+                    });
+                    $("#InProvider").append(options);
+                },
+                error: function (response)
+                {
+
+                }
+            });
+        }
+
+        function BindInsurancePlan(ProviderId) {
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetInsurancePlan", "ProvdersProfile")",
+                data: { id: ProviderId },
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#InProviderPln option").remove();
+                    $("#InProviderPln").append("<option>--Select Insurance Plan--</option>");
+                    var options = "";
+                    $.each(response.Data, function (key, value) {
+
+                        options = options + "<option value='" + value.Value + "'> " + value.Text+"</option>";
+                    });
+                    $("#InProviderPln").append(options);
+                },
+                error: function (response)
+                {
+
+                }
+            });
+        }
+        function BindCity(stateId) {
+            $.ajax({
+                type: 'GET',
+               url: "@Url.Action("GetCityList", "ProvdersProfile")",
+                data: { id: stateId },
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#ddlCity option").remove();
+                    $("#ddlCity").append("<option>--select City -- </option>");
+                    $("#ddlZipCode option").remove();
+                    $("#ddlZipCode").append("<option>--select ZipCode -- </option>");
+                    var options = "";
+                    $.each(response.Data, function (key, value) {
+
+                        options = options + "<option value='" + value.Value + "'> " + value.Text + "</option>";
+                    });
+                    $("#ddlCity").append(options);
+                },
+                error: function (response) {
+                    $("#ddlCity option").remove();
+                    $("#ddlCity").append("<option>--select City -- </option>");
+                    $("#ddlZipCode option").remove();
+                    $("#ddlZipCode").append("<option>--select ZipCode -- </option>");
+                }
+            });
+        }
+      function bindZipCode(state,city) {
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetZipCode", "ProvdersProfile")",
+                data: { State: state, City: city},
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#ddlZipCode option").remove();
+                    $("#ddlZipCode").append("<option>--select ZipCode -- </option>");
+                    var options = "";
+                    $.each(response.Data, function (key, value) {
+
+                        options = options + "<option value='" + value.Value + "'> " + value.Text + "</option>";
+                    });
+                    $("#ddlZipCode").append(options);
+                },
+                error: function (response) {
+                    $("#ddlZipCode option").remove();
+                    $("#ddlZipCode").append("<option>--select ZipCode -- </option>");
+                }
+            });
+        }
+
+        $('#chkText').change(function () {
+            if (this.checked) {
+                $("#IsTextReminder").val(1);
+            }
+            else {
+                $("#IsTextReminder").val(0);
+            }
+        });
+
+        $('#chckEmail').change(function () {
+            if (this.checked) {
+                $("#IsEmailReminder").val(1);
+            }
+            else {
+                $("#IsEmailReminder").val(0);
+            }
+        });
+
+        $('#chkCall').change(function () {
+            if (this.checked) {
+                $("#IsWhantCallUs").val(1);
+            }
+            else {
+                $("#IsWhantCallUs").val(0);
+            }
+        });
+
+        $("#btnSubmit").click(function () {
+
+            $("#InProviderPln").rules('remove', 'required');
+            $("#InProvider").rules('remove', 'required');
+            $.validator.unobtrusive.parse($('#frmsltc'));
+            if ($("#frmsltc").valid()) {
+                if ($("#UserId").val() == "0") {
+                    var email = $('#txtEmail').val();
+                    var userName = email.substring(0, email.indexOf("@@"));
+                    var password = $('#txtPassword').val();
+                    if (password.includes(userName)) {
+                        alert("Password Cannot be email!")
+                        return;
+                    }
+                }
+            $.post("@Url.Action("SlotsConfirmation", "ProvdersProfile")",
+                $("#frmsltc").serialize(),
+                function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+
+                        setTimeout(function () {
+                            location.href = "/";
+                        },
+                            2000);
+
+                    }
+                });
+        } else {
+
+        }
+    });
+
+    </script>
+
+}
+

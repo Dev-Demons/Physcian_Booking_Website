@@ -1,0 +1,57 @@
+- Home page
+- Search Page
+- Profile Page
+- Booking/Appointment Page
+- Contact Us
+- Advertise with Us
+
+
+Doctor
+- Dashboard
+- Profile Page
+- Booking/Appointment Page
+- Can register for new account
+- Can add/edit his information
+- Can manage bookings/appointments
+- Add/edit Feature/Advertisement
+
+Pharmacy
+- Dashboard
+- Profile Page
+- Register for new account
+- Can add/edit pharmacy info
+- Can add/edit coupons/promotions
+- Add/edit Feature/Advertisement
+
+Facility
+- Dashboard
+- Profile Page
+- Booking/Appointment Page
+- Register for new account
+- Can add/edit info
+- Can manage booking/appointments
+- Add/edit Feature/Advertisement
+
+Senior Care
+- Dashboard
+- Profile Page
+- Booking/Appointment Page
+- Register for new account
+- Can add/edit info
+- Can manage booking/appointments
+- Add/edit Feature/Advertisement
+
+Patients
+- Dashboard
+- Profile Page
+- Register for new account
+- Can add/edit info
+- Can manage booking/appointments
+
+Admin
+- Dashboard
+- Add/edit user info including (doctors, pharmacy, facility, senior care and patients)
+- Add/edit any booking/appointment info
+- Add/edit Feature doctor/facility/advertisement
+
+

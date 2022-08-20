@@ -1,0 +1,1409 @@
+﻿@using Binke.ViewModels
+@model SearchViewModel
+@{
+    ViewBag.Title = "Search";
+}
+<link href="~/Content/client/custom/SearchPage.css" rel="stylesheet" />
+<link href="~/Content/client/css/index.css" rel="stylesheet" />
+<link href="~/Content/custom/toastr.min.css" rel="stylesheet" />
+<link href="~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+<style type="text/css">
+    .input-set {
+        width: 85%;
+        float: left;
+    }
+
+    .btn-set {
+        width: calc(100% - 85%);
+        float: left;
+        margin-top: 0px;
+    }
+
+    .within-section {
+        background-color: #eee;
+        padding: 15px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .no-margin {
+        margin: unset !important;
+    }
+
+    .tableHeader-font {
+        line-height: 1em;
+        font-size: 13px;
+    }
+
+    .tableBody-tab {
+        font-size: 0.65em;
+        cursor: pointer;
+    }
+
+    .tableBody-div {
+        background: rgb(49, 209, 49);
+        border-radius: 8px;
+    }
+
+    .disable-booked {
+        background: #dcc2c2;
+        cursor: not-allowed;
+        border-radius: 8px;
+    }
+
+    .app-confirm {
+        line-height: 2.2em;
+        background: #d2dcdc;
+        text-align: center;
+    }
+
+    .table-height-fix {
+        height: 329px;
+        overflow: auto;
+    }
+
+    .ui-autocomplete {
+        max-height: 20%;
+        max-width: 100%;
+        overflow-y: auto;
+        font-size: 13px;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+    }
+    /* IE 6 doesn't support max-height
+    * we use height instead, but this forces the menu to always be this tall
+    */
+    * html .ui-autocomplete {
+        height: 150px;
+    }
+</style>
+@{
+    ViewBag.Title = "DocTyme Physician Directory - Find a Physician in Your Area";
+    List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "description",
+        Content = "Find a Physician with the DocTyme Physician Directory and get information including the physician&#39;s education/training, practice information, health insurance affiliations and contact information. Finding a Physician has never been easier."
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "keywords",
+        Content = "physician directory, Physician search, find a physician, locate, find, physicians, Physician, DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:title",
+        Content = "DocTyme Physician Directory - Find a Physician in Your Area"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:description",
+        Content = "Find a Physician with the DocTyme Physician Directory and get information including the physician&#39;s education/training, practice information, health insurance affiliations and contact information. Finding a Physician has never been easier."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "keywords",
+        Content = "Physician Name - City Name, Physician Name - City Name Physician Name - City Name in City Name, State Name"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "twitter:image",
+        Content = "logo image url"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:url",
+        Content = "https://www.doctyme.com/"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:site_name",
+        Content = "DocTyme"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:type",
+        Content = "website"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:title",
+        Content = "Search & Review Physician, Hospital, Senior Care, Pharmacy and Book an appointment online."
+    });
+    TempData["metaInfo"] = meta;
+}
+<head>
+    @*<link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>*@
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section SliderContent{
+}
+<!-- Blog Page Area -->
+<div class="cr-section blog-page-area bg-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-9 col-12 order-1 order-xl-2">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <label><span id="countdoctor"></span></label>
+                        <select id="PageSelection" name="PageSelection">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="map-toggle-button" style="display: none;">
+                            <div class="btn-group btn-group-toggle pull-right mb-10" data-toggle="buttons">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" class="filter-buttons" onchange="refreshFilterButton(this)" value="list" name="filter-button" id="filter-button-list" autocomplete="off" checked> <i class="fa fa-list"></i> List View
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" class="filter-buttons" onchange="refreshFilterButton(this)" value="map" name="filter-button" id="filter-button-map" autocomplete="off"> <i class="fa fa-map-marker"></i> Map View
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="googleMapTop" style="width: 100%; min-height:300px; position: relative;margin-bottom: 10px;" data-gmap-zoom="12" data-gmap-src="xml/gmap/pins.xml"></div>
+                <div id="ResultArea"></div>
+            </div>
+            <div class="col-xl-3 col-12 order-2 order-xl-1 sticky-sidebar-active">
+                <div class="widgets right-sidebar">
+                    <div class="single-widget widget-archives" data-block="Distance">
+                        <h5 class="widget-title">Location</h5>
+                        <div class="widget-archives-inner p-0">
+                            <div class="within-section mb-3">
+                                @*@Html.DropDownList("DistanceType", ViewBag.DistanceList as IEnumerable<SelectListItem>, "-- Select Distance --", new { @class = ""  })*@
+                                <input id="searchBoxZipcode" type="text" class="input-set" placeholder="City or ZipCode" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="single-widget widget-archives" data-block="Distance">
+                        <h5 class="widget-title">Specialties</h5>
+                        <div class="widget-archives-inner p-0">
+                            <div class="within-section mb-3">
+                                <input id="txtSpecialties" type="text" class="input-set" placeholder="Specialties" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="single-widget widget-archives" data-block="FreeSearch">
+                        <h5 class="widget-title">
+                            Search
+                            <small>
+                                <a href="javascript:;" class="ClearAll">Clear All</a>
+                            </small>
+                        </h5>
+                        <div class="widget-archives-inner p-0">
+                            <div class="within-section mb-3">
+                                <input id="freeSearchBox" type="text" class="input-set" placeholder="Search here" />
+                                <i id="btnSearch" class="fa fa-search" style="padding-left:15px;padding-top:7px; font-size:25px; cursor:pointer"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div class="single-widget widget-archives pt-3" data-block="ANP">
+                        <h5 class="widget-title">
+                            Accepting New Patients
+                            @*<small>
+                                <a href="javascript:;" class="ClearAll">Clear All</a>
+                            </small>*@
+                        </h5>
+                        <div class="filter-card">
+                            <p><input type="checkbox" id="IsAllowNewPatient"> <label for="IsAllowNewPatient">Yes (<span id="displayCountOfAllowPatients" class="no-margin">@Model.AcceptingNewPatients</span>)</label></p>
+                        </div>
+                    </div>
+                    <div class="single-widget widget-archives" data-block="NTPA">
+                        <h5 class="widget-title">
+                            Near-Term PCP Availability
+                            @*<small>
+                                <a href="javascript:;" class="ClearAll">Clear All</a>
+                            </small>*@
+                        </h5>
+                        <div class="filter-card">
+                            <p><input type="checkbox" id="IsNtPcp"> <label for="IsNtPcp">Yes (<span id="displayCountOfNtPcp" class="no-margin">@Model.NearTermPcpAvailability</span>)</label></p>
+                        </div>
+                    </div>
+                    <div class="single-widget widget-archives" data-block="PrimaryCare">
+                        <h5 class="widget-title">
+                            Primary Care
+                            @*<small>
+                                <a href="javascript:;" class="ClearAll">Clear All</a>
+                            </small>*@
+                        </h5>
+                        <div class="filter-card">
+                            <p><input type="checkbox" id="IsPrimaryCare"> <label for="IsPrimaryCare">Yes (<span id="displayCountOfPrimaryCare" class="no-margin">@Model.PrimaryCare</span>)</label></p>
+                        </div>
+                    </div>
+
+                    @*<div class="single-widget widget-archives" data-block="Affiliations">
+                        <h5 class="widget-title">
+                            Affiliations
+                        </h5>
+                        <div class="filter-card">
+                            @if (ViewBag.AffiliationList != null)
+                            {
+                            foreach (var item in (List<KeyValuePairModel>)ViewBag.AffiliationList)
+                                {
+                                <p><input type="checkbox" id="Affiliation@(item.Id)" data-AffiliationId="@item.Id"><label for="Affiliation@(item.Id)">@item.Name<span>(@item.Count)</span></label></p>
+                                }
+                                }
+                        </div>
+                    </div>*@
+                    <div class="single-widget widget-archives" data-block="Insurance">
+                        <h5 class="widget-title">
+                            Insurance Accepted
+                            @*<small>
+                                <a href="javascript:;" class="ClearAll">Clear All</a>
+                            </small>*@
+                        </h5>
+                        <div class="filter-card">
+                            @if (ViewBag.InsuranceList != null)
+                            {
+                                foreach (var item in (List<KeyValuePairModel>)ViewBag.InsuranceList)
+                                {
+                                    <p><input type="checkbox" id="Insurance@(item.Id)" data-InsuranceId="@item.Id"><label for="Insurance@(item.Id)">@item.Name<span id="InsuranceSpan_@(item.Id)">(@item.Count)</span></label></p>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="single-widget widget-archives" data-block="AGS">
+                        <h5 class="widget-title">
+                            Gender Seen
+                            @*<small>
+                                <a href="javascript:;" class="ClearAll">Clear All</a>
+                            </small>*@
+                        </h5>
+                        @*<div class="filter-card">
+                            <p><input type="checkbox" id="IsFemale"> <label for="IsFemale">Female<span>(@Model.AgeGroupsSeen.Female)</span></label></p>
+                            <p><input type="checkbox" id="IsMale"> <label for="IsMale">Male<span>(@Model.AgeGroupsSeen.Male)</span></label></p>
+                        </div>*@
+                        <div class="filter-card">
+                            @if (ViewBag.GenderType != null)
+                            {
+                                foreach (var item in (List<KeyValuePairModel>)ViewBag.GenderType)
+                                {
+                                    <p><input type="checkbox" id="Gender@(item.Id)" data-GenderId="@item.Id"><label for="Gender@(item.Id)">@item.Name<span id="GenderSpan@(item.Id)">(@item.Count)</span></label></p>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="single-widget widget-archives" data-block="AGSFull">
+                        <h5 class="widget-title">
+                            Age Groups Seen
+                            @*<small>
+                                <a href="javascript:;" class="ClearAll">Clear All</a>
+                            </small>*@
+                        </h5>
+                        <div class="filter-card">
+                            @if (ViewBag.AgegroupList != null)
+                            {
+                                foreach (var item in (List<KeyValuePairModel>)ViewBag.AgegroupList)
+                                {
+                                    <p><input type="checkbox" id="Agegroup@(item.Id)" data-AgegroupId="@item.Id"><label for="Agegroup@(item.Id)">@item.Name<span>(@item.Count)</span></label></p>
+                                }
+                            }
+
+                            @*<p><input type="checkbox" id="IsPediatrics"> <label for="IsPediatrics">Pediatrics <span>(@Model.AgeGroupsSeen.Pediatrics)</span></label></p>
+                            <p><input type="checkbox" id="IsTeenagers"> <label for="IsTeenagers">Teenagers <span>(@Model.AgeGroupsSeen.Teenagers)</span></label></p>
+                            <p><input type="checkbox" id="IsAdults"> <label for="IsAdults">Adults <span>(@Model.AgeGroupsSeen.Adults)</span></label></p>
+                            <p><input type="checkbox" id="IsGeriatrics"> <label for="IsGeriatrics">Geriatrics <span>(@Model.AgeGroupsSeen.Geriatrics)</span></label></p>*@
+                        </div>
+                    </div>
+
+                    <div class="single-widget widget-archives" data-block="Language">
+                        <h5 class="widget-title">Language</h5>
+                        <div class="widget-archives-inner">
+                            @if (ViewBag.LanguageList != null)
+                            {
+                                @Html.DropDownList("Languages", ViewBag.LanguageList as IEnumerable<SelectListItem>, "-- Select Language --", new { @class = "otherControl" })
+                            }
+                            else
+                            {
+                                @Html.DropDownList("Languages", new List<SelectListItem>(), "-- Select Language --", new { @class = "otherControl" })
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="dvAdSlider">
+
+            @*@Html.Partial("_Advertisement", new ViewDataDictionary { { "AddTypeId", "1" }, { "OrgTypeId", "0" }, { "UserTypeIds", "2" } })*@
+        </div>
+    </div>
+</div>
+
+@*----Appointment--*@
+<div class="modal fade" id="appointment" style="margin-top:14px;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="padding:0">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding:1rem">
+                <div class="" style="padding:10px;">
+                    <div class="d-flex flex-row justify-content-between"
+                         style="border-width:0 0 2px 0;border-style:solid;border-color: lightgray;padding-bottom:10px;">
+                        <div id="logo_head">
+                            <h5 class="m-0">Pinnacle Dermatology Center</h5>
+                            <div class="d-inline p-1">
+                                <i class="fa fa-star star little-star"></i>
+                                <i class="fa fa-star star little-star"></i>
+                                <i class="fa fa-star star little-star"></i>
+                                <i class="fa fa-star star little-star"></i>
+                                <i class="fa fa-star star little-star"></i>
+                                <span style="color:dodgerblue;font-size:12px">(209 Reviews)</span>
+                            </div>
+                        </div>
+                        <img src="/content/client/images/logo.png" id="logo" alt="logo" style="border:1px solid lightgray">
+                    </div>
+                    <p class="text-center text-secondary">Select your appointment type and time</p>
+                    <div class="d-flex flex-row">
+                        <a class="text-dark" href="#table_carousel" onclick="getSlot(this)" id="prev" data-slide="prev">
+                            <i class="fa fa-chevron-left"></i>
+                        </a>
+                        <!-- Carousel -->
+                        <div id="table_carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+                            <!-- The slideshow -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active table-height-fix" style="transition-duration:0.5s;">
+                                    <table id="appointmentTable" class="table table-bordered">
+                                        <thead>
+                                            <tr id="theadRow" class="tableHeader-font"></tr>
+                                        </thead>
+                                        <tbody id="tbodyrow">
+                                            <tr></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <a class="text-dark" href="#table_carousel" data-slide="next" onclick="getSlot(this)" id="next">
+                            <i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <!-- carousel end -->
+                    @*<div class="text-right">
+                            <button class="btn btn-info" data-toggle="modal" data-dismiss="modal"
+                                    data-target="#appModal">
+                                Next
+                            </button>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="appModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content overflowScroll" style="width: 700px">
+            <div class="modal-header" style="padding:0">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body mx-2 mt-2 mb-2" style="width: 700px;">
+                <div class="row">
+                    <div class="col-sm-7 text-center  pl-4 pr-0">
+                        <h6 class="text-center mb-0 pb-0">Request for Appointment</h6>
+                        <p class="text-center" style="color:red;font-size:12px">Selected Day & Time</p>
+                        <div class="d-flex flex-column">
+                            <input class="app-confirm" type="text" data-provide="datepicker" name='dob' id="dob" placeholder="DOB" style="width:50%">
+                            <div class="text-right mt-1 full-width d-flex flex-row justify-content-between">
+                                <input type="text" name="firstName" class="app-confirm" placeholder="First Name" id="firstName" style="width:50%">
+                                <input type="text" name="lastName" placeholder="Last Name" class="app-confirm" id="lastName" style="width:48%;">
+                            </div>
+                            <div class="text-right mt-1 full-width d-flex flex-row justify-content-between">
+                                <input type="text" name="address" placeholder="Address" class="app-confirm" id="address" style="width:100%">
+                            </div>
+                            <div class="text-right mt-1 full-width d-flex flex-row justify-content-between">
+                                <select name="state" class="app-confirm" id="state" style="width:32%;"></select>
+                                <select name="city" class="app-confirm" id="city" style="width:32%;"></select>
+                                <input type="text" name="zip" placeholder="Zip" class="app-confirm" id="zip" style="width:32%;">
+                            </div>
+                            <div class="text-right mt-1 full-width d-flex flex-row justify-content-between">
+                                <input type="email" name="email" placeholder="Email" class="app-confirm" id="email" style="width:50%">
+                                <input type="number" name="phone" placeholder="Phone" class="app-confirm" id="phone" style="width:48%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 text-center  pr-4 pl-1 pb-2">
+                        <p class="mb-0 pb-0 text-center" style="font-size:12px;">Pinnacle Dermatology Center</p>
+                        <p style="font-size:11px;color:rgb(129, 123, 123);text-align:center;padding:0;">
+                            2003 Maple Drive, Flint,
+                            MI 48507
+                        </p>
+                        <div class="d-flex flex-column justify-content-end align-items-end">
+                            <div class="text-right full-width d-flex flex-row justify-content-between  marginTop">
+                                <input type="text" id="appTime" name="appTime" placeholder="App. Time" class="app-confirm" style="width:50%" readonly>
+                                <input type="text" id="appDate" name="appDate" placeholder="App. Date" class="app-confirm" style="width:48%;" readonly>
+                            </div>
+                            <input type="text" name="location" placeholder="Location"
+                                   style="width:100%;margin-top:4px;" class="app-confirm">
+                            <input type="hidden" id="slotId" />
+                            <button class="btn btn-info text-right" style="background:rgb(49, 209, 49);margin-top: 105px;" onclick="ConfirmTimeSlot()">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $jq(function () {
+        $jq("#searchBoxZipcode").autocomplete({
+            source: function (request, response) {
+                $jq.ajax({
+                    url: '/GetZipCityStateList/' + request.term,
+                    method: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (JSON.stringify(data.length) > 0) {
+                            response(data);
+                        } else {
+                            response(["Data not found"]);
+                        }
+                    },
+                    error: function (result) {
+                        //alert('Error');
+                        console.log(result);
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                if (ui.item.value.trim() !== "Data not found") {
+                    //alert(ui.item.value);
+                    $jq("#searchBoxZipcode").val(ui.item.value);
+                }
+                else {
+                    ui.item.value = '';
+                    $jq("#searchBoxZipcode").empty();
+                }
+                return false;
+                //console.log("Selected value: " + ui.item.value );
+            }
+        });
+        $jq("#txtSpecialties").autocomplete({
+            source: function (request, response) {
+                var redirectUrl = '@Url.Action("GetAllSpecialization", "Home")';
+                $jq.ajax({
+                    url: redirectUrl,
+                    type: "POST",
+                    cache: false,
+                    data: { 'specialization': encodeURI(request.term) },
+                    success: function (result) {
+                        if (JSON.stringify(result.length) > 0) {
+                            response(result);
+                        } else {
+                            response(["Data not found"]);
+                        }
+                    },
+                    error: function (result) {
+                        //alert('Error');
+                        console.log(result);
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                if (ui.item.value.trim() !== "Data not found") {
+                    //alert(ui.item.value);
+                    $jq("#txtSpecialties").val(ui.item.value);
+                }
+                else {
+                    ui.item.value = '';
+                    $jq("#txtSpecialties").empty();
+                }
+                //console.log("Selected value: " + ui.item.value );
+            }
+        });
+    });
+    var arrLocation = ["", "", ""];
+        function LoadAds() {
+            if ($("#searchBoxZipcode").val() && $("#searchBoxZipcode").val().split(',').length >= 3) {
+                        arrLocation = $("#searchBoxZipcode").val().split(',');
+                    }
+            $.ajax({
+                url: '@Url.Action("AdsView", "Search" )?AddsPerPage=7&AddTypeId=1&OrgTypeId=0&UserTypeIds=2&City=' + arrLocation[0] + '&Zipcode=' + arrLocation[2],
+                    type: 'GET',
+                    cache: false,
+                    data: { }
+            }).done(function (result) {
+
+                $("#dvAdSlider").append(result);
+            });
+        }
+</script>
+<!--// Blog Page Area -->
+@section scripts {
+    <script src="~/Scripts/admin/js/moment.js"></script>
+    <script src="~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    @*<script src="~/Scripts/custom/gmap.js"></script>*@
+    <script src="~/Scripts/custom/GoogleMapsFunctions.js"></script>
+    <script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript">
+        //$('.ui-autocomplete-input').css('width', '50px')
+        var state = '@Model.Location.State';
+        var zipcode = '@Model.Location.ZipCode';
+        var city = '@Model.Location.City';
+        //$("#userLocation").text(city + ", " + state + ", " + zipcode);
+        $("#searchBoxZipcode").text(city + ", " + state + ", " + zipcode);
+        blockPage();
+        var IsAllowNewPatient;
+        var IsNtPcp;
+        var IsPrimaryCare;
+        var pageIndex = 0;
+        var totalPageSize = 1;
+        var sortingTypevalue = "";
+        var model;
+        UpdateSearchModel();
+        var pageNum = 1;
+        var isMapInitialize = false;
+        var isListLoaded = true;
+
+        var methodResponse = { Status: 0, Message: "", Data: null };
+        var timeSlotRequestObject = {
+            "DoctorId": 0,
+            "PageSize": 3,
+            "PageNumber": 1
+        };
+        var BasicSearch = {
+            "SearchName": "",
+            "SearchLocation": ""
+        };
+        var clone_timeSlotRequestObject = timeSlotRequestObject;
+        var startDate = new Date();
+        var patId = 0;
+        $('#dob').datepicker({
+            format: 'dd-MM-yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: true,
+        }).on('changeDate', function (selected) {
+            startDate = new Date(selected.date.valueOf());
+            startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+            });
+
+        $(document).ready(function () {
+            isListView(true);
+            var searchBoxwithQuery = getUrlFields(location.href, 5);
+            var searchBox = ""; //searchBoxwithQuery.slice(0, searchBoxwithQuery.indexOf('?'));
+            var urlParams = new URLSearchParams(window.location.search);
+            //console.log(urlParams.has('skey'));
+            var searchKey = urlParams.get('skey');
+            var searchlocation = "";
+            var searchlocation = urlParams.get('slocation');
+            var selectedSpecialities = "";
+            //alert(searchKey.split('$')[0]);
+            selectedSpecialities = searchKey;
+            //searchKey = searchKey.split('&')[1];
+            if (searchlocation === "" || searchlocation == null)
+            {
+                searchlocation = '@Model.Location.City' + ', ' + '@Model.Location.State' + ', ' +'@Model.Location.ZipCode' ;
+            }
+            else
+            {
+                searchlocation = searchlocation.replaceAll('|', ', ');
+            }
+            //alert(urlParams.has('skey'));
+            //alert(searchKey);
+            searchBox = searchBox === undefined ? "" : decodeURIComponent(searchBox);
+            if (searchBox.indexOf("_") != -1) {
+                var Specialties = searchBox.substring(searchBox.indexOf("_") + 1);
+                //$("#Specialties option").each(function () {
+                //    if ($.trim($(this).text().replace(/\s/g, '').replace("/", "")) == $.trim(Specialties)) {
+                //        $(this).attr('selected', 'selected');
+                //    }
+                //});  //Specialties
+            } else {
+                $("#freeSearchBox").val(searchBox);
+                $("#searchBoxZipcode").val(searchlocation);
+                $("#txtSpecialties").val(selectedSpecialities);
+
+            }
+            //if ((searchKey !== "") && ((searchKey != "") && (searchKey.length > 4))) {
+            //    var arr = searchKey.replaceAll(", ", "|").split("|");
+            //    if ((arr.length == 3)) {
+            //        $("#btnSearch").removeAttr("disabled").css("cursor", "");
+            //    }
+
+            //} else {
+            //    $("#btnSearch").attr("disabled", "disabled").css("cursor", "not-allowed");
+            //}
+
+            refreshFilterButton();
+            getCurrentLatLong();
+            GetStateCity(1);
+
+            $("#btnSearch").click(function (e) {
+                var searchText = $("#freeSearchBox").val();
+                var searchLocaion = $("#searchBoxZipcode").val();
+                if (searchLocaion == "")
+                {
+                    $("#searchBoxZipcode").focus();
+                    return false;
+                }
+                var arr = searchLocaion.replaceAll(", ","|").split("|");
+                //alert('arr.length ' + arr.length);
+                if ((searchLocaion == "") && (arr.length < 3) && (arr.length > 3))
+                {
+                    //alert(searchKey.length);
+                    $("#searchBoxZipcode").val('');
+                    $("#searchBoxZipcode").focus();
+                    return false;
+                }
+
+                    model = UpdateSearchModel();
+                    loadResultArea(model);
+                RequestSearchFilterApply(model);
+                LoadAds();
+            });
+
+            //$('#DistanceType').change(function (e) {
+            //    //alert(this.value);
+            //    model = UpdateSearchModel();
+            //    loadResultArea(model);
+            //});
+
+            //$("#freeSearchBox").change(function (e) {
+            //    if ($(this).val())
+            //        $("#btnSearch").removeAttr("disabled").css("cursor", "pointer");
+            //    else
+            //        $("#btnSearch").attr("disabled", "disabled").css("cursor", "not-allowed");
+            //});
+            LoadAds();
+        });
+        $(document).on("change", ":checkbox", function (e) {
+            var flag = $(e.currentTarget).parents('.single-widget').data('block');
+            var control = $(e.currentTarget).parents().find(".single-widget[data-block='" + flag + "']");
+            //var total = $(control).find(':checkbox');
+            var chkTotal = $(control).find(':checkbox:checked');
+            if (chkTotal.length !== 0) {
+                $(control).find('.ClearAll').show();
+            } else {
+                $(control).find('.ClearAll').hide();
+            }
+
+            model = UpdateSearchModel();
+            loadResultArea(model);
+        });
+        $(document).on("change", ".otherControl", function (e) {
+           // alert('.otherControl-change');
+            model = UpdateSearchModel();
+            loadResultArea(model);
+            //var flag = $(e.currentTarget).parents('.single-widget').data('block');
+            //var control = $(e.currentTarget).parents().find(".single-widget[data-block='" + flag + "']");
+            //var selected = 0;
+            //if (flag === "Distance") {
+            //    if ($(e.currentTarget).is("input")) {
+            //        var searchBox = $("#searchBox").val();
+            //        if (searchBox === "" || selected === null || selected === undefined) {
+            //            selected = "";
+            //            $(control).find('.ClearAll').hide();
+            //        } else {
+            //            $(control).find('.ClearAll').show();
+            //        }
+            //    }
+            //}
+            //selected = $(control).find('.list > .selected').data('value');
+            //if (selected === "" || selected === null || selected === undefined) {
+            //    selected = 0;
+            //    $(control).find('.ClearAll').hide();
+            //} else {
+            //    $(control).find('.ClearAll').show();
+            //}
+        });
+        $(document).on("click", ".ClearAll, .clearFilter", function (e) {
+
+            // Reset all search controls
+            $('input:checkbox').prop("checked", false);
+           // $('input:text').val('');
+            $("#freeSearchBox").val('');
+            $("#txtSpecialties").val('');
+            $('select').prop('selectedIndex', 0);
+            //resetTheMap();
+
+            //if ($(e.currentTarget).hasClass('clearFilter')) {
+
+            //} else {
+
+            //    var flag = $(e.currentTarget).parents('.single-widget').data('block');
+            //    var control = $(e.currentTarget).parents().find(".single-widget[data-block='" + flag + "']");
+            //    //if (flag === "Distance" || flag === "Specialties" || flag === "Language") {
+            //    //    var input = $(control).find("input");
+            //    //    $(input).val("");
+            //    //    var select = $(control).find("select");
+            //    //    $(select).val("");
+            //    //} else {
+            //    //    var chkTotal = $(control).find('input[type=checkbox]:checked');
+            //    //    $.each(chkTotal, function (key, item) {
+            //    //        item.checked = false;
+            //    //    });
+            //    //}
+            //    var chkTotal = $(control).find('input[type=checkbox]:checked');
+            //    $.each(chkTotal, function (key, item) {
+            //        item.checked = false;
+            //    });
+            //    //$(e.currentTarget).hide();
+            //}
+            var searchText = $("#freeSearchBox").val();
+            var searchLocaion = $("#searchBoxZipcode").val();
+            if (searchLocaion == "") {
+                $("#searchBoxZipcode").focus();
+                return false;
+            }
+            var arr = searchLocaion.replaceAll(", ", "|").split("|");
+            //alert('arr.length ' + arr.length);
+            if ((searchLocaion == "") && (arr.length < 3) && (arr.length > 3)) {
+                //alert(searchKey.length);
+                $("#searchBoxZipcode").val('');
+                $("#searchBoxZipcode").focus();
+                return false;
+            }
+            model = UpdateSearchModel();
+            RequestSearchFilterApply(searchText, searchLocaion);
+            loadResultArea(model);
+
+        });
+        $(document).on("click", ".sorting", function (e) {
+            sortingTypevalue = $(e.currentTarget).data("item");
+            model = UpdateSearchModel();
+            loadResultArea(model);
+        });
+        $(document).on("click", ".action", function (e) {
+            window.location.href = '/Profile/Doctor/' + $(this).data("npi");;
+            //var flag = $(e.currentTarget).data("flag");
+            //var id = $(e.currentTarget).parents(".doctorElement").data("doctorid");
+            //switch (flag) {
+            //    case "AllowNewPatient":
+            //        //AllowNewPatient(id);
+            //        break;
+            //    case "RequestAppointment":
+            //        RequestAppointment(id, true);
+            //    default:
+            //}
+        });
+
+        function refreshFilterButton(This) {
+            if (This && $(This).val() == "map") {
+
+                isListView(false);
+                if (!isMapInitialize) {
+                    // Intialize the map
+                    initializeMap("googleMapTop");
+                    isMapInitialize = true;
+                }
+
+                refreshMapResults();
+            } else {
+                isListView(true);
+                //alert('refreshFilterButton');
+                model = UpdateSearchModel();
+                loadResultArea(model);
+            }
+        }
+
+        function isListView(flag) {
+            if (flag) {
+                $("#ResultArea").css("display", "block");
+                $("#googleMapTop").css("display", "none");
+                isListLoaded = true;
+            } else {
+                $("#googleMapTop").css("display", "block");
+                $("#ResultArea").css("display", "none");
+                isListLoaded = false;
+            }
+        }
+
+        function getTotalRecords() {
+            var totalRecords = $("#ResultArea").find("#CountOfTotaalrecord").val();
+            if (parseInt(totalRecords) > 0)
+                return parseInt(totalRecords);
+            else
+                return 0;
+        }
+
+        function refreshMapResults() {
+            //alert('refreshMapResults');
+            loadMapResults($("#ResultArea"));
+        }
+
+        function loadResultArea(searchModel) {
+            //alert('loadResultArea(search)');
+            $.post("/_Search", searchModel, function (response) {
+                // check the div of result which comes from _Search, if it exists we need to remove it to display the new result
+                $("#ResultArea").html(response);
+                if (getTotalRecords() > 0)
+                    $("#countdoctor").text(getTotalRecords() + " providers found");
+                else
+                    $("#countdoctor").text("No Records Found");
+
+                $(".map-toggle-button").css("display", "block");
+
+                if (!isListLoaded) {
+                    //alert('!isListLoaded');
+                    refreshMapResults();
+                }
+                $("html").scrollTop(20);
+
+                //$('#displayCountOfNtPcp').html($('#CountOfNtPcp').val());
+                //$('#displayCountOfAllowPatients').html($('#CountOfAllowNewPatients').val());
+                //$('#displayCountOfPrimaryCare').html($('#CountOfPrimaryCare').val());
+            }).fail(function () {
+                $("#ResultArea").html('No Results Found!');
+                console.log("Unable to fetch search results");
+            });
+        }
+
+        function loadMapResults(resultArea) {
+            var sectionDiv = $(resultArea).find("div.section_bottom");
+            clearMarkers();
+            //alert('loadMapResults');
+            sectionDiv.each(function (index, data) {
+                var This = $(this).find('.doctorElement');
+                var referenceId = $(This).data("doctorid");
+                var mapModel = {
+                    isAcceptButton: (true && $(This).data("isallownewpatient") == 1),
+                    referenceId: referenceId,
+                    name: $(This).data("fullname"),
+                    fullAddress: $(This).data("fulladdress"),
+                    latitude: $(This).data("latitude"),
+                    longitude: $(This).data("longitude"),
+                    reviewCount: $(This).data("reviewcount"),
+                    rating: $(This).data("rating"),
+                    profileImage: $(This).find(".profile > a > img").attr("src"),
+                    //profileUrl: "/Profile/Doctor/" + $(This).data("fullname").split(' ').join('').split('&').join('') + "-" + $(This).data("npi"),
+                    profileUrl: "/Profile/Doctor/" + $(This).data("fullname").split(" ").join("-") + "-" + $(This).data("npi"),
+                    reviewHtml: $(This).find(".star-section").html()
+                };
+
+                setMarkerByAddress(mapModel);
+            });
+
+            // Intialize the map
+            //initializeMap("googleMapTop");
+            //$.post("/MapSearch", { searchText: searchTextValue }, function (response) {
+            //    if (response && response.result.length > 0) {
+            //        //display result places on the map (they have Address1, Address2, City, State, Country, or ZipCode)
+            //        var doctorsSearchRequests = buildMapSearchRequest(response.result);
+
+            //        for (var i = 0; i < doctorsSearchRequests.SearchAddressRequests.length; i++) {
+            //            searchPlace_AddMarker(doctorsSearchRequests.SearchAddressRequests[i].requestInfo, doctorsSearchRequests.SearchAddressRequests[i].doctorInfo);
+            //        }
+            //        for (var i = 0; i < doctorsSearchRequests.SearchZipCodeRequests.length; i++) {
+            //            searchZipCode_AddMarker(doctorsSearchRequests.SearchZipCodeRequests[i].requestInfo, doctorsSearchRequests.SearchZipCodeRequests[i].doctorInfo);
+            //        }
+            //    }
+            //});
+        }
+
+        //function resetTheMap() {
+        //    // Intialize the map
+        //    initializeMap("googleMapTop");
+        //}
+
+        // Build array of reuests objects will be sent to google places service for search and add markers
+        function buildMapSearchRequest(doctorsResult) {
+            var searchRequestsObj = {};
+            var searchAddressRequests = [];
+            var searchZipCodeRequests = [];
+            if (doctorsResult && doctorsResult.length > 0) {
+                $.each(doctorsResult, function (index, item) {
+                    var queryInfo = '';
+                    // Check to separate ZipCode from the other address data, because if it's not valid will cause no result found
+                    // So we use it ONLY in case of no addres info
+                    if ((item.address1 || item.address2 || item.City || item.State || item.Country) && !item.ZipCode) {
+                        queryInfo = (item.Address1 ? item.Address1 + ',' : '') + (item.Address2 ? item.Address2 + ',' : '') + (item.City ? item.City + ',' : '') + (item.State ? item.State + ',' : '') + (item.Country ? item.Country + ',' : '');
+                        searchAddressRequests.push({
+                            requestInfo: {
+                                query: queryInfo,
+                                fields: ['name', 'geometry'],
+                            },
+                            doctorInfo: {
+                                fullName: item.FullName,
+                                phoneNumber: item.PhoneNumber
+                            }
+                        });
+                    } else if (item.ZipCode) {
+                        queryInfo = item.ZipCode;
+                        searchZipCodeRequests.push({
+                            requestInfo: {
+                                componentRestrictions: { postalCode: queryInfo },
+                            },
+                            doctorInfo: {
+                                fullName: item.FullName,
+                                phoneNumber: item.PhoneNumber
+                            }
+                        });
+                    }
+                });
+            }
+            searchRequestsObj = {
+                SearchAddressRequests: searchAddressRequests,
+                SearchZipCodeRequests: searchZipCodeRequests
+            };
+            return searchRequestsObj;
+        }
+
+        function UpdateSearchModel() {
+            //alert('UpdateSearchModel');
+            var searchBox = $("#freeSearchBox").val();
+            var searchLocation = $("#searchBoxZipcode").val();
+            var searchSpecialties = $("#txtSpecialties").val();
+
+            searchLocation = searchLocation.replaceAll(", ", "|");
+            //alert('1-test-' + searchLocation);
+            var distanceModel = {};
+            if (myLocation) {
+                distanceModel = {
+                    //DistanceType: $("#DistanceType option:selected").val(),
+                    Latitude: myLocation.lat,
+                    Longitude: myLocation.lng
+                }
+            } else {
+                distanceModel = {
+                    //DistanceType: $("#DistanceType option:selected").val(),
+                }
+            }
+            var urlParams = new URLSearchParams(window.location.search);
+            var skey="";
+            if (urlParams.has('skey'))
+            {
+                skey = urlParams.get('skey');
+            }
+            //alert(urlParams.get('skey'));
+            return {
+                Search: searchBox,
+                Distance: distanceModel,
+                Specialties: Specialties(),
+                Specialization:searchSpecialties,
+                ANP: $("#IsAllowNewPatient").is(":checked"),
+                NTPA: $("#IsNtPcp").is(":checked"),
+                PrimaryCare: $("#IsPrimaryCare").is(":checked"),
+                Specialties: Specialties(),
+                Affiliations: Affiliations(),
+                Insurance: Insurance(),
+                //AGS: {
+                //    Female: $("#IsFemale").is(":checked"),
+                //    Male: $("#IsMale").is(":checked")
+                //},
+                AGS: Gender(),
+                AgeGroup: AgeGroup(),
+                Language: Languages(),
+                Sorting: (sortingTypevalue == "") ? "" : sortingTypevalue,
+                PageIndex: pageIndex,
+                PageSize: 10,
+                locationSearch: searchLocation
+            };
+        }
+
+        function sortingType(sortingType) {
+            var selected = "";
+            if (sortingType === "" || sortingType === null || sortingType === undefined) {
+                sortingType = "";
+            }
+            else {
+                if (sortingType = "Z-A") {
+                    selected = "desc"
+                }
+                else {
+                    selected = "asc"
+                }
+            }
+        }
+        function Specialties() {
+            //var selected = $(".single-widget[data-block='Specialties']").find('select').val();
+            //if (selected === "" || selected === null || selected === undefined) {
+            //    selected = 0;   searchBox = $("#txtSpecialties").val();
+            //}
+
+            return $("#txtSpecialties").val().trim();
+        }
+        function Languages() {
+            var selected = $(".single-widget[data-block='Language']").find('select').val();
+            if (selected === "" || selected === null || selected === undefined) {
+                selected = 0;
+            }
+            return selected;
+        }
+        function Affiliations() {
+            var selected = [];
+            $.each($(".single-widget[data-block='Affiliations']").find(':checkbox:checked'), function (key, item) {
+                selected.push(parseInt($(item).data('affiliationid')));
+            });
+            return selected;
+        }
+        function Insurance() {
+
+            var selected = [];
+            $.each($(".single-widget[data-block='Insurance']").find(':checkbox:checked'), function (key, item) {
+
+                selected.push(parseInt($(item).data('insuranceid')));
+            });
+            return selected;
+        }
+
+        function AgeGroup() {
+
+            var selected = [];
+            $.each($(".single-widget[data-block='AGSFull']").find(':checkbox:checked'), function (key, item) {
+                selected.push(parseInt($(item).data('agegroupid')));
+            });
+            return selected;
+        }
+
+        function Gender() {
+
+            var selected = [];
+            $.each($(".single-widget[data-block='AGS']").find(':checkbox:checked'), function (key, item) {
+                selected.push(parseInt($(item).data('genderid')));
+            });
+            return selected;
+        }
+
+        function AllowNewPatient(id) {
+            $("#modalContent").load("/_RequestAppointment/" + id, function () {
+                $("#divModal .modal-dialog").addClass("modal-lg");
+                $("#divModal").modal('show');
+            });
+        }
+
+        //Need to implement
+        function getSlot(action) {
+            console.log(totalPageSize);
+            console.log(timeSlotRequestObject.PageNumber);
+
+            if (action.id == "next") {
+                if (totalPageSize > timeSlotRequestObject.PageNumber) {
+                    timeSlotRequestObject.PageNumber = timeSlotRequestObject.PageNumber + 1;
+                }
+                else { return false; }
+            }
+            else {
+                if (timeSlotRequestObject.PageNumber > 1) {
+                    timeSlotRequestObject.PageNumber = timeSlotRequestObject.PageNumber - 1;
+                }
+                else {
+                    return false;
+                }
+            }
+            RequestAppointment(timeSlotRequestObject.DoctorId, false);
+
+        }
+        function RequestAppointment(id, IsNewDoc) {
+            if (IsNewDoc) {
+                timeSlotRequestObject.PageNumber = 1;
+            }
+
+            timeSlotRequestObject.DoctorId = id;
+            //timeSlotRequestObject.DoctorId = 17; //For Testing
+
+            $.ajax({
+                url: "/GetTimeShlots/",
+                type: "POST",
+                data: timeSlotRequestObject,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data && response.Data.DateSlotModel) {
+                        if (response.Data.DateSlotModel.length > 0) {
+                            totalPageSize = response.Data.Total;
+                            createAppointmentTable(response.Data.DateSlotModel);
+                            $("#appointment").modal('show');
+                        } else {
+                            methodResponse.Status = 1;
+                            methodResponse.Message = "Slot(s) not available."
+                            HandleResponse(methodResponse);
+                        }
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+
+        }
+        function RequestSearchFilterApply(model) {
+            //alert('RequestSearchFilterApply');
+
+            //timeSlotRequestObject.DoctorId = 17; //For Testing
+
+            $.ajax({
+                url: "/GetDoctorSearchFilter/",
+                type: "POST",
+                data: model,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        {
+                            var countAcp = response.Data.AcceptingNewPatients;
+                            var countPcp = response.Data.NearTermPcpAvailability;
+                            var countPrimaryCare = response.Data.NearTermPcpAvailability;
+                            var countMale ="("+ response.Data.Male+")";
+                            var countFemale = "(" + response.Data.Female+")";
+                            $("#displayCountOfAllowPatients").text(countAcp);
+                            $("#displayCountOfNtPcp").text(countPcp);
+                            $("#displayCountOfPrimaryCare").text(countPrimaryCare);
+                            $("#GenderSpan1").text(countMale);
+                            $("#GenderSpan2").text(countFemale);
+                            if (response.Data.Insurance != null)
+                            {
+                                $.each(response.Data.Insurance, function (key, value) {
+                                    var InsuranceCount = "(" + this.Count + ")";
+                                    var controlId = "InsuranceSpan_" + this.Id;
+                                    if (!$('#' + controlId).length == 0) {
+                                        $('#' + controlId).text(InsuranceCount);
+                                    }
+                                });
+                            }
+
+                        }
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+
+        }
+        function createAppointmentTable(json) {
+            var timeSlotCount = 0;
+            var columnCount = 0;
+            var index = 0;
+            $('#tbodyrow').empty();
+            $('#theadRow').empty();
+
+            $.each(json, function (index, value) {
+                if (timeSlotCount < value.TimeSlots.length) {
+                    timeSlotCount = value.TimeSlots.length;
+                }
+                $('#theadRow').append('<th class="p-2 days">' + value.DayOfWeek + '<p class="small-font m-0">' + value.Date + '</p></th>');
+
+                columnCount = json.length;
+            });
+            for (index; index < timeSlotCount; index++) {
+                let content = '';
+                switch (columnCount) {
+                    case 1:
+                        content = '<tr><td id=0' + index + ' class="p-1 tableBody-tab">/tr>';
+                        break;
+                    case 2:
+                        content = '<tr><td id=0' + index + ' class="p-1 tableBody-tab"></td><td id=1' + index + ' class="p-1 tableBody-tab"></td></tr>';
+                        break;
+                    case 3:
+                        content = '<tr><td id=0' + index + ' class="p-1 tableBody-tab"></td><td id=1' + index + ' class="p-1 tableBody-tab"></td><td id=2' + index + ' class="p-1 tableBody-tab"></td></tr>';
+                        break;
+                    default:
+                    // code block
+                }
+
+                $('#tbodyrow').append(content);
+            }
+
+            $.each(json, function (indexT, valueT) {
+                $.each(valueT.TimeSlots, function (index, value) {
+                    $("#" + indexT + index).attr("hidden", false)
+                    if (!value.IsBook) {
+                        $("#" + indexT + index).html('<div id=' + value.Id + ' onclick="GetTimeSlotBySlotId(' + value.Id + ')"  class="tableBody-div">' + value.Time + '</div>');
+                    }
+                    else {
+                        $("#" + indexT + index).html('<div id=' + value.Id + '  class="disable-booked">' + value.Time + '</div>');
+                    }
+                });
+            });
+
+        }
+
+        function GetTimeSlotBySlotId(Id, date, time) {
+            $("#slotId").val(Id);
+            $.ajax({
+                url: "/GetTimeSlotBySlotId/" + Id,
+                type: "GET",
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        patId = response.Data.Id;
+                        $("#appDate").val(response.Data.SlotDate);
+                        $("#appTime").val(response.Data.SlotTime);
+                        $("#dob").val(response.Data.DateOfBirth);
+                        $("#firstName").val(response.Data.FirstName);
+                        $("#lastName").val(response.Data.LastName);
+                        $("#email").val(response.Data.Email);
+                        $("#phone").val(response.Data.PhoneNumber);
+                        $("#zip").val(response.Data.ZipCode);
+                        $("#address").val(response.Data.Address);
+                        $.each(response.Data.States, function (index, value) {
+                            $("#state").append('<option value=' + value.Value + '>' + value.Text + '</option>');
+                        });
+
+                        $("#state").val(response.Data.StateId);
+                        $("#city").val(response.Data.CityId).change();
+                        $("#appointment").modal('hide');
+                        $("#appModal").modal('show');
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function userObject() {
+            var userRequest = {
+                "DateOfBirth": $("#dob").val(),
+                "FirstName": $("#firstName").val(),
+                "LastName": $("#lastName").val(),
+                "Email": $("#email").val(),
+                "PhoneNumber": $("#phone").val(),
+                "CityId": $("#city").val(),
+                "StateId": $("#state").val(),
+                "Zipcode": $("#zip").val(),
+                "Address": $("#address").val(),
+            }
+
+            return userRequest;
+        }
+
+        function ConfirmTimeSlot() {
+            if (patId) {
+                BookTimeSlotAfterUserSave(patId);
+            }
+            else {
+                $.ajax({
+                    url: "/SaveApplicationUser/",
+                    type: "POST",
+                    data: userObject(),
+                    cache: false,
+                    success: function (response) {
+                        if (response.Status == 200 && response.Data && response.Data) {
+                            methodResponse.Message = response.Message;
+                            methodResponse.Status = 1;
+                            BookTimeSlotAfterUserSave(response.Data);
+                        }
+                        if (response.Status == 0) {
+                            methodResponse.Message = response.Message;
+                            methodResponse.Status = 0;
+                            HandleResponse(methodResponse);
+                        }
+                    },
+                    error: function (data) {
+                        unblockPage();
+                        HandleResponse(data);
+                    }
+                });
+            }
+        }
+
+        function BookTimeSlotAfterUserSave(PatientUserId) {
+            var slotBook = {
+                "DoctorId": 0,
+                "SlotId": parseInt($("#slotId").val()),
+                "PatientUserId": PatientUserId
+            };
+
+            $.ajax({
+                url: "/BookTimeSlot/",
+                type: "POST",
+                data: slotBook,
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200) {
+                        methodResponse.Message = response.Message;
+                        methodResponse.Status = 1;
+                        $("#appModal").modal('hide');
+                        HandleResponse(methodResponse);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+        $("#state").change(function () {
+            var stateId = $("#state").val();
+            $("#city").empty();
+            GetStateCity(stateId);
+        });
+        function GetStateCity(stateId) {
+            $.ajax({
+                url: "/GetStateCity/" + stateId,
+                type: "GET",
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200) {
+                        $.each(response.Data, function (index, value) {
+                            $("#city").append('<option value=' + value.Value + '>' + value.Text + '</option>');
+                        });
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function IsClearFilterShow() {
+            var flag = false;
+            if ($("#freeSearchBox").val() !== "")
+                flag = true;
+            var search = $("#searchBox").val();
+            //if (search !== "" && $("#DistanceType option:selected").val() !== "")
+            if (search !== "")
+                flag = true;
+            var allClearAll = $(".ClearAll").length;
+            var visibleClearAll = $(".ClearAll:visible").length
+            if (allClearAll === 7 && visibleClearAll !== 0)
+                flag = true;
+            if (Specialties() !== 0)
+                flag = true;
+            if (Languages() !== 0)
+                flag = true;
+            return flag;
+        }
+
+        function initializePageSizeDropDown() {
+            $("#PageSelection").on("change", function () {
+                var pageSize = $(this).val();
+                model = UpdateSearchModel();
+                model.PageSize = pageSize == undefined ? 20 : pageSize;
+                loadResultArea(model);
+            });
+        }
+
+    </script>
+    <script>
+
+    </script>
+
+
+}

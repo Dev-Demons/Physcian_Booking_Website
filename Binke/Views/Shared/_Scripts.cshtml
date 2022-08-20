@@ -1,0 +1,38 @@
+﻿@Scripts.Render("~/bundles/jquery")
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.jquery.min.js"></script>
+
+@Scripts.Render("~/scripts/smartadmin")
+@Scripts.Render("~/scripts/datatables")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/custom/app.admin.js"></script>
+<script src="~/Scripts/custom/dialogs.js"></script>
+<script src="~/Scripts/custom/toastr.min.js"></script>
+<script src="~/Scripts/custom/jquery.blockUI.min.js"></script>
+<script src="~/Scripts/custom/app.client.js"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        defaultSelect2();
+        datatableDefaultSettings();
+        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+    });
+    $(document).ajaxStart(function (e) {
+        blockPage();
+    });
+
+    $(document).ajaxStop(function () {
+        unblockPage();
+        $('.dataTables_filter input').unbind();
+    });
+    $(document).on("click", ".action", function () {
+        $('[data-toggle="tooltip"]').tooltip("hide");
+    });
+</script>
+@if (@Model is HelperResult)
+{
+    @Model
+}

@@ -1,0 +1,48 @@
+﻿@model Binke.ViewModels.RequestAppointmentViewModel
+
+<div class="appointment-box pg-appointment-box">
+    @using (Html.BeginForm("AddEditRequestAppointmentScreen2", "Search", FormMethod.Post, new { id = "ReqAppS2", @class = "appointment-form mt-3", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.GroupTypeId)
+        <p class="form-message">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </p>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-4 single-input">
+                <label for="FirstName">First Name(*)</label>
+                @Html.TextBoxFor(m => m.FirstName)
+                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-lg-4 col-md-4 single-input">
+                <label for="MiddleName">Middle Name (*)</label>
+                @Html.TextBoxFor(m => m.MiddleName)
+                @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-lg-4 col-md-4 single-input">
+                <label for="LastName">Last Name(*)</label>
+                @Html.TextBoxFor(m => m.LastName)
+                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-lg-4 col-md-4 single-input">
+                <label for="Email">Email (*)</label>
+                @Html.TextBoxFor(m => m.Email)
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-lg-4 col-md-4 single-input">
+                <label for="Password">Password (*)</label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-lg-4 col-md-4 single-input">
+                <label for="ConfirmPassword">Confirm Password (*)</label>
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Enter ConfirmPassword" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!--// Appointment Form -->
+    }
+</div>
+

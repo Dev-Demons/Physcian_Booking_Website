@@ -1,0 +1,256 @@
+﻿
+@{
+    ViewBag.Title = "DrugQuantity";
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "DrugQuantity";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Drug Quantity </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/DrugQuantity/"> Drug Quantity </a></li>
+            <li class="active"> Drug Quantity Directory </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="IsActiveDrugQuantity(true)">
+                    <a data-toggle="tab" href="#activeDrugQuantity"> Active DrugQuantity</a>
+                </li>
+                @*<li onclick="IsActiveDrugQuantity(false)">
+                        <a data-toggle="tab" href="#deActivetDrugQuantity">Deactive DrugQuantity</a>
+                    </li>*@
+                <li class="pull-right">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddDrugQuantity">Add Drug Quantity</button>
+                    @*<a id="AddDrugQuantity" href="javascript:;"> <i class="fa fa-edit"></i>Add DrugQuantity</a>*@
+                </li>
+            </ul>
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="activeDrugQuantity" class="tab-pane fade active in">
+                    <table id="dtActiveDrugQuantity" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Drug Quantity(s)</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="deActivetDrugQuantity" class="tab-pane fade">
+                    <table id="dtDeActivetDrugQuantity" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Drug Quantity(s)</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="modalTitle" class="modal-title">Edit Drug Quantity</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label id="labelName" class="control-label"><b>Drug Quantity(s)</b></label>
+                        <div class="form-group">
+                            <input class="form-control" id="DrugQuantity" name="Name" placeholder="Enter Drug Quantity" type="text">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                            <input type="hidden" id="hiddenId" value="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="saveDrugQuantity" onclick="updateData()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        var addLabel = "Add Drug Quantity";
+        var editLabel = "Edit Drug Quantity";
+        var flag = true;
+        var deactiveTable = "dtDeActivetDrugQuantity";
+        var tableId = "dtActiveDrugQuantity";
+        var toolTip = "DeActivate";
+        var atoolTip = "Activate";
+        var isAdd = false;
+        var currentable = ''
+        var request = {
+            "DrugQuantityId": 0,
+            "Quantity": "",
+            "IsActive": true
+        }
+
+        $(function () {
+            bindTable(flag);
+        });
+
+        function IsActiveDrugQuantity(value) {
+            flag = value;
+            if (!value) {
+                tableId = deactiveTable;
+            }
+            toolTip = value ? toolTip : atoolTip;
+            bindTable(flag);
+        }
+
+        function bindTable(flag) {
+            if ($.fn.DataTable.isDataTable("#" + tableId)) {
+                $('#' + tableId).DataTable().destroy();
+            }
+            currentable = $('#' + tableId)
+                .DataTable({
+                    "sAjaxSource": "/Drug/GetDrugQuantity?isActive=" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "Quantity",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugQuantityId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) { return '---' };
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) { return '---' };
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "DrugQuantityId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a onclick="action(' + row.DrugQuantityId + ')" data-toggle="tooltip" data-original-title="Edit" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a onclick="actionOnDB(' + row.DrugQuantityId + ')" href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-close"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function action(actionId) {
+            isAdd = false;
+            var fullName = $("#" + actionId).text();
+            createModal(editLabel, fullName);
+            $("#hiddenId").val(actionId);
+            $("#myModal").modal('show');
+        };
+
+        function actionOnDB(actionId) {
+            request.DrugQuantityId = parseInt(actionId);
+            request.IsActive = false;
+            AddOrUpdateDrugQuantity();
+        }
+
+        function updateData() {
+            var currentCellId = $("#hiddenId").val();
+            $("#" + currentCellId).text($("#DrugQuantity").val());
+            if (isAdd) {
+                request.DrugQuantityId = 0;
+                request.IsActive = true;
+            } else {
+                request.IsActive = true;
+                request.DrugQuantityId = currentCellId;
+            }
+            request.Quantity = $("#DrugQuantity").val();
+            AddOrUpdateDrugQuantity();
+        }
+
+        function createModal(Title, textValue) {
+            $("#modalTitle").val(Title);
+            $("#DrugQuantity").val(textValue);
+        }
+
+        $("#AddDrugQuantity").click(function () {
+            isAdd = true;
+            $("#hiddenId").val(0);
+            createModal(addLabel, '');
+            $("#myModal").modal('show');
+        });
+
+        function AddOrUpdateDrugQuantity() {
+            $.ajax({
+                url: "/Drug/AddOrUpdateDrugQuantity",
+                type: "POST",
+                data: request,
+                cache: false,
+                success: function (response) {
+                    if (response && response.Status == 200) {
+                        bindTable(flag);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+    </script>
+}

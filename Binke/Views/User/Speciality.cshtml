@@ -1,0 +1,267 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Doctor";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Speciality </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Doctor/"> User </a></li>
+            <li class="active"> Speciality </li>
+        </ol>
+    </div>
+}
+<style>
+    #dtSpeciality_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtSpeciality_length {
+        float: left;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            @*<ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#activeDoctor"> Active Doctor</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#deActivetDoctor">Deactive Doctor</a>
+                    </li>
+                    <li class="pull-right">
+                        <a id="AddDoctor" href="javascript:;"> <i class="fa fa-user-md"></i> Add Doctor</a>
+                    </li>
+                </ul>*@
+
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="userType" class="tab-pane fade active in">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddSpeciality">Add Speciality</button>
+                    <table id="dtSpeciality" class="table table-striped table-bordered table-hover small" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Speciality Name</th>
+                                <th>Description</th>
+                                <th>Is Active</th>
+                                <th style="width: 80px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $("#Lookup").addClass('menu-open');
+        $("#Lookup ul li a p").each(function () {
+            var text = $(this).text();
+            if (text == "Insurance Type") {
+                $(this).parent().addClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-circle');
+                $(this).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }
+        })
+        $(document).ready(function () {
+            bindActiveSpecialityList(true);
+        });
+        $(document).on("click", "#AddSpeciality", function () {
+            AddEditSpeciality(0);
+        });
+
+        function AddEditSpeciality(id) {
+            $("#modalContent").load("/_Specialitys/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+        function ViewSpeciality(id) {
+            $("#modalContent").load("/_ViewSpecialitys/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href");
+            switch (target) {
+                case "#Speciality":
+                    bindActiveSpecialityList(true);
+                    break;
+                case "#deSpeciality":
+                    bindDeActiveSpecialityList(false);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+
+        function bindActiveSpecialityList(flag) {
+            if ($.fn.DataTable.isDataTable("#dtSpeciality")) {
+                $('#dtSpeciality').DataTable().destroy();
+            }
+            var table = $('#dtSpeciality')
+                .DataTable({
+                    "sAjaxSource": "/GetSpecialitysList/" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> &nbsp;';
+                                content += '<label class="switch">&nbsp;';
+                                content += '<input onchange="ActiveDeactiveSpeciality(this);" type="checkbox" ' + value + ' data-Id= "IsActive" data-typeId="' + row.Id + '" />&nbsp;';
+                                content += '<span class="slider round"style="width:35px;"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div style="display:flex"><a href="javascript:;" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + row.Id + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp; ';
+                                content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + row.Id + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;</div>'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+
+        function DeactivateSpeciality(id, flag) {
+            var title = flag ? "De Activate" : "Re Activate";
+            var message = "Are you sure you want to <b> " + title + " </b> this Speciality";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeActiveSpecialitys/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        if (flag) {
+                            bindActiveSpecialityList(true);
+                        } else {
+                            bindDeActiveSpecialityList(false);
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        var ActiveDeactiveSpeciality = function (ctrl) {
+            var flag = $(ctrl).is(":checked");
+
+            var id = $(ctrl).data("typeid");
+            switch (flag) {
+                case false:
+                    DeactivateSpeciality(id, true);
+                    break;
+                case true:
+                    DeactivateSpeciality(id, false);
+                default:
+            }
+        }
+        $('#dtSpeciality, #dtDeActivetSpeciality').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "deactivate":
+                    DeactivateSpeciality(id, true);
+                    break;
+                case "reactivate":
+                    DeactivateSpeciality(id, false);
+                case "edit":
+                    AddEditSpeciality(id);
+                    break;
+                case "delete":
+                    RemoveSpeciality(id);
+                    break;
+                case "View":
+                    ViewSpeciality(id);
+                    break;
+                default:
+            }
+        });
+        function RemoveSpeciality(id) {
+            var message = "Are you sure you want to <b> Remove Speciality </b> ";
+            BinkeDialog.Confirmation("Remove Speciality", message, function () {
+                $.ajax({
+                    url: "/RemoveSpecialitys/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindActiveSpecialityList(true);
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+
+    </script>
+}

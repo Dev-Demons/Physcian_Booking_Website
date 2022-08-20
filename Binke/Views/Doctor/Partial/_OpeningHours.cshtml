@@ -1,0 +1,98 @@
+﻿@using Binke.Utility;
+@model Binke.ViewModels.OpeningHoursViewModel
+
+<style type="text/css">
+    .bootstrap-timepicker-widget.dropdown-menu {
+        z-index: 99999 !important;
+    }
+</style>
+<link href="~/Scripts/admin/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" />
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.OpeningHourId == 0 ? "Add OpeningHours" : "Edit OpeningHours")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditOpeningHours", "Doctor", FormMethod.Post, new { id = "frmOpeningHours" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.OpeningHourId)
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label" style="text-align:center;margin-left:22px !important"><b>Week Day</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.WeekDay, Common.GetWeekdayList(), "-- Select Week Day --", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.WeekDay, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b> Open From:</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Start, new { @class = "form-control" })
+                    <input type="hidden" id="hdnStart" value="@Model.Start" />
+                    @Html.ValidationMessageFor(m => m.Start, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b> Open Until:</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.End, new { @class = "form-control" })
+                    <input type="hidden" id="hdnEnd" value="@Model.End" />
+                    @Html.ValidationMessageFor(m => m.End, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+<script src="~/Scripts/admin/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+<script src="~/Scripts/admin/plugins/moment/moment.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var startTime = $("#hdnStart").val();
+        var endTime = $("#hdnEnd").val();
+        // Time
+        if (startTime === "" && endTime === "") {
+            startTime = 'current';
+            endTime = 'current';
+        }
+        $('#Start').timepicker({ 'showMeridian': false, defaultTime: startTime, template: 'dropdown' });
+        //.on('change', function () {
+        //        var d = moment().format("YYYY-MM-DD"); " " + $(this).val();
+        //        var min = new Date(d);
+        //        var minutes = min.getMinutes();
+        //        if (Number(minutes) === 0) {
+        //            minutes = '00';
+        //        }
+        //        var nextdate = (min.getHours() + 1) + ":" + minutes;
+        //    $("#End").val(nextdate);
+        //});
+
+        $('#End').timepicker({
+            'showMeridian': false,
+            defaultTime: endTime,
+            template: 'dropdown'
+        });
+
+    });
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmOpeningHours'));
+        if ($("#frmOpeningHours").valid()) {
+            $.post("@Url.Action("AddEditOpeningHours")", $("#frmOpeningHours").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindOhoursList();
+                    closeModal();
+                }
+            });
+        }
+    });
+</script>

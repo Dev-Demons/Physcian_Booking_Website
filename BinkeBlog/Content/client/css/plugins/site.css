@@ -1,0 +1,284 @@
+﻿/* body { */
+/*     padding-top: 50px; */
+/*     padding-bottom: 20px; */
+/* } */
+
+/* Set padding to keep content from hitting the edges */
+/* .body-content { */
+/*     padding-left: 15px; */
+/*     padding-right: 15px; */
+/* } */
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.service{
+    padding-top:20px;
+}
+
+.service-block {
+    margin-top: 160px;
+    width:100%;
+    height:40%;
+    position:absolute;
+    background-color: #282ea4;
+   
+}
+    .service-block h4 {
+        padding-top:15px;
+        text-align:center;
+       
+        color: white;
+    }
+
+.item1{
+    
+    height:400px;
+}
+.banner-text-style {
+    overflow:visible;
+}
+
+.hospitals {
+    padding-top: 20px;
+}
+
+.item2 {
+    height: 250px;
+    
+}
+.bk-service {
+    min-height: 200px;
+    padding: 0px;
+   
+}
+    .bk-service .content {
+        background: #3498db;
+    }
+
+    .bk-service.is-hover .content{
+        background: #ffffff;
+    }
+    .bk-service .content p{
+       padding-right:20px;
+       padding-left:20px;
+    }
+    
+
+.bk-service span {
+    color: #ffffff;
+   
+}
+.bk-service h3 {
+    color: #ffffff;
+}
+.bk-service h3::before {
+    background: #ffffff;
+    left: 50%;
+    margin-left: -72px;
+}
+.bk-service.is-hover h3::before {
+    background: #3498db;
+    left: 50%;
+    margin-left: -72px;
+}
+.bk-service-2{
+    height:400px;
+}
+.doctors{
+
+}
+.item4{
+    height:auto;
+}
+
+.banner-single {
+    min-height:500px;
+
+}
+.main_menu {
+    width: 100%;
+   
+    /*background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3);*/
+}
+
+.main_menu .nav{
+    display: inline-block;
+    margin-bottom: 25px;
+	display: inline-block;
+}
+
+.main_form {
+    position:inherit;
+    padding-bottom :20px;
+}
+
+    .main_form .form-group input {
+        width: 100%;
+        height: 50px;
+     
+    }
+
+    .main_form .form-inline button {
+        
+        height: 50px;
+        padding-left:35px;
+        padding-right:35px;
+           
+        background-color: red;
+        color: white;
+        border-color: red;
+        opacity: 0.9;
+        filter: alpha(opaciy=80);
+    }
+        .main_form .form-inline button:hover {
+            background-color: red;
+            opacity:1;
+        }
+        .nav > li {
+    padding: 2px;
+    padding-top: 10px;
+    
+}
+
+    .nav > li > a, .nav > li > a {
+        text-decoration: none;
+        background-color: #3498db;
+        color: white;
+        /*opacity: 0.8;*/
+        padding-left: 30px;
+        padding-right:30px;
+        border: solid;
+        border-color: #3498db;
+        border-bottom-width: 7px;
+    }
+
+        .nav > li > a:focus, .nav > li > a:hover {
+            text-decoration: none;
+            background-color: #3498db;
+            opacity: 1;
+            border-bottom-color: red;
+        }
+        .space{
+            padding-bottom:40px;
+        }
+.appointment-box {
+padding-bottom:30px;
+}
+.appointment-form input[type="submit"], .appointment-form button[type="submit"] {
+margin-right:15px;
+margin-top:40px;
+}
+ .img-brd {
+    display: flex;
+    height: 110px;
+}
+
+.hospitalGallery {
+    padding: 6px 3px;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    text-align: center;
+    height: 70px;
+}
+    .hospitalGallery h1 {
+        font-size: 13px;
+        margin-top:20px;
+        font-family: verdana;
+        font-weight: normal;
+       color:white;
+    }
+.img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.orangeBg {
+    background: #3498db;
+}
+
+.Gslide .carousel-control {
+    background-image: none;
+    font-size: 45px;
+    background: #0066FF;
+    bottom: inherit;
+    top: 37%;
+    width: auto;
+    padding: 10px;
+}
+
+    .Gslide .carousel-control.left {
+        left: -50px;
+    }
+    .Gslide .carousel-control.right {
+        right: -50px;
+    }
+
+.carousel-control {
+    position: absolute;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,.6);
+    opacity: .5;
+}
+
+.Gslide .carousel-control.left {
+    left: -50px;
+}
+
+.carouselPadd {
+    padding: 40px 0;
+}
+
+.owl-nav{
+    display:none;
+}
+.owl-dots{
+    display:none;
+}
+.section-title {
+    margin-bottom:10px;
+    padding-left:25px;
+}
+    .section-title h3::before{
+  height:0px;
+}
+.section-title h3 {
+    color:black;
+padding-bottom:0px;
+}
+.section-title p {
+    padding-bottom:20px;
+    color:black;
+}

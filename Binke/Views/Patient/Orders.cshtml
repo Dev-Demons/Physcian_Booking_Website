@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.PatientID = Session["PatientID"];
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<script src="~/Scripts/Patient/PatientMenu.js"></script>
+
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Orders</h3>
+        </div>
+        <div class="col-lg-6 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-4">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Patient/">&nbsp;Patient</a></li>
+                    <li class="active">&nbsp;Orders </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="TopFormBlock" class="box-primary"></div>
+        <br />
+        <div class="tab-base">
+            <div class="tab-content">
+                <div id="patientOrders" class="tab-pane fade active in">
+                    <table id="dtPatientOrders" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="8%">Date</th>
+                                @*<th width="15%">Title</th>
+                                <th width="19%">Description</th>*@
+                                <th width="8%">Prescription Image</th>
+                                <th width="10%">Total Price</th>
+                                <th width="10%">Coupon Discount</th>
+                                <th width="10%">Other Discount</th>
+                                <th width="10%">Net Price</th>
+                                <th width="10%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        //AddPatientSubMenu("Orders")
+        $("#MnuPatient").addClass('menu-open');
+        $("#MnuPatient ul li a p").each(function () {
+            var text = $(this).text();
+            if (text == "Orders") {
+                $(this).parent().addClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-circle');
+                $(this).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }
+        });
+
+        $('#TopFormBlock').load('@Url.Action("PatientOrder/", "Patient")');
+        var patientId = sessionStorage.getItem("PatientID");
+        $(document).ready(function () {
+            bindPatientOrderList();
+        });
+
+        function bindPatientOrderList() {
+            if ($.fn.DataTable.isDataTable("#dtPatientOrders")) {
+                $('#dtPatientOrders').DataTable().destroy();
+            }
+
+            var table = $('#dtPatientOrders')
+                .DataTable({
+                    "sAjaxSource": "/GetPatientOrder/@ViewBag.PatientID",
+                    "columns": [
+                        //{
+                        //    "data": "Date",
+                        //    "autoWidth": false,
+                        //    "searchable": true,
+                        //    "render": function (data, type, row) {
+                        //        var ms = data.replace("/Date(", "").replace(")/", "").trim()
+                        //        var d = new Date(parseInt(ms));
+                        //        return d.toLocaleString().split(',')[0];
+                        //    }
+                        //},
+                        //{
+                        //    "data": "Title",
+                        //    "autoWidth": false,
+                        //    "searchable": true
+                        //},
+                        //{
+                        //    "data": "Description",
+                        //    "autoWidth": false,
+                        //    "searchable": true
+                        //},
+                        {
+                            "data": "OrderDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "PrescriptionImage",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                var content = data == null ?
+                                    '<img src="/Uploads/ProfilePic/no_picture.png" style="max-width:50px;" alt="Patient-icon">&nbsp;' :
+                                    '<img src="/Uploads/PharmacyPrescription/' + data + '" style="max-width:50px;" alt="Patient-icon">&nbsp;';
+                               
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "TotalPrice",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "CouponDiscount",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "OtherDiscount",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "NetPrice",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "OrderStatus",
+                            "autoWidth": false,
+                            "searchable": true
+                        }
+                    ]
+                });
+        };
+    </script>
+}

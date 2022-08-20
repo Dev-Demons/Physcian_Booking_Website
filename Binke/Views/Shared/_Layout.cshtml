@@ -1,0 +1,730 @@
+﻿@using Binke.App_Helpers
+@using Doctyme.Repository.Enumerable
+@using Binke.Utility
+@{
+    string userRole = User.Identity.GetClaimValue(UserClaims.UserRole);
+    userRole = (userRole == UserRoles.Admin ? "" : userRole);
+    string profileLink = userRole == UserRoles.Doctor ? "UserAccount" : "Facility/Profile";
+    //string profileLink = userRole == UserRoles.Doctor ? "UserAccount" : "Pharmacy/UserAccount";
+
+}
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+
+<head>
+    <script data-ad-client="ca-pub-2294893271577335" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-173346889-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-173346889-1');
+    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+    <link rel='canonical' href='https://www.doctyme.xn--com-9o0a'>
+    @if (ViewBag.Title != null)
+    {
+        <title>@ViewBag.Title - Doctyme</title>
+    }
+    else
+    {
+        <title>Read Reviews and Compare Doctors, Pharmacy, Senior Care, Facility and Drug Prices; Book Appointment - DocTyme</title>
+    }
+
+
+    @if (TempData["metaInfo"] != null)
+    {
+        var metaModel = TempData["metaInfo"] as List<Doctyme.Model.ViewModels.Meta>;
+        foreach (var item in metaModel)
+        {
+            <meta name="@item.Name" property="@item.Property" content="@item.Content" />
+        }
+    }
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/Content/client/images/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Content/client/images/icon.png">
+    @*<link rel='icon' href='favicon.ico' type='image/x-icon' />*@
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="~/Content/client/css/plugins/font-awesome.min.css" rel="stylesheet" />
+    @*
+        <link href="~/Content/client/css/plugins.css" rel="stylesheet" />
+        <link href="~/Content/client/css/style11.css" rel="stylesheet" />
+        <link href="~/Content/client/css/custom.css" rel="stylesheet" />
+        <link href="~/Content/client/css/plugins/slick.min.css" rel="stylesheet" />
+        <link href="~/Content/client/css/change-color.css" rel="stylesheet" />
+        <link href="~/Content/client/Site.css" rel="stylesheet" />
+    *@
+    <link href="~/Content/client/css/plugins.css" rel="stylesheet" />
+    @Styles.Render("~/content/layout")
+    <!-- Google font (font-family: 'Lato', sans-serif;) -->
+    <link href="//fonts.googleapis.com/css?family=Lato:300,400,400i,500,700,900" rel="stylesheet">
+    <!-- Google font (font-family: 'Raleway', sans-serif;) -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:300,400,700,800" rel="stylesheet">
+    <link href="~/Content/custom/toastr.min.css" rel="stylesheet" />
+    @Styles.Render("~/content/toastr")
+    <style>
+        .appoint {
+            float: right;
+        }
+        /* switch */
+        label.switch {
+            position: relative;
+            display: inline-block;
+            height: 23px;
+            padding-left: 3.8em;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        /*li:nth-child(2) a,*/
+        label.switch {
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 4px;
+            width: 18%;
+            background-color: #d3d5d7;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 10px;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 10px;
+                width: 10px;
+                left: 4px;
+                bottom: 5px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: red;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #00ba9d;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(18px);
+            -ms-transform: translateX(18px);
+            transform: translateX(18px);
+        }
+
+        /* Rounded sliders */
+
+        .slider.round:before {
+            border-radius: 0%;
+            border-radius: 10px;
+        }
+
+        /* //switch */
+
+        #page-title {
+            display: none;
+        }
+
+        #back2Top {
+            display: inline-block;
+            background-color: #3498db;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            border-radius: 4px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            transition: background-color .3s, opacity .5s, visibility .5s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+            #back2Top::after {
+                content: "\f077";
+                font-family: FontAwesome;
+                font-weight: normal;
+                font-style: normal;
+                font-size: 2em;
+                line-height: 50px;
+                color: #fff;
+            }
+
+            #back2Top:hover {
+                cursor: pointer;
+                background-color: #333;
+            }
+
+            #back2Top:active {
+                background-color: #555;
+            }
+
+            #back2Top.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+        @@media (min-width:576px) and (max-width:767px) {
+            .menu-adjustment {
+                min-width: 480px;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $jq = $.noConflict();
+    </script>
+    @Scripts.Render("~/scripts/layoutheader")
+
+    @RenderSection("head", required:false)
+
+</head>
+<body>
+    <h1 id="page-title">DocTyme Homepage</h1>
+    @*<div class="fakeloader"></div>*@
+    <div id="wrapper" class="wrapper">
+
+        <!-- Header -->
+        <div class="header sticky-header">
+
+            <!-- Header Top Area -->
+            <div class="header-top-area-dark">
+                <div class="container">
+                    <div class="header-top-inner">
+
+                        <ul class="header-support-info w-50">
+                            &nbsp;
+                            <li><a href="~/Home/AdvertiseWithUs">Advertise With Us</a></li>
+                            <li><a id="userLocation" href="javascript:void(0)" class="ml-5" style="cursor:none"></a></li>
+                            @*<li><span class="icon"><i class="fa fa-phone"></i></span> Call Us Today: <a href="#">(+1)866-540-3229</a></li>
+            <li><span class="icon"><i class="fa fa-envelope-o"></i></span> <a href="#">info@yourdomain.com</a></li>*@
+                        </ul>
+
+                        <ul class="header-social">
+                            @*style="padding-left: 220px;"*@
+                            <li><a href="https://www.facebook.com/DocTymes/"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="https://twitter.com/doctymeinc"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="https://www.linkedin.com/company/65457911"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="https://www.pinterest.com/doctyme/"><i class="fa fa-pinterest"></i></a></li>
+                            <li><a href="https://www.instagram.com/doctymes/"><i class="fa fa-instagram"></i></a></li>
+                        </ul>
+                        <ul class="header-support-info ">
+
+                            @*@if (!Request.IsAuthenticated || User.Identity.GetClaimValue(UserClaims.IsRemember) == "F")*@
+                            @if (!Request.IsAuthenticated)
+                            {
+                                <li class="pull-right"><span class="icon"><i class="fa fa-lock"></i></span> <a href="~/Account/Login">Login / Sign Up</a></li>
+                            }
+                            @*<li style="padding: 0px 20px; color: #fff;"><b>Advertise With Us</b></li>*@
+                        </ul>
+                        @*@if (Request.IsAuthenticated && User.Identity.GetClaimValue(UserClaims.IsRemember) == "T")*@
+                        @if (Request.IsAuthenticated)
+                        {
+                        <nav class="bk-navigation">
+                            <ul class="header-social">
+                                <li class="bk-dropdown" style="padding:0px 0 !important">
+                                    <a href="~/Dashboard/@userRole" style="font-size:16px; background-color: #60646d;"><i class="fa fa-user"></i> @User.Identity.GetClaimValue(UserClaims.FirstName)</a>
+                                    <ul style="width:175px">
+                                        <li>
+                                            @if (User.IsInRole(UserRoles.Facility))
+                                            {
+                                                <a href='@("/Facility/Profile/" + User.Identity.GetClaimValue("UserId"))' id="aUserProfile" style="font-size:14px;"> <i class="fa fa-user fa-fw"></i> Profile </a>
+                                            }
+                                            else if (User.IsInRole(UserRoles.SeniorCare))
+                                            {
+                                                <a href='@("/SeniorCare/Profile/" + User.Identity.GetClaimValue("UserId"))' style="font-size:14px;"> <i class="fa fa-user fa-fw"></i> Profile </a>
+                                            }
+                                            else if (User.IsInRole(UserRoles.Patient))
+                                            {
+                                                <a href='@("/Patient/Profile/" + User.Identity.GetClaimValue("UserId"))' id="aUserProfile" style="font-size:14px;"> <i class="fa fa-user fa-fw"></i> Profile </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/@profileLink/@User.Identity.GetClaimValue(UserClaims.UserId)" style="font-size:14px;"><i class="fa fa-user fa-fw"></i>Profile</a>
+                                            }
+                                        </li>
+                                        @if (User.IsInRole(UserRoles.Facility))
+                                        {
+                                            <li><a href='/Dashboard/Facility' style="font-size:14px;"><i class="fa fa-industry"></i>&nbsp;Dashboard</a></li>
+                                        }
+                                        else if (User.IsInRole(UserRoles.SeniorCare))
+                                        {
+                                            <li><a href='/Dashboard/SeniorCare' style="font-size:14px;"><i class="fa fa-industry"></i>&nbsp;Dashboard</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href='@(User.Identity.GetClaimValue("UserRole") == "Doctor" ? "/DashBoard/Doctor" : "/Dashboard")' style="font-size:14px;"><i class="fa fa-industry"></i>&nbsp;Dashboard</a></li>
+                                        }
+                                        <li>
+                                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <a href="javascript:document.getElementById('logoutForm').submit()" style="font-size:14px;"> <i class="fa fa-sign-out fa-fw"></i> Logout </a>
+                                            }
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                        @*<ul class="header-social">
+            <li>
+                <a href="~/Dashboard/@userRole"><i class="fa fa-user"></i> @User.Identity.GetClaimValue(UserClaims.FirstName)</a>
+            </li>
+        </ul>*@
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <!--// Header Top Area -->
+            <!-- Header Middle Area -->
+            <div class="header-middle-area d-none d-lg-block" style="box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);">
+                <div class="container">
+                    <div class="header-middle-inner">
+                        <a href="/" class="header-logo">
+                            <img src="~/Content/client/images/logo/logo-secondary-dark.png" alt="Doctyme logo">
+                        </a>
+
+                        <!-- Main Navigation -->
+                        <nav class="bk-navigation pull-right">
+                            <ul>
+                                @*<li class="appoint btn-primary"><a class="btn-primary text-white" href="/search/Doctor">Book an Appointment</a></li>*@
+                                <li class="bk-dropdown">
+                                    <a href="/">Home</a>
+                                    <ul>
+                                        <li><a href="/AboutUs">About Us</a></li>
+                                    </ul>
+                                </li>
+                                <li class="bk-dropdown">
+                                    <a href="#">Provider</a>
+                                    <ul>
+                                        <li><a href="/search/Doctor">Doctors</a></li>
+                                        <li><a href="/Filter/Pharmacy">Pharmacy</a></li>
+                                        <li><a href="/Filter/Facility">Facility</a></li>
+                                        <li><a href="/Filter/SeniorCare">Senior Care</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="/SearchDrug">Drugs</a></li>
+                                <li class="bk-dropdown">
+                                    <a href="/Blogs">Blog</a>
+                                    <ul style="width: 300px;">
+                                        @if (User.IsInRole(UserRoles.Admin))
+                                        {
+                                            <li><a href="/Blog">Manage Blog</a></li>
+                                        }
+
+                                        @{ Html.RenderAction("GetMenuList", "Blog"); }
+                                    </ul>
+                                </li>
+
+
+                            </ul>
+                        </nav>
+                        <!--// Main Navigation -->
+
+                    </div>
+                </div>
+            </div>
+            <!--// Header Middle Area -->
+            <!-- Mobile Menu Wrapper -->
+            <div class="mobile-menu-wrapper">
+                <div class="container">
+                    <div class="mobile-menu d-block d-lg-none">
+                        <a href="/" class="logo">
+                            <img src="~/Content/client/images/logo/logo-secondary-dark.png" alt="logo theme">
+                        </a>
+
+                        <button class="navbar-toggler float-right mt-3 mb-4 border-dark" type="button" data-toggle="collapse"
+                                data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <i class="fa fa-bars" aria-hidden="true"></i>
+                        </button>
+
+                        <div class="navbar-collapse collapse" id="navbarCollapse" style="">
+
+                            <!-- Main Navigation -->
+                            <nav class="bk-navigation pull-right menu-adjustment">
+                                <ul>
+                                    @*<li class="appoint btn-primary"><a class="btn-primary text-white" href="/search/Doctor">Book an Appointment</a></li>*@
+                                    <li class="bk-dropdown">
+                                        <a href="/">Home</a>
+                                        <ul>
+                                            <li><a href="/AboutUs">About Us</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="bk-dropdown">
+                                        <a href="#">Provider</a>
+                                        <ul>
+                                            <li><a href="/search/Doctor">Doctors</a></li>
+                                            <li><a href="/Filter/Pharmacy">Pharmacy</a></li>
+                                            <li><a href="/Filter/Facility">Facility</a></li>
+                                            <li><a href="/Filter/SeniorCare">Senior Care</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="/SearchDrug">Drugs</a></li>
+                                    <li class="bk-dropdown">
+                                        <a href="/Blogs">Blog</a>
+                                        <ul style="width: 300px;">
+                                            @if (User.IsInRole(UserRoles.Admin))
+                                            {
+                                                <li><a href="/Blog">Manage Blog</a></li>
+                                            }
+                                            @{ Html.RenderAction("GetMenuList", "Blog"); }
+                                        </ul>
+                                    </li>
+
+
+                                </ul>
+                            </nav>
+                            <!--// Main Navigation -->
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <!--// Mobile Menu Wrapper -->
+        </div>
+
+        @RenderSection("SliderContent", required: false)
+        <!-- Page Content -->
+        <main id="page-content" style="min-height:500px;">
+            @RenderBody()
+        </main>
+        <!--// Page Content -->
+        <div class="footer">
+
+            <!-- Footer Top Area -->
+            <div class="footer-top-area bg-theme">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <ul class="footer-social-icons">
+                                <li><a href="https://www.facebook.com/DocTymes"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://twitter.com/doctymeinc"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://www.linkedin.com/company/65457911"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="https://www.pinterest.com/doctyme/"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="https://www.instagram.com/doctymes/"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <form id="frmNewsLetter" class="footer-newsletter-form" novalidate>
+                                <h4>Newsletter</h4>
+                                <input type="email" id="NewsLetterEmail" placeholder="Email address...">
+                                <input type="submit" value="Subscribe" id="btnNewsLetter">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--// Footer Top Area -->
+            <!-- Footer Bottom Area -->
+            <div class="footer-bottom-area bg-dark-light section-padding-xs">
+                <div class="container">
+                    <div class="row widgets footer-widgets">
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">About Us</h5>
+                                <ul>
+                                    <li><a href="/ProvdersProfile/ClaimProcess">Claim Your Listing</a></li>
+                                    <li><a href="/Home/AdvertiseWithUs">Advertise With Us</a></li>
+                                    <li><a href="/Home/ContactUs">Contact Us</a></li>
+                                    <li><a href="/Blogs">Blog</a></li>
+                                    <li><a href="/Home/TermsAndConditions">Terms and Conditions</a></li>
+                                    <li><a href="/Home/PrivacyPolicy">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        @{
+                            string text = System.IO.File.ReadAllText(Server.MapPath(StaticFilePath.WebSettings)).NullToString();
+                            var jsonNetworkCount = Newtonsoft.Json.JsonConvert.DeserializeObject<Binke.ViewModels.NetworkCount>(text);
+                            string[] MostlySearchedDrug = !string.IsNullOrWhiteSpace(jsonNetworkCount.MostlySearchedDrug) ? jsonNetworkCount.MostlySearchedDrug.Split(',').Take(3).ToArray() : null;
+                        }
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">Discover</h5>
+                                <ul id="medicineList">
+                                    <li><a class="FindProvider" href="javascript:void(0);">Find a Provider</a></li>
+                                    <li><a href="/Search/Doctor/">-&nbsp;&nbsp;&nbsp;Doctor</a>
+                                    <li />
+                                    <li><a href="/Filter/Pharmacy/">-&nbsp;&nbsp;&nbsp;Pharmacy</a>
+                                    <li />
+                                    <li><a href="/Filter/Facility/">-&nbsp;&nbsp;&nbsp;Facility</a>
+                                    <li />
+                                    <li><a href="/Filter/SeniorCare/">-&nbsp;&nbsp;&nbsp;Senior Care</a>
+                                    <li />
+                                    <li><a href="/SearchDrug">Find Drug Prices</a></li>
+                                    @*@if (MostlySearchedDrug != null)
+                                        {
+                                            foreach (var item in MostlySearchedDrug)
+                                            {
+                                                <li><a href="/SearchDrug/@item">@item</a></li>
+                                            }
+                                        }*@
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">Specialties</h5>
+                                <ul>
+                                    @{ Html.RenderAction("GetSpeciality", "Home"); }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-contact">
+                                <h5 class="widget-title">Top Doctors</h5>
+                                <ul>
+                                    @{ Html.RenderAction("GetTopDoctor", "Home"); }
+                                </ul>
+                                <div class="single-widget widget-about mt-1">
+                                    <p><a href="/Search/Doctor/">View All</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--// Footer Bottom Area -->
+            <!-- Footer Copyright Area -->
+            <div class="footer-copyright-area bg-dark">
+                <div class="container">
+                    <div class="footer-copyright text-center">
+                        @{string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);}
+                        <p>Copyright © <a href="@domainName">Doctyme Inc.</a>. All Rights Reserved</p>
+                        <p style="text-align:left;">Disclaimer: As more fully set forth in this website's terms of use. (1) nothing contained on or offered by or through this website should be construed as medical advice and should not be relied upon for medical diagnosis or treatment. DocTyme Inc., ("DocTyme"). the provider of this website, does not recommend or endorse any particular healthcare provider whose information or ratings appear on this website.</p>
+                        <p style="text-align:left;">Drug prices may vary from pharmacy to pharmacy and are subject to change. The pricing estimates given are based on the most recent information available and may change based on when you actually fill your prescription at the pharmacy.</p>
+                    </div>
+                </div>
+            </div>
+            <!--// Footer Copyright Area -->
+
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="divModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="modalContent"></div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- Modal -->
+    </div>
+    <div class="alert alert-dismissible text-center cookiealert hide" role="alert">
+        <div class="cookiealert-container">
+            We use cookies to improve your experience. By continuing, you acknowledge that you have read and understand our <a href="javascript:void(0);"> Cookie Policy</a>.
+            <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+                Accept
+            </button>
+            <button type="button" class="close closecookies" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to top button -->
+    <a id="back2Top"></a>
+    <!-- JS Files -->
+    @{ Html.RenderPartial("_ClientScripts", RenderSection("scripts", false)); }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            GetTop3MostlySearchedDrug();
+            $('.btnHour').click(function () {
+                    var id = $(this).attr('Id');
+                var url = '@Url.Action("setBookingHour","Search")';
+                $.ajax({
+                url: url,
+                data: { 'id': id },
+                type: 'Post'
+            });
+            });
+            @if (TempData["Alerts"] != null)
+            {
+                foreach (Common.JsonModel jsonModel in (List<Common.JsonModel>) TempData["Alerts"])
+                {
+                    <text>
+                        var alert = { AlertType: '@jsonModel.AlertType', Message: '@jsonModel.Message', Title: '@jsonModel.Title' };
+                        showAlert(alert);
+                    </text>
+                }
+            }
+
+        $("#btnNewsLetter").click(function () {
+            return NewsLetter();
+        });
+
+        $("#NewsLetterEmail").change(function () {
+            $("#NewsLetterEmail-error").hide();
+            });
+    });
+
+    function NewsLetter() {
+        var url = '@Url.Action("SubscribeNewsLetter", "Home")';
+        var Email = $("#NewsLetterEmail").val();
+        var isValid = validateEmail(Email) //$("#frmNewsLetter").valid();
+        if (Email != "" && isValid) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                cache: false,
+                data: { 'Email': Email },
+                success: function (response) {
+                    HandleResponse(response);
+                    $("#NewsLetterEmail").val("");
+                },
+                error: function (data) {
+                    HandleResponse(data);
+                }
+            });
+        } else {
+            $("#NewsLetterEmail-error").hide();
+            response = { Status: 0, Message: "Please enter valid email address." };
+            HandleResponse(response);
+        }
+        return false;
+    }
+
+    function validateEmail($email) {
+        var emailReg = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        return emailReg.test($email);
+    }
+
+
+    var originalModal = $("#divModal").clone();
+    $("#divModal").on("hidden.bs.modal", function () {
+        $("#divModal").remove();
+        var myClone = originalModal.clone();
+        $("body").append(myClone);
+        });
+
+        $('.FindProvider').click(function (evt) {
+            //$(".banner-single").focus();
+            $('html, body').animate({
+                'scrollTop': $("#searchBox").position().top
+            });
+            $("input#searchBox").focus();
+            evt.preventDefault();
+        });
+
+        //$(function () {
+        //    if (document.cookie.indexOf("cookies") < 0) {
+        //        $('#cookie-consent').slideDown('slow');
+        //    }
+        //    $('#consent').on('click', function () {
+        //        document.cookie = "cookies=yes; max-age=" + (5 * 365 * 24 * 60 * 60);
+        //        $('#cookie-consent').slideUp('slow');
+        //    });
+        //    $('#learn-more').on('click', function () {
+        //        location.href = '/privacy';
+        //    })
+        //});
+
+
+        (function () {
+            'use strict';
+            var cookieAlert = document.querySelector('.cookiealert');
+            var acceptCookies = document.querySelector('.acceptcookies');
+            var closecookies = document.querySelector('.closecookies');
+            cookieAlert.offsetHeight;
+            if (getCookie('acceptCookies')) {
+                cookieAlert.classList.add('show');
+            }
+            acceptCookies.addEventListener('click', function () {
+                setCookie('acceptCookies', true, 60);
+                cookieAlert.classList.remove('show');
+            });
+            closecookies.addEventListener('click', function () {
+                cookieAlert.classList.remove('show');
+            });
+        })();
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = 'expires=' + d.toUTCString();
+            document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+        }
+        function getCookie(cname) {
+            var name = cname + '=';
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return '';
+        }
+
+        function GetTop3MostlySearchedDrug() {
+            $.ajax({
+                url: "@Url.Content("~/SearchDrug/MostlySearchedDrug")",
+                type: "Get",
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        let data = response.Data.MostlySearchedDrug.split(',');
+                        for (var i = 0; i < data.length; i++) {
+                            if (i >= 3) break;
+                            $("#medicineList").append("<li><a href='@Url.Content("~/SearchDrug/")" + data[i] + "'>" + data[i] + "</a></li>")
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        var back2Top = $('#back2Top');
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 300) {
+                back2Top.addClass('show');
+            } else {
+                back2Top.removeClass('show');
+            }
+        });
+
+        back2Top.on('click', function (e) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: 0 }, '300');
+        });
+    </script>
+    <!-- JS Files -->
+
+    @Scripts.Render("~/scripts/layoutfooter")
+</body>
+</html>

@@ -1,0 +1,141 @@
+﻿<style>
+    .nav > li > a:focus, .nav > li > a:hover {
+        background-color: #444;
+        color: #fff;
+    }
+</style>
+<script type="text/javascript">
+    window.onload = function () {
+          if (@ViewBag.PharmacyID == 0)
+          {
+              alert('Please complete the profile first, before accessing the other features of the site');
+          }
+     }
+</script>
+<li id="MnuPharmacy" class="nav-item has-treeview active menu-open">
+    <ul id="PharmacySubMenu" class="nav nav-treeview" style="display:block;">
+        <li class="nav-item">
+            @*Changes made against Issue#25*@
+            <a href="/Dashboard/Pharmacy" class="nav-link">
+                <i class="nav-icon far fa-dot-circle-o"></i>
+                <p>DashBoard</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/Pharmacy/Profile" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+
+        @if (ViewBag.PharmacyID > 0)
+        {
+            //Changes made against Issue#25
+            <li class="nav-item">
+                <a href="~/Pharmacy/AmenityOptions" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Amenity/Options</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Booking" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Booking</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Images" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Images</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Procedure" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Procedures</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Reviews" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Reviews</p>
+                </a>
+            </li>
+            @*<li class="nav-item">
+                    <a href="~/Pharmacy/Speciality" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Specialties</p>
+                    </a>
+                </li>*@
+            <li class="nav-item">
+                <a href="~/Pharmacy/StateLicense" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>State License</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Insurance" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Insurance Plan</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/OpeningHours" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Opening Hours</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Featured" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Featured</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Taxonomy" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Taxonomy</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="~/Pharmacy/PatientOrder/@ViewBag.PharmacyID" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Patient</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="~/Pharmacy/Address" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Addresses</p>
+                </a>
+            </li>
+
+            <li class="nav-item" style="margin-bottom:50px;">
+                <a href="~/Pharmacy/SocialMedia" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Social Media</p>
+                </a>
+            </li>
+
+        }
+    </ul>
+</li>
+@*<li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon far fa-envelope"></i>
+            <p>
+                Drug
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/MyDrugs" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Drug List</p>
+                </a>
+            </li>
+
+        </ul>
+    </li>*@

@@ -1,0 +1,2011 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7FBB68C-AB0C-46DE-B25B-9BB8D7BB96C9}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Binke</RootNamespace>
+    <AssemblyName>Binke</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
+    <IISExpressSSLPort>44357</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>false</IncludeIisSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.1.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.2.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.2.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.2.2\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.2.2\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=4.1.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.4.1.3\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.10.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.10.3\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mvc, Version=5.10.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Mvc.5.10.1\lib\net46\Unity.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Diagnostics.DiagnosticSource">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.0\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\TestController.cs" />
+    <Compile Include="App_Helpers\APIHelper.cs" />
+    <Compile Include="App_Helpers\ClaimsExtensions.cs" />
+    <Compile Include="App_Helpers\ExceptionExtentions.cs" />
+    <Compile Include="App_Helpers\HtmlHelperExtensions.cs" />
+    <Compile Include="App_Helpers\HttpRequestExtensions.cs" />
+    <Compile Include="App_Helpers\RouteConstraint.cs" />
+    <Compile Include="App_Helpers\Settings.cs" />
+    <Compile Include="App_Helpers\StringExtensions.cs" />
+    <Compile Include="App_Start\BlogService.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="App_Start\UnityFactory.cs" />
+    <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="CommonUtility\LogError.cs" />
+    <Compile Include="Constant\Constants.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdvertisementController.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="Controllers\CustomErrorUseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrganizationAmenityOptionController.cs" />
+    <Compile Include="Controllers\BoardCertificationController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\DoctorController.cs" />
+    <Compile Include="Controllers\FacilityController.cs" />
+    <Compile Include="Controllers\FacilityOptionController.cs" />
+    <Compile Include="Controllers\FacilityTypeController.cs" />
+    <Compile Include="Controllers\LanguageController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\PharmacyController.cs" />
+    <Compile Include="Controllers\ProvdersProfileController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\SeniorCareController.cs" />
+    <Compile Include="Controllers\SiteImageController.cs" />
+    <Compile Include="Controllers\SpecialityController.cs" />
+    <Compile Include="Controllers\SubmissionController.cs" />
+    <Compile Include="Controllers\TestimonialController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VideoController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\JQueryDataTableParamModel.cs" />
+    <Compile Include="Models\JsonResponse.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SiteMapModels\ISitemapGenerator.cs" />
+    <Compile Include="Models\SiteMapModels\ISitemapItem.cs" />
+    <Compile Include="Models\SiteMapModels\PathUtils.cs" />
+    <Compile Include="Models\SiteMapModels\SitemapChangeFrequency.cs" />
+    <Compile Include="Models\SiteMapModels\SitemapGenerator.cs" />
+    <Compile Include="Models\SiteMapModels\SitemapItem.cs" />
+    <Compile Include="Models\SiteMapModels\SitemapResult.cs" />
+    <Compile Include="Models\SiteMapModels\SiteMapStatusModel.cs" />
+    <Compile Include="Models\SiteMapModels\StringExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Utility\APIHelper.cs" />
+    <Compile Include="Utility\Common.cs" />
+    <Compile Include="Utility\CookieHelper.cs" />
+    <Compile Include="Utility\Extension.cs" />
+    <Compile Include="Utility\RequestHelpers.cs" />
+    <Compile Include="Utility\SendMail.cs" />
+    <Compile Include="ViewModels\AdvertisementViewModel.cs" />
+    <Compile Include="ViewModels\AgeGroupViewModel.cs" />
+    <Compile Include="ViewModels\AppointmentViewModel.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\DrugDetailsViewModel.cs" />
+    <Compile Include="ViewModels\GraphViewModel.cs" />
+    <Compile Include="ViewModels\InsuranceAcceptedViewModel.cs" />
+    <Compile Include="ViewModels\LookUpViewModel.cs" />
+    <Compile Include="ViewModels\OrganizationViewModel.cs" />
+    <Compile Include="ViewModels\SeniorCareViewModel.cs" />
+    <Compile Include="ViewModels\DoctorViewModel.cs" />
+    <Compile Include="ViewModels\ExperienceViewModel.cs" />
+    <Compile Include="ViewModels\PharmacyBasicInformation.cs" />
+    <Compile Include="ViewModels\FeaturedSpecialityViewModel.cs" />
+    <Compile Include="ViewModels\FeaturedDoctorViewModel.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\LanguageViewModel.cs" />
+    <Compile Include="ViewModels\PatientBasicInformation.cs" />
+    <Compile Include="ViewModels\FacilityBasicInformation.cs" />
+    <Compile Include="ViewModels\PharmacyViewModel.cs" />
+    <Compile Include="ViewModels\QualificationViewModel.cs" />
+    <Compile Include="ViewModels\OpeningHoursViewModel.cs" />
+    <Compile Include="ViewModels\RequestAppointmentViewModel.cs" />
+    <Compile Include="ViewModels\ReviewViewModel.cs" />
+    <Compile Include="ViewModels\SearchParameterModel.cs" />
+    <Compile Include="ViewModels\SiteImageViewModel.cs" />
+    <Compile Include="ViewModels\SlotViewModel.cs" />
+    <Compile Include="ViewModels\SocialMediaViewModel.cs" />
+    <Compile Include="ViewModels\BoardCertificationViewModel.cs" />
+    <Compile Include="ViewModels\SpecialityViewModel.cs" />
+    <Compile Include="ViewModels\UserAndAddress.cs" />
+    <Compile Include="ViewModels\UserTypeViewModel.cs" />
+    <Compile Include="ViewModels\WebSettingViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\EmailTemplate\ClaimVerify.html" />
+    <Content Include="App_Data\EmailTemplate\ForgetPassword.html" />
+    <Content Include="App_Data\EmailTemplate\PrescriptionEmail.html" />
+    <Content Include="App_Data\EmailTemplate\SlotConfirm.html" />
+    <Content Include="Content\admin\css\bootstrap.css" />
+    <Content Include="Content\admin\css\bootstrap.min.css" />
+    <Content Include="Content\admin\css\demo\demo.css" />
+    <Content Include="Content\admin\css\demo\gamma-gallery.css" />
+    <Content Include="Content\admin\css\demo\icons.css" />
+    <Content Include="Content\admin\css\demo\jasmine.css" />
+    <Content Include="Content\admin\css\demo\jquery-steps.min.css" />
+    <Content Include="Content\admin\css\demo\normalize.css" />
+    <Content Include="Content\admin\css\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\admin\css\style.css" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\admin\img\av1.png" />
+    <Content Include="Content\admin\img\av2.png" />
+    <Content Include="Content\admin\img\av3.png" />
+    <Content Include="Content\admin\img\av4.png" />
+    <Content Include="Content\admin\img\av5.png" />
+    <Content Include="Content\admin\img\av6.png" />
+    <Content Include="Content\admin\img\av7.png" />
+    <Content Include="Content\admin\img\favicon.ico" />
+    <Content Include="Content\admin\img\favicon.png" />
+    <Content Include="Content\admin\img\flags\france.png" />
+    <Content Include="Content\admin\img\flags\germany.png" />
+    <Content Include="Content\admin\img\flags\italy.png" />
+    <Content Include="Content\admin\img\flags\spain.png" />
+    <Content Include="Content\admin\img\flags\united-kingdom.png" />
+    <Content Include="Content\admin\img\gamma\large\3.jpg" />
+    <Content Include="Content\admin\img\gamma\loader-dark.gif" />
+    <Content Include="Content\admin\img\gamma\loader-light.gif" />
+    <Content Include="Content\admin\img\gamma\medium\3.jpg" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-1.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-2.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-3.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-4.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-5.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-6.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-7.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-8.png" />
+    <Content Include="Content\admin\img\gamma\medium\gallery-9.png" />
+    <Content Include="Content\admin\img\gamma\small\3.jpg" />
+    <Content Include="Content\admin\img\gamma\xlarge\3.jpg" />
+    <Content Include="Content\admin\img\gamma\xsmall\3.jpg" />
+    <Content Include="Content\admin\img\gamma\xxlarge\3.jpg" />
+    <Content Include="Content\admin\img\gamma\xxxlarge\3.jpg" />
+    <Content Include="Content\admin\img\logo.png" />
+    <Content Include="Content\admin\img\photos\big-user-image-10.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-11.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-12.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-13.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-14.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-2.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-3.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-4.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-5.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-6.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-7.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-8.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image-9.jpg" />
+    <Content Include="Content\admin\img\photos\big-user-image.jpg" />
+    <Content Include="Content\admin\img\photos\profile-logo.png" />
+    <Content Include="Content\admin\img\photos\profile-pic-1.png" />
+    <Content Include="Content\admin\img\photos\profile-pic.png" />
+    <Content Include="Content\admin\img\thumbs\3.JPG" />
+    <Content Include="Content\admin\img\thumbs\6.jpg" />
+    <Content Include="Content\admin\img\thumbs\img1.jpg" />
+    <Content Include="Content\admin\img\thumbs\img2.jpg" />
+    <Content Include="Content\admin\img\thumbs\img3.jpg" />
+    <Content Include="Content\admin\img\thumbs\img4.png" />
+    <Content Include="Content\admin\img\user.png" />
+    <Content Include="Content\client\bootstrap-theme.css" />
+    <Content Include="Content\client\bootstrap-theme.min.css" />
+    <Content Include="Content\client\bootstrap.css" />
+    <Content Include="Content\client\bootstrap.min.css" />
+    <Content Include="Content\client\Chart.css" />
+    <Content Include="Content\client\css\bootstrap.min.css" />
+    <Content Include="Content\client\css\change-color.css" />
+    <Content Include="Content\client\css\custom.css" />
+    <Content Include="Content\client\css\index.css" />
+    <Content Include="Content\client\css\plugins.css" />
+    <Content Include="Content\client\css\plugins\datepicker.min.css" />
+    <Content Include="Content\client\css\plugins\fakeloader.css" />
+    <Content Include="Content\client\css\plugins\font-awesome.min.css" />
+    <Content Include="Content\client\css\plugins\icofont.min.css" />
+    <Content Include="Content\client\css\plugins\lightgallery.min.css" />
+    <Content Include="Content\client\css\plugins\meanmenu.css" />
+    <Content Include="Content\client\css\plugins\nice-select.css" />
+    <Content Include="Content\client\css\plugins\odometer-theme-default.css" />
+    <Content Include="Content\client\css\plugins\pe-icon-7-stroke.css" />
+    <Content Include="Content\client\css\plugins\slick.min.css" />
+    <Content Include="Content\client\css\search.css" />
+    <Content Include="Content\client\css\style.css" />
+    <Content Include="Content\client\css\style11.css" />
+    <Content Include="Content\client\custom\SearchPage.css" />
+    <Content Include="Content\client\custom\toastr.min.css" />
+    <Content Include="Content\client\Dashboard.css" />
+    <Content Include="Content\client\fonts\codropsicons\codropsicons.svg" />
+    <Content Include="Content\client\fonts\codropsicons\license.txt" />
+    <Content Include="Content\client\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\client\fonts\fontawesome-webfont3e6e.svg" />
+    <Content Include="Content\client\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\client\fonts\icofont.svg" />
+    <Content Include="Content\client\fonts\icofont7858.svg" />
+    <Content Include="Content\client\fonts\lg.svg" />
+    <Content Include="Content\client\fonts\lgd641.svg" />
+    <Content Include="Content\client\fonts\Pe-icon-7-stroke.svg" />
+    <Content Include="Content\client\fonts\Pe-icon-7-strokebb1d.svg" />
+    <Content Include="Content\client\fonts\slick.svg" />
+    <Content Include="Content\client\fonts\stroke7pixeden\stroke7pixeden.svg" />
+    <Content Include="Content\client\images\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\ajax-loader.gif" />
+    <Content Include="Content\client\images\banner\banner-image-3.jpg" />
+    <Content Include="Content\client\images\banner\banner-image-2.jpg" />
+    <Content Include="Content\client\images\banner\banner-image-1.jpg" />
+    <Content Include="Content\client\images\banner\banner-image-4.jpg" />
+    <Content Include="Content\client\images\banner\banner-image-5.jpg" />
+    <Content Include="Content\client\images\bg\errorpagetypobg.jpg" />
+    <Content Include="Content\client\images\bg\bg-image-1.jpg" />
+    <Content Include="Content\client\images\bg\bg-image-2.jpg" />
+    <Content Include="Content\client\images\blog\blog-commenter-1.png" />
+    <Content Include="Content\client\images\blog\blog-commenter-2.png" />
+    <Content Include="Content\client\images\blog\blog-commenter-3.png" />
+    <Content Include="Content\client\images\blog\blog-commenter.png" />
+    <Content Include="Content\client\images\blog\blog-details-image-1.jpg" />
+    <Content Include="Content\client\images\blog\blog-details-image-2.jpg" />
+    <Content Include="Content\client\images\blog\blog-popular-post-1.jpg" />
+    <Content Include="Content\client\images\blog\blog-popular-post-2.jpg" />
+    <Content Include="Content\client\images\blog\blog-popular-post-3.jpg" />
+    <Content Include="Content\client\images\blog\blog-popular-post-4.jpg" />
+    <Content Include="Content\client\images\blog\blog-thumb-1.jpg" />
+    <Content Include="Content\client\images\blog\blog-thumb-2.jpg" />
+    <Content Include="Content\client\images\blog\blog-thumb-3.jpg" />
+    <Content Include="Content\client\images\blog\blog-thumb-4.jpg" />
+    <Content Include="Content\client\images\blog\pg-blog-thumb-1.jpg" />
+    <Content Include="Content\client\images\blog\pg-blog-thumb-2.jpg" />
+    <Content Include="Content\client\images\blog\pg-blog-thumb-3.jpg" />
+    <Content Include="Content\client\images\blog\pg-blog-thumb-4.jpg" />
+    <Content Include="Content\client\images\blog\pg-blog-thumb-5.jpg" />
+    <Content Include="Content\client\images\blog\pg-blog-thumb-6.jpg" />
+    <Content Include="Content\client\images\blog\widget-post-1.png" />
+    <Content Include="Content\client\images\blog\widget-post-2.png" />
+    <Content Include="Content\client\images\blog\widget-post-3.png" />
+    <Content Include="Content\client\images\blog\widget-post-4.png" />
+    <Content Include="Content\client\images\blog\widget-post-5.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-1.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-10.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-2.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-3.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-4.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-5.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-6.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-7.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-8.png" />
+    <Content Include="Content\client\images\brand-logos\brand-logo-9.png" />
+    <Content Include="Content\client\images\Claim-Your-Business.png" />
+    <Content Include="Content\client\images\ClaimProcessHome1.png" />
+    <Content Include="Content\client\images\ClaimProcessHome2.png" />
+    <Content Include="Content\client\images\ClaimProcessHOme3.png" />
+    <Content Include="Content\client\images\ClaimProcessHome4.png" />
+    <Content Include="Content\client\images\ClaimProcessHome5.png" />
+    <Content Include="Content\client\images\cross-icon.png" />
+    <Content Include="Content\client\images\cycling.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\d.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\default-img.png" />
+    <Content Include="Content\client\images\doctors.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\DoctorsImg.jpg" />
+    <Content Include="Content\client\images\Doctorstethoscope.jpg" />
+    <Content Include="Content\client\images\DrugImage.jpg" />
+    <Content Include="Content\client\images\favicon.ico" />
+    <Content Include="Content\client\images\hand.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\hand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\icon.png" />
+    <Content Include="Content\client\images\icons\404.png" />
+    <Content Include="Content\client\images\icons\blue-1.png" />
+    <Content Include="Content\client\images\icons\care_home.png" />
+    <Content Include="Content\client\images\icons\doctor.png" />
+    <Content Include="Content\client\images\icons\eqp.png" />
+    <Content Include="Content\client\images\icons\facebook.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\icons\gmail.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\icons\green-1.png" />
+    <Content Include="Content\client\images\icons\icon-close.png" />
+    <Content Include="Content\client\images\icons\icon_doctor.png" />
+    <Content Include="Content\client\images\icons\insta.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\icons\linkedin.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\icons\medical-center.png" />
+    <Content Include="Content\client\images\icons\patient.png" />
+    <Content Include="Content\client\images\icons\pharmacy.png" />
+    <Content Include="Content\client\images\icons\senior-care.png" />
+    <Content Include="Content\client\images\icons\testimonial-quote-white.png" />
+    <Content Include="Content\client\images\icons\testimonial-quote.png" />
+    <Content Include="Content\client\images\icons\twitter.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\laptop.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\logo1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\logo2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\logo3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\logo3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\logo4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\logo\borderstrip-grey.png" />
+    <Content Include="Content\client\images\logo\borderstrip.png" />
+    <Content Include="Content\client\images\logo\logo-dark.png" />
+    <Content Include="Content\client\images\logo\logo-secondary-dark.png" />
+    <Content Include="Content\client\images\offer.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\others\1.png" />
+    <Content Include="Content\client\images\others\1n.png" />
+    <Content Include="Content\client\images\others\2.jpg" />
+    <Content Include="Content\client\images\others\2n.png" />
+    <Content Include="Content\client\images\others\3.png" />
+    <Content Include="Content\client\images\others\3n.png" />
+    <Content Include="Content\client\images\others\4.jpg" />
+    <Content Include="Content\client\images\others\4n.png" />
+    <Content Include="Content\client\images\others\about-widget-image.jpg" />
+    <Content Include="Content\client\images\others\appointment-image.jpg" />
+    <Content Include="Content\client\images\others\Doctor.jpg" />
+    <Content Include="Content\client\images\others\ExperienceImage.png" />
+    <Content Include="Content\client\images\others\Facilities.jpg" />
+    <Content Include="Content\client\images\others\Pharmacy.jpg" />
+    <Content Include="Content\client\images\others\pg-about-image.jpg" />
+    <Content Include="Content\client\images\others\pg-about-skills-image.jpg" />
+    <Content Include="Content\client\images\others\SeniorCare.jpg" />
+    <Content Include="Content\client\images\pic1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\client\images\service\service-image-1.jpg" />
+    <Content Include="Content\client\images\service\service-image-2.jpg" />
+    <Content Include="Content\client\images\service\service-image-3.jpg" />
+    <Content Include="Content\client\images\service\service-image-4.jpg" />
+    <Content Include="Content\client\images\service\service-image-5.jpg" />
+    <Content Include="Content\client\images\service\service-image-6.jpg" />
+    <Content Include="Content\client\images\service\service-image-7.jpg" />
+    <Content Include="Content\client\images\service\service-image-8.jpg" />
+    <Content Include="Content\client\images\service\service-page-image-2.png" />
+    <Content Include="Content\client\images\service\service-page-image.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-1.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-2-image-1.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-2-image-2.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-2-image-3.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-2-image-4.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-2.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-1.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-2.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-3.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-4.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-5.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-6.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-7.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-8.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3-image-9.jpg" />
+    <Content Include="Content\client\images\team-member\team-member-3.jpg" />
+    <Content Include="Content\client\images\testimonial\testimonial-author-image-1.png" />
+    <Content Include="Content\client\images\testimonial\testimonial-author-image-2.png" />
+    <Content Include="Content\client\images\testimonial\testimonial-author-image-3.png" />
+    <Content Include="Content\client\slider.css" />
+    <Content Include="Content\custom\toastr.min.css" />
+    <Content Include="dist\css\adminlte.css" />
+    <Content Include="dist\css\adminlte.min.css" />
+    <Content Include="dist\css\alt\adminlte.components.css" />
+    <Content Include="dist\css\alt\adminlte.components.min.css" />
+    <Content Include="dist\css\alt\adminlte.core.css" />
+    <Content Include="dist\css\alt\adminlte.core.min.css" />
+    <Content Include="dist\css\alt\adminlte.extra-components.css" />
+    <Content Include="dist\css\alt\adminlte.extra-components.min.css" />
+    <Content Include="dist\css\alt\adminlte.pages.css" />
+    <Content Include="dist\css\alt\adminlte.pages.min.css" />
+    <Content Include="dist\css\alt\adminlte.plugins.css" />
+    <Content Include="dist\css\alt\adminlte.plugins.min.css" />
+    <Content Include="dist\img\AdminLTELogo.png" />
+    <Content Include="dist\img\avatar.png" />
+    <Content Include="dist\img\avatar04.png" />
+    <Content Include="dist\img\avatar2.png" />
+    <Content Include="dist\img\avatar3.png" />
+    <Content Include="dist\img\avatar5.png" />
+    <Content Include="dist\img\boxed-bg.jpg" />
+    <Content Include="dist\img\boxed-bg.png" />
+    <Content Include="dist\img\credit\american-express.png" />
+    <Content Include="dist\img\credit\cirrus.png" />
+    <Content Include="dist\img\credit\mastercard.png" />
+    <Content Include="dist\img\credit\mestro.png" />
+    <Content Include="dist\img\credit\paypal.png" />
+    <Content Include="dist\img\credit\paypal2.png" />
+    <Content Include="dist\img\credit\visa.png" />
+    <Content Include="dist\img\default-150x150.png" />
+    <Content Include="dist\img\icons.png" />
+    <Content Include="dist\img\photo1.png" />
+    <Content Include="dist\img\photo2.png" />
+    <Content Include="dist\img\photo3.jpg" />
+    <Content Include="dist\img\photo4.jpg" />
+    <Content Include="dist\img\prod-1.jpg" />
+    <Content Include="dist\img\prod-2.jpg" />
+    <Content Include="dist\img\prod-3.jpg" />
+    <Content Include="dist\img\prod-4.jpg" />
+    <Content Include="dist\img\prod-5.jpg" />
+    <Content Include="dist\img\user1-128x128.jpg" />
+    <Content Include="dist\img\user2-160x160.jpg" />
+    <Content Include="dist\img\user3-128x128.jpg" />
+    <Content Include="dist\img\user4-128x128.jpg" />
+    <Content Include="dist\img\user5-128x128.jpg" />
+    <Content Include="dist\img\user6-128x128.jpg" />
+    <Content Include="dist\img\user7-128x128.jpg" />
+    <Content Include="dist\img\user8-128x128.jpg" />
+    <Content Include="dist\js\adminlte.js" />
+    <Content Include="dist\js\adminlte.min.js" />
+    <Content Include="dist\js\demo.js" />
+    <Content Include="dist\js\pages\dashboard.js" />
+    <Content Include="dist\js\pages\dashboard2.js" />
+    <Content Include="dist\js\pages\dashboard3.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfonte0a5.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\client\Site.css" />
+    <Content Include="Images\images1.jpg" />
+    <Content Include="Images\images2.jpg" />
+    <Content Include="Images\New-Prescription.png" />
+    <Content Include="Images\Prescription_Transfer.png" />
+    <Content Include="Images\Refill-Prescription.png" />
+    <Content Include="Scripts\admin\js\bootstrap.js" />
+    <Content Include="Scripts\admin\js\bootstrap.min.js" />
+    <Content Include="Scripts\admin\js\demo\charts-flot.js" />
+    <Content Include="Scripts\admin\js\demo\charts-morris.js" />
+    <Content Include="Scripts\admin\js\demo\dashboard-v2.js" />
+    <Content Include="Scripts\admin\js\demo\dashboard-v3.js" />
+    <Content Include="Scripts\admin\js\demo\form-component.js" />
+    <Content Include="Scripts\admin\js\demo\form-layout.js" />
+    <Content Include="Scripts\admin\js\demo\form-switchery.js" />
+    <Content Include="Scripts\admin\js\demo\form-validation.js" />
+    <Content Include="Scripts\admin\js\demo\form-wizard.js" />
+    <Content Include="Scripts\admin\js\demo\fullcalendar.js" />
+    <Content Include="Scripts\admin\js\demo\index.js" />
+    <Content Include="Scripts\admin\js\demo\mail-compose.js" />
+    <Content Include="Scripts\admin\js\demo\mail.js" />
+    <Content Include="Scripts\admin\js\demo\maps-vectormap.js" />
+    <Content Include="Scripts\admin\js\demo\misc-gmaps.js" />
+    <Content Include="Scripts\admin\js\demo\pages-gallery.js" />
+    <Content Include="Scripts\admin\js\demo\pages-register.js" />
+    <Content Include="Scripts\admin\js\demo\tables-bs-table.js" />
+    <Content Include="Scripts\admin\js\demo\tables-datatables.js" />
+    <Content Include="Scripts\admin\js\demo\tables-footable.js" />
+    <Content Include="Scripts\admin\js\demo\ui-animation.js" />
+    <Content Include="Scripts\admin\js\demo\ui-dragdrop.js" />
+    <Content Include="Scripts\admin\js\demo\ui-modals.js" />
+    <Content Include="Scripts\admin\js\demo\ui-nested-lists.js" />
+    <Content Include="Scripts\admin\js\demo\ui-notification.js" />
+    <Content Include="Scripts\admin\js\demo\ui-panels.js" />
+    <Content Include="Scripts\admin\js\demo\ui-tab.js" />
+    <Content Include="Scripts\admin\js\demo\ui-typography.js" />
+    <Content Include="Scripts\admin\js\demo\widgets.js" />
+    <Content Include="Scripts\admin\js\demo\wizard.js" />
+    <Content Include="Scripts\admin\js\demo\x-editable.js" />
+    <Content Include="Scripts\admin\js\jquery-1.11.2.min.js" />
+    <Content Include="Scripts\admin\js\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\admin\js\jquery-migrate-1.2.1.min.js" />
+    <Content Include="Scripts\admin\js\jquery-ui-1.9.2.custom.min.js" />
+    <Content Include="Scripts\admin\js\jquery-ui.js" />
+    <Content Include="Scripts\admin\js\jquery-ui.min.js" />
+    <Content Include="Scripts\admin\js\modernizr.custom.js" />
+    <Content Include="Scripts\admin\js\moment.js" />
+    <Content Include="Scripts\admin\js\npm.js" />
+    <Content Include="Scripts\admin\js\app.config.js" />
+    <Content Include="Scripts\admin\plugins\animate-css\animate.min.css" />
+    <Content Include="Scripts\admin\plugins\bootbox\bootbox.min.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-datepicker\bootstrap-datepicker.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap-datepicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-select\bootstrap-select.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap-select\bootstrap-select.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-select\bootstrap-select.js.map.txt" />
+    <Content Include="Scripts\admin\plugins\bootstrap-select\bootstrap-select.min.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap-select\bootstrap-select.min.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-table\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-tagsinput\bootstrap-tagsinput.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap-tagsinput\bootstrap-tagsinput.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-tagsinput\bootstrap-tagsinput.min.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-timepicker\bootstrap-timepicker.min.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap-timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-validator\bootstrapValidator.min.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap-validator\bootstrapValidator.min.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap-wizard\jquery.bootstrap.wizard.min.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap3-editable\css\bootstrap-editable.css" />
+    <Content Include="Scripts\admin\plugins\bootstrap3-editable\img\clear.png" />
+    <Content Include="Scripts\admin\plugins\bootstrap3-editable\img\loading.gif" />
+    <Content Include="Scripts\admin\plugins\bootstrap3-editable\js\bootstrap-editable.js" />
+    <Content Include="Scripts\admin\plugins\bootstrap3-editable\js\bootstrap-editable.min.js" />
+    <Content Include="Scripts\admin\plugins\chosen\chosen-sprite%402x.html" />
+    <Content Include="Scripts\admin\plugins\chosen\chosen-sprite.html" />
+    <Content Include="Scripts\admin\plugins\chosen\chosen.jquery.min.js" />
+    <Content Include="Scripts\admin\plugins\chosen\chosen.min.css" />
+    <Content Include="Scripts\admin\plugins\data-tables\DT_bootstrap.css" />
+    <Content Include="Scripts\admin\plugins\data-tables\DT_bootstrap.js" />
+    <Content Include="Scripts\admin\plugins\data-tables\images\sort_asc.png" />
+    <Content Include="Scripts\admin\plugins\data-tables\images\sort_asc_disabled.html" />
+    <Content Include="Scripts\admin\plugins\data-tables\images\sort_both.png" />
+    <Content Include="Scripts\admin\plugins\data-tables\images\sort_desc.png" />
+    <Content Include="Scripts\admin\plugins\data-tables\images\sort_desc_disabled.html" />
+    <Content Include="Scripts\admin\plugins\data-tables\jquery.dataTables.js" />
+    <Content Include="Scripts\admin\plugins\datatables\extensions\Responsive\css\dataTables.responsive.css" />
+    <Content Include="Scripts\admin\plugins\datatables\extensions\Responsive\js\dataTables.responsive.min.js" />
+    <Content Include="Scripts\admin\plugins\datatables\media\css\dataTables.bootstrap.css" />
+    <Content Include="Scripts\admin\plugins\datatables\media\images\sort_asc.png" />
+    <Content Include="Scripts\admin\plugins\datatables\media\images\sort_asc_disabled.png" />
+    <Content Include="Scripts\admin\plugins\datatables\media\images\sort_both.png" />
+    <Content Include="Scripts\admin\plugins\datatables\media\images\sort_desc.png" />
+    <Content Include="Scripts\admin\plugins\datatables\media\images\sort_desc_disabled.png" />
+    <Content Include="Scripts\admin\plugins\datatables\media\js\dataTables.bootstrap.js" />
+    <Content Include="Scripts\admin\plugins\datatables\media\js\jquery.dataTables.js" />
+    <Content Include="Scripts\admin\plugins\dropzone\dropzone.css" />
+    <Content Include="Scripts\admin\plugins\dropzone\dropzone.min.js" />
+    <Content Include="Scripts\admin\plugins\easy-pie-chart\jquery.easypiechart.min.js" />
+    <Content Include="Scripts\admin\plugins\editable-table\editable-table-init.js" />
+    <Content Include="Scripts\admin\plugins\editable-table\editable-table.js" />
+    <Content Include="Scripts\admin\plugins\editable-table\mindmup-editabletable.js" />
+    <Content Include="Scripts\admin\plugins\editable-table\numeric-input-example.js" />
+    <Content Include="Scripts\admin\plugins\fast-click\fastclick.min.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.categories.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.min.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.orderBars.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.pie.min.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.resize.min.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.selection.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.spline.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.stack.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.time.js" />
+    <Content Include="Scripts\admin\plugins\flot-charts\jquery.flot.tooltip.min.js" />
+    <Content Include="Scripts\admin\plugins\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Scripts\admin\plugins\font-awesome\fonts\fontawesome-webfonte0a5.svg" />
+    <Content Include="Scripts\admin\plugins\fooTable\css\fonts\footable.svg" />
+    <Content Include="Scripts\admin\plugins\fooTable\css\footable.core.css" />
+    <Content Include="Scripts\admin\plugins\fooTable\dist\footable.all.min.js" />
+    <Content Include="Scripts\admin\plugins\fullcalendar\fullcalendar.css" />
+    <Content Include="Scripts\admin\plugins\fullcalendar\fullcalendar.min.js" />
+    <Content Include="Scripts\admin\plugins\fullcalendar\lib\jquery-ui.custom.min.js" />
+    <Content Include="Scripts\admin\plugins\fullcalendar\lib\moment.min.js" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\css\demo.css" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\css\noJS.css" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\css\style.css" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\js\gamma.js" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\js\jquery.history.js" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\js\jquery.masonry.min.js" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\js\jquerypp.custom.js" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\js\js-url.min.js" />
+    <Content Include="Scripts\admin\plugins\gamma-gallery\js\modernizr.custom.70736.js" />
+    <Content Include="Scripts\admin\plugins\gauge-js\gauge.min.js" />
+    <Content Include="Scripts\admin\plugins\gmaps\gmaps.js" />
+    <Content Include="Scripts\admin\plugins\gmaps\gmaps.min.js" />
+    <Content Include="Scripts\admin\plugins\img\sprite-skin-flat.png" />
+    <Content Include="Scripts\admin\plugins\img\sprite-skin-modern.png" />
+    <Content Include="Scripts\admin\plugins\img\sprite-skin-nice.png" />
+    <Content Include="Scripts\admin\plugins\img\sprite-skin-simple.png" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\img\sprite-skin-flat.png" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\img\sprite-skin-modern.png" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\img\sprite-skin-nice.png" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\img\sprite-skin-simple.png" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.css" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.js" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.min.js" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.skinFlat.css" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.skinHTML5.css" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.skinModern.css" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.skinNice.css" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\ion.rangeSlider.skinSimple.css" />
+    <Content Include="Scripts\admin\plugins\ion-rangeslider\normalize.css" />
+    <Content Include="Scripts\admin\plugins\jquery-count-to\jquery.count-to.js" />
+    <Content Include="Scripts\admin\plugins\jquery-nestable\jquery.nestable.css" />
+    <Content Include="Scripts\admin\plugins\jquery-nestable\jquery.nestable.js" />
+    <Content Include="Scripts\admin\plugins\jquery-nestable\jquery.nestable.min.css" />
+    <Content Include="Scripts\admin\plugins\jquery-nestable\jquery.nestable.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-print\.gitignore" />
+    <Content Include="Scripts\admin\plugins\jquery-print\demo\css\normalize.min.css" />
+    <Content Include="Scripts\admin\plugins\jquery-print\demo\index.html" />
+    <Content Include="Scripts\admin\plugins\jquery-print\demo\js\vendor\html5-3.6-respond-1.1.0.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-print\demo\js\vendor\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-print\jQuery.print.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\detail.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\detail.min.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\graph.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\graph.min.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\legend.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\legend.min.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\rickshaw.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\css\rickshaw.min.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\jquery.ricksaw.init.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\d3.layout.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\d3.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\d3.v2.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\d3.v2.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\d3.v3.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\extensions.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\extensions.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\raphael-min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\raphael-min.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Class.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Class.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Color.Palette.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Color.Palette.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Compat.ClassList.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Compat.ClassList.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Color.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Color.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Number.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Number.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.RandomData.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.RandomData.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Time.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Time.Local.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Time.Local.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Fixtures.Time.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Ajax.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Ajax.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Annotate.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Annotate.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.Time.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.Time.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.X.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.X.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.Y.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.Y.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.Y.Scaled.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Axis.Y.Scaled.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Behavior.Series.Highlight.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Behavior.Series.Highlight.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Behavior.Series.Order.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Behavior.Series.Order.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Behavior.Series.Toggle.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Behavior.Series.Toggle.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.HoverDetail.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.HoverDetail.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.JSONP.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.JSONP.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Legend.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Legend.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.RangeSlider.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.RangeSlider.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Area.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Area.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Bar.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Bar.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Line.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Line.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.LinePlot.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.LinePlot.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Multi.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Multi.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.ScatterPlot.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.ScatterPlot.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Stack.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Renderer.Stack.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Smoother.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Smoother.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Unstacker.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Graph.Unstacker.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\rickshaw.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Series.FixedDuration.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Series.FixedDuration.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Series.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\js\Rickshaw.Series.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\ricksaw.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\rickshaw.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\rickshaw.js" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\rickshaw.min.css" />
+    <Content Include="Scripts\admin\plugins\jquery-ricksaw-chart\rickshaw.min.js" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\allow-page-scroll.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\chaining.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\disable-fade-out.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\dynamic-content.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\height-width.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\index.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\libs\prettify\prettify.css" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\libs\prettify\prettify.js" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\mouse-wheel.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\multiple-elements.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\navigation.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\nested.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\programmatic-scrolling.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\rail.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\scroll-events.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\scrollbar.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\start-position.html" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\examples\style.css" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\jquery.slimscroll.js" />
+    <Content Include="Scripts\admin\plugins\jQuery-slimScroll\jquery.slimscroll.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-steps\jquery-steps.min.js" />
+    <Content Include="Scripts\admin\plugins\jquery-tocify\css\tocify.css" />
+    <Content Include="Scripts\admin\plugins\jquery-tocify\js\jquery.tocify.js" />
+    <Content Include="Scripts\admin\plugins\jquery-tocify\js\jquery.tocify.min.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap-ar-mill.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap-au-mill.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap-de-mill.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap-north_america-mill.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap-uk_countries-mill.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap-us-aea-en.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap.css" />
+    <Content Include="Scripts\admin\plugins\jvectormap\jquery-jvectormap.min.js" />
+    <Content Include="Scripts\admin\plugins\masked-input\bootstrap-inputmask.min.js" />
+    <Content Include="Scripts\admin\plugins\masked-input\jquery.maskedinput.js" />
+    <Content Include="Scripts\admin\plugins\masked-input\jquery.maskedinput.min.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\.gitattributes" />
+    <Content Include="Scripts\admin\plugins\metismenu\.gitignore" />
+    <Content Include="Scripts\admin\plugins\metismenu\dist\metisMenu.css" />
+    <Content Include="Scripts\admin\plugins\metismenu\dist\metisMenu.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\dist\metisMenu.min.css" />
+    <Content Include="Scripts\admin\plugins\metismenu\dist\metisMenu.min.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\Gruntfile.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\metismenu.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\metismenu.min.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\package.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\src\metisMenu.css" />
+    <Content Include="Scripts\admin\plugins\metismenu\src\metisMenu.js" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\animate.html" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\demo.css" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\event.html" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\hover.html" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\index.html" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\metisFolder.css" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\metisFolder.html" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\mini.css" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\mini.html" />
+    <Content Include="Scripts\admin\plugins\metismenu\test\zurb.html" />
+    <Content Include="Scripts\admin\plugins\moment-range\moment-range.js" />
+    <Content Include="Scripts\admin\plugins\moment\moment.min.js" />
+    <Content Include="Scripts\admin\plugins\morris-js\morris.min.css" />
+    <Content Include="Scripts\admin\plugins\morris-js\morris.min.js" />
+    <Content Include="Scripts\admin\plugins\morris-js\raphael-js\raphael.min.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\.gitattributes" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\.gitignore" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\api.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\css\external-small.png" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\css\logo.png" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\css\main.css" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\favicon.png" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\img\spinner.gif" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\index.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\js\api-filter.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\js\api-list.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\js\api-search.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\js\apidocs.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\js\yui-prettify.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\vendor\prettify\CHANGES.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\vendor\prettify\prettify-min.css" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\vendor\prettify\prettify-min.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\vendor\prettify\README.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\classes\index.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\classes\NanoScroll.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\files\bin_javascripts_jquery.nanoscroller.js.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\files\index.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\index.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\modules\index.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\fig1.png" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\jquery.nanoscroller.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\jquery.nanoscroller.min.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\lib\jasmine-1.3.1\jasmine-html.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\lib\jasmine-1.3.1\jasmine.css" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\lib\jasmine-1.3.1\jasmine.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\lib\jasmine-jquery.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\lib\jquery.min.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\SpecRunner.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\spec\fixtures\nano-content.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\spec\fixtures\nano-no-content.html" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\spec\nano-spec.js" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\_SpecRunner.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\.gitignore" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\allLayouts.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\allTypes.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\animate.css" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\api.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\buttons.css" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\consumingAlert.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\customContainer.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\index.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\jquery-1.7.2.min.js" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\jquery-1.8.0.js" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\killer.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\notification_html.js" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\themeBootstrap.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\themeCss.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\usingMaxVisible.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\usingWithAnimate.css.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\usingWithButtons.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\usingWithButtons2.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\usingWithModal.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\usingWithOldOptions.html" />
+    <Content Include="Scripts\admin\plugins\noty-master\Gruntfile.js" />
+    <Content Include="Scripts\admin\plugins\noty-master\LICENSE.txt" />
+    <Content Include="Scripts\admin\plugins\noty\jquery.noty.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\bottom.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\bottomCenter.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\bottomLeft.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\bottomRight.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\center.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\centerLeft.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\centerRight.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\inline.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\top.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\topCenter.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\topLeft.js" />
+    <Content Include="Scripts\admin\plugins\noty\layouts\topRight.js" />
+    <Content Include="Scripts\admin\plugins\noty\packaged\jquery.noty.packaged.js" />
+    <Content Include="Scripts\admin\plugins\noty\packaged\jquery.noty.packaged.min.js" />
+    <Content Include="Scripts\admin\plugins\noty\promise.js" />
+    <Content Include="Scripts\admin\plugins\noty\themes\bootstrap.js" />
+    <Content Include="Scripts\admin\plugins\noty\themes\default.js" />
+    <Content Include="Scripts\admin\plugins\noty\themes\relax.js" />
+    <Content Include="Scripts\admin\plugins\noUiSlider\jquery.nouislider.all.min.js" />
+    <Content Include="Scripts\admin\plugins\noUiSlider\jquery.nouislider.min.css" />
+    <Content Include="Scripts\admin\plugins\noUiSlider\jquery.nouislider.pips.min.css" />
+    <Content Include="Scripts\admin\plugins\noUiSlider\nouislider.css" />
+    <Content Include="Scripts\admin\plugins\noUiSlider\nouislider.js" />
+    <Content Include="Scripts\admin\plugins\pace\pace.min.css" />
+    <Content Include="Scripts\admin\plugins\pace\pace.min.js" />
+    <Content Include="Scripts\admin\plugins\parsley\parsley.min.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\ajax.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\bars.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\colors.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\css\extensions.css" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\css\lines.css" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\extensions.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\fixed.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\formatter.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\gaps.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\hover.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\interp_cardinal.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\interp_linear.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\interp_step.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\offset_pct.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\offset_stack.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\offset_stream.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\offset_value.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_bar.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_curves.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_lines.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_percent.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_scatter.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_stack.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_step.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\images\om_stream.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\inconsistent.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\index.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\jsonp.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\js\extensions.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\legend.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\lineplot.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\lines.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\logscale.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\milliseconds.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\multi.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\negative.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\refresh.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\resize.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\scaled.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\scatterplot.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\ajax.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\colors.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\extensions.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\lines.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\logscale.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\scaled.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\scatterplot.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\simple.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\start.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\status.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\stops.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\screenshots\y_axis.png" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\series.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\simple.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\socket.io\app.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\socket.io\socket.io.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\sparse.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\start.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\status.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\stops.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\timescale.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\x_axis.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\y_axis.html" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\rickshaw.css" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\rickshaw.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\rickshaw.min.css" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\rickshaw.min.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\css\detail.css" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\css\graph.css" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\css\legend.css" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\helpers\endUMD.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\helpers\startUMD.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\rickshaw.Class.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\rickshaw.Color.Palette.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\rickshaw.Compat.ClassList.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\rickshaw.Fixtures.Color.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Fixtures.Number.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Fixtures.RandomData.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Fixtures.Time.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Fixtures.Time.Local.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Ajax.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Annotate.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Axis.Time.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Axis.X.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Axis.Y.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Axis.Y.Scaled.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Behavior.Series.Highlight.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Behavior.Series.Order.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Behavior.Series.Toggle.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.HoverDetail.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.JSONP.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Legend.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.RangeSlider.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.RangeSlider.Preview.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.Area.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.Bar.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.Line.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.LinePlot.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.Multi.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.ScatterPlot.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Renderer.Stack.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Smoother.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Graph.Socketio.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Series.FixedDuration.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\src\js\Rickshaw.Series.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\vendor\d3.layout.min.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\vendor\d3.min.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\vendor\d3.v2.js" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\vendor\d3.v3.js" />
+    <Content Include="Scripts\admin\plugins\screenfull\screenfull.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\ar.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\az.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\bg.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\ca.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\cs.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\da.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\de.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\el.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\en.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\es.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\et.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\eu.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\fa.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\fi.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\fr.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\gl.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\he.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\hi.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\hr.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\hu.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\id.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\is.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\it.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\ja.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\km.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\ko.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\lt.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\lv.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\mk.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\ms.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\nb.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\nl.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\pl.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\pt-BR.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\pt.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\ro.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\ru.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\sk.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\sr-Cyrl.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\sr.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\sv.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\th.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\tr.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\uk.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\vi.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\zh-CN.js" />
+    <Content Include="Scripts\admin\plugins\select2\i18n\zh-TW.js" />
+    <Content Include="Scripts\admin\plugins\select2\select2.css" />
+    <Content Include="Scripts\admin\plugins\select2\select2.full.js" />
+    <Content Include="Scripts\admin\plugins\select2\select2.full.min.js" />
+    <Content Include="Scripts\admin\plugins\select2\select2.js" />
+    <Content Include="Scripts\admin\plugins\select2\select2.min.css" />
+    <Content Include="Scripts\admin\plugins\select2\select2.min.js" />
+    <Content Include="Scripts\admin\plugins\skycons\skycons.min.js" />
+    <Content Include="Scripts\admin\plugins\sparkline\jquery.sparkline.min.js" />
+    <Content Include="Scripts\admin\plugins\summernote\summernote.min.css" />
+    <Content Include="Scripts\admin\plugins\summernote\summernote.min.js" />
+    <Content Include="Scripts\admin\plugins\switchery\switchery.min.css" />
+    <Content Include="Scripts\admin\plugins\switchery\switchery.min.js" />
+    <Content Include="Scripts\admin\plugins\tag-it\jquery.tagit.css" />
+    <Content Include="Scripts\admin\plugins\tag-it\tag-it.js" />
+    <Content Include="Scripts\admin\plugins\tag-it\tag-it.min.js" />
+    <Content Include="Scripts\admin\plugins\typeahead\typeahead.bundle.js" />
+    <Content Include="Scripts\admin\plugins\weather-icons\font\weathericons-regular-webfont.svg" />
+    <Content Include="Scripts\admin\plugins\weather-icons\weather-icons.css" />
+    <Content Include="Scripts\admin\plugins\weather-icons\weather-icons.min.css" />
+    <Content Include="Scripts\admin\plugins\x-editable\css\bootstrap-editable.css" />
+    <Content Include="Scripts\admin\plugins\x-editable\img\clear.png" />
+    <Content Include="Scripts\admin\plugins\x-editable\img\loading.gif" />
+    <Content Include="Scripts\admin\plugins\x-editable\js\bootstrap-editable.js" />
+    <Content Include="Scripts\admin\plugins\x-editable\js\bootstrap-editable.min.js" />
+    <Content Include="Scripts\client\bootstrap_4.3.1.min.js" />
+    <Content Include="Scripts\client\carousel\assets\ajax-loader.gif" />
+    <Content Include="Scripts\client\carousel\assets\owl.carousel.css" />
+    <Content Include="Scripts\client\carousel\assets\owl.carousel.min.css" />
+    <Content Include="Scripts\client\carousel\assets\owl.theme.default.css" />
+    <Content Include="Scripts\client\carousel\assets\owl.theme.default.min.css" />
+    <Content Include="Scripts\client\carousel\assets\owl.theme.green.css" />
+    <Content Include="Scripts\client\carousel\assets\owl.theme.green.min.css" />
+    <Content Include="Scripts\client\carousel\assets\owl.video.play.png" />
+    <Content Include="Scripts\client\carousel\owl.carousel.js" />
+    <Content Include="Scripts\client\carousel\owl.carousel.min.js" />
+    <Content Include="Scripts\client\Chart.js" />
+    <Content Include="Scripts\client\jquery-tmpl.js" />
+    <Content Include="Scripts\client\popper_1.14.7.min.js" />
+    <Content Include="Scripts\client\search.js" />
+    <Content Include="Scripts\client\slider.js" />
+    <Content Include="Scripts\client\vendor\jquery-1.10.2.js" />
+    <Content Include="Scripts\client\vendor\jquery-ui.js" />
+    <Content Include="Scripts\custom\app.admin.js" />
+    <Content Include="Scripts\custom\app.client.js" />
+    <Content Include="Scripts\custom\dialogs.js" />
+    <Content Include="Scripts\custom\gmap_large.js" />
+    <Content Include="Scripts\custom\gmap.js" />
+    <Content Include="Scripts\custom\GoogleMapsFunctions.js" />
+    <Content Include="Scripts\custom\initialResults.js" />
+    <Content Include="Scripts\Facility\FacilityIndividualMenu.js" />
+    <Content Include="Scripts\Facility\FacilityMenu.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Patient\PatientMenu.js" />
+    <Content Include="Scripts\system\bootstrap.js" />
+    <Content Include="Scripts\system\bootstrap.min.js" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Content Include=".editorconfig" />
+    <Content Include="Content\client\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\client\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\client\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\client\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\client\fonts\fontawesome-webfont3e6e.woff2" />
+    <Content Include="Content\client\fonts\FontAwesome.otf" />
+    <Content Include="Content\client\fonts\icofont.eot" />
+    <Content Include="Content\client\fonts\icofont.ttf" />
+    <Content Include="Content\client\fonts\icofont.woff" />
+    <Content Include="Content\client\fonts\lg.eot" />
+    <Content Include="Content\client\fonts\lg.ttf" />
+    <Content Include="Content\client\fonts\lg.woff" />
+    <Content Include="Content\client\fonts\Pe-icon-7-stroke.eot" />
+    <Content Include="Content\client\fonts\Pe-icon-7-stroke.ttf" />
+    <Content Include="Content\client\fonts\Pe-icon-7-stroke.woff" />
+    <Content Include="Content\client\fonts\slick.eot" />
+    <Content Include="Content\client\fonts\slick.ttf" />
+    <Content Include="Content\client\fonts\slick.woff" />
+    <Content Include="App_Data\EmailTemplate\ConfirmEmail.html" />
+    <Content Include="Content\admin\css\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\admin\css\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\admin\css\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\admin\css\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\admin\data\bs-table-simple.json" />
+    <Content Include="Scripts\admin\data\bs-table.json" />
+    <Content Include="Scripts\admin\data\datatables.json" />
+    <Content Include="Scripts\admin\plugins\bootstrap-select\bootstrap-select.css.map" />
+    <Content Include="Scripts\admin\plugins\font-awesome\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="Scripts\admin\plugins\font-awesome\fonts\fontawesome-webfonte0a5.eot" />
+    <Content Include="Scripts\admin\plugins\font-awesome\fonts\fontawesome-webfonte0a5.ttf" />
+    <Content Include="Scripts\admin\plugins\font-awesome\fonts\fontawesome-webfonte0a5.woff" />
+    <Content Include="Scripts\admin\plugins\font-awesome\fonts\fontawesome-webfonte0a5.woff2" />
+    <Content Include="Scripts\admin\plugins\fooTable\css\fonts\footable.eot" />
+    <Content Include="Scripts\admin\plugins\fooTable\css\fonts\footable.ttf" />
+    <Content Include="Scripts\admin\plugins\fooTable\css\fonts\footable.woff" />
+    <Content Include="Scripts\admin\plugins\fooTable\css\fonts\footabled41d.eot" />
+    <Content Include="Scripts\admin\plugins\gmaps\gmaps.min.js.map" />
+    <Content Include="Scripts\admin\plugins\jquery-print\bower.json" />
+    <Content Include="Scripts\admin\plugins\jquery-print\README.md" />
+    <Content Include="Scripts\admin\plugins\metismenu\.eslintrc.json" />
+    <Content Include="Scripts\admin\plugins\metismenu\.travis.yml" />
+    <Content Include="Scripts\admin\plugins\metismenu\.verb.md" />
+    <Content Include="Scripts\admin\plugins\metismenu\.versions" />
+    <Content Include="Scripts\admin\plugins\metismenu\bower.json" />
+    <Content Include="Scripts\admin\plugins\metismenu\composer.json" />
+    <Content Include="Scripts\admin\plugins\metismenu\dist\metisMenu.js.map" />
+    <Content Include="Scripts\admin\plugins\metismenu\LICENSE" />
+    <Content Include="Scripts\admin\plugins\metismenu\package.json" />
+    <Content Include="Scripts\admin\plugins\metismenu\README.md" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\.csslintrc" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\bower.json" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\coffeescripts\jquery.nanoscroller.coffee" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\assets\vendor\prettify\COPYING" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\docs\data.json" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\Gruntfile.coffee" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\LICENSE" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\nanoscroller.jquery.json" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\package.json" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\README.md" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\coffeescripts\nano-spec.coffee" />
+    <Content Include="Scripts\admin\plugins\nanoscrollerjs\tests\lib\jasmine-1.3.1\MIT.LICENSE" />
+    <Content Include="Scripts\admin\plugins\noty-master\bower.json" />
+    <Content Include="Scripts\admin\plugins\noty-master\composer.json" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Scripts\admin\plugins\noty-master\demo\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Scripts\admin\plugins\noty-master\noty.jquery.json" />
+    <Content Include="Scripts\admin\plugins\noty-master\package.json" />
+    <Content Include="Scripts\admin\plugins\noty-master\README.markdown" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\data\data.json" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\data\data.jsonp" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\data\data2.json" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\data\status.json" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\socket.io\package.json" />
+    <Content Include="Scripts\admin\plugins\rickshaw-master\examples\socket.io\README.md" />
+    <Content Include="Scripts\admin\plugins\weather-icons\font\weathericons-regular-webfont.eot" />
+    <Content Include="Scripts\admin\plugins\weather-icons\font\weathericons-regular-webfont.ttf" />
+    <Content Include="Scripts\admin\plugins\weather-icons\font\weathericons-regular-webfont.woff" />
+    <Content Include="Scripts\admin\plugins\weather-icons\font\WeatherIcons-Regular.otf" />
+    <Content Include="Content\client\fonts\codropsicons\codropsicons.eot" />
+    <Content Include="Content\client\fonts\codropsicons\codropsicons.ttf" />
+    <Content Include="Content\client\fonts\codropsicons\codropsicons.woff" />
+    <Content Include="Content\client\fonts\fontawesome-webfont3e6e.eot" />
+    <Content Include="Content\client\fonts\fontawesome-webfont3e6e.ttf" />
+    <Content Include="Content\client\fonts\fontawesome-webfont3e6e.woff" />
+    <Content Include="Content\client\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="Content\client\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\client\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\client\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\client\fonts\icofont7858.eot" />
+    <Content Include="Content\client\fonts\icofont7858.ttf" />
+    <Content Include="Content\client\fonts\icofont7858.woff" />
+    <Content Include="Content\client\fonts\lgd41d.eot" />
+    <Content Include="Content\client\fonts\lgd641.eot" />
+    <Content Include="Content\client\fonts\lgd641.ttf" />
+    <Content Include="Content\client\fonts\lgd641.woff" />
+    <Content Include="Content\client\fonts\Pe-icon-7-strokebb1d.eot" />
+    <Content Include="Content\client\fonts\Pe-icon-7-strokebb1d.ttf" />
+    <Content Include="Content\client\fonts\Pe-icon-7-strokebb1d.woff" />
+    <Content Include="Content\client\fonts\Pe-icon-7-stroked41d.eot" />
+    <Content Include="Content\client\fonts\slickd41d.eot" />
+    <Content Include="Content\client\fonts\stroke7pixeden\stroke7pixeden.eot" />
+    <Content Include="Content\client\fonts\stroke7pixeden\stroke7pixeden.ttf" />
+    <Content Include="Content\client\fonts\stroke7pixeden\stroke7pixeden.woff" />
+    <Content Include="fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="fonts\fontawesome-webfonte0a5.eot" />
+    <Content Include="fonts\fontawesome-webfonte0a5.ttf" />
+    <Content Include="fonts\fontawesome-webfonte0a5.woff" />
+    <Content Include="fonts\fontawesome-webfonte0a5.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\admin\css\your_style.min.css" />
+    <Content Include="Content\client\images\logo3.webp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dist\css\adminlte.css.map" />
+    <Content Include="dist\css\adminlte.min.css.map" />
+    <Content Include="dist\css\alt\adminlte.components.css.map" />
+    <Content Include="dist\css\alt\adminlte.components.min.css.map" />
+    <Content Include="dist\css\alt\adminlte.core.css.map" />
+    <Content Include="dist\css\alt\adminlte.core.min.css.map" />
+    <Content Include="dist\css\alt\adminlte.extra-components.css.map" />
+    <Content Include="dist\css\alt\adminlte.extra-components.min.css.map" />
+    <Content Include="dist\css\alt\adminlte.pages.css.map" />
+    <Content Include="dist\css\alt\adminlte.pages.min.css.map" />
+    <Content Include="dist\css\alt\adminlte.plugins.css.map" />
+    <Content Include="dist\css\alt\adminlte.plugins.min.css.map" />
+    <Content Include="dist\js\adminlte.js.map" />
+    <Content Include="dist\js\adminlte.min.js.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
+    <None Include="Scripts\system\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\custom\toastr.min.js" />
+    <Content Include="Scripts\system\fullclip.js" />
+    <Content Include="Scripts\system\fullclip.min.js" />
+    <Content Include="Scripts\system\jquery-3.3.1.js" />
+    <Content Include="Scripts\system\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\system\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\system\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\system\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\custom\jquery.blockUI.min.js" />
+    <Content Include="Scripts\system\jquery.bootpag.min.js" />
+    <Content Include="Scripts\system\jquery.idle.min.js" />
+    <Content Include="Scripts\system\jquery.validate.js" />
+    <Content Include="Scripts\system\jquery.validate.min.js" />
+    <Content Include="Scripts\system\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\system\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\client\active.js" />
+    <Content Include="Scripts\client\ajax-mail.js" />
+    <Content Include="Scripts\client\bootstrap.min.js" />
+    <Content Include="Scripts\client\google-map.js" />
+    <Content Include="Scripts\client\plugins.js" />
+    <Content Include="Scripts\client\popper.min.js" />
+    <Content Include="Scripts\client\scripts.js" />
+    <Content Include="Scripts\client\vendor\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\client\vendor\modernizr-3.5.0.min.js" />
+    <Content Include="Scripts\system\modernizr-2.8.3.js" />
+    <Content Include="Uploads\Advertisement\Advertisement-637302443517735516.png" />
+    <Content Include="Uploads\Advertisement\Advertisement-637302503336607316.png" />
+    <Content Include="Uploads\Advertisement\Advertisement-637314902901204496.png" />
+    <Content Include="Uploads\Advertisement\Advertisement-637477464193312559.jpg" />
+    <Content Include="Uploads\Advertisement\loginad2.jpeg" />
+    <Content Include="Uploads\Advertisement\loginad3.jpg" />
+    <Content Include="Uploads\DoctorSiteImages\Doctor-637234676798127045.jpg" />
+    <Content Include="Uploads\DoctorSiteImages\Doctor-637238108934572963.jpg" />
+    <Content Include="Uploads\DoctorSiteImages\Doctor-637239879523424072.jpg" />
+    <Content Include="Uploads\DoctorSiteImages\Doctor-637239886539521649.jpg" />
+    <Content Include="Uploads\DoctorSiteImages\Doctor-637239900704716676.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636950917195632771.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636950917418191051.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636956051341460302.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636956051341620182.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636956051342109877.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636956051342679519.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636956051343009313.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636956051343099272.jpg" />
+    <Content Include="Uploads\Doctor\Doctor-636956069112602138.jpg" />
+    <Content Include="Uploads\FacilitySiteImages\Facility-637433945061545739.png" />
+    <Content Include="Uploads\FacilitySiteImages\Facility-637439410703239429.png" />
+    <Content Include="Uploads\Facility\amb.gif" />
+    <Content Include="Uploads\Facility\blog-commenter-1.png" />
+    <Content Include="Uploads\Facility\blog-commenter-2.png" />
+    <Content Include="Uploads\Facility\blog-commenter-3.png" />
+    <Content Include="Uploads\Facility\blog-commenter.png" />
+    <Content Include="Uploads\Facility\blog-details-image-1.jpg" />
+    <Content Include="Uploads\Facility\blog-details-image-2.jpg" />
+    <Content Include="Uploads\Facility\blog-popular-post-1.jpg" />
+    <Content Include="Uploads\Facility\blog-popular-post-2.jpg" />
+    <Content Include="Uploads\Facility\blog-popular-post-3.jpg" />
+    <Content Include="Uploads\Facility\blog-popular-post-4.jpg" />
+    <Content Include="Uploads\Facility\blog-thumb-1.jpg" />
+    <Content Include="Uploads\Facility\blog-thumb-2.jpg" />
+    <Content Include="Uploads\Facility\blog-thumb-3.jpg" />
+    <Content Include="Uploads\Facility\blog-thumb-4.jpg" />
+    <Content Include="Uploads\Facility\pg-blog-thumb-1.jpg" />
+    <Content Include="Uploads\Facility\pg-blog-thumb-2.jpg" />
+    <Content Include="Uploads\Facility\pg-blog-thumb-3.jpg" />
+    <Content Include="Uploads\Facility\widget-post-1.png" />
+    <Content Include="Uploads\Facility\widget-post-2.png" />
+    <Content Include="Uploads\Facility\widget-post-3.png" />
+    <Content Include="Uploads\Facility\widget-post-4.png" />
+    <Content Include="Uploads\Facility\widget-post-5.png" />
+    <Content Include="Uploads\FeaturedDoctor\191c9662-9fec-4f67-8934-7cdf91d1838e.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\66586945-6bc4-4e32-a0de-7ac8dc0b8a2f.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\d7b9329a-5c8c-4e46-83b5-d08d1c181b22.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636968918377873917.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972668217114798.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972668363912125.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972669281505942.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972669467705976.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972669630941473.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972669777830813.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972669952100425.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972710322995082.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972710580343662.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972710825115950.jpg" />
+    <Content Include="Uploads\FeaturedDoctor\Featured-Doctor-636972711018689624.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility1.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility10.jpeg" />
+    <Content Include="Uploads\FeaturedFacility\Facility11.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility12.jpeg" />
+    <Content Include="Uploads\FeaturedFacility\Facility13.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility2.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility3.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility4.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility5.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility6.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility7.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility8.jpg" />
+    <Content Include="Uploads\FeaturedFacility\Facility9.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\dental.png" />
+    <Content Include="Uploads\FeaturedSpeciality\Featured-Speciality-636941611523427284.png" />
+    <Content Include="Uploads\FeaturedSpeciality\Featured-Speciality-636970953230662530.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Featured-Speciality-636970959354427953.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Featured-Speciality-636970959930679130.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Featured-Speciality-636970960925206546.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Featured-Speciality-636970961280685297.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Featured-Speciality-636970961543275527.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Gynaecology.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Handicap.png" />
+    <Content Include="Uploads\FeaturedSpeciality\MouthTube.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\Opthalmology.png" />
+    <Content Include="Uploads\FeaturedSpeciality\PediatricClinic.png" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-1.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-2.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-3.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-4.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-5.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-6.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-7.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-image-8.jpg" />
+    <Content Include="Uploads\FeaturedSpeciality\service-page-image-2.png" />
+    <Content Include="Uploads\FeaturedSpeciality\service-page-image.jpg" />
+    <Content Include="Uploads\PatientSiteImages\Patient-637310592000000000.png" />
+    <Content Include="Uploads\PharmacySiteImages\Doctor-637438960533813743.png" />
+    <Content Include="Uploads\PharmacySiteImages\Doctor-637444507050174371.png" />
+    <Content Include="Uploads\PharmacySiteImages\Doctor-637444509483342918.png" />
+    <Content Include="Uploads\PharmacySiteImages\Doctor-637616655259208355.jpg" />
+    <Content Include="Uploads\PharmacySiteImages\Doctor-637616655385777450.jpg" />
+    <Content Include="Uploads\PharmacySiteImages\Pharmacy-637626656258557174.jpg" />
+    <Content Include="Uploads\ProfilePic\doctor.jpg" />
+    <Content Include="Uploads\ProfilePic\no_picture.png" />
+    <Content Include="Uploads\SeniorCareProfile\SeniorCare-637433922876677709.png" />
+    <Content Include="Uploads\SeniorCareProfile\SeniorCare-637433929035971606.png" />
+    <Content Include="Uploads\SeniorCareProfile\SeniorCare-637433953069133342.png" />
+    <Content Include="Uploads\SeniorCareProfile\SeniorCare-637433964885912332.png" />
+    <Content Include="Uploads\SeniorCareProfile\SeniorCare-637434575479701330.png" />
+    <Content Include="Uploads\SeniorCareProfile\SeniorCare-637434577673652398.png" />
+    <Content Include="Uploads\SeniorCareProfile\SeniorCare-637434592182372592.png" />
+    <Content Include="Uploads\team-member\team-member-1.jpg" />
+    <Content Include="Uploads\team-member\team-member-2-image-1.jpg" />
+    <Content Include="Uploads\team-member\team-member-2-image-2.jpg" />
+    <Content Include="Uploads\team-member\team-member-2-image-3.jpg" />
+    <Content Include="Uploads\team-member\team-member-2-image-4.jpg" />
+    <Content Include="Uploads\team-member\team-member-2.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-1.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-2.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-3.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-4.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-5.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-6.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-7.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-8.jpg" />
+    <Content Include="Uploads\team-member\team-member-3-image-9.jpg" />
+    <Content Include="Uploads\team-member\team-member-3.jpg" />
+    <Content Include="Views\Error\AccessDenied.cshtml" />
+    <Content Include="Views\Error\ForBidden.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Shared\_LoginRegisterLayout.cshtml" />
+    <Content Include="Views\Shared\_Scripts.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Shared\ForBidden.cshtml" />
+    <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Shared\_HeaderAdmin.cshtml" />
+    <Content Include="Views\Shared\_TopRightAdmin.cshtml" />
+    <Content Include="Views\Shared\_TopMenu.cshtml" />
+    <Content Include="Views\Shared\_FooterAdmin.cshtml" />
+    <Content Include="Views\Shared\Menus\_AdminMenu.cshtml" />
+    <Content Include="Views\Shared\Menus\_DoctorMenu.cshtml" />
+    <Content Include="Views\Shared\Menus\_PatientMenu.cshtml" />
+    <Content Include="Views\Shared\Menus\_FacilityMenu.cshtml" />
+    <Content Include="Views\Shared\Menus\_SeniorCareMenu.cshtml" />
+    <Content Include="Views\Shared\Menus\_PharmacyMenu.cshtml" />
+    <Content Include="Views\Doctor\Index.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
+    <Content Include="Views\Home\Faq.cshtml" />
+    <Content Include="Views\Account\Partial\_RegisterPartial.cshtml" />
+    <Content Include="Views\Doctor\BasicInformation.cshtml" />
+    <Content Include="Views\Dashboard\Doctor.cshtml" />
+    <Content Include="Views\Dashboard\Facility.cshtml" />
+    <Content Include="Views\Dashboard\Patient.cshtml" />
+    <Content Include="Views\Dashboard\SeniorCare.cshtml" />
+    <Content Include="Views\Doctor\Qualification.cshtml" />
+    <Content Include="Views\Doctor\FeaturedDoctors.cshtml" />
+    <Content Include="Views\Speciality\Index.cshtml" />
+    <Content Include="Views\Speciality\FeaturedSpecialities.cshtml" />
+    <Content Include="Views\Speciality\Partial\_Speciality.cshtml" />
+    <Content Include="Views\Doctor\Partial\_Qualification.cshtml" />
+    <Content Include="Views\Doctor\Experience.cshtml" />
+    <Content Include="Views\Doctor\Partial\_Experience.cshtml" />
+    <Content Include="Views\Doctor\Slot.cshtml" />
+    <Content Include="Views\Doctor\Partial\_Slot.cshtml" />
+    <Content Include="Views\Doctor\Partial\_OpeningHours.cshtml" />
+    <Content Include="Views\Doctor\OpeningHours.cshtml" />
+    <Content Include="Views\Doctor\DoctorProfile.cshtml" />
+    <Content Include="Views\BoardCertification\Index.cshtml" />
+    <Content Include="Views\BoardCertification\Partial\_BoardCertification.cshtml" />
+    <Content Include="Views\Facility\BasicInformation.cshtml" />
+    <Content Include="Views\Facility\Index.cshtml" />
+    <Content Include="Views\FacilityType\Index.cshtml" />
+    <Content Include="Uploads\WebSettings\HomePageUserCount.json" />
+    <Content Include="Views\WebSetting\Index.cshtml" />
+    <Content Include="Views\WebSetting\NetworkCount.cshtml" />
+    <Content Include="Views\FacilityType\Partial\_FacilityType.cshtml" />
+    <Content Include="Views\Facility\FacilityProfile.cshtml" />
+    <Content Include="Views\Patient\BasicInformation.cshtml" />
+    <Content Include="Views\Patient\Index.cshtml" />
+    <Content Include="Views\Patient\PatientProfile.cshtml" />
+    <Content Include="Views\Doctor\FacilityAffiliation.cshtml" />
+    <Content Include="Views\Doctor\Partial\_FacilityAffiliation.cshtml" />
+    <Content Include="Views\Doctor\Partial\_ViewSlot.cshtml" />
+    <Content Include="Views\Doctor\Partial\_FeaturedDoctor.cshtml" />
+    <Content Include="Views\Doctor\Partial\_FeaturedSpeciality.cshtml" />
+    <Content Include="Views\Doctor\FeaturedSpeciality.cshtml" />
+    <Content Include="Views\Search\DoctorProfile.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Language\Index.cshtml" />
+    <Content Include="Views\Language\Partial\_Language.cshtml" />
+    <Content Include="Views\Search\Partial\_Search.cshtml" />
+    <Content Include="Views\Search\Partial\_RequestAppointment.cshtml" />
+    <Content Include="Views\Doctor\MyImages1.cshtml" />
+    <Content Include="Views\FacilityOption\Partial\_FacilityOption.cshtml" />
+    <Content Include="Views\FacilityOption\Index.cshtml" />
+    <Content Include="Views\Search\Partial\_RequestAppointmentScreen2.cshtml" />
+    <Content Include="Views\Search\Partial\LoadTimeSlots.cshtml" />
+    <Content Include="Views\Shared\_ClientScripts.cshtml" />
+    <Content Include="Views\Doctor\MyLanguages.cshtml" />
+    <Content Include="Views\Doctor\Partial\_MyLanguage.cshtml" />
+    <Content Include="Views\Search\Partial\_DoctorReview.cshtml" />
+    <Content Include="Views\Doctor\Partial\_MyLocation.cshtml" />
+    <Content Include="Views\Doctor\MyLocations.cshtml" />
+    <Content Include="Views\Pharmacy\BasicInformation.cshtml" />
+    <Content Include="Views\Pharmacy\PharmacyProfile.cshtml" />
+    <Content Include="Views\Pharmacy\Index.cshtml" />
+    <Content Include="Views\Dashboard\Pharmacy.cshtml" />
+    <Content Include="Views\Pharmacy\MyDrugs.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_MyPharmacyDrugs.cshtml" />
+    <Content Include="Views\Search\Pharmacy.cshtml" />
+    <Content Include="Views\Search\Partial\_SearchPharmacy.cshtml" />
+    <Content Include="Views\SeniorCare\Index.cshtml" />
+    <Content Include="Views\SeniorCare\SeniorCareProfile.cshtml" />
+    <Content Include="Views\SeniorCare\BasicInformation.cshtml" />
+    <Content Include="Views\Home\Doctors.cshtml" />
+    <Content Include="Views\Home\Specialities.cshtml" />
+    <Content Include="Views\Home\Facility.cshtml" />
+    <Content Include="Views\Home\FacilityTypes.cshtml" />
+    <Content Include="Views\Home\SeniorCare.cshtml" />
+    <Content Include="Views\Home\Pharmacy.cshtml" />
+    <Content Include="Views\Home\Blog.cshtml" />
+    <Content Include="Views\Appointment\Index.cshtml" />
+    <Content Include="Views\Search\PharmacyProfile.cshtml" />
+    <Content Include="Views\Search\Partial\_SearchSeniorCare.cshtml" />
+    <Content Include="Views\Search\SeniorCareProfile.cshtml" />
+    <Content Include="Views\Search\Partial\_SearchFacility.cshtml" />
+    <Content Include="Views\Search\FacilityProfile.cshtml" />
+    <Content Include="Views\Search\SearchDrug.cshtml" />
+    <Content Include="Views\Doctor\InsuranceAccepted.cshtml" />
+    <Content Include="Views\Doctor\Partial\_InsuranceAccepted.cshtml" />
+    <Content Include="Views\Doctor\AgeGroup.cshtml" />
+    <Content Include="Views\Doctor\Partial\_AgeGroup.cshtml" />
+    <Content Include="Views\Drug\Manufacturer.cshtml" />
+    <Content Include="Views\Drug\DrugQuantity.cshtml" />
+    <Content Include="Views\Drug\DrugType.cshtml" />
+    <Content Include="Views\Drug\Tablet.cshtml" />
+    <Content Include="Views\Drug\DrugDetails.cshtml" />
+    <Content Include="Views\Drug\DrugInformation.cshtml" />
+    <Content Include="Views\Search\Facility.cshtml" />
+    <Content Include="Views\Search\SeniorCare.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdminold.cshtml" />
+    <Content Include="Views\Shared\_TopMenunw.cshtml" />
+    <Content Include="Views\Account\EditUserInfo.cshtml" />
+    <Content Include="Views\Home\TermsAndConditions.cshtml" />
+    <Content Include="Views\Home\PrivacyPolicy.cshtml" />
+    <Content Include="Views\Shared\_TopDoctor.cshtml" />
+    <Content Include="Views\Home\AdvertiseWithUs.cshtml" />
+    <Content Include="Views\Home\ClaimYourListing.cshtml" />
+    <Content Include="Views\Shared\_Speciality.cshtml" />
+    <Content Include="Views\Search\Organization.cshtml" />
+    <Content Include="Views\ProvdersProfile\Pharmacy.cshtml" />
+    <Content Include="Views\ProvdersProfile\Facility.cshtml" />
+    <Content Include="Views\ProvdersProfile\SeniorCare.cshtml" />
+    <Content Include="Views\ProvdersProfile\SlotsConfirmation.cshtml" />
+    <Content Include="Views\User\AddressType.cshtml" />
+    <Content Include="Views\User\AdvertisementLocation.cshtml" />
+    <Content Include="Views\User\AmenityOption.cshtml" />
+    <Content Include="Views\User\DrugStatus.cshtml" />
+    <Content Include="Views\User\DrugStrength.cshtml" />
+    <Content Include="Views\User\DrugSymptoms.cshtml" />
+    <Content Include="Views\User\DrugTabs.cshtml" />
+    <Content Include="Views\User\DrugType.cshtml" />
+    <Content Include="Views\User\GenderType.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\InsuranceType.cshtml" />
+    <Content Include="Views\User\OrganisationType.cshtml" />
+    <Content Include="Views\User\Partial\_AddressType.cshtml" />
+    <Content Include="Views\User\Partial\_AdvertisementLocation.cshtml" />
+    <Content Include="Views\User\Partial\_AmenityOption.cshtml" />
+    <Content Include="Views\User\Partial\_DrugStatus.cshtml" />
+    <Content Include="Views\User\Partial\_DrugStrength.cshtml" />
+    <Content Include="Views\User\Partial\_DrugSymptoms.cshtml" />
+    <Content Include="Views\User\Partial\_DrugTabs.cshtml" />
+    <Content Include="Views\User\Partial\_DrugType.cshtml" />
+    <Content Include="Views\User\Partial\_GenderType.cshtml" />
+    <Content Include="Views\User\Partial\_InsuranceType.cshtml" />
+    <Content Include="Views\User\Partial\_OrganisationTypes.cshtml" />
+    <Content Include="Views\User\Partial\_PaymentType.cshtml" />
+    <Content Include="Views\User\Partial\_Specialitys.cshtml" />
+    <Content Include="Views\User\Partial\_UserType.cshtml" />
+    <Content Include="Views\User\PaymentType.cshtml" />
+    <Content Include="Views\User\Speciality.cshtml" />
+    <Content Include="Views\OrganizationAmenityOption\Index.cshtml" />
+    <Content Include="Views\SiteImage\Index.cshtml" />
+    <Content Include="Views\Facility\Reviews.cshtml" />
+    <Content Include="Views\Facility\Specialities.cshtml" />
+    <Content Include="Views\Facility\Summary.cshtml" />
+    <Content Include="Views\Facility\InsurancePlan.cshtml" />
+    <Content Include="Views\Facility\OpeningHours.cshtml" />
+    <Content Include="Views\Facility\StateLicense.cshtml" />
+    <Content Include="Views\Booking\Index.cshtml" />
+    <Content Include="Views\Booking\Partial\_Slot.cshtml" />
+    <Content Include="Views\Advertisement\Index.cshtml" />
+    <Content Include="Views\Pharmacy\Address_old.cshtml" />
+    <Content Include="Views\Pharmacy\AmenityOptions.cshtml" />
+    <Content Include="Views\Pharmacy\Images.cshtml" />
+    <Content Include="Views\Pharmacy\Address.cshtml" />
+    <Content Include="Views\Pharmacy\OpeningHours.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyProfile.cshtml" />
+    <Content Include="Views\Pharmacy\PharmacyProfile-old.cshtml" />
+    <Content Include="Views\Pharmacy\Profile.cshtml" />
+    <Content Include="Views\Pharmacy\Reviews.cshtml" />
+    <Content Include="Views\Pharmacy\StateLicense.cshtml" />
+    <Content Include="Views\Submission\SiteMaps.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyAddress.cshtml" />
+    <Content Include="Views\Pharmacy\Featured.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyFeatured.cshtml" />
+    <Content Include="Views\Pharmacy\SocialMedia.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacySocialMedia.cshtml" />
+    <Content Include="Views\Pharmacy\Taxonomy.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyTaxonomy.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyAmenityOptions.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyStateLicense.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyOpeningHours.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyReviews.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyImages.cshtml" />
+    <Content Include="Views\Pharmacy\Insurance.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyInsurance.cshtml" />
+    <Content Include="Views\Facility\SocialMedia.cshtml" />
+    <Content Include="Views\Facility\Taxonomy.cshtml" />
+    <Content Include="Views\Facility\Addresses.cshtml" />
+    <Content Include="Views\SeniorCare\Partial\_SeniorCareCreateProfile.cshtml" />
+    <Content Include="Views\SiteImage\Partial\_SiteImage.cshtml" />
+    <Content Include="Views\OrganizationAmenityOption\Partial\_OrganizationAmenityAmenityOption.cshtml" />
+    <Content Include="Views\Facility\Partial\_FacilityProfile.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorAffiliation.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorAgeGroup.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorBoardCertification.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorExperience.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorGender.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorInsurances.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorLanguage.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorQualification.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctorSpeciality.cshtml" />
+    <Content Include="Views\Doctor\DoctorAgeGroup.cshtml" />
+    <Content Include="Views\Doctor\DoctorBoardCertification.cshtml" />
+    <Content Include="Views\Doctor\DoctorExperience.cshtml" />
+    <Content Include="Views\Doctor\DoctorGender.cshtml" />
+    <Content Include="Views\Doctor\DoctorInsurances.cshtml" />
+    <Content Include="Views\Doctor\DoctorLanguage.cshtml" />
+    <Content Include="Views\Doctor\DoctorQualification.cshtml" />
+    <Content Include="Views\Doctor\DoctorSpeciality.cshtml" />
+    <Content Include="Views\Doctor\DoctorAffiliations.cshtml" />
+    <Content Include="Views\Doctor\AddEditDoctor.cshtml" />
+    <Content Include="Views\SeniorCare\Reviews_old.cshtml" />
+    <Content Include="Views\Facility\Booking.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyBooking.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyProcedure.cshtml" />
+    <Content Include="Views\Pharmacy\Booking.cshtml" />
+    <Content Include="Views\Pharmacy\Procedure.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacySpeciality.cshtml" />
+    <Content Include="Views\Pharmacy\_PharmacySpeciality.cshtml" />
+    <Content Include="Views\SeniorCare\Cost.cshtml" />
+    <Content Include="Views\SeniorCare\Booking.cshtml" />
+    <Content Include="Views\Doctor\DoctorBooking.cshtml" />
+    <Content Include="Views\Pharmacy\Speciality.cshtml" />
+    <Content Include="Views\ProvdersProfile\ClaimPracticeBusiness.cshtml" />
+    <Content Include="Views\Pharmacy\PatientOrder.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyOrder.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorSocialMedia.cshtml" />
+    <Content Include="Views\Doctor\SocialMedia.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorOpeningHours.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorAddress.cshtml" />
+    <Content Include="Views\Doctor\DoctorAddress.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorStateLicense.cshtml" />
+    <Content Include="Views\Doctor\DoctorStateLicense.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorTaxonomy.cshtml" />
+    <Content Include="Views\Doctor\DoctorTaxonomy.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorBooking.cshtml" />
+    <Content Include="Views\Doctor\Booking.cshtml" />
+    <Content Include="Views\SeniorCare\Partial\_PharmacyBooking.cshtml" />
+    <Content Include="Views\SeniorCare\Partial\_PharmacyAddress.cshtml" />
+    <Content Include="Views\SeniorCare\Partial\_PharmacyOpeningHours.cshtml" />
+    <Content Include="Views\SeniorCare\Address.cshtml" />
+    <Content Include="Views\SeniorCare\OpeningHours.cshtml" />
+    <Content Include="Views\SeniorCare\SocialMedia.cshtml" />
+    <Content Include="Views\Facility\Profile.cshtml" />
+    <Content Include="Views\SeniorCare\InsurancePlan.cshtml" />
+    <Content Include="Views\ProvdersProfile\ClaimProcess.cshtml" />
+    <Content Include="Views\SeniorCare\Partial\_PharmacyStateLicense.cshtml" />
+    <Content Include="Views\SeniorCare\Partial\_PharmacyTaxonomy.cshtml" />
+    <Content Include="Views\SeniorCare\StateLicense.cshtml" />
+    <Content Include="Views\SeniorCare\Taxonomy.cshtml" />
+    <Content Include="Views\Facility\Image.cshtml" />
+    <Content Include="Views\Facility\Partial\_FacilityImages.cshtml" />
+    <Content Include="Views\SeniorCare\Reviews.cshtml" />
+    <Content Include="Views\Pharmacy\Partial\_PharmacyAccount.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorImages.cshtml" />
+    <Content Include="Views\Doctor\Images.cshtml" />
+    <Content Include="Views\Pharmacy\UserAccount.cshtml" />
+    <Content Include="Views\Doctor\Partial\_DoctorAccount.cshtml" />
+    <Content Include="Views\Doctor\UserAccount.cshtml" />
+    <Content Include="Views\SeniorCare\Profile.cshtml" />
+    <Content Include="Views\Blog\Create.cshtml" />
+    <Content Include="Views\Blog\Index.cshtml" />
+    <Content Include="Views\Patient\Profile.cshtml" />
+    <Content Include="Views\Patient\Orders.cshtml" />
+    <Content Include="Views\Patient\Booking.cshtml" />
+    <Content Include="Views\Patient\Address.cshtml" />
+    <Content Include="Views\Patient\Partial\_PatientBooking.cshtml" />
+    <Content Include="Views\Patient\Partial\_PatientOrder.cshtml" />
+    <Content Include="Views\Patient\Partial\_PatientProfile.cshtml" />
+    <Content Include="Views\Patient\Partial\_PatientAddress.cshtml" />
+    <Content Include="Views\Error\Custom.cshtml" />
+    <Content Include="Views\Error\BadRequest.cshtml" />
+    <Content Include="Views\Error\NotImplemented.cshtml" />
+    <Content Include="Views\Error\ServiceUnavailable.cshtml" />
+    <Content Include="Views\Error\ServiceTemporarilyOverloaded.cshtml" />
+    <Content Include="Views\Testimonial\Create.cshtml" />
+    <Content Include="Views\Testimonial\Index.cshtml" />
+    <Content Include="Views\Blog\BlogItem.cshtml" />
+    <Content Include="Views\Patient\PatientUserProfile.cshtml" />
+    <Content Include="Views\Blog\AllBlogs.cshtml" />
+    <Content Include="Views\Blog\SubCategory.cshtml" />
+    <Content Include="Views\Shared\_MenuList.cshtml" />
+    <Content Include="Views\Blog\Category.cshtml" />
+    <Content Include="Views\ProvdersProfile\RefillPrescription.cshtml" />
+    <Content Include="Views\Facility\AmenityOptions.cshtml" />
+    <Content Include="Views\Facility\Partial\_FacilityAmenityOptions.cshtml" />
+    <Content Include="Views\Shared\_Advertisement.cshtml" />
+    <Content Include="Views\Doctor\Reviews.cshtml" />
+    <Content Include="Views\Facility\Cost.cshtml" />
+    <Content Include="Views\Pharmacy\Cost.cshtml" />
+    <Content Include="Views\Error\_ErrorPageLayout.cshtml" />
+    <Content Include="Views\Home\_homeAdevertiesment.cshtml" />
+    <Content Include="Views\ProvdersProfile\ConfirmRefillPrescription.cshtml" />
+    <Content Include="Views\ProvdersProfile\InsuranceDetails.cshtml" />
+    <Content Include="Views\ProvdersProfile\NewPrescription.cshtml" />
+    <Content Include="Views\ProvdersProfile\Transferprescription.cshtml" />
+    <Content Include="Views\Submission\Partial\_SitemapFiles.cshtml" />
+    <Content Include="Views\Video\VideoPage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ErrorLog\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\css\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\images\gallery\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\images\photos\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\js\easypiechart\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\js\flot-chart\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\js\iCheck\skins\minimal\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\js\iCheck\skins\square\" />
+    <Folder Include="Scripts\admin\plugins\data-tables\images\js\sparkline\" />
+    <Folder Include="Scripts\admin\plugins\noty-master\js\" />
+    <Folder Include="Uploads\Attachment\Doctor\" />
+    <Folder Include="Uploads\Blog\" />
+    <Folder Include="Uploads\ErrorLog\" />
+    <Folder Include="Views\CustomErrorUse\" />
+    <Folder Include="Views\InsuranceAccepted\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\client\bootstrap.min.css.map" />
+    <Content Include="Content\client\bootstrap.css.map" />
+    <Content Include="Content\client\bootstrap-theme.min.css.map" />
+    <Content Include="Content\client\bootstrap-theme.css.map" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Scripts\system\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\system\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\admin\plugins\metismenu\metismenu.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Doctyme.Model\Doctyme.Model.csproj">
+      <Project>{98d13b2a-0d73-416b-9763-8d8268f4e1a3}</Project>
+      <Name>Doctyme.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Doctyme.Repository\Doctyme.Repository.csproj">
+      <Project>{47cedfa4-ba4b-458d-8e27-2736de2ec68f}</Project>
+      <Name>Doctyme.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49330</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44387</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

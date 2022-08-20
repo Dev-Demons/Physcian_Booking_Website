@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA5C06A2-8531-4629-903B-8B23FB18FE5E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Binke.Repository</RootNamespace>
+    <AssemblyName>Binke.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enumerable\EnumData.cs" />
+    <Compile Include="Interface\IDashboardService.cs" />
+    <Compile Include="Interface\IDoctorAgeGroupService.cs" />
+    <Compile Include="Interface\IAgeGroupService.cs" />
+    <Compile Include="Interface\IBoardCertificationService.cs" />
+    <Compile Include="Interface\ICityService.cs" />
+    <Compile Include="Interface\IDoctorImageService.cs" />
+    <Compile Include="Interface\IDoctorInsuranceService.cs" />
+    <Compile Include="Interface\IDoctorInsuranceAcceptedService.cs" />
+    <Compile Include="Interface\IDrugDetailService.cs" />
+    <Compile Include="Interface\IDrugManufacturerService.cs" />
+    <Compile Include="Interface\IDrugPharmacyDetailService.cs" />
+    <Compile Include="Interface\IDrugQuantityService.cs" />
+    <Compile Include="Interface\IDrugTypeService.cs" />
+    <Compile Include="Interface\IFacilityOptionService.cs" />
+    <Compile Include="Interface\IFeaturedSpecialityService.cs" />
+    <Compile Include="Interface\IFeaturedDoctorService.cs" />
+    <Compile Include="Interface\IDoctorFacilityAffiliationService.cs" />
+    <Compile Include="Interface\IDoctorLanguageService.cs" />
+    <Compile Include="Interface\IDoctorService.cs" />
+    <Compile Include="Interface\IDoctorSpecialityService.cs" />
+    <Compile Include="Interface\IErrorLogService.cs" />
+    <Compile Include="Interface\IExperienceService.cs" />
+    <Compile Include="Interface\IFacilityService.cs" />
+    <Compile Include="Interface\IFacilityTypeService.cs" />
+    <Compile Include="Interface\IGenericRepository.cs" />
+    <Compile Include="Interface\ILanguageService.cs" />
+    <Compile Include="Interface\IOpeningHourService.cs" />
+    <Compile Include="Interface\IPharmacyService.cs" />
+    <Compile Include="Interface\IPatientService.cs" />
+    <Compile Include="Interface\IQualificationService.cs" />
+    <Compile Include="Interface\IReviewService.cs" />
+    <Compile Include="Interface\IRoleService.cs" />
+    <Compile Include="Interface\IAddressService.cs" />
+    <Compile Include="Interface\ISeniorCareService.cs" />
+    <Compile Include="Interface\ITabletService.cs" />
+    <Compile Include="Interface\ITempSlotBookingService.cs" />
+    <Compile Include="Interface\ISlotService.cs" />
+    <Compile Include="Interface\ISocialMediaService.cs" />
+    <Compile Include="Interface\ISpecialityService.cs" />
+    <Compile Include="Interface\IDrugService.cs" />
+    <Compile Include="Interface\IStateService.cs" />
+    <Compile Include="Interface\IUserRoleService.cs" />
+    <Compile Include="Interface\IUserService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AddressRepository.cs" />
+    <Compile Include="Services\AgeGroupRepository.cs" />
+    <Compile Include="Services\BoardCertificationRepository.cs" />
+    <Compile Include="Services\CityRepository.cs" />
+    <Compile Include="Services\DashboardRepository.cs" />
+    <Compile Include="Services\DoctorAgeRepository.cs" />
+    <Compile Include="Services\DoctorImageRepository.cs" />
+    <Compile Include="Services\DoctorInsuranceAcceptedRepository.cs" />
+    <Compile Include="Services\DoctorInsuranceRepository.cs" />
+    <Compile Include="Services\DrugDetailRepository.cs" />
+    <Compile Include="Services\DrugManufacturerRepository.cs" />
+    <Compile Include="Services\DrugPharmacyDetailRepository.cs" />
+    <Compile Include="Services\DrugQuantityRepository.cs" />
+    <Compile Include="Services\DrugTypeRepository.cs" />
+    <Compile Include="Services\FacilityOptionRepository.cs" />
+    <Compile Include="Services\FeaturedSpecialityRepository.cs" />
+    <Compile Include="Services\FeaturedDoctorRepository.cs" />
+    <Compile Include="Services\DoctorFacilityAffiliationRepository.cs" />
+    <Compile Include="Services\DoctorLanguageRepository.cs" />
+    <Compile Include="Services\DoctorRepository.cs" />
+    <Compile Include="Services\DoctorSpecialityRepository.cs" />
+    <Compile Include="Services\ExperienceRepository.cs" />
+    <Compile Include="Services\FacilityRepository.cs" />
+    <Compile Include="Services\FacilityTypeRepository.cs" />
+    <Compile Include="Services\LanguageRepository.cs" />
+    <Compile Include="Services\OpeningHourRepository.cs" />
+    <Compile Include="Services\PharmacyRepository.cs" />
+    <Compile Include="Services\PatientRepository.cs" />
+    <Compile Include="Services\QualificationRepository.cs" />
+    <Compile Include="Services\ReviewRepository.cs" />
+    <Compile Include="Services\SeniorCareRepository.cs" />
+    <Compile Include="Services\TabletRepository.cs" />
+    <Compile Include="Services\TempSlotBookingRepository.cs" />
+    <Compile Include="Services\SlotRepository.cs" />
+    <Compile Include="Services\SocialMediaRepository.cs" />
+    <Compile Include="Services\SpecialityRepository.cs" />
+    <Compile Include="Services\ErrorLogRepository.cs" />
+    <Compile Include="Services\GenericRepository.cs" />
+    <Compile Include="Services\RoleRepository.cs" />
+    <Compile Include="Services\DrugRepository.cs" />
+    <Compile Include="Services\StateRepository.cs" />
+    <Compile Include="Services\UserRepository.cs" />
+    <Compile Include="Services\UserRoleRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Binke.Model\Binke.Model.csproj">
+      <Project>{0b51dcea-fe38-4478-9203-ecb24f565f46}</Project>
+      <Name>Binke.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

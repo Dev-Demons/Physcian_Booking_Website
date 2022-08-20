@@ -1,0 +1,51 @@
+﻿@model Binke.ViewModels.DoctorLanguageViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.DoctorLanguageId == 0 ? "Add Experience" : "Edit Experience")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditLanguage", "Doctor", FormMethod.Post, new { id = "frmLanguage" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.DoctorLanguageId)
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Language</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.LanguageId, ViewBag.LanguageList as IEnumerable<SelectListItem>, "-- Select Language --",
+                                        new {@class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.LanguageId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            $.validator.unobtrusive.parse($('#frmLanguage'));
+            if ($("#frmLanguage").valid()) {
+                $.post("@Url.Action("AddDoctorLanguage")", $("#frmLanguage").serialize(), function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        bindMyLanguageList();
+                        closeModal();
+                    }
+                });
+            }
+        });
+    });
+</script>

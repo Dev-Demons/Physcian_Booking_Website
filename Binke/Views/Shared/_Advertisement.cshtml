@@ -1,0 +1,500 @@
+﻿@{
+    Layout = null;
+    string City = (ViewBag!=null && ViewBag.City != null ? ViewBag.City : "");
+    string Zipcode = (ViewBag != null && ViewBag.Zipcode != null ? ViewBag.Zipcode : "");
+}
+<style>
+    .ulockd-testimonials {
+        background-color: #ffffff;
+        border: 1px solid #eeeeee;
+        border-radius: 0 45px 0;
+        padding: 10px 20px;
+        position: relative;
+        -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.2);
+        -webkit-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+/**/
+    .ulockd-mrgn620 {
+        margin-bottom: 20px;
+    }
+    .ulockd-mrgn1220 {
+        margin-top: 20px;
+    }
+    .ulockd-mrgn1250 {
+        margin-top: 50px;
+    }
+
+    .ulockd-testimonials .testi-thumb img {
+        border: 1px solid #eeeeee;
+        border-radius: 0 20px;
+        height: 150px;
+        margin: -50px auto 0;
+        width: 300px;
+    }
+    /*.list-inline {
+        padding-left: 0;
+        margin-left: -5px;
+        list-style: none;
+        
+    }*/
+    .text-thm2 {
+        color: #00b3ff !important;
+    }
+    /*.fontSize12 {
+        font-size: 12px !important;
+    }*/
+
+    .thumbnail {
+        display: block;
+        padding: 4px;
+        margin-bottom: 20px;
+        line-height: 1.42857143;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        -webkit-transition: border .2s ease-in-out;
+        -o-transition: border .2s ease-in-out;
+        transition: border .2s ease-in-out;
+    }
+
+</style>
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+<script type="text/javascript">
+    var IpAddress = '';
+    $(document).ready(function () {
+
+       getIpAddress()
+    });
+    function OpenProfile(ProfileUrl) {
+        window.location.href = ProfileUrl;
+    }
+    function getIpAddress() {
+        $.getJSON("https://api.ipify.org/?format=json", function (e) {
+            IpAddress = e.ip;
+            console.log(IpAddress, "IpAddress");
+        }).done(function (data) {
+            getAdds('@City','@Zipcode');
+        });
+    }
+    function getAdds(City = "", Zip="") {
+
+        var itemCount = 0;
+
+        $.ajax({
+            url: "/SearchDrug/GetAddList?AddTypeId=" +@ViewBag.AddTypeId+"&OrgTypeId=" +@ViewBag.OrgTypeId+"&IpAddress=" + IpAddress + "&City=" + City + "&Zip=" + Zip,
+            type: "Get",
+            success: function (response) {
+                if (response.JsonResponse) {
+
+                    var arrAdver = response.JsonResponse.AdsList;
+                    $('#dvAdver').html('');
+                    if (response.JsonStatus == 1) {
+                        var Advrdiv = '';
+                        $.each(arrAdver, function (idx, objAdv) {
+                            var Advrhtml = '';
+                            if (idx === 0) {
+                                Advrhtml = '<div class="owl-item active" style="width:373.333px !important; margin-left: 10px !important;">';
+                            }
+                            else {
+                                Advrhtml = '<div class="owl-item" style="width:373.333px !important; margin-left: 10px !important;">';
+                            }
+                            Advrhtml += '<div class="item" onclick=OpenProfile("' + objAdv.ProfileUrl + '")>';
+                            Advrhtml += '<div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">';
+                            Advrhtml += '<div class="testi-thumb">';
+                            Advrhtml += '<img class="img-responsive thumbnail" src="' + objAdv.ImagePath + '" alt="4.jpg">';
+
+                            Advrhtml += '<div>';
+                           // Advrhtml += '<ul class="list-inline ulockd-mrgn1220">';
+                            var rating = parseFloat(objAdv.Rating);
+                            var halfrating = ((rating * 10) % 10);
+                            if (rating > 0 || halfrating > 0) {
+                               // Advrhtml += '<li>';
+                                Advrhtml += '<div>';
+                                for (i = 0; i < rating; i++) {
+                                    Advrhtml += '<i class="text-thm2 fa fa-star fz13"></i>&nbsp;';
+                                }
+
+                                if (halfrating > 0) {
+                                    Advrhtml += '<i class="text-thm2 fa fa-star-half-o fz13"></i>';
+                                }
+                                //Advrhtml += '</li>';
+                                Advrhtml += '</div>';
+                            }
+                            else {
+                               // Advrhtml += '<li>&nbsp;</li>';
+                                Advrhtml += '<div>&nbsp;</div>';
+                            }
+                            //Advrhtml += '</ul>';
+                            Advrhtml += '</div>';
+                            Advrhtml += '<div>';
+                            Advrhtml += '<span class="fontSize12" style="color:dodgerblue">(' + objAdv.ReviewCount + ' Reviews)</span>';
+                            Advrhtml += '</div>';
+                            Advrhtml += '<div>';
+                            Advrhtml += '<h6 class="fz16 facility-footer" style =" margin-top: 0px;margin-bottom: 0px;"><em><a onclick=OpenProfile("' + objAdv.ProfileUrl + '")>' + objAdv.OrganisationName + '</a></em></h6>';
+                            Advrhtml += '</div>';
+                            
+                            Advrhtml += '<div>';
+                            Advrhtml += '<h6><small>' + (objAdv.OrgAddress.length > 0 ? objAdv.OrgAddress : "</br>") + '</small></h6>';
+                            Advrhtml += '</div>';
+
+                            Advrhtml += '</div>';
+                            Advrhtml += '</div>';
+                            Advrhtml += '</div>';
+                            Advrhtml += '</div >';
+                            Advrdiv += Advrhtml;
+                            itemCount++;
+                        });
+                        $('#dvAdver').append(Advrdiv);
+                        setTimeout(function () {                           
+                            var owl = $('#owl-carousel-ads');
+                            owl.owlCarousel({
+                                animateOut: 'slideOutDown',
+                                animateIn: 'flipInX',
+                                //autoHeight: true,
+                                dots: true,
+                                items: @ViewBag.AddsPerPage,
+                                loop: true,
+                                nav: true,
+                                infinite: true,
+                                autoplay: true,
+                                autoplaySpeed: 5000,
+                                //adaptiveHeight: true,
+                            });
+                        },1000);
+
+                    }
+                    if (response.JsonResponse.UserLocation) {
+
+                            var usrLoc = JSON.parse(response.JsonResponse.UserLocation);
+                            //console.log(usrLoc, "usrLoc");
+                            $('#linkText').text(usrLoc["city"] + ', ' + usrLoc["region_code"]);
+                        $('#moreLink').attr("href", "/Filter/Pharmacy/?skey=&slocation=" + usrLoc['city'] + ", " + usrLoc["region_code"] + ", " + usrLoc["zip"]);
+
+                    }
+
+                    else {
+                            //$('#linkText').text('');
+                        $('#moreLink').attr("href", "#");
+                    }
+                }
+                else {
+                    console.log(response.JsonMessage,"Error");
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (data) {
+                unblockPage();
+                HandleResponse(data);
+            }
+        });
+    }
+</script>
+
+<div id="owl-carousel-ads" class="three-grid-slider owl-carousel owl-theme owl-rtl owl-loaded">
+    <div class="owl-stage-outer">
+        <div id="dvAdver" class="owl-stage" style="width:4600px;transform: translate3d(1533.33px, 0px, 0px);transition: all 1.2s ease 0s;">
+            @**@
+            @*<div class="owl-item" style="width:373.333px !important; margin-left: 10px !important;">
+                <div class="item">
+                    <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                        <div class="testi-thumb">
+                            <img class="img-responsive thumbnail" src="~/Content/client/images/doctors.jpg" alt="4.jpg">
+                            <ul class="list-inline ulockd-mrgn1220">
+                                <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                                <li><span class="fontSize12" style="color:dodgerblue">(209 Reviews)</span></li>
+                            </ul>
+                            <h6 class="fz16"><em>Kailash Hospital</em></h6>
+                        </div>
+                        <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                        <div class="testi-details">
+
+                            <h4><small>Locations</small></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="owl-item active" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/cycling.jpg" alt="5.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Max Cure</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4> <small>Locations</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/7.jpg" alt="6.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Sun &amp; Shine</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4><small>Locations</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/laptop.jpg" alt="1.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Vijaya Care</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4> <small>Locatios</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/8.jpg" alt="2.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Honest &amp; Dependable</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4><small>Locatios</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/9.jpg" alt="3.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Licensed &amp; Insured</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+                        <h4> <small>Locatios</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/10.jpg" alt="4.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Special Care</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4> <small>Locatios</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/1.jpg" alt="5.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Home Service</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4> <small>Locatios</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/laptop.jpg" alt="6.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Honest &amp; Dependable</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4><small>Locatios</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/2.jpg" alt="1.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Peaceful Behaviour</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4> <small>Locatios</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item " style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/3.jpg" alt="2.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><span class="fontSize12" style="color:dodgerblue;">(209 Reviews)</span></li>
+                        </ul>
+        <h6 class="fz16"><em>Honest &amp; Dependable</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4><small>Locations</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="owl-item" style="width: 373.333px !important; margin-left: 10px !important;">
+            <div class="item">
+                <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                    <div class="testi-thumb">
+                        <img class="img-responsive thumbnail" src="~/Content/client/images/laptop.jpg" alt="3.jpg">
+                        <ul class="list-inline ulockd-mrgn1220">
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li><i class="text-thm2 fa fa-star fz13"></i></li>
+                            <li>
+                                <span class="fontSize12" style="color: dodgerblue;">(209 Reviews)</span>
+                            </li>
+                        </ul>
+        <h6 class="fz16"><em>Licensed &amp; Insured</em></h6>
+        </div>
+                    <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                    <div class="testi-details">
+
+                        <h4> <small>Locations</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        </div>
+    </div>
+    <div class="owl-controls">
+        <div class="owl-nav">
+            <div class="owl-prev" style="display: none;">
+                <i class="fa fa-long-arrow-left"></i>
+            </div>
+            <div class="owl-next" style="display: none;">
+                <i class="fa fa-long-arrow-left-right"></i>
+            </div>
+        </div>
+        <div class="owl-dots" style="">
+            <div class="owl-dot active">
+                <span></span>
+            </div>
+            <div class="owl-dot">
+                <span></span>
+            </div>
+        </div>
+    </div>
+</div>

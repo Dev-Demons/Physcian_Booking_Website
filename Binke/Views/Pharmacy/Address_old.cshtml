@@ -1,0 +1,225 @@
+﻿@model Binke.ViewModels.OrganisationAddressViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Address";
+}
+
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Pharmacy </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="~/Dashboard/Pharmacy"> Pharmacy </a></li>
+            <li class="active"> Office Locations </li>
+        </ol>
+    </div>
+}
+
+    <div class="modal-body">
+
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#address"> Address And Contact Info</a>
+            </li>
+        </ul>
+        <div class="panel-heading">
+
+            <div class="panel-control py-10px">
+                <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddPharmacy">Add Pharmacy</button>
+            </div>
+            @*<h3 class="panel-title">Language</h3>*@
+        </div>
+
+        @using (Html.BeginForm("AddEditAddress", "Pharmacy", FormMethod.Post, new { id = "frmAddress", @class = "form-horizontal form-bordered" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.OrganisationId)
+            @Html.HiddenFor(model => model.OrganizationTypeID)
+            @Html.HiddenFor(model => model.UserTypeID)
+            if (ViewBag.ID > 0)
+            {
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.CreatedBy)
+            }
+            @Html.HiddenFor(model => model.IsDeleted)
+
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Organisation Name</b></label>
+                            @Html.DisplayFor(model => model.OrganisationName, new { @class = "form-control col-md-12 refName" })
+                        </div>
+
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Address 1</b></label>
+                            @Html.TextBoxFor(model => model.Address1, new { @class = "form-control col-md-12 refName", placeholder = "Enter Address 1" })
+                            @Html.ValidationMessageFor(model => model.Address1, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Address 2</b></label>
+                            @Html.TextBoxFor(model => model.Address2, new { @class = "form-control col-md-12 refName", placeholder = "Enter Address 2" })
+                            @Html.ValidationMessageFor(model => model.Address2, "", new { @class = "text-danger" })
+                        </div>
+
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Zip Code</b></label>
+                            @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control col-md-12 refName", placeholder = "Enter Zip Code" })
+                            @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.CityStateZipCodeID, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>City</b></label>
+                            @Html.TextBoxFor(model => model.City, new { @class = "form-control col-md-12 refName", placeholder = "Enter City" })
+                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>State</b></label>
+                            @Html.TextBoxFor(model => model.State, new { @class = "form-control col-md-12 refName", placeholder = "Enter State" })
+                            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Country</b></label>
+                            @Html.TextBoxFor(model => model.Country, new { @class = "form-control col-md-12 refName", placeholder = "Enter Country" })
+                            @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Latitude</b></label>
+                            @Html.TextBoxFor(model => model.Lat, new { @class = "form-control col-md-12 refName", placeholder = "Enter Latitude" })
+                            @Html.ValidationMessageFor(model => model.Lat, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Longitude</b></label>
+                            @Html.TextBoxFor(model => model.Lon, new { @class = "form-control col-md-12 refName", placeholder = "Enter Longitude" })
+                            @Html.ValidationMessageFor(model => model.Lon, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Phone</b></label>
+                            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control col-md-12 refName", placeholder = "Enter Phone" })
+                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Fax</b></label>
+                            @Html.TextBoxFor(model => model.Fax, new { @class = "form-control col-md-12 refName", placeholder = "Enter Fax" })
+                            @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Email</b></label>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control col-md-12 refName", placeholder = "Enter Email" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Website</b></label>
+                            @Html.TextBoxFor(model => model.WebSite, new { @class = "form-control col-md-12 refName", placeholder = "Enter Website" })
+                            @Html.ValidationMessageFor(model => model.WebSite, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+<div class="modal-footer">
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+
+    $("#OrganizationTypeID").val('1005');
+    $("#UserTypeID").val('3');
+
+    var ID = "@ViewBag.ID";
+
+    if (ID == 0) {
+        $("#IsDeleted").val('false');
+    }
+
+    $('.datepicker').datepicker({
+        format: 'dd-MM-yy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmAddress'));
+        if ($("#frmAddress").valid()) {
+            $.post("@Url.Action("AddEditAddress")", $("#frmAddress").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "OrgOrganisation") {
+                        bindExperienceList();
+                        closeModal();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+        $("#ZipCode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Pharmacy/GetZipCode",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.ZipCode, value: item.ZipCode };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                //$("#ReferenceId").val(ui.item.title); // save selected id to hidden input
+            }
+        });
+
+    </script>
+
+}
+

@@ -1,0 +1,323 @@
+﻿@using Binke.Utility
+@using Binke.App_Helpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> @ViewBag.Title | Doctyme</title>
+    <link rel="shortcut icon" href="~/Content/client/images/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Content/client/images/icon.png">
+    <!--STYLESHEET-->
+    <!--=================================================-->
+    <!--Roboto Slab Font [ OPTIONAL ] -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500,400italic,100,700italic,300,700,500italic,400" rel="stylesheet">
+    <!--Bootstrap Stylesheet [ REQUIRED ]-->
+    @*@Styles.Render("~/content/smartadmin")*@
+
+    <link href="~/content/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/content/admin/css/style.css" rel="stylesheet" />
+
+    <link href="~/Content/client/css/plugins/font-awesome.min.css" rel="stylesheet" />
+    @*<link href="~/scripts/admin/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />*@
+    <link href="~/scripts/admin/plugins/switchery/switchery.min.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+    @*<script src="~/plugins/jquery/jquery.min.js"></script>*@
+    <link href="~/scripts/admin/plugins/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/bootstrap-validator/bootstrapValidator.min.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet" />
+    <link href="~/content/admin/css/demo/jquery-steps.min.css" rel="stylesheet" />
+    <link href="~/content/admin/css/demo/jasmine.css" rel="stylesheet" />
+    <link href="~/scripts/admin/plugins/pace/pace.min.css" rel="stylesheet" />
+    <link href="~/content/admin/css/your_style.min.css" rel="stylesheet" />
+
+    <link href="~/Scripts/admin/plugins/select2/select2.css" rel="stylesheet" />
+    <link href="~/Content/client/css/style11.css" rel="stylesheet" />
+    <link href="~/Content/custom/toastr.min.css" rel="stylesheet" />
+    <script src="~/Scripts/admin/plugins/pace/pace.min.js"></script>
+    <!-- Modernizer js -->
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    <script src="~/Scripts/system/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/client/Chart.js"></script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    @*<link rel="stylesheet" href="~/plugins/jqvmap/jqvmap.min.css">*@
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        .s-hide {
+            display: none;
+        }
+        /* switch */
+
+        label.switch {
+            position: relative;
+            display: inline-block;
+            height: 23px;
+            padding-left: 3.8em;
+            cursor: pointer;
+            color: red;
+        }
+
+        /*li:nth-child(2) a,
+        label.switch {
+            font-size: 14px;
+            letter-spacing: 2px;
+        }*/
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 4px;
+            width: 18%;
+            background-color: red;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 10px;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 10px;
+                width: 10px;
+                left: 4px;
+                bottom: 5px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: darkgreen;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #00ba9d;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(18px);
+            -ms-transform: translateX(18px);
+            transform: translateX(18px);
+        }
+
+        /* Rounded sliders */
+
+        .slider.round:before {
+            border-radius: 0%;
+            border-radius: 10px;
+        }
+
+        @@media (max-width:767px) {
+            .panel-heading {
+                height: 120px;
+            }
+            .addsitemap{
+                margin-top:5px;
+            }
+        }
+
+        /* //switch */
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $jq = $.noConflict();
+    </script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed ">
+    <div id="hide" class="s-hide">
+        <div class="content-wrapper">
+            <div class="wrapper">
+
+                <div id="container" class="effect mainnav-full">
+
+
+
+                    <!--===================================================-->
+                    @{ Html.RenderPartial("_HeaderAdmin"); }
+                    <!--===================================================-->
+                    @{ Html.RenderPartialIf("_TopMenu", Request.IsAuthenticated);}
+                    <div class="col-12">
+
+
+                        <div class="pageheader">
+                            @RenderSection("pageheader", required: false)
+                        </div>
+
+                        <div id="page-content">
+
+
+
+                            <div class="col-12">
+                                @RenderBody()
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="divModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div id="modalContent"></div>
+
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                            <!-- Modal -->
+                        </div>
+                        <!--===================================================-->
+                        <!--End page content-->
+                    </div>
+                    <!--===================================================-->
+                    <!--END CONTENT CONTAINER-->
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            @if (Request.IsAuthenticated)
+            {
+                Html.RenderPartial("_FooterAdmin");
+            }
+            <!-- SCROLL TOP BUTTON -->
+            <!--===================================================-->
+            <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
+            <!--===================================================-->
+
+
+            @{ Html.RenderPartial("_Scripts", RenderSection("pagespecific", false)); }
+            <!--===================================================-->
+            <!-- END OF CONTAINER -->
+            <!--JAVASCRIPT-->
+            <!--=================================================-->
+            <!--jQuery [ REQUIRED ]-->
+
+
+
+
+        </div>
+
+    </div>
+</body>
+</html>
+
+
+
+
+@*<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>*@
+<script type="text/javascript">
+                $(document).ready(function () {
+    setTimeout(function (){
+
+  $("div#hide").removeClass("s-hide");
+
+}, 0);
+
+
+            @if (TempData["Alerts"] != null)
+        {
+            foreach (Common.JsonModel jsonModel in (List<Common.JsonModel>) TempData["Alerts"])
+            {
+                <text>
+                    var alert = { AlertType: '@jsonModel.AlertType.ToLower()', Message: '@jsonModel.Message', Title: '@jsonModel.Title' };
+                    showAlert(alert);
+                </text>
+            }
+        }
+        //$('.clsSeniorSubmenu').hide()
+        });
+        var originalModal = $("#divModal").clone();
+        $("#divModal").on("hidden.bs.modal", function () {
+            $("#divModal").remove();
+            var myClone = originalModal.clone();
+            $("body").append(myClone);
+        });
+
+
+    $(function () {
+
+            var url = window.location.pathname,
+                urlRegExp = new RegExp(url.replace(/\/$/, '') + "$", 'i'); // create regexp to match current url pathname and remove trailing slash if present as it could collide with the link in navigation in case trailing slash wasn't present there
+            // now grab every link from the navigation
+            $('a.nav-link').each(function () {
+                // and test its normalized href against the url pathname regexp
+                if (urlRegExp.test(this.href.replace(/\/$/, ''), 'i')) {
+                    $(this).parent().addClass('active');
+                }
+            });
+
+            //$("li.active").parent().parent(".nav-item").addClass("open active");
+            $("li.active").parent().parent().parent().parent(".nav-item").addClass("open active menu-open");
+
+        });
+
+
+
+</script>
+
+@Scripts.Render("~/bundles/jqueryval")
+@*jQuery UI 1.11.4*@
+@*<script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>*@
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+@*<script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>*@
+<!-- Bootstrap 4 -->
+@*<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+<!-- ChartJS -->
+<!-- daterangepicker -->
+<script src="~/plugins/moment/moment.min.js"></script>
+<script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/dist/js/adminlte.js"></script>
+
+
+<script src="~/Scripts/admin/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+<script src="~/Scripts/admin/js/moment.js"></script>
+<script src="~/Scripts/admin/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<script src="~/Scripts/Facility/FacilityIndividualMenu.js"></script>

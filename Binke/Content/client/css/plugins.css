@@ -1,0 +1,20 @@
+/*********************************************************************************
+
+	Template Name: Binke - Health & Medical Bootstrap4 Template
+	Description: A perfect template to build beautiful and unique medical websites. It comes with nice and clean design.
+	Version: 1.0
+
+	Note: This is plugins css. All plugins css files import here.
+
+**********************************************************************************/
+
+@import url(plugins/fakeloader.css);
+@import url(plugins/font-awesome.min.css);
+@import url(plugins/slick.min.css);
+@import url(plugins/meanmenu.css);
+@import url(plugins/lightgallery.min.css);
+@import url(plugins/nice-select.css);
+@import url(plugins/pe-icon-7-stroke.css);
+@import url(plugins/icofont.min.css);
+@import url(plugins/odometer-theme-default.css);
+@import url(plugins/datepicker.min.css);

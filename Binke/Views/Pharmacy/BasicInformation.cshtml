@@ -1,0 +1,186 @@
+﻿@using Binke.Repository.Enumerable;
+@model Binke.ViewModels.PharmacyBasicInformation
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Basic Information";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<style type="text/css">
+    .mr-10px {
+        margin-right: 10px;
+    }
+</style>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Basic Information </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            @if (User.IsInRole(UserRoles.Admin))
+            {
+                <li> <a href="/Pharmacy/"> Pharmacy Directory </a></li>
+                <li> <a href="/PharmacyProfile/@Model.PharmacyId"> Profile </a></li>
+            }
+            else
+            {
+                <li> <a href="~/Dashboard/Pharmacy"> Pharmacy </a></li>
+            }
+            <li class="active"> Basic Information </li>
+        </ol>
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Basic Information</h3>
+            </div>
+            <!--No Label Form-->
+            <!--===================================================-->
+            @using (Html.BeginForm("BasicInformation", "Pharmacy", FormMethod.Post, new { id = "frmBasicInfo", @class = "form-horizontal form-bordered" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.PharmacyId)
+                @Html.HiddenFor(x => x.AddressView.AddressId)
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3 mar-btm">
+                                <label class="control-label"><b>First Name</b></label>
+                                @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", placeholder = "First Name" })
+                                @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-2 mar-btm">
+                                <label class="control-label"><b>Middle Name</b></label>
+                                @Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })
+                                @Html.ValidationMessageFor(x => x.MiddleName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3 mar-btm">
+                                <label class="control-label"><b>Last Name</b></label>
+                                @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", placeholder = "Last Name" })
+                                @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="from-group">
+                        <div class="row">
+                            <div class="col-md-3 mar-btm">
+                                <label class="control-label"><b>Pharmacy Name</b></label>
+                                @Html.TextBoxFor(x => x.PharmacyName, new { @class = "form-control", placeholder = "Pharmacy Name" })
+                                @Html.ValidationMessageFor(x => x.PharmacyName, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Pharmacy Address Details</h4>
+                                <hr />
+                                <div class="col-md-6 mar-btm">
+                                    <label class="control-label"><b>Address 1</b></label>
+                                    @Html.TextBoxFor(x => x.AddressView.Address1, new { @class = "form-control", placeholder = "Enter Address1" })
+                                    @Html.ValidationMessageFor(x => x.AddressView.Address1, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-6 mar-btm">
+                                    <label class="control-label"><b>Address 2</b></label>
+                                    @Html.TextBoxFor(x => x.AddressView.Address2, new { @class = "form-control", placeholder = "Enter Address2" })
+                                    @Html.ValidationMessageFor(x => x.AddressView.Address2, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>State</b></label>
+                                    @Html.DropDownListFor(x => x.AddressView.StateId, ViewBag.StateList as IEnumerable<SelectListItem>, "-- Select State --",
+                                        new {@class = "form-control select2" })
+                                    @Html.ValidationMessageFor(x => x.AddressView.StateId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>City</b></label>
+                                    @Html.DropDownListFor(x => x.AddressView.CityId, Enumerable.Empty<SelectListItem>(), "-- Select City --",
+                                        new {@class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.AddressView.CityId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>Country</b></label>
+                                    @Html.TextBoxFor(x => x.AddressView.Country, new { @class = "form-control", placeholder = "Enter Country" })
+                                    @Html.ValidationMessageFor(x => x.AddressView.Country, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>Zip Code</b></label>
+                                    @Html.TextBoxFor(x => x.AddressView.ZipCode, new { @class = "form-control", data_mask = "99999", placeholder = "Enter ZipCode" })
+                                    @Html.ValidationMessageFor(x => x.AddressView.ZipCode, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>Phone Number</b></label>
+                                    @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", data_mask = "(999) 999-9999", placeholder = "Enter phone number" })
+                                    @Html.ValidationMessageFor(x => x.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>Fax Number</b></label>
+                                    @Html.TextBoxFor(x => x.FaxNumber, new { @class = "form-control", data_mask = "(999) 999-9999", placeholder = "Enter fax number" })
+                                    @Html.ValidationMessageFor(x => x.FaxNumber, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-right">
+                    <button type="button" id="btnSubmit" class="btn btn-primary">Send message</button>
+                </div>
+            }
+            <!--===================================================-->
+            <!--End No Label Form-->
+        </div>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $("#MnuPharmacy").addClass('menu-open');
+        $(document).ready(function () {
+            var stateId = @(Model.AddressView.StateId);
+            var cityId = @(Model.AddressView.CityId);
+            SetCityOnEdit(stateId, cityId);
+        });
+        $(document).on("change", "#AddressView_StateId", function () {
+            var id = $(this).val();
+            var cityId = $("#AddressView_CityId").val();
+            SetCityOnEdit(id, cityId);
+        });
+
+        function SetCityOnEdit(stateId, cityId) {
+            GetCityList(stateId).done(function (response) {
+                if (response.Status) {
+                    var data = response.Data;
+                    $("#AddressView_CityId").empty();
+                    $("<option>", { text: "City", value: "0" }).html("-- Select City --").appendTo("#AddressView_CityId");
+                    $.each(data, function (key, val) {
+                            $("<option>", { text: val.Text, value: val.Value }).html(val.Text).appendTo("#AddressView_CityId");
+                    });
+                    $("#AddressView_CityId").val(cityId).trigger("change.selectpicker");
+                }
+            });
+        }
+
+        $("#btnSubmit").click(function() {
+            $.validator.unobtrusive.parse($('#frmBasicInfo'));
+            if ($("#frmBasicInfo").valid()) {
+                $.post("@Url.Action("BasicInformation", "Pharmacy")", $("#frmBasicInfo").serialize(), function (response) {
+                    if (response.Status) {
+                        HandleResponse(response);
+                    }
+                });
+            }
+        });
+    </script>
+}

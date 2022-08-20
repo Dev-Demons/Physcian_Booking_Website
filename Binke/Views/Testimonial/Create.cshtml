@@ -1,0 +1,255 @@
+﻿@model  Doctyme.Model.ViewModels.TestimonialItem
+@{
+    string FormName = "Add Testimonial";
+    if (Model.TestimonialID > 0)
+    {
+        FormName = "Edit Testimonial";
+    }
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = FormName;
+   
+}
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+<style>
+    .width100 {
+        width: 100%;
+    }
+
+    .error {
+        color: red;
+    }
+</style>
+@section pageheader{
+
+
+
+
+    <h3>
+        <i class="fa fa-user-md"></i> @FormName 
+    </h3>
+
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="~/Testimonial/Index/">Testimonial List </a></li>
+            <li class="active"> @FormName</li>
+        </ol>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                @FormName
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "Testimonial", FormMethod.Post, new { id = "frmTestimonial", @class = "form-horizontal form-bordered", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Client Name</b></label>
+                                @Html.TextBoxFor(i => i.Name, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(i => i.Name, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Title</b></label>
+                                @Html.TextBoxFor(i => i.Title, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(i => i.Title, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Organization</b></label>
+                                @Html.TextBoxFor(i => i.Organization, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(i => i.Organization, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Image</b></label>
+                                @Html.TextBoxFor(i => i.files, new { @class = "form-control", @type = "file" })
+                                @Html.HiddenFor(model => model.ImagePath)
+                                @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+                                @if (Model.TestimonialID > 0 && !string.IsNullOrEmpty(Model.ImagePath))
+                                {
+                                    <img src="@Model.ImagePath" height="100" width="100" alt="Image not found" />
+                                }
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Show in Main site</b></label>
+                                <div class="radio pt-6px">
+                                    <!-- Inline Icon Radios Buttons -->
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(x => x.MainSite, "true", new { @class = "radiobox" }) Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(x => x.MainSite, "false", new { @class = "radiobox" }) No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Content</b></label>
+                                @*<div id="summernote"></div>*@
+                                @Html.TextAreaFor(i => i.Content, new { @id = "summernote", @class = "form-control width100", @onupdated = "$('#Content').summernote('code', this.data.value);" })
+                                @*<textarea id="Content" name="Content" class="form-control editor" onupdated="$('#Content').summernote('code', this.data.value);"></textarea>*@
+                                @*<input type="text" multiple id="summernote" />*@
+                                @*@Html.HiddenFor(i => i.Content)*@
+                                @Html.ValidationMessageFor(i => i.Content, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Facebook URL</b></label>
+                                @Html.TextBoxFor(i => i.FaceBookLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.FaceBookLink, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Instagram URL</b></label>
+                                @Html.TextBoxFor(i => i.InstagramLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.InstagramLink, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Pinterest URL</b></label>
+                                @Html.TextBoxFor(i => i.Plink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.Plink, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Google Plus URL</b></label>
+                                @Html.TextBoxFor(i => i.GooglePlusLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.GooglePlusLink, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Linkedin URL</b></label>
+                                @Html.TextBoxFor(i => i.LinkedLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.LinkedLink, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Twitter URL</b></label>
+                                @Html.TextBoxFor(i => i.TwitterLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.TwitterLink, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Keywords</b></label>
+                                @Html.TextAreaFor(i => i.Keywords, new { @id = "txtKeywords", @class = "form-control width100 " })
+                                @Html.ValidationMessageFor(i => i.Keywords, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="row pull-right">
+                            <div class="col-md-6 col-xs-6">
+                                <input type="submit" value="Submit" id="btnSave" class="btn btn-primary btn-sm" />
+
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <input type="button" value="Reset" id="btnReset" class="btn btn-danger btn-sm" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                    @Html.HiddenFor(i => i.TestimonialID)
+                    <input type="hidden" id="hdnContent" value="@Model.Content"/>
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+@*<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.validator.setDefaults({ ignore: [] });
+
+        $('#summernote').summernote({
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+
+            codemirror: {
+                theme: 'united'
+            }
+        });
+        $('#btnReset').click(function () {
+           
+            $("#frmTestimonial").trigger("reset");
+            $("#summernote").summernote('code', $('#hdnContent').val());
+            
+        });
+        $("#btnSave").click(function () {
+            $('#Content').val(encodeURIComponent($("#Content").summernote('code')));
+            $.validator.unobtrusive.parse($('#frmTestimonial'));
+             
+
+            if (!$("#frmTestimonial").valid()) {
+                return;
+            }
+        });
+
+        $('input[type="file"]').change(function (e) {
+
+            var imageX = e.target.files[0];
+            var fileName = e.target.files[0].name;
+            //$("#files").val(e.target.files[0]);
+            $("#ImagePath").val(fileName);
+            $("#ImagePath-error").html("");
+        })
+    });
+
+    jQuery.validator.unobtrusive.adapters.add(
+        'filesize', ['maxsize'], function (options) {
+            options.rules['filesize'] = options.params;
+            if (options.message) {
+                options.messages['filesize'] = options.message;
+            }
+        }
+    );
+
+    jQuery.validator.addMethod('filesize', function (value, element, params) {
+        if (element.files.length < 1) {
+            // No files selected
+            return true;
+        }
+
+        if (!element.files || !element.files[0].size) {
+            // This browser doesn't support the HTML5 API
+            return true;
+        }
+
+        return element.files[0].size < params.maxsize;
+    }, '');
+</script>
+

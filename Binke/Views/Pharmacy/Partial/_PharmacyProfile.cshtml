@@ -1,0 +1,365 @@
+﻿@model Binke.ViewModels.OrganisationProfileViewModel
+@{
+    ViewBag.Title = "Pharmacy Profile";
+
+    string dt1 = "";
+    if (Model.EnumerationDate != null)
+    {
+        dt1 = Model.EnumerationDate.Value.ToString("MM/dd/yyyy");
+    }
+
+    var userType = "User";
+    if (User.IsInRole("Admin"))
+    {
+        userType = "Admin";
+    }
+}
+
+@if (ViewBag.PharmacyID > 0)
+{
+    <h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Model.OrganisationName</h4>
+}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.OrganisationId == 0 ? "Add Pharmacy Profile" : Model.IsViewMode ? "View Pharmacy Profile" : "Edit Pharmacy Profile")
+        @*@(Model.OrganisationId == 0 ? "Add Pharmacy Profile" : "Edit Pharmacy Profile")*@
+    </h4>
+    @*<button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddPharmacy" style="margin-top:-48px; margin-right:10px;">Add Pharmacy</button>*@
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditPharmacyProfile", "Pharmacy", FormMethod.Post, new { id = "frmPharmacyProfile", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizationTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        @Html.HiddenFor(model => model.UserId)
+        if (ViewBag.ID > 0)
+        {
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.CreatedBy)
+        }
+        @Html.HiddenFor(model => model.IsDeleted)
+        @Html.HiddenFor(model => model.ApplicationUser_Id)
+        @Html.HiddenFor(model => model.LogoFilePath)
+
+        @Html.HiddenFor(model => model.Status)
+        <div class="row">
+            <div class="col-md-3 mar-btm">
+                <label class="control-label"><b>Logo</b></label>
+                <input type="file" id="Image1" name="Image1" class="form-control" />
+
+                @Html.ValidationMessageFor(model => model.LogoFilePath, "", new { @class = "text-danger" })
+            </div>
+            @if (Model.LogoFilePath != null)
+            {
+        <div class="col-md-9 mar-btm">
+            <span class="trasicon"><i class="fa fa-trash" aria-hidden="true"></i></span>
+            <img src="~/Uploads/PharmacySiteImages/@Model.LogoFilePath" title="@Model.LogoFilePath" alt="icon" class="img imgLogoFilePath img-responsive" style="width:100px;height:100px" />
+        </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>NPI</b></label>
+                        @Html.TextBoxFor(model => model.NPI, new { @class = "form-control txt", placeholder = "Enter Unique NPI" })
+                        @Html.ValidationMessageFor(model => model.NPI, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Organization EIN</b></label>
+                        @Html.TextBoxFor(model => model.OrganizatonEIN, new { @class = "form-control txt", placeholder = "Enter Organization EIN" })
+                        @Html.ValidationMessageFor(model => model.OrganizatonEIN, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Enumeration Date</b></label>
+                        @Html.TextBoxFor(model => model.EnumerationDate, "{0: MM-dd-yyyy}", new { @class = "form-control txt datepicker", placeholder = "Enter Enumeration Date" })
+                        @Html.ValidationMessageFor(model => model.EnumerationDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Pharmacy Name</b></label>
+                        @Html.TextBoxFor(model => model.OrganisationName, new { @class = "form-control txt", placeholder = "Enter Pharmacy Name" })
+                        @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Alias Business Name</b></label>
+                        @Html.TextBoxFor(model => model.AliasBusinessName, new { @class = "form-control txt", placeholder = "Enter Alias Business Name" })
+                        @Html.ValidationMessageFor(model => model.AliasBusinessName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-2 mar-btm">
+                        <label class="control-label"><b>Subpart</b></label>
+                        @Html.TextBoxFor(model => model.OrganisationSubpart, new { @class = "form-control txt", placeholder = "Enter Pharmacy Subpart" })
+                        @Html.ValidationMessageFor(model => model.OrganisationSubpart, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-2 mar-btm">
+                        <label class="control-label"><b>Prefix</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialNamePrefix, new { @class = "form-control txt", placeholder = "Enter Official Name Prefix" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialNamePrefix, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>First Name</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialFirstName, new { @class = "form-control txt", placeholder = "Enter Official First Name" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialFirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Last Name</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialLastName, new { @class = "form-control txt", placeholder = "Enter Official Last Name" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialLastName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Credential</b></label>
+                        @Html.TextBoxFor(model => model.AuthorisedOfficialCredential, new { @class = "form-control txt", placeholder = "Enter Official Credential" })
+                        @Html.ValidationMessageFor(model => model.AuthorisedOfficialCredential, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Title Or Position</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialTitleOrPosition, new { @class = "form-control txt", placeholder = "Enter Title Or Position" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialTitleOrPosition, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Telephone Number</b></label>
+                        @Html.TextBoxFor(model => model.AuthorizedOfficialTelephoneNumber, new { @class = "form-control txt", placeholder = "Enter Official Telephone" })
+                        @Html.ValidationMessageFor(model => model.AuthorizedOfficialTelephoneNumber, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Short Description</b></label>
+                        <textarea id="ShortDescription" name="ShortDescription" class="form-control editor" onupdated="$('#ShortDescription').summernote('code', this.data.value);" rows="4">@(string.IsNullOrEmpty(Model.ShortDescription) ? "" : Model.ShortDescription.Trim())</textarea>
+                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Long Description</b></label>
+                        <textarea id="LongDescription" name="LongDescription" class="form-control editor" onupdated="$('#LongDescription').summernote('code', this.data.value);" rows="4">@(string.IsNullOrEmpty(Model.LongDescription) ? "" : Model.LongDescription.Trim())</textarea>
+
+                        @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-3 mar-btm">
+                        <label class="control-label"><b>Is Active</b></label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Enabled Booking</b></label>
+                        <label class="switch">
+                            <input type="checkbox" id="EnabledBooking" name="EnabledBooking" dataId="EnabledBooking" value="EnabledBooking" /> &nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                        @Html.ValidationMessageFor(x => x.EnabledBooking, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-5 mar-btm" style="text-align:right;">
+                        <button type="button" onclick="window.location.href='/Pharmacy/'" style="@(!Model.IsViewMode ?"display:none":"")" id="btnSaveBack" class="btn btn-primary">Back to Listing</button>  <button type="button" id="btnSave" style='@(Model.IsViewMode?"display:none":"")' class="btn btn-primary">Submit</button>
+                        @*<button type="button" id="btnSave" class="btn btn-primary">Submit</button>*@
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+
+    .trasicon {
+        margin-left: 84px;
+        position: absolute;
+        z-index: 1;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $('.trasicon').click(function () {
+        if (confirm("Are you sure?")) {
+            $('.imgLogoFilePath').attr("src", "")
+            $('#LogoFilePath').val("");
+            $('.trasicon').css("display", "none");
+            $('.imgLogoFilePath').css("display", "none");
+
+        }
+        return false;
+    })
+    $.validator.setDefaults({ ignore: null });
+
+    $("#AddPharmacy").click(function () {
+        window.loadRegisterForm("Pharmacy");
+    });
+    $('input[type="file"]').change(function (e) {
+        var imageX = e.target.files[0];
+        var imgesize = imageX.size;
+        var fileName = e.target.files[0].name;
+
+        if (imgesize < 5242880) {
+            let img = new Image()
+            img.src = window.URL.createObjectURL(imageX)
+
+            img.onload = () => {
+                var imagesrc = "/Uploads/PharmacySiteImages/" + fileName;
+                $("#LogoFilePath").val(fileName);
+                $('.trasicon').css("display", "block");
+                $('.imgLogoFilePath').css("display", "block");
+                $('.imgLogoFilePath').attr("src", imagesrc)
+                //w = img.width;
+                //h = img.height;
+                //if (w <= 50 && h <= 50) {
+                //    var imagesrc = "/Uploads/PharmacySiteImages/" + fileName;
+                //    $("#LogoFilePath").val(fileName);
+                //    $('.trasicon').css("display", "block");
+                //    $('.imgLogoFilePath').css("display", "block");
+                //    $('.imgLogoFilePath').attr("src", imagesrc)
+                //}
+                //else {
+                //    alert("Image width and height should be less than or equal 50px");
+
+                //    $("#Image1").val('');
+                //}
+            }
+        }
+        else {
+            alert("Image size should be less than 5MB");
+
+            $("#Image1").val('');
+        }
+
+    });
+    $(document).ready(function () {
+
+        $jq('.datepicker').datepicker({
+            format: 'mm/dd/yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        //$("#OrganizationTypeID").val('1005');
+        //$("#UserTypeID").val('3');
+        $("#Status").val(' ');
+
+        var userType = "@userType";
+        if (userType == "User") {
+            //$("#NPI").attr('readonly', true);
+            $("#NPI").attr('value', '@ViewBag.NPI');
+        }
+
+
+        var ID = "@ViewBag.PharmacyID";
+
+
+        if (ID == 0) {
+            $("#IsDeleted").val('false');
+        }
+
+        if (ID > 0) {
+
+            if ("@Model.IsActive" == 'True') {
+                $("#IsActive").prop('checked', true);
+                $("#IsActive").val(true);
+            }
+            else {
+                $("#IsActive").prop('checked', false);
+                $("#IsActive").val(false);
+            }
+
+            if ("@Model.EnabledBooking" == 'True') {
+                $("#EnabledBooking").prop('checked', true);
+                $("#EnabledBooking").val(true);
+            }
+            else {
+                $("#EnabledBooking").prop('checked', false);
+                $("#EnabledBooking").val(false);
+            }
+
+
+            $("#EnumerationDate").val("@dt1");
+
+        }
+
+        $(document).on('click', '.slider', function () {
+            var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+            if (chekedstatus == false)
+                $(this).parent().find(":checkbox").val(true);
+            else
+                $(this).parent().find(":checkbox").val(false);
+        });
+
+        $(".editor").summernote();
+
+
+        function ResetAllFields() {
+            if (ID == 0) {
+                $(".txt").each(function () {
+                    $(this).val('');
+                });
+
+
+                $("#OrganisationId").val('');
+                $(".note-editable").text('');
+                $("#IsActive").prop("checked", false);
+                $("#EnabledBooking").prop("checked", false);
+            }
+        }
+    });
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmPharmacyProfile'));
+        $('#ShortDescription').val(encodeURIComponent($("#ShortDescription").summernote('code')));
+        $('#LongDescription').val(encodeURIComponent($('#LongDescription').summernote('code')));
+        if ($("#frmPharmacyProfile").valid()) {
+            var form = $('#frmPharmacyProfile')[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: '@Url.Action("AddEditPharmacyProfile")',
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+
+                              // window.location.reload();
+                              window.location.href = "/Pharmacy"
+
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+
+        }
+    });
+
+</script>

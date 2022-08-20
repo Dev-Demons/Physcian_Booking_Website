@@ -1,0 +1,424 @@
+﻿@using Doctyme.Repository.Enumerable;
+@model Binke.ViewModels.DoctorBasicInformation
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Basic Information";
+    //string profilePic = Model.ProfilePicture;
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<style type="text/css">
+    .mr-10px {
+        margin-right: 10px;
+    }
+
+    .mt-5px {
+        margin-top: 5px;
+    }
+
+    .basic-Image {
+        cursor: pointer;
+    }
+
+    .display-none {
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        background-color: #5f5b5b;
+        position: inherit;
+    }
+
+    .doctor-radio {
+        width: 15px;
+        margin: -5px 0 0 -20px !important;
+    }
+
+    .no-padding {
+        padding-top:0px!important;
+    }
+</style>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Basic Information </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            @if (User.IsInRole(UserRoles.Admin))
+            {
+                <li> <a href="/Doctor/"> Doctor Directory </a></li>
+                <li> <a href="/DoctorProfile/@Model.Npi"> Profile </a></li>
+            }
+            else
+            {
+                <li> <a href="~/Dashboard/Doctor/"> Doctor </a></li>
+            }
+            <li class="active"> Basic Information </li>
+        </ol>
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Basic Information</h3>
+            </div>
+            <!--No Label Form-->
+            <!--===================================================-->
+            @using (Html.BeginForm("BasicInformation", "Doctor", FormMethod.Post, new { id = "frmBasicInfo", @class = "form-horizontal form-bordered" }))
+            {
+                @*@Html.AntiForgeryToken()*@
+                @*@Html.HiddenFor(x => x.DoctorId)*@
+                @*@Html.HiddenFor(x => x.AddressView.DoctorId)
+                @Html.HiddenFor(x => x.AddressView.AddressId)*@
+                @*@Html.HiddenFor(x => x.SocialMediaViewModel.DoctorId)
+                @Html.HiddenFor(x => x.SocialMediaViewModel.SocialMediaId)*@
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2 basic-Image">
+                            <img id="ProfilePic" src="@Model.ProfilePicture" class="img-rounded" alt="@Model.FirstName" />
+                            <div class="display-none">
+                                <div>
+                                    <input type="file" id="ProfilePicture" style="display:none;" />
+                                    <label class="mt-5px">
+                                        Change Profile
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-1 mar-btm">
+                                    <label class="control-label"><b>Prefix</b></label>
+                                    @Html.TextBoxFor(x => x.Prefix, new { @class = "form-control", placeholder = "Prefix" })
+                                    @Html.ValidationMessageFor(x => x.Prefix, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>First Name</b></label>
+                                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", placeholder = "First Name" })
+                                    @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-2 mar-btm">
+                                    <label class="control-label"><b>Middle Name</b></label>
+                                    @Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })
+                                    @Html.ValidationMessageFor(x => x.MiddleName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mar-btm">
+                                    <label class="control-label"><b>Last Name</b></label>
+                                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", placeholder = "Last Name" })
+                                    @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-1 mar-btm">
+                                    <label class="control-label"><b>Suffix</b></label>
+                                    @Html.TextBoxFor(x => x.Suffix, new { @class = "form-control", placeholder = "Suffix" })
+                                    @Html.ValidationMessageFor(x => x.Suffix, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 mar-btm">
+                                    <label class="control-label"><b>Gender</b></label>
+                                    <div>
+                                        <!-- Inline Icon Radios Buttons -->
+                                        <label class="radio-inline no-padding">
+                                            @Html.RadioButtonFor(x => x.Gender, "Male", new { @class = "form-control doctor-radio" })Male
+                                        </label>
+                                        <label class="radio-inline no-padding">
+                                            @Html.RadioButtonFor(x => x.Gender, "Female", new { @class = "form-control doctor-radio" }) Female
+                                        </label>
+                                        <label class="radio-inline no-padding">
+                                            @Html.RadioButtonFor(x => x.Gender, "", new { @class = "form-control doctor-radio" }) Other
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mar-btm">
+                                    <label class="control-label"><b>NPI</b></label>
+                                    @Html.TextBoxFor(x => x.Npi, new { @class = "form-control", placeholder = "Enter NPI" })
+                                    @Html.HiddenFor(x => x.Education, new { @class = "form-control", placeholder = "Enter Education" })
+                                    @Html.ValidationMessageFor(x => x.Npi, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="control-label"><b>Speciality</b></label>
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(x => x.Speciality, ViewBag.SpecialityList as IEnumerable<SelectListItem>, "Select speciality",
+                                                         new { @class = "form-control select2", multiple = "multiple" })
+                                        @Html.ValidationMessageFor(x => x.Speciality, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-2 mar-btm">
+                                    <label class="control-label">
+                                        <b>Accept New Patient</b>
+                                    </label>
+                                    @Html.CheckBoxFor(x => x.IsAllowNewPatient, new { @class = "form-control" })
+                                </div>
+                                <div class="col-lg-2 mar-btm">
+                                    <label class="control-label">
+                                        <b>PCP AVAILABILITY</b>
+                                    </label>
+                                    @Html.CheckBoxFor(x => x.IsNtPcp, new { @class = "form-control" })
+                                </div>
+                                <div class="col-lg-1 mar-btm">
+                                </div>
+                                <div class="col-lg-2 mar-btm">
+                                    <label class="control-label">
+                                        <b>PRIMARY CARE</b>
+                                    </label>
+                                    @Html.CheckBoxFor(x => x.IsPrimaryCare, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="control-label"><b>Insurance Accepted</b></label>
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(x => x.IssuranceAccepted, ViewBag.InsuranceAcceptedList as IEnumerable<SelectListItem>, "Select Insurance",
+                                                         new { @class = "form-control select2", multiple = "multiple" })
+                                        @Html.ValidationMessageFor(x => x.Speciality, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <label class="control-label"><b>Age Group</b></label>
+                        <div class="form-group">
+                            @Html.DropDownListFor(x => x.AgeGroup, ViewBag.AgeGroupList as IEnumerable<SelectListItem>, "Select Age Group",
+                                             new { @class = "form-control select2", multiple = "multiple" })
+                            @Html.ValidationMessageFor(x => x.AgeGroup, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Doctor Address Details</h4>
+                            <hr />
+                            <div class="col-md-6 mar-btm">
+                                <label class="control-label"><b>Address 1</b></label>
+                                @Html.TextBoxFor(x => x.AddressView.Address1, new { @class = "form-control", placeholder = "Enter Address1" })
+                                @Html.ValidationMessageFor(x => x.AddressView.Address1, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6 mar-btm">
+                                <label class="control-label"><b>Address 2</b></label>
+                                @Html.TextBoxFor(x => x.AddressView.Address2, new { @class = "form-control", placeholder = "Enter Address2" })
+                                @Html.ValidationMessageFor(x => x.AddressView.Address2, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>State</b></label>
+                                @Html.DropDownListFor(x => x.AddressView.StateId, ViewBag.StateList as IEnumerable<SelectListItem>, "-- Select State --",
+                                                 new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(x => x.AddressView.StateId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>City</b></label>
+                                @Html.DropDownListFor(x => x.AddressView.CityId, Enumerable.Empty<SelectListItem>(), "-- Select City --",
+                                                 new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(x => x.AddressView.CityId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Country</b></label>
+                                @Html.TextBoxFor(x => x.AddressView.Country, new { @class = "form-control", placeholder = "Enter Country" })
+                                @Html.ValidationMessageFor(x => x.AddressView.Country, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Zip Code</b></label>
+                                @Html.TextBoxFor(x => x.AddressView.ZipCode, new { @class = "form-control", data_mask = "99999", placeholder = "Enter ZipCode" })
+                                @Html.ValidationMessageFor(x => x.AddressView.ZipCode, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Phone Number</b></label>
+                                @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", data_mask = "(999) 999-9999", placeholder = "Enter phone number" })
+                                @Html.ValidationMessageFor(x => x.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 mar-btm">
+                                <label class="control-label"><b>Fax Number</b></label>
+                                @Html.TextBoxFor(x => x.FaxNumber, new { @class = "form-control", data_mask = "(999) 999-9999", placeholder = "Enter fax number" })
+                                @Html.ValidationMessageFor(x => x.FaxNumber, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Doctor Description</h4>
+                            <hr />
+                            <label class="control-label"><b>Short Description</b></label>
+                            @Html.TextAreaFor(x => x.ShortDescription, new { @class = "form-control", placeholder = "Enter Short Description" })
+                            @Html.ValidationMessageFor(x => x.ShortDescription, "", new { @class = "text-danger" })
+                            <br />
+                            <label class="control-label"><b>Long Description</b></label>
+                            @Html.TextAreaFor(x => x.LongDescription, new { @class = "form-control", rows = "8", placeholder = "Enter Long Description" })
+                            @Html.ValidationMessageFor(x => x.LongDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <h4>Doctor Social Media</h4>
+                        <hr />
+                        <div class="col-md-3">
+                            <div class=" input-group mar-btm">
+                                <span class="input-group-addon"><i class="fa fa-facebook fa-lg"></i></span>
+                                @Html.TextBoxFor(x => x.SocialMediaViewModel.Facebook, new { @class = "form-control", placeholder = "Enter facebook link" })
+                                @Html.ValidationMessageFor(x => x.SocialMediaViewModel.Facebook, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class=" input-group mar-btm">
+                                <span class="input-group-addon"><i class="fa fa-twitter fa-lg"></i></span>
+                                @Html.TextBoxFor(x => x.SocialMediaViewModel.Twitter, new { @class = "form-control", placeholder = "Enter twitter link" })
+                                @Html.ValidationMessageFor(x => x.SocialMediaViewModel.Twitter, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class=" input-group mar-btm">
+                                <span class="input-group-addon"><i class="fa fa-linkedin fa-lg"></i></span>
+                                @Html.TextBoxFor(x => x.SocialMediaViewModel.LinkedIn, new { @class = "form-control", placeholder = "Enter linkedin link" })
+                                @Html.ValidationMessageFor(x => x.SocialMediaViewModel.LinkedIn, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class=" input-group mar-btm">
+                                <span class="input-group-addon"><i class="fa fa-instagram fa-lg"></i></span>
+                                @Html.TextBoxFor(x => x.SocialMediaViewModel.Instagram, new { @class = "form-control", placeholder = "Enter instagram link" })
+                                @Html.ValidationMessageFor(x => x.SocialMediaViewModel.Instagram, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="panel-footer text-right">
+                    <button type="button" id="btnSubmit" class="btn btn-primary">Save</button>
+                </div>
+            }
+            <!--===================================================-->
+            <!--End No Label Form-->
+        </div>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var stateId = @(Model.AddressView != null? Model.AddressView.StateId: 0);
+            var cityId = @((Model.AddressView != null)? Model.AddressView.CityId:0);
+            var speciality = [@string.Join(",",Model.Speciality)];
+            $("#Speciality").val(speciality).trigger("change.select2");
+
+            var IssuranceAccepted = [@string.Join(",",Model.IssuranceAccepted)];
+            $("#IssuranceAccepted").val(IssuranceAccepted).trigger("change.select2");
+
+            var AgeGroup = [@string.Join(",",Model.AgeGroup)];
+            $("#AgeGroup").val(AgeGroup).trigger("change.select2");
+
+            SetCityOnEdit(stateId, cityId);
+        });
+        $('.img-rounded').click(function () {
+            $('#ProfilePicture').click();
+        });
+
+        var filetypes = ['jpg', 'jpeg', 'png'];
+        $("#ProfilePicture").change(function () {
+            var response = { Status: 0, Message: "The filetype you are attempting to upload is not allowed.", Data: null };
+            var files = $("#ProfilePicture").get(0).files;
+            if (files.length <= 0) {
+                response.Message = "please select profile picture.";
+                HandleResponse(response);
+                return false;
+            } else {
+                var fileName = $('#ProfilePicture').val();
+                var getExt = fileName.split('.');
+                getExt = getExt.reverse();
+                if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                    response.Message = "The filetype you are attempting to upload is not allowed.";
+                    HandleResponse(response);
+                } else {
+                    if (window.FormData !== undefined) {
+
+                        // Create FormData object
+                        var fileData = new FormData();
+                        fileData.append("DoctorId", @Model.DoctorId);
+                        fileData.append("profilePic", files[0]);
+
+                        $.ajax({
+                            url: "/Doctor/UploadProfile",
+                            type: "POST",
+                            contentType: false, // Not to set any content header
+                            processData: false, // Not to process data
+                            data: fileData,
+                            success: function (response) {
+                                $("#profilePic").attr("src", response.Data);
+                                return true;
+                            },
+                            error: function (response) {
+                                HandleResponse(response);
+                            }
+                        });
+                    } else {
+                        GetAlertResponse(0, "FormData is not supported.");
+                    }
+                }
+            }
+        });
+
+        $(document).on("change", "#Npi", function () {
+            var npi = $(this).val();
+            npi = parseInt(npi === "" ? 0 : npi);
+            if (npi === 0) {
+                return false;
+            } else {
+                $.ajax({
+                    url: "/Doctor/IsNPiExist?npi=" + npi,
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    traditional: true,
+                    contentType: "application/json; charset=utf-8",
+                    success: function(response) {
+                        if (response.Status === 0) {
+                            HandleResponse(response);
+                        }
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+        $(document).on("change", "#AddressView_StateId", function () {
+            var id = $(this).val();
+            var cityId = $("#AddressView_CityId").val();
+            SetCityOnEdit(id, cityId);
+        });
+
+        function SetCityOnEdit(stateId, cityId) {
+            GetCityList(stateId).done(function (response) {
+                if (response.Status) {
+                    var data = response.Data;
+                    $("#AddressView_CityId").empty();
+                    $("<option>", { text: "City", value: "0" }).html("-- Select City --").appendTo("#AddressView_CityId");
+                    $.each(data, function (key, val) {
+                            $("<option>", { text: val.Text, value: val.Value }).html(val.Text).appendTo("#AddressView_CityId");
+                    });
+                    $("#AddressView_CityId").val(cityId).trigger("change.selectpicker");
+                }
+            });
+        }
+
+        $("#btnSubmit").click(function() {
+            $.validator.unobtrusive.parse($('#frmBasicInfo'));
+            if ($("#frmBasicInfo").valid()) {
+                $.post("@Url.Action("BasicInformation","Doctor")", $("#frmBasicInfo").serialize(), function (response) {
+                    if (response.Status) {
+                        HandleResponse(response);
+                    }
+                });
+            }
+        });
+    </script>
+}

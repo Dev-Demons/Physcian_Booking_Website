@@ -1,0 +1,345 @@
+﻿@model Doctyme.Model.DoctorViewModel
+@{
+    ViewBag.Title = "Doctor";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<div class="modal-header">
+
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.DoctorId == 0 ? "Add Doctor" : Model.IsViewMode ? "View Doctor" : "Edit Doctor")
+    </h4>
+    
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditDoctor", "Doctor", FormMethod.Post, new { id = "frmDoctor" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.DoctorId)
+        
+        <div class="row">
+            
+            <div class="col-md-12" style="margin-top:10px;">
+                
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter FirstName</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter FirstName", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter FirstName" })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter MiddleName</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", placeholder = "Enter MiddleName", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", placeholder = "Enter MiddleName" })
+
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter LastName</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter LastName", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter LastName" })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter Name Prefix</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.NamePrefix, new { @class = "form-control", placeholder = "Enter Name Prefix", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.NamePrefix, new { @class = "form-control", placeholder = "Enter Name Prefix" })
+
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter Name Suffix</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.NameSuffix, new { @class = "form-control", placeholder = "Enter Name Suffix", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.NameSuffix, new { @class = "form-control", placeholder = "Enter Name Suffix" })
+
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Select Gender</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                <select class="form-control" disabled name="Gender">
+                                    <option value="">Select Gender</option>
+                                    <option @(Model.Gender=="M"?"selected":"") value="M">Male</option>
+                                    <option @(Model.Gender=="F"?"selected":"") value="F">Female</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <select class="form-control" name="Gender">
+                                    <option>Select Gender</option>
+                                    <option @(Model.Gender=="M"?"selected":"") value="M">Male</option>
+                                    <option @(Model.Gender=="F"?"selected":"") value="F">Female</option>
+                                </select>
+
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter Credential</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.Credential, new { @class = "form-control", placeholder = "Enter Credential", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.Credential, new { @class = "form-control", placeholder = "Enter Credential" })
+                                @Html.ValidationMessageFor(model => model.Credential, "", new { @class = "text-danger" })
+
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter Education</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.Education, new { @class = "form-control", placeholder = "Enter Education", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.Education, new { @class = "form-control", placeholder = "Enter Education" })
+
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Short Description</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.ShortDescription, new { @class = "form-control", placeholder = "Enter ShortDescription", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.ShortDescription, new { @class = "form-control", placeholder = "Enter ShortDescription" })
+
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12 form-group">
+                            <label class="control-label"><b>Long Description</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextAreaFor(m => m.LongDescription, new { @class = "form-control", placeholder = "Enter Long Description", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextAreaFor(m => m.LongDescription, new { @class = "form-control", placeholder = "Enter Long Description" })
+
+                            }
+                        </div>
+
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Select Language</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Enter language", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Enter language" })
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>Enter Keywords</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.Keywords, new { @class = "form-control", placeholder = "Enter Keywords", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.Keywords, new { @class = "form-control", placeholder = "Enter Keywords" })
+
+                            }
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label"><b>NPI</b></label>
+                            @if (Model.IsViewMode)
+                            {
+                                @Html.TextBoxFor(m => m.NPI, new { @class = "form-control", placeholder = "Enter NPI", @readonly = "false" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.NPI, new { @class = "form-control", placeholder = "Enter NPI" })
+                                @Html.ValidationMessageFor(model => model.NPI, "", new { @class = "text-danger" })
+                            }
+                        </div>
+                      
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 col-xs-12 col-sm-6 form-group">
+                                <label class="col-lg-5 col-md-6 col-sm-8 col-xs-10 control-label"><b>Is Primary Care</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.CheckBoxFor(m => m.IsPrimaryCare, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.CheckBoxFor(m => m.IsPrimaryCare, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 col-xs-12 col-sm-6 pl-0 form-group">
+                                <label class="col-lg-5 col-md-6 col-sm-8 col-xs-10 control-label"><b>Is NT PCP</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.CheckBoxFor(m => m.IsNtPcp, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.CheckBoxFor(m => m.IsNtPcp, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 col-xs-12 col-sm-6 pl-0 form-group">
+                                <label class="col-lg-5 col-md-6 col-sm-8 col-xs-10 control-label"><b>Allow New Patient</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.CheckBoxFor(m => m.IsAllowNewPatient, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control", @readonly = "true" })
+                                }
+                                else
+                                {
+                                    @Html.CheckBoxFor(m => m.IsAllowNewPatient, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 col-xs-12 col-sm-6 form-group">
+                                <label class="col-lg-5 col-md-6 col-sm-8 col-xs-10 control-label"><b>Sole proprietor</b></label>
+                                @if (Model.SoleProprietor.HasValue)
+                                {
+                                    if (Model.IsViewMode)
+                                    {
+                                        @Html.CheckBoxFor(m => m.SoleProprietor.Value, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control", @readonly = "true" })
+                                    }
+                                    else
+                                    {
+                                        @Html.CheckBoxFor(m => m.SoleProprietor.Value, new { @class = "col-lg-2 col-md-2 col-sm-2 col-xs-2 form-control" })
+
+                                    }
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="form-control" value="SoleProprietor" name="SoleProprietor" />
+                                }
+
+                            </div>
+                            <div class="col-md-4 col-xs-12 col-sm-6 form-group">
+                                <label class="control-label"><b>Enumeration Date</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.EnumerationDate, new { @class = "form-control", placeholder = "Enter Enumeration Date", @readonly = "true", @type = "date" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.EnumerationDate, new { @class = "form-control", placeholder = "Enter Enumeration Date", @type = "date" ,required="required"})
+                                    @Html.ValidationMessageFor(model => model.EnumerationDate, "", new { @class = "text-danger" })
+
+                                }
+                            </div>
+                            <div class="col-md-4 form-group  col-xs-12  col-sm-6">
+                                <label class="control-label"><b>Practice Start Date</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(m => m.PracticeStartDate, new { @class = "form-control", placeholder = "Practice Start Date", @readonly = "true", @type = "date"})
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.PracticeStartDate, new { @class = "form-control", placeholder = "Practice Start Date", @type = "date" ,required="required" })
+                                    @Html.ValidationMessageFor(model => model.PracticeStartDate, "", new { @class = "text-danger" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-12">
+                        <div class="col-md-4 form-group" @*style="margin-top:30px;"*@>
+                            <label class="control-label"><b>Is Active &nbsp; &nbsp; &nbsp; &nbsp;</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" @(Model.IsActive ? "checked" : "") name="IsActive" data-Id="IsActive" />
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 form-group" @*style="margin-top:30px;"*@>
+                            <label class="control-label"><b>Enable Booking &nbsp; &nbsp; &nbsp; &nbsp;</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="EnabledBooking" @(Model.EnabledBooking.HasValue && Model.EnabledBooking.Value ? "checked" : "") name="EnabledBooking" data-Id="EnabledBooking" />
+                                <span class="slider round" style="width:35px;"></span> &nbsp;&nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.EnabledBooking, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+             
+
+            </div>
+        </div>
+
+
+    }
+</div>
+<div class="col-md-4 p-3">
+  
+    <button type="button" id="btnSave" style='@(Model.IsViewMode?"display:none":"")' class="btn btn-primary">Save</button>
+</div>
+<script type="text/javascript">
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmDoctor'));
+        if ($("#frmDoctor").valid()) {
+            $.post("@Url.Action("AddEditDoctorSave")", $("#frmDoctor").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    window.location.href = "/Doctor"
+                }
+            });
+        }
+    });
+
+</script>
+

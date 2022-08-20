@@ -1,0 +1,140 @@
+﻿@model Binke.ViewModels.DrpUser
+@using Doctyme.Repository.Enumerable;
+@{
+    ViewBag.Title = "User Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>@(Model.UserTypeId == 6 ? "Admin Profile" : "User Profile")</h3>
+        </div>
+        <div class="col-lg-7 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;">@Model.FullName</h4>
+        </div>
+        <div class="col-lg-3">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Facility/"> @(Model.UserTypeId == 6 ? "Admin" : "Facility")</a></li>
+                    <li class="active"> @(Model.UserTypeId == 6 ? "Admin Profile" : "User Profile") </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">@(Model.UserTypeId == 6 ? "Admin User" : "Facility User")</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                @using (Html.BeginForm("EditFacilityUser", "Facility", FormMethod.Post, new { id = "frmFacilityUser", @class = "form-horizontal form-bordered" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.Id)
+                <div class="form-group">
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>NPI</b></label>
+                        @Html.TextBoxFor(model => model.Uniquekey, new { @class = "form-control", placeholder = "NPI", @readonly = "readonly" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>First Name</b></label>
+                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "First Name" })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Middle Name</b></label>
+                        @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })
+                        @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Last Name</b></label>
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Last Name" })
+                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Phone Number</b></label>
+                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Email</b></label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 single-input">
+                        <label for="Password">
+                            Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="
+
+&#8226;Passwords must be at least eight characters in length.
+&#8226;Passwords must contain at least one lowercase letter, one uppercase letter, and one number.
+&#8226;The word 'Doctyme' cannot be used.
+&#8226;The name appearing before the@in your login email cannot be used. For example
+&#8226;No more than three consecutive numbers or characters can be used (123 can be used, but not 1234; abc can be used, but not abcd).
+&#8226;No number or letter can be used 4 or more times in a row (5555 cannot be used).
+
+
+
+                                                                                                                      "><i class="fa fa-question-circle text-blue"></i></a>
+                        </label>
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-lg-4 col-md-4">
+                        <label for="ConfirmPassword">
+                            Confirm Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Confirm password must be equal to password"><i class="fa fa-question-circle text-blue"></i></a>
+                        </label>
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr />
+                    <div class="col-md-12 mar-btm ">
+                        <button type="button" id="btnSave" class="btn btn-primary pull-right">Submit</button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+
+       $(document).ready(function () {
+            //$("#header").text(localStorage.getItem("SelectedOrgName"))
+            if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+                AddIndividualSubmenuItems("UserProfile");
+            else
+                AddSubmenuItems("UserProfile", isDashboardAdd);
+        });
+
+     $("#btnSave").click(function () {
+         $.validator.unobtrusive.parse($('#frmFacilityUser'));
+         if ($("#frmFacilityUser").valid()) {
+             var email = $('#Email').val();
+             var userName = email.substring(0, email.indexOf("@@"));
+             var password = $('#Password').val();
+             if (password.includes(userName)) {
+                 alert("Password Cannot be email!")
+                 return;
+             }
+             $.post("@Url.Action("EditFacilityUser","Facility")", $("#frmFacilityUser").serialize(), function (response) {
+                 if (@Model.UserTypeId == 6) {
+                     response.Message = "Admin User updated seccessfully";
+                 }
+                HandleResponse(response);
+
+            });
+        }
+    });
+</script>

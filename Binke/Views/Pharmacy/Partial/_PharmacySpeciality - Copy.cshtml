@@ -1,0 +1,233 @@
+﻿@model  Binke.ViewModels.OrganisationSpecialityUpdateViewModel
+@{
+    ViewBag.Title = "Pharmacy Specialities";
+}
+<style>
+    .taxonomy{padding:5px; background-color:Highlight; color:#fff; margin-right:2px;}
+</style>
+<div class="box-header">
+    <h4 class="title">
+        @(Model.TaxonomyID == 0 ? "Add Pharmacy Speciality" : "Edit Pharmacy Speciality")
+    </h4>
+</div>
+
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditPharmacySpeciality", "Pharmacy", FormMethod.Post, new { id = "frmPharmacySpeciality", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.TaxonomyID)
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+
+                    <div class="col-md-6 mar-btm">
+                        <label class="control-label"><b>Parent</b></label>
+                        @Html.TextBoxFor(model => model.OrganisationName, new { @class = "form-control", placeholder = "Enter Pharmacy Name" })
+                        @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mar-btm">
+                        <label class="control-label"><b>Taxonomy Code</b></label>
+                            @Html.TextBoxFor(model => model.TaxonomyCode, new { @class = "form-control", placeholder = "Enter Taxonomy Code(s)" })
+                        <div id="Tcodes"></div>
+                            @Html.ValidationMessageFor(model => model.TaxonomyCodes, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.TaxonomyIDs, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-5 mar-btm">
+                            <label class="control-label"><b>Speciality Name</b></label>
+                            @Html.TextBoxFor(model => model.SpecialityName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Specialization, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Description</b></label>
+                            @Html.TextAreaFor(model => model.SpecialityDescription, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.SpecialityDescription, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-2 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Is Active</b></label>
+                            @Html.EditorFor(model => model.IsActive)
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-1 mar-btm" style="text-align:right; margin-top:30px;">
+                            <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+    $(document).ready(function () {
+    $("#OrganizationTypeID").val('1005');
+    $("#UserTypeID").val('3');
+
+        var ID = "@ViewBag.ID";
+
+
+
+        $(".disable").prop("disabled", true);
+
+
+        $("#OrganisationName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Pharmacy/GetOrganisationName",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.OrganisationName, value: item.OrganisationName, dataId: item.OrganisationId };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                $(this).val(ui.item.label);
+                $("#OrganisationId").val(ui.item.dataId);
+            }
+        });
+
+        $("#TaxonomyCodes").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Pharmacy/GetTaxonomy",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            if (!data.length) {
+                                var result = [
+                                    {
+                                        label: 'No matches found',
+                                        value: response.term
+                                    }
+                                ];
+                                response(result);
+                            }
+                            else {
+                                response($.map(data, function (item) {
+                                    return { label: item.Taxonomy_Code + " | " + item.Specialization, value: item.Taxonomy_Code, dataId: item.TaxonomyID };
+                                }))
+                            }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                        }
+                    })
+                },
+            minLength: 2,
+            delay: 100,
+            select: function (event, ui) {
+               if (duplicateValidate(ui.item.dataId)) {
+                    var tIds = $("#TaxonomyIDs").val();
+                    if (tIds == "")
+                        tIds = ui.item.dataId;
+                    else
+                        tIds += "," + ui.item.dataId;
+
+                    $("#TaxonomyIDs").val(tIds);
+                   var block = $("<span class='taxonomy' data-id='" + ui.item.dataId + "'><i class='fa fa-close taxonomyDelete' style='cursor:pointer;'></i>" + ui.item.value + "</span>");
+                    $("#Tcodes").append(block);
+                }
+                else {
+                    alert("Selected code already exists!");
+                }
+                $(this).val('');
+                return false;
+            }
+        });
+
+        $(document).on('click', '.taxonomyDelete', function () {
+            var TIDS = $("#TaxonomyIDs").val();
+            var arr = TIDS.split(",");
+
+            var removeItem = $(this).parent().attr('data-id');
+
+            var newItems = $.grep(arr, function (value) {
+                return value != removeItem;
+            });
+
+            $("#TaxonomyIDs").val(newItems);
+
+            $(this).parent().remove();
+        });
+
+        function duplicateValidate(tID) {
+            var TIDS = $("#TaxonomyIDs").val();
+            var flag = true;
+            if (TIDS != "") {
+                var arr = TIDS.split(",");
+                $.map(arr, function (a) {
+                    if (a == tID)
+                        flag = false;
+                });
+            }
+            return flag;
+        }
+
+        $("#OrganisationName").keyup(function () {
+            if ($.trim($(this).val()) == "")
+                $("#OrganisationId").val('');
+        });
+
+        $("#Taxonomy_Code").keyup(function () {
+            if ($.trim($(this).val()) == "")
+                $("#Specialization").val('');
+            $("#TaxonomyID").val('');
+        });
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmPharmacySpeciality'));
+                if ($("#frmPharmacySpeciality").valid()) {
+                    $.post("@Url.Action("AddEditPharmacySpeciality")", $("#frmPharmacySpeciality").serialize(), function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            if (response.Status == 1) {
+                                bindPharmacySpecialityList(true, CurrentPageStart());
+                                $("#frmPharmacySpeciality")[0].reset();
+                                $("#OrganisationId").val('');
+                                closeModal();
+                            } else {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+
+    });
+</script>

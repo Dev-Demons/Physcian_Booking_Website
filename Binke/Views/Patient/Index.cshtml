@@ -1,0 +1,267 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Patient";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Patient </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Patient/"> Patient </a></li>
+            <li class="active"> Patient Directory </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            @*<ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#activePatient"> Active Patient</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#deActivetPatient">Deactive Patient</a>
+            </li>
+            <li class="pull-right">
+                <a id="AddPatient" href="javascript:;"> <i class="fa fa-edit"></i> Add Patient</a>
+            </li>
+        </ul>*@
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="activePatient" class="tab-pane fade active in">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddPatient">Add Patient User</button>
+
+                    <table id="dtActivePatient" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="deActivetPatient" class="tab-pane fade">
+                    <table id="dtDeActivetPatient" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#MnuPatient").addClass('menu-open');
+            $("#MnuPatient ul li a p").each(function () {
+                var text = $(this).text();
+                if (text == "Profile") {
+                    $(this).parent().addClass('active-sub-menu-item');
+                    $(this).parent().find('i').removeClass('far fa-circle');
+                    $(this).parent().find('i').addClass('far fa-dot-circle-o');
+                }
+                else {
+                    $(this).parent().removeClass('active-sub-menu-item');
+                    $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                    $(this).parent().find('i').addClass('far fa-circle');
+                }
+            });
+            bindActivePatientList(true);
+        });
+        $("#AddPatient").click(function () {
+            window.loadRegisterForm("Patient");
+        });
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href");
+            switch (target) {
+                case "#activePatient":
+                    bindActivePatientList(true);
+                    break;
+                case "#deActivetPatient":
+                    bindDeActivePatientList(false);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+
+        function bindActivePatientList(flag) {
+            if ($.fn.DataTable.isDataTable("#dtActivePatient")) {
+                $('#dtActivePatient').DataTable().destroy();
+            }
+            var table = $('#dtActivePatient')
+                .DataTable({
+                    "sAjaxSource": "/GetPatientList/" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "FullName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Email",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a href="javascript:;" onclick="EditPatient(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a onclick="ViewProfile(' + data + ')" data-toggle="tooltip" data-original-title="View Profile" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="Delete" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function ViewProfile(patientID) {
+            sessionStorage.setItem("CurrentPatientId", patientID);
+            var url = "/Patient/Profile/" + patientID + "/false";
+            window.location.href = url;
+        }
+
+        function EditPatient(patientID) {
+            sessionStorage.setItem("CurrentPatientId", patientID);
+            var url = "/Patient/Profile/" + patientID + "/true";
+            window.location.href = url;
+        }
+
+
+        function bindDeActivePatientList(flag) {
+            if ($.fn.DataTable.isDataTable("#dtDeActivetPatient")) {
+                $('#dtDeActivetPatient').DataTable().destroy();
+            }
+            var table = $('#dtDeActivetPatient')
+                .DataTable({
+                    "sAjaxSource": "/GetPatientList/" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "FullName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Email",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data) {
+                                var content = '<a href="javascript:;" data-toggle="tooltip" data-original-title="Re Activate" data-flag="reactivate" data-Id="' + data + '" class="btn btn-success btn-sm action"><i class="fa fa-check"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function DeactivatePatient(id, flag) {
+            var title = flag ? "De Activate" : "Re Activate";
+            var message = "Are you sure you want to <b> " + title + " </b> this Patient";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeActivePatient/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        if (flag) {
+                            bindActivePatientList(true);
+                        } else {
+                            bindDeActivePatientList(false);
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+
+        $('#dtActivePatient, #dtDeActivetPatient').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "deactivate":
+                    DeactivatePatient(id, true);
+                    break;
+                case "reactivate":
+                    DeactivatePatient(id, false);
+                default:
+            }
+        });
+    </script>
+}

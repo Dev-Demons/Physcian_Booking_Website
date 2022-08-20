@@ -1,0 +1,258 @@
+﻿
+@{
+    ViewBag.Title = "DrugType";
+}
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "DrugType";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Drug Type </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/DrugType/"> Drug Type </a></li>
+            <li class="active"> Drug Type Directory </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="IsActiveDrugType(true)">
+                    <a data-toggle="tab" href="#activeDrugType"> Active DrugType</a>
+                </li>
+                @*<li onclick="IsActiveDrugType(false)">
+                        <a data-toggle="tab" href="#deActivetDrugType">Deactive DrugType</a>
+                    </li>*@
+                <li class="pull-right">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddDrugType">Add Drug Type</button>
+
+                    @*<a id="AddDrugType" href="javascript:;"> <i class="fa fa-edit"></i>Add DrugType</a>*@
+                </li>
+            </ul>
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="activeDrugType" class="tab-pane fade active in">
+                    <table id="dtActiveDrugType" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Drug Type(s)</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="deActivetDrugType" class="tab-pane fade">
+                    <table id="dtDeActivetDrugType" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Drug Type(s)</th>
+                                <th>Date Created</th>
+                                <th>Date Modified</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="modalTitle" class="modal-title">Edit Drug Type</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label id="labelName" class="control-label"><b>Drug Type(s)</b></label>
+                        <div class="form-group">
+                            <input class="form-control" id="DrugType" name="Name" placeholder="Enter Drug Type" type="text">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                            <input type="hidden" id="hiddenId" value="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="saveDrugType" onclick="updateData()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        var addLabel = "Add Drug Type";
+        var editLabel = "Edit Drug Type";
+        var flag = true;
+        var deactiveTable = "dtDeActivetDrugType";
+        var tableId = "dtActiveDrugType";
+        var toolTip = "DeActivate";
+        var atoolTip = "Activate";
+        var isAdd = false;
+        var request = {
+            "DrugTypeId": 0,
+            "Type": "",
+            "IsActive": true
+        }
+
+        $(function () {
+            bindActiveDrugType(flag);
+        });
+
+        function IsActiveDrugType(value) {
+            flag = value;
+            if (!value) {
+                tableId = deactiveTable;
+            }
+            toolTip = value ? toolTip : atoolTip;
+            bindActiveDrugType(flag);
+        }
+
+        var currentable = ''
+        function bindActiveDrugType(flag) {
+            if ($.fn.DataTable.isDataTable("#" + tableId)) {
+                $('#' + tableId).DataTable().destroy();
+            }
+            currentable = $('#' + tableId)
+                .DataTable({
+                    "sAjaxSource": "/Drug/GetDrugType?isActive=" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "Type",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) return '';
+                                return '<span id="' + row.DrugTypeId + '">' + data + '</span>';
+                            }
+                        },
+                        {
+                            "data": "CreatedDate",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) { return '---' };
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "UpdatedDate",
+                            "width": "20%",
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (!data) { return '---' };
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "DrugTypeId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a onclick="action(' + row.DrugTypeId + ')" data-toggle="tooltip" data-original-title="Edit" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a onclick="actionOnDB(' + row.DrugTypeId + ')" href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-close"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        function action(actionId) {
+            isAdd = false;
+            var fullName = $("#" + actionId).text();
+            createModal(editLabel, fullName);
+            $("#hiddenId").val(actionId);
+            $("#myModal").modal('show');
+        };
+
+        $("#AddDrugType").click(function () {
+            isAdd = true;
+            $("#hiddenId").val(0);
+            createModal(addLabel, '');
+            $("#myModal").modal('show');
+        });
+
+        function updateData() {
+            if (isAdd) {
+                request.DrugTypeId = 0;
+            }
+            else {
+                var currentCellId = $("#hiddenId").val();
+                $("#" + currentCellId).text($("#DrugType").val());
+                request.DrugTypeId = parseInt(currentCellId);
+            }
+            request.Type = $("#DrugType").val();
+            request.IsActive = true;
+            AddOrUpdateDrugType();
+        }
+
+        function createModal(Title, textValue) {
+            $("#modalTitle").text(Title);
+            $("#DrugType").val(textValue);
+        }
+
+        function actionOnDB(id) {
+            request.DrugTypeId = parseInt(id);
+            request.IsActive = flag ? false : true;
+            AddOrUpdateDrugType();
+        }
+
+        function AddOrUpdateDrugType() {
+            $.ajax({
+                url: "/Drug/AddOrUpdateDrugType",
+                type: "POST",
+                data: request,
+                cache: false,
+                success: function (response) {
+                    if (response && response.Status == 200) {
+                        bindActiveDrugType(flag);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+    </script>
+}

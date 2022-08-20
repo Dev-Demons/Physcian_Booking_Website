@@ -1,0 +1,648 @@
+﻿@model  Doctyme.Model.ViewModels.BlogViewModel
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Owl Stylesheets -->
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="owl.carousel.min.css">
+    <link rel="stylesheet" href="owl.theme.default.min.css">*@
+<style>
+    .section-padding-top-sm {
+        padding-top: 30px;
+    }
+
+    .b-page-title h1 {
+        padding-bottom: 10px !important;
+        margin-bottom: 10px !important;
+        font-size: 2.5rem !important;
+        font-weight: 500 !important;
+        line-height: 1em !important;
+        color: rgb(22, 56, 119) !important;
+        letter-spacing: 0px !important;
+    }
+
+    .b-page-title::after {
+        content: '';
+        position: relative;
+        left: 0;
+        bottom: 0;
+        display: block;
+        width: 40px;
+        height: 3px;
+        background: #F8C91C;
+    }
+
+    .e13-6.x-menu {
+        flex-direction: row;
+        justify-content: center;
+        align-items: stretch;
+        align-self: center;
+        flex: 0 0 auto;
+        margin: 1rem 0px 0px 0px;
+        font-size: 1em;
+    }
+
+    .x-menu-inline {
+        display: flex;
+    }
+
+    .x-menu, .x-menu li {
+        min-width: 1px;
+    }
+
+        .x-menu, .x-menu .sub-menu {
+            /*margin: 0;*/
+            padding: 0;
+            list-style: none;
+        }
+
+            .x-menu, .x-menu .sub-menu {
+                list-style: none;
+            }
+
+    .e13-6.x-menu > li > .x-anchor {
+        margin: 0em 5px 0em 5px;
+        border-radius: 5px 5px 0px 0px;
+        font-size: 1em;
+        background-color: rgb(242,242,242);
+        padding: 10px;
+        color: #128bed;
+    }
+
+    .e13-6.x-menu > li, .e13-6.x-menu > li > a {
+        flex: 0 1 auto;
+    }
+
+    .x-anchor, .x-anchor-text-primary, .x-anchor-text-secondary, .x-anchor-sub-indicator {
+        transition-duration: 0.3s;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .x-anchor {
+        display: inline-flex;
+        flex-direction: column;
+        position: relative;
+        min-width: 1px;
+        border-radius: 0;
+        cursor: pointer;
+        transition-property: border-color, background-color, box-shadow, opacity, transform;
+    }
+
+    .e13-6.x-menu > li > .x-anchor[class*="active"] {
+        background-color: rgb(18,140,237);
+    }
+
+    .boderLineHeader {
+        border-width: 0px 0px 2px 0px;
+        border-style: none none solid none;
+        border-color: transparent transparent rgb(242,242,242) transparent;
+        padding: 0px 20px 0px 20px;
+        background-color: rgb(255,255,255);
+        box-shadow: 0px 1px 1px 0em rgb(204,204,204);
+    }
+
+
+    .e13-7.x-section, .e13-13.x-section, .e13-19.x-section, .e13-25.x-section, .e13-31.x-section, .e13-37.x-section {
+        margin: 0em;
+        padding: 0px 0px 45px 0px;
+    }
+
+    .x-section::before, .x-section::after {
+        content: " ";
+        display: table;
+    }
+
+    .e13-2.x-container, .e13-8.x-container, .e13-14.x-container, .e13-20.x-container, .e13-26.x-container, .e13-32.x-container, .e13-38.x-container, .e13-44.x-container {
+        margin: 0em auto 0em auto;
+        background-color: transparent;
+        z-index: 1;
+    }
+
+    .x-container.max {
+        max-width: 1330px;
+    }
+
+    .x-container.width {
+        width: 96%;
+    }
+
+    .e13-10.x-text, .e13-16.x-text, .e13-22.x-text, .e13-28.x-text, .e13-34.x-text, .e13-40.x-text {
+        margin: 0em 30px 30px 30px;
+        margin-top: 0em;
+        border-width: 0px 0px 1px 0px;
+        border-style: solid none solid none;
+        border-color: rgb(219,219,219) transparent rgb(219,219,219) transparent;
+        padding: 1em 0em 0em 0em;
+    }
+
+    .entry-content p, .x-text {
+        font-size: 1.6rem !important;
+        line-height: 2.4rem !important;
+        color: #555 !important;
+    }
+
+    .b-page-title {
+        margin-top: 45px !important;
+    }
+
+    .x-text-headline {
+        position: relative;
+    }
+
+    .x-text {
+        min-width: 1px;
+    }
+
+    .x-text-content-text {
+        /*-webkit-flex-grow: 1;*/
+        flex-grow: 1;
+        min-width: 1px;
+        max-width: 100%;
+    }
+
+    .e13-4.x-text .x-text-content-text-primary, .e13-10.x-text .x-text-content-text-primary, .e13-16.x-text .x-text-content-text-primary, .e13-22.x-text .x-text-content-text-primary, .e13-28.x-text .x-text-content-text-primary, .e13-34.x-text .x-text-content-text-primary, .e13-40.x-text .x-text-content-text-primary {
+        color: rgb(22,56,119);
+    }
+
+    .b-page-title a {
+        color: #163877 !important;
+    }
+
+    /*owl-Theams*/
+    .carousel-wrap {
+        width: 1000px;
+        margin: auto;
+        position: relative;
+    }
+
+    .owl-carousel .owl-nav {
+        overflow: hidden;
+        height: 0px;
+    }
+
+    .owl-theme .owl-dots .owl-dot.active span,
+    .owl-theme .owl-dots .owl-dot:hover span {
+        background: #2caae1;
+    }
+
+
+    .owl-carousel .item {
+        text-align: center;
+    }
+
+    .owl-carousel .nav-btn {
+        height: 47px;
+        position: absolute;
+        width: 26px;
+        cursor: pointer;
+        top: 100px !important;
+    }
+
+    .owl-carousel .owl-prev.disabled,
+    .owl-carousel .owl-next.disabled {
+        pointer-events: none;
+        opacity: 0.2;
+    }
+
+    .owl-carousel .prev-slide {
+        background: url(nav-icon.png) no-repeat scroll 0 0;
+        left: -33px;
+    }
+
+    .owl-carousel .next-slide {
+        background: url(nav-icon.png) no-repeat scroll -24px 0px;
+        right: -33px;
+    }
+
+    .owl-carousel .prev-slide:hover {
+        background-position: 0px -53px;
+    }
+
+    .owl-carousel .next-slide:hover {
+        background-position: -24px -53px;
+    }
+
+    span.img-text {
+        text-decoration: none;
+        outline: none;
+        transition: all 0.4s ease;
+        -webkit-transition: all 0.4s ease;
+        -moz-transition: all 0.4s ease;
+        -o-transition: all 0.4s ease;
+        cursor: pointer;
+        width: 100%;
+        font-size: 23px;
+        display: block;
+        text-transform: capitalize;
+    }
+
+        span.img-text:hover {
+            color: #2caae1;
+        }
+
+    .owl-nav {
+        display: block !important;
+    }
+
+    .navPrev {
+        background: #128CED !important;
+        line-height: 26px !important;
+        font-size: 25px !important;
+        border-radius: 4px;
+        padding: 2px 5px 5px 5px;
+    }
+
+    .owl-carousel .nav-btn {
+        height: 34px !important;
+        top: 130px !important;
+    }
+
+    .sliderBorder {
+        background: #ffffff;
+        padding: 5px 5px 5px 5px;
+        border-width: 1px 1px 1px 1px;
+        border-radius: 5px 5px 5px 5px;
+        border-color: #dddddd;
+        border-style: solid;
+        box-shadow: 0px 1px 0px 0px #cccccc;
+        transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.1, 0.999917);
+        height: auto;
+        width: 403px;
+        display: block;
+    }
+
+    .esg-media-cover-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .esg-entry-media-wrapper {
+        z-index: 0;
+    }
+
+    .esg-entry-media {
+        width: 100%;
+    }
+
+    .esg-entry-media {
+        position: relative;
+        border: 0 solid transparent;
+        outline: 0 solid transparent;
+        overflow: hidden;
+    }
+
+    .esg-grid .mainul li.eg-petcentral-grid1-wrapper .esg-media-poster {
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .esg-media-poster {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-size: cover;
+        background-position: center center;
+        z-index: 10;
+        opacity: 0;
+    }
+
+    .eg-petcentral-grid1-content {
+        background: #ffffff;
+        padding: 20px 20px 20px 20px;
+        border-width: 0px 0px 0px 0px;
+        border-radius: 0px 0px 0px 0px;
+        border-color: transparent;
+        border-style: none;
+        text-align: left;
+    }
+
+    .eg-petcentral-grid1-element-4-a {
+        font-size: 12px !important;
+        line-height: 14px !important;
+        color: #999 !important;
+        font-family: "Roboto" !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        display: inline-block !important;
+        float: left !important;
+        clear: none !important;
+        margin: 0px 0px 10px 0px !important;
+        position: relative !important;
+    }
+
+    .esg-grid a {
+        border: none;
+        text-decoration: none;
+    }
+
+    .eg-petcentral-grid1-element-4 {
+        font-size: 12px !important;
+        line-height: 14px !important;
+        color: #999 !important;
+        font-weight: 600 !important;
+        padding: 0px 0px 0px 0px !important;
+        border-radius: 0px 0px 0px 0px !important;
+        background: transparent !important;
+        z-index: 2 !important;
+        font-family: "Roboto" !important;
+    }
+
+    .eg-petcentral-grid1-element-1-a {
+        display: block;
+        text-align: left;
+        clear: both;
+        margin: 20px 0px 0px 0px;
+        position: relative;
+    }
+
+    a.eg-pet-central-02-element-1, a.eg-petcentral-grid1-element-1 {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        height: 48px;
+    }
+
+    .esg-grid a {
+        border: none;
+        text-decoration: none;
+    }
+
+    .eg-petcentral-grid1-element-1 {
+        font-size: 22px;
+        line-height: 22px;
+        color: #163977;
+        font-weight: 600;
+        padding: 0px 0px 0px 0px;
+        border-radius: 0px 0px 0px 0px;
+        background: transparent;
+        z-index: 2 !important;
+        display: block;
+        font-family: "Roboto";
+        text-transform: capitalize;
+    }
+
+    .eg-petcentral-grid1-element-5 {
+        font-size: 16px;
+        line-height: 24px;
+        color: #555555;
+        font-weight: 400;
+        display: block;
+        text-align: left;
+        clear: none;
+        margin: 10px 0px 0px 0px;
+        padding: 4px 0px 0px 0px;
+        border-radius: 0px 0px 0px 0px;
+        background: transparent;
+        position: relative;
+        z-index: 2 !important;
+        /*font-family: "Roboto";*/
+        border-top-width: 1px;
+        border-right-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-color: #e5e5e5;
+        border-style: solid;
+    }
+
+    body {
+        font-family: 'Open Sans',sans-serif !important;
+    }
+    .x-anchor {
+        display: inline-flex;
+        flex-direction: column;
+        position: relative;
+        min-width: 1px;
+        border-radius: 0;
+        cursor: pointer;
+        transition-property: border-color, background-color, box-shadow, opacity, transform;
+    }
+    .x-anchor {
+        transition-duration: 0.3s;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .e13-12.x-anchor {
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        align-content: center;
+        padding: 0.575em 0.85em 0.575em 0.85em;
+    }
+
+    .x-anchor-content {
+        display: flex;
+        flex: 1 0 auto;
+        position: relative;
+        overflow: hidden;
+        border-radius: inherit;
+        transform: translate3d(0, 0, 0);
+    }
+    .x-graphic {
+        flex-shrink: 0;
+        position: relative;
+        letter-spacing: 0;
+        line-height: 1;
+        z-index: 2;
+    }
+
+    .e13-12.x-anchor .x-graphic-icon, .e13-18.x-anchor .x-graphic-icon, .e13-24.x-anchor .x-graphic-icon, .e13-30.x-anchor .x-graphic-icon, .e13-36.x-anchor .x-graphic-icon, .e13-42.x-anchor .x-graphic-icon {
+        width: 1em;
+        /*height: 1em;*/
+        line-height: 1em;
+        font-size: 1.05em;
+        color: rgb(248,201,28);
+        background-color: transparent;
+    }
+    .e13-42.x-anchor .x-anchor-text {
+        margin: 5px;
+    }
+
+    .x-anchor-text {
+        flex-shrink: 1;
+        min-width: 1px;
+        max-width: 100%;
+    }
+    .x-anchor-text-primary
+    {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9em;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1;
+    text-align: left;
+    text-transform: uppercase;
+    color: rgb(18,140,237);
+    }
+
+    .x-anchor-text-primary, .x-anchor-text-secondary {
+        position: relative;
+        display: block;
+        transition-property: color, text-shadow;
+        z-index: 3;
+    }
+
+    .x-anchor, .x-anchor-text-primary, .x-anchor-text-secondary, .x-anchor-sub-indicator {
+        transition-duration: 0.3s;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    [data-x-icon-s]::before {
+        content: attr(data-x-icon-s);
+    }
+    .x-graphic-icon::before {
+        display: block !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: 0 !important;
+        width: 1em !important;
+        height: 1em !important;
+        margin: -0.5em 0 0 -0.5em !important;
+        line-height: 1em !important;
+        text-align: center !important;
+    }
+    .x-graphic {
+        margin-left: 5px;
+    }
+</style>
+<div class="bk-section doctors-profile-area section-padding-top-sm section-padding-bottom-sm">
+
+    <div class="col-md-12 col-lg-12 container">
+        <div class="boderLineHeader">
+            <div class="row">
+                <div class="col-md-12 b-page-title">
+                    @Html.HiddenFor(i => i.CategoryId)
+                    <h1>@Model.CategoryName</h1>
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="col-md-12">
+                    <h5 style="font-weight:100" class="x-text-content-text-primary">
+                        @Model.CategoryDesc
+                      
+                    </h5>
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px;justify-content:center">
+                <ul class="e13-6 x-menu x-menu-inline landing-subcat-tabs">
+                    @foreach (var subitem in Model.lstCategories)
+                    {
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-538" id="menu-item-538">
+                            <a class="e13-6 x-anchor x-anchor-menu-item" href="#@subitem.CategoryName">
+                                <span class="x-anchor-content">
+                                    <span class="x-anchor-text"><span class="x-anchor-text-primary">@subitem.CategoryName</span></span>
+                                </span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        @foreach (var subItem in Model.lstCategories)
+        {
+
+            if (Model.lstbundles.Where(i => i.SubCategoryId == subItem.CategoryId).ToList().Count > 0)
+            {
+                <div id="@subItem.CategoryName" class="e13-7 x-section">
+                    <div class="row">
+                        <div class="e13-10 x-text b-page-title x-text-headline col-md-12">
+                            <div class="x-text-content">
+                                <div class="x-text-content-text">
+                                    <div class="x-text-content-text-primary">
+                                        <a href="/Blog/SubCategory/@subItem.CategoryNameReplace" @*href="@Url.Action("SubCategory", "Blog", new { SubCategoryId = subItem.CategoryId })"*@>@subItem.CategoryName</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="carousel-wrap" style="width:90%;">
+                            <div class="owl-carousel owl-theme">
+                                @foreach (var item in Model.lstbundles.Where(i => i.SubCategoryId == subItem.CategoryId))
+                                {
+                                <div class="item sliderBorder">
+                                    <div class="esg-media-cover-wrapper">
+                                        <div class="esg-entry-media-wrapper" style="overflow:hidden;position:relative;">
+                                            <div class="esg-entry-media" style="padding-bottom: 50%;">
+                                                <div class="esg-media-poster" style='visibility: inherit; opacity: 1; transform: translate3d(0px, 0px, 0px);'>
+                                                    <img src="@item.ImagePath" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="esg-entry-content eg-petcentral-grid1-content esg-notalone" style="min-height: 0px;">
+                                        <div class="esg-content eg-post-9589 eg-petcentral-grid1-element-4-a">
+                                            <a class="eg-petcentral-grid1-element-4 eg-post-9589" href="/Blog/Category/@Model.CategoryName.Replace(" ","-").Replace("&","-")" @*href="@Url.Action("Category", "Blog", new { CategoryId = Model.CategoryId })"*@
+                                               title="View all posts in @Model.CategoryName" rel="category tag">@Model.CategoryName</a> / 
+                                            <a class="eg-petcentral-grid1-element-4 eg-post-9589" href="/Blog/SubCategory/@subItem.CategoryNameReplace"  @*href="@Url.Action("SubCategory", "Blog", new { SubCategoryId = subItem.CategoryId })"*@ 
+                                               title="View all posts in @subItem.CategoryName" rel="category tag">@subItem.CategoryName</a>
+                                        </div>
+                                        <div class="esg-content eg-post-9589 eg-petcentral-grid1-element-1-a"><a class="eg-petcentral-grid1-element-1 eg-post-9589" href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem", "Blog", new { BlogItem = item.CategoryId })"*@ target="_self">@item.ArticleName</a></div>
+                                        <div class="esg-content eg-post-9589 eg-petcentral-grid1-element-5"><span style="display: block;min-height: 75px;overflow: hidden; height: 75px; max-height: 75px">@item.ArticleSummary</span></div>
+                                    </div>
+
+                                    @*<img src="~/Images/images1.jpg" />*@
+                                    @*<span class="img-text">nightlife</span>*@
+                                </div>
+                                }
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div style="display: flex;justify-content: center;align-items: center;">
+                    <a class="e13-12 x-anchor x-anchor-button" href="/Blog/SubCategory/@subItem.CategoryNameReplace" @*href="@Url.Action("SubCategory", "Blog", new { SubCategoryId = subItem.CategoryId })"*@>
+                        <span class="x-anchor-content">
+
+                            <span class="x-anchor-text"><span class="x-anchor-text-primary">See More</span></span>
+                            <span class="x-graphic" aria-hidden="true">
+                                <i class="fa fa-angle-right x-graphic-icon" aria-hidden="true" data-x-icon-s=""></i>
+                            </span>
+                        </span>
+
+
+                    </a>
+                </div>
+            }
+
+
+        }
+    </div>
+</div>
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+<script src="~/Scripts/client/carousel/owl.carousel.js"></script>
+<script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+<script>
+    $('.owl-carousel').owlCarousel({
+        margin: 10,
+        nav: true,
+        loop: true,
+        navText: ["<div class='nav-btn prev-slide navPrev'><i class='fa fa-angle-left'></i></div>", "<div class='nav-btn next-slide navPrev'><i class='fa fa-angle-right'></i></div>"],
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 3
+            },
+            1000: {
+                items: 3
+            }
+        }
+    });
+</script>
+

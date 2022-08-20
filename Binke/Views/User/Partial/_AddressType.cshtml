@@ -1,0 +1,84 @@
+﻿@model Binke.ViewModels.AddressTypeViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.Id == 0 ? "Add Address Type" :Model.IsViewMode?"View Address Type":"Edit Address Type")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditAddressType", "User", FormMethod.Post, new { id = "frmAddressType" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+      
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Address Type Name</b></label>
+                <div class="form-group">
+                    @if (!Model.IsViewMode)
+                    {
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Address Type Name" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Address Type Name",@readonly="true" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Description</b></label>
+                <div class="form-group">
+                    @if (!Model.IsViewMode)
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description",@readonly="true" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+           
+        </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    @if (!Model.IsViewMode)
+    {
+        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+    }
+    </div>
+
+@Scripts.Render("~/scripts/full-calendar")
+
+<script type="text/javascript">
+ 
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmAddressType'));
+        if ($("#frmAddressType").valid()) {
+            $.post("@Url.Action("AddEditAddressType")", $("#frmAddressType").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "AddressType") {
+                        bindExperienceList();
+                        closeModal();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+   
+
+</script>

@@ -1,0 +1,49 @@
+﻿@model Binke.ViewModels.DoctorAffiliationModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.AffiliationId == 0 ? "Add Affiliated Facility" : "Edit Affiliated Facility")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditFacilityAffiliation", "Doctor", FormMethod.Post, new { id = "frmFacilityAffiliation" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.AffiliationId)
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Facility</b></label>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.FacilityId, ViewBag.FacilityList as IEnumerable<SelectListItem>, "-- Select Facility --",
+                                        new {@class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.FacilityId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        defaultSelect2();
+    });
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmFacilityAffiliation'));
+        if ($("#frmFacilityAffiliation").valid()) {
+            $.post("@Url.Action("AddEditFacilityAffiliation")", $("#frmFacilityAffiliation").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindFacilityAffiliationList();
+                    closeModal();
+                }
+            });
+        }
+    });
+</script>

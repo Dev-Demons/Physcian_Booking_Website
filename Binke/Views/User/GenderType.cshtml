@@ -1,0 +1,267 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Gender Type";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Gender Type </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Doctor/"> User </a></li>
+            <li class="active"> Gender Type </li>
+        </ol>
+    </div>
+}
+<style>
+    #dtGenderType_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtGenderType_length {
+        float: left;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <!--Nav Tabs-->
+            @*<ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#activeDoctor"> Active Doctor</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#deActivetDoctor">Deactive Doctor</a>
+                    </li>
+                    <li class="pull-right">
+                        <a id="AddDoctor" href="javascript:;"> <i class="fa fa-user-md"></i> Add Doctor</a>
+                    </li>
+                </ul>*@
+
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="userType" class="tab-pane fade active in">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddGenderType">Add Gender Type</button>
+                    <table id="dtGenderType" class="table table-striped table-bordered table-hover small" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Gender Type Name</th>
+                                <th>Description</th>
+                                <th>Active</th>
+                                <th style="width: 80px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $("#Lookup").addClass('menu-open');
+        $("#Lookup ul li a p").each(function () {
+            var text = $(this).text();
+            if (text == "Gender Type") {
+                $(this).parent().addClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-circle');
+                $(this).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }
+        })
+        $(document).ready(function () {
+            bindActiveGenderTypeList(true);
+        });
+        $(document).on("click", "#AddGenderType", function () {
+            AddEditGenderType(0);
+        });
+
+        function AddEditGenderType(id) {
+            $("#modalContent").load("/_GenderType/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+        function ViewGenderType(id) {
+            $("#modalContent").load("/_ViewGenderType/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href");
+            switch (target) {
+                case "#GenderType":
+                    bindActiveGenderTypeList(true);
+                    break;
+                case "#deGenderType":
+                    bindDeActiveGenderTypeList(false);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+
+        function bindActiveGenderTypeList(flag) {
+            if ($.fn.DataTable.isDataTable("#dtGenderType")) {
+                $('#dtGenderType').DataTable().destroy();
+            }
+            var table = $('#dtGenderType')
+                .DataTable({
+                    "sAjaxSource": "/GetGenderTypeList/" + flag,
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> ';
+                                content += '<label class="switch" style=" margin-left: 20px;">';
+                                content += '<input onchange="ActiveDeactiveGenderType(this);" type="checkbox" ' + value + ' data-Id= "IsActive" data-typeId="' + row.Id + '" />';
+                                content += '<span class="slider round"style="width:35px;"></span>';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "Id",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div style="display:flex"><a href="javascript:;" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + row.Id + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp; ';
+                                content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + row.Id + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;</div>'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+
+        function DeactivateGenderType(id, flag) {
+            var title = flag ? "De Activate" : "Re Activate";
+            var message = "Are you sure you want to <b> " + title + " </b> this Gender Type";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeActiveGenderType/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        if (flag) {
+                            bindActiveGenderTypeList(true);
+                        } else {
+                            bindActiveGenderTypeList(false);
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        var ActiveDeactiveGenderType = function (ctrl) {
+            var flag = $(ctrl).is(":checked");
+
+            var id = $(ctrl).data("typeid");
+            switch (flag) {
+                case false:
+                    DeactivateGenderType(id, true);
+                    break;
+                case true:
+                    DeactivateGenderType(id, false);
+                default:
+            }
+        }
+        $('#dtGenderType, #dtDeActivetGenderType').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "deactivate":
+                    DeactivateGenderType(id, true);
+                    break;
+                case "reactivate":
+                    DeactivateGenderType(id, false);
+                case "edit":
+                    AddEditGenderType(id);
+                    break;
+                case "delete":
+                    RemoveGenderType(id);
+                    break;
+                case "View":
+                    ViewGenderType(id);
+                    break;
+                default:
+            }
+        });
+        function RemoveGenderType(id) {
+            var message = "Are you sure you want to <b> Remove Gender Type </b> ";
+            BinkeDialog.Confirmation("Remove Gender Type", message, function () {
+                $.ajax({
+                    url: "/RemoveGenderType/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindActiveGenderTypeList(true);
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+
+    </script>
+}

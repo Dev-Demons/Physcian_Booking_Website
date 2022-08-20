@@ -1,0 +1,252 @@
+﻿@model Binke.ViewModels.SiteImageViewModel
+
+<div class="modal-header">
+    @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>*@
+    <h4 class="modal-title" id="myModalLabel">
+        <b> @(Model.SiteImageId == 0 ? "Add Images" : "Edit Images")</b>
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditSiteImage", "SiteImage", FormMethod.Post, new { id = "frmSiteImage", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.SiteImageId)
+        @Html.HiddenFor(m => m.ReferenceId)
+        @Html.HiddenFor(m => m.ImagePath)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-4 mar-btm">
+                    <div class="form-group ">
+                        <label class="control-label"><b>Name</b></label>
+                        <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" />
+                    </div>
+
+                </div>
+                <dib class="col-md-4 mar-btm">
+                    <label class="control-label"><b>Image Upload</b></label>
+                    <div class="form-group" style="margin-bottom: -10px;">
+                        <input type="file" id="upImagePath" name="upImagePath" />
+                        <label class="control-label">(Recommended Size - 500 kb)</label>
+                        @Html.ValidationMessageFor(m => m.ImagePath, "", new { @class = "text-danger" })
+                    </div>
+                    @if (Model.SiteImageId > 0 && Model.ImagePath != "")
+                    {
+                        <div class="form-group">
+                            <div>
+                                <img class="profile-img img-center" id="imgUploadPriv" src=" @(Doctyme.Repository.Enumerable.FilePathList.SeniorCare + Model.ImagePath)" />
+                                <a href="javascript:void(0)" id="removeImageUploadPriv" onclick="removeImage()" style="color:red;"><b>Remove</b></a>
+                            </div>
+                        </div>
+                    }
+                </dib>
+                <div class="col-md-2 mar-btm">
+                    @*<div class="form-group">
+               <label class="control-label"><b>NPI</b></label>
+               <input type="text" id="lblSeniorcareNPI" class="form-control" readonly="readonly" />
+            </div>*@
+
+                    <div class="col-md-6 single-input" style="padding-top:40px;min-width:162px !important;">
+                        <label for="IsProfile" min-width="70px;">Is Profile</label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsProfile" name="IsProfile" @(Model.SiteImageId > 0 ? Model.IsProfile == true ? "checked" : string.Empty : "checked") data-Id="IsProfile" />&nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2 mar-btm" style="text-align:right; margin-top:30px;">
+                    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                    <button type="button" id="btnCancel" class="btn btn-default">Cancel</button>                    
+                </div>
+                 
+                @*<div class="col-12">
+            @Html.LabelFor(m => m.IsProfile, new { style = "margin-top:10px;" })
+            @Html.CheckBoxFor(m => m.IsProfile, new { @class = "text-danger", style = "width:18px;margin-top:17px;float: left;margin-right: 3px" })
+        </div>*@
+            </div>
+        </div>
+    </div>
+    }
+    <div class="modal-footer" style="width:50%;display:none;">
+        <div class="row ">
+            <div class="col-md-12">
+                <button type="button" id="btnCancel" class="btn btn-default">Cancel</button>
+                <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var filetypes = ['jpg', 'jpeg', 'png'];
+    $("#upImagePath").change(function () {
+        var files = $("#upImagePath").get(0).files;
+        if (parseInt($("#SiteImageId").val()) === 0 && files.length <= 0) {
+            $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]').html("");
+            $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]')
+                .append('<span for="upImagePath" class="">please select file</span>');
+        } else {
+            $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]').html("");
+            var fileName = $('#upImagePath').val();
+            var getExt = fileName.split('.');
+            getExt = getExt.reverse();
+            if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]').html("");
+                $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]')
+                    .append('<span for="upImagePath" class="">The filetype you are attempting to upload is not allowed.</span>');
+            } else {
+                var response = { Status: 0, Message: "", Data: null };
+                var img = new Image();
+                var imgwidth = 0;
+                var imgheight = 0;
+                var maxwidth = 50;
+                var maxheight = 50;
+
+                if (FileReader && files && files.length) {
+                    var fr = new FileReader();
+                    fr.onload = function () {
+                        img.src = fr.result;
+                    }
+                    fr.readAsDataURL(files[0]);
+                }
+
+                img.onload = function ()
+                {                    
+                    var file_size = files[0].size;
+                    if (file_size > 524288) {
+                        response.Message = "Image Size Maximum- 500 kb";
+                        HandleResponse(response);
+                        $("#upImagePath").val('');
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }                    
+                    //imgwidth = this.width;
+                    //imgheight = this.height;
+                    //$("#width").text(imgwidth);
+                    //$("#height").text(imgheight);
+                    //if (imgwidth <= maxwidth && imgheight <= maxheight) {
+                    //    return true;
+                    //} else {
+                    //    response.Message = "Image size must be " + maxwidth + "X" + maxheight;
+                    //    HandleResponse(response);
+                    //    $("#upImagePath").val('');
+                    //    return false;
+                    //}
+                }
+            }
+        }
+    });
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmSiteImage'));
+
+        var files = $("#upImagePath").get(0).files;
+        var flag = false;
+        $('#upImagePath').css("border-color", "");
+        if (parseInt($("#SiteImageId").val()) === 0 && files.length <= 0) {
+            $('#upImagePath').css("border-color", "red");
+            $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]').html("");
+            $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]')
+                .append('<span for="upImagePath" class="">please select file</span>');
+        } else {
+            $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]').html("");
+            if (files.length !== 0) {
+                var fileName = $('#upImagePath').val();
+                var getExt = fileName.split('.');
+                getExt = getExt.reverse();
+                if ($.inArray(getExt[0].toLowerCase(), filetypes) === -1) {
+                    $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]').html("");
+                    $("#frmSiteImage").find('span[data-valmsg-for="upImagePath"]')
+                        .append(
+                            '<span for="upImagePath" class="">The filetype you are attempting to upload is not allowed.</span>');
+                    flag = false;
+                }
+                else {
+                    flag = true;
+                }
+            } else {
+                flag = true;
+            }
+        }
+
+        //$('#upImagePath').css("border-color", "");
+
+        //if ($('#SiteImageId').val() =="0"  && $('#upImagePath').val() == "") {
+        //    $('#upImagePath').css("border-color", "red");
+        //    return false;
+        //}
+        if ($("#frmSiteImage").valid()) {
+
+            if (flag) {
+
+                if (window.FormData !== undefined) {
+
+                //var files = $("#upImagePath").get(0).files;
+                var fileData = new FormData();
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                fileData.append('__RequestVerificationToken', $('input[name=__RequestVerificationToken]').val());
+                fileData.append('SiteImageId', $("#SiteImageId").val());
+                fileData.append('ReferenceId', $("#ReferenceId").val());
+                fileData.append('ImagePath', $("#ImagePath").val());
+                fileData.append('Name', $("#Name").val());
+
+                if ($("#IsProfile").is(":checked")) {
+                    fileData.append('IsProfile', true);
+                }
+                else {
+                    fileData.append('IsProfile', false);
+                }
+                //for (var i = 0; i < files.length; i++) {
+                //    fileData.append(files[i].name, files[i]);
+                //}
+                $.ajax({
+                    url: '/AddEditSiteImage',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (response) {
+                        if (response.Status) {
+                            bindSiteImageList(true);
+                            AddEditSiteImage(0);
+                            //closeModal();
+                        }
+                    },
+                    error: function (response) {
+                        HandleResponse(response);
+                    }
+                });
+
+                @*$.post("@Url.Action("AddEditSiteImage")", $("#frmSiteImage").serialize(), function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        bindSiteImageList();
+                        closeModal();
+                    }
+                });*@
+
+                } else {
+                    GetAlertResponse(0, "FormData is not supported.");
+                }
+            }
+        }
+    });
+
+    $("#btnCancel").click(function () {
+        AddEditSiteImage(0);
+    });
+
+    function removeImage() { 
+        $("#ImagePath").val('');
+        $("#imgUploadPriv").attr('src', '');
+        $('#removeImageUploadPriv').hide();
+
+    }
+</script>

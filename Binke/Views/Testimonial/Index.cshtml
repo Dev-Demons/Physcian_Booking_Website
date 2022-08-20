@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "Testimonial List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Testimonial List </h3>
+
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li class="active"> Testimonial List</li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <div class="tab-content">
+                <div id="activeBlog" class="tab-pane fade active in">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="btnAddNewTestimonial"> <i class="nav-icon fas fa-plus mr-1"></i>Add Testimonial</button>
+                    <table id="dtTesimoniallist" class="table table-striped table-bordered table-hover small" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:12%">MainSite</th>
+                                <th style="width:12%">Name</th>
+                                <th style="width:23%">Title</th>
+                                <th style="width:15%">Image</th>
+                                <th style="width:8%">Active</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindTesimonialList(true);
+        })
+        function bindTesimonialList(flag) {
+            if ($.fn.DataTable.isDataTable("#dtTesimoniallist")) {
+                $('#dtTesimoniallist').DataTable().destroy();
+            }
+            dataList = [];
+            var table = $('#dtTesimoniallist')
+                .DataTable({
+                    "sAjaxSource": "/GetTestimonialSearchList/" + flag,
+                    "columns": [
+                        {
+                            "data": "MainSite",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": true
+                        }
+                        ,
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "orderable": true
+                        },
+
+                        {
+                            "data": "Title",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "orderable": false
+                        },
+
+                        {
+                            "data": "ImagePath",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "render": function (data, type, row) {
+                                var imgPath = row.ImagePath;
+                                var content = imgPath;
+
+                                if (imgPath != '--')
+                                    var content = '<img src="' + imgPath + '" style="width:80px;"/>';
+
+                                return content;
+                            }
+                        },
+
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked='checked'";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> &nbsp;';
+                                content += '<label class="switch" style="padding-left:1.8em !important">&nbsp;';
+                                content += '<input data-name="IsActive" data-id="' + row.TestimonialID + '" onchange="UpdateSwitch(this)" type="checkbox" ' + value + ' data-Id= "IsActive" />&nbsp;';
+                                content += '<span class="slider round" style="width:35px;" data-id="' + row.TestimonialID + '"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "TestimonialID",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                dataList.push(row)
+                                var content = '<div style="display:flex"><a href="/Testimonial/Create/' + row.TestimonialID + '" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-name="IsDeleted" data-id="' + data + '" onclick="UpdateSwitch(this)" data-toggle="tooltip" data-original-title="Delete" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        var UpdateSwitch = function (ctrl) {
+            var id = $(ctrl).data("id");
+            var flag = $(ctrl).is(":checked");
+            var isdeleted = false;
+
+            var fieldName = $(ctrl).data("name")
+
+            if (fieldName == "IsDeleted") {
+                flag = "true";
+                isdeleted = "true";
+            }
+            $.ajax({
+                url: "/Testimonial/UpdateSwitch/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    Id: id, Flag: flag, IsDeleted: isdeleted
+                },
+                success: function (data) {
+                    HandleResponse(data);
+                    if (data.Status == 1) {
+                        bindTesimonialList(true);
+                    }
+                }
+            });
+        }
+
+
+        $(document).on("click", "#btnAddNewTestimonial", function () {
+            window.location.href = '/Testimonial/Create/';
+        });
+
+    </script>
+}
+

@@ -1,0 +1,528 @@
+﻿@using Doctyme.Repository.Enumerable;
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Dashboard";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+
+
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+</style>
+
+<style>
+    .card {
+        padding:5%;
+        /* position: absolute; */
+        top: 0% !important;
+        left: 0% !important;
+        /* transform: translate(-50%,-50%); */
+        width: 100%;
+        min-height: 400px;
+        background: #fff;
+        box-shadow: 0 20px 50px rgba(0,0,0,.1);
+        border-radius: 10px;
+        transition: 0.5s;
+    }
+</style>
+
+<!-- Chart code -->
+<!-- HTML -->
+
+@section pageheader{
+    <h3><i class="fa fa-industry"></i> Dashboard </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li class="active"> Dashboard </li>
+        </ol>
+    </div>
+  
+    <div class="row">
+        <hr class="style1">
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-inline">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputPassword6">From Date</label>
+                        <input type="text" id="txtFromDate" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputPassword6">To Date</label>
+                        <input type="text" id="txtToDate" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <button type="button" id="btnView" class="btn btn-primary">View</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="subheader" style="margin-bottom:20px;"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="box">
+                    <h2>Appointment Growth</h2>
+                    @*<div id="chartdiv" width="400" height="300"></div>*@
+                    <canvas id="appointmentChart" width="400" height="300"></canvas>
+                    <label id="lblAdvChartNoRecord">No Record Available</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="box">
+                    <h2>Patient Growth</h2>
+                    <canvas id="patientChart" width="400" height="300"></canvas>
+                    <label id="lblPatientChartNoRecord">No Record Available</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="box">
+                    <h2>Advertisements</h2>
+                    <canvas id="advChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="subheader" style="margin-bottom:20px;"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="box">
+                    <h2 style="padding-top:15px;">Recently New Patient</h2>
+                    <div class="list-group" style="height:300px;overflow-y:auto;">
+                        @if (ViewBag.RecentlyAddedNewPatientList.Count == 0)
+                        {
+                            <label>No Record Available</label>
+                        }
+                        else
+                        {
+                            <table class="table table-striped custab">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Patient</th>
+                                        <th>Admission Date</th>
+                                    </tr>
+                                </thead>
+                                @{int count = ViewBag.RecentlyAddedNewPatientList.Count; }
+                                @foreach (var item in ViewBag.RecentlyAddedNewPatientList)
+                                {
+                                    count = count + 1;
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>@item.PatientName</td>
+                                        <td>@item.CreatedDate</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="box">
+                    <h2 style="padding-top:15px;">Recently Completed Appointment</h2>
+                    <div class="list-group" style="height:300px;overflow-y:auto;">
+                        @if (ViewBag.RecentlyCompletedAppointmentList.Count == 0)
+                        {
+                            <label>No Record Available</label>
+                        }
+                        else
+                        {
+                            <table class="table table-striped custab">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                @{int count1 = ViewBag.RecentlyCompletedAppointmentList.Count; }
+                                @foreach (var item in ViewBag.RecentlyCompletedAppointmentList)
+                                {
+                                    count1 = count1 + 1;
+                                    <tr>
+                                        <td>@count1</td>
+                                        <td>@item.PatientName</td>
+                                        <td>@item.SlotDate</td>
+                                        <td>@item.SlotTime</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="subheader" style="margin-bottom:20px;"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="box">
+                    <h2 style="padding-top:15px;">New Patient</h2>
+                    <div class="list-group" style="height:300px;overflow-y:auto;">
+                        @if (ViewBag.NewPatientList.Count == 0)
+                        {
+                            <label>No Record Available</label>
+                        }
+                        else
+                        {
+                            <table class="table table-striped custab">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Patient</th>
+                                        <th>Admission Date</th>
+                                    </tr>
+                                </thead>
+                                @{int count2 = ViewBag.NewPatientList.Count; }
+                                @foreach (var item in ViewBag.NewPatientList)
+                                {
+                                    count2 = count2 + 1;
+                                    <tr>
+                                        <td>@count2</td>
+                                        <td>@item.PatientName</td>
+                                        <td>@item.CreatedDate</td>
+                                    </tr>
+                                }
+
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="box">
+                    <h2 style="padding-top:15px;">Today's Appointment</h2>
+                    <div class="list-group" style="height:300px;overflow-y:auto;">
+                        @if (ViewBag.GetTodaysAppointmentList.Count == 0)
+                        {
+                            <label>No Record Available</label>
+                        }
+                        else
+                        {
+                            <table class="table table-striped custab">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                @{int count3 = ViewBag.GetTodaysAppointmentList.Count; }
+                                @foreach (var item in ViewBag.GetTodaysAppointmentList)
+                                {
+                                    count3 = count3 + 1;
+                                    <tr>
+                                        <td>@count3</td>
+                                        <td>@item.PatientName</td>
+                                        <td>@item.SlotDate</td>
+                                        <td>@item.SlotTime</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="hdnFromDate" value="@ViewBag.FromDate" />
+    <input type="hidden" id="hdnToDate" value="@ViewBag.ToDate" />
+}
+
+@section pagespecific{
+    @Scripts.Render("~/scripts/full-calendar")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#txtFromDate').datepicker({
+
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                autoclose: true,
+                todayHighlight: true,
+            });
+
+            $('#txtToDate').datepicker({
+
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                autoclose: true,
+                todayHighlight: true,
+            });
+
+            var fromDate = $("#hdnFromDate").val();
+            var toDate = $("#hdnToDate").val();
+
+            $("#txtFromDate").datepicker("setDate", fromDate);
+            $("#txtToDate").datepicker("setDate", toDate);
+
+            LoadDashboardData(fromDate, toDate);
+
+        });
+
+
+        $('#btnView').click(function () {
+            var fromDate = $('#txtFromDate').val();
+            var toDate = $('#txtToDate').val();
+            LoadDashboardData(fromDate, toDate);
+
+        });
+
+        function LoadDashboardData(fromDate, toDate) {
+
+            $.ajax({
+                type: 'GET',
+                url: "/Dashboard/LoadSeniorCareDashboardGraphs" + "?FromDate=" + fromDate + "&ToDate=" + toDate,
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    BindGraphs(response);
+
+                    if (response.AppointmentGraphLabels.length == 0) {
+                        $('#appointmentChart').hide();
+                        $('#lblAdvChartNoRecord').show();
+                    }
+                    else {
+                        $('#lblAdvChartNoRecord').hide();
+                        $('#appointmentChart').show();
+                    }
+                    if (response.PatientGraphLabels.length == 0) {
+                        $('#patientChart').hide();
+                        $('#lblPatientChartNoRecord').show();
+                    }
+                    else {
+                        $('#lblPatientChartNoRecord').hide();
+                        $('#patientChart').show();
+                    }
+                }
+            });
+        }
+
+
+        function BindGraphs(data) {
+
+            var ctxappointmentChart = document.getElementById('appointmentChart').getContext('2d');
+            var appointmentChart = new Chart(ctxappointmentChart, {
+                type: 'bar',
+                data: {
+                    labels: data.AppointmentGraphLabels,
+                    datasets: [{
+                        label: '# of Appointments',
+                        data: data.AppointmentGraphData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                            }
+                        }]
+                    }
+                }
+            });
+
+            var ctxpatientChart = document.getElementById('patientChart').getContext('2d');
+            var patientChart = new Chart(ctxpatientChart, {
+                type: 'line',
+                data: {
+                    labels: data.PatientGraphLabels,
+                    datasets: [{
+                        label: '# of Patients',
+                        data: data.PatientGraphData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                            }
+                        }]
+                    }
+                }
+            });
+
+            var ctxadvChart = document.getElementById('advChart').getContext('2d');
+            var advChart = new Chart(ctxadvChart, {
+                type: 'pie',
+                data: {
+                    labels: ['Jan', 'Feb', 'March', 'April', 'May', 'Jun'],
+                    datasets: [{
+                        label: '# of Advertise',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+
+
+        }
+
+    </script>
+
+   
+        @Scripts.Render("~/scripts/vector-map")
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        localStorage.setItem("IsSeniorcareMenuAdded", true);
+        localStorage.setItem("SeniorcareOrganisationId", '@ViewBag.orgId');
+        localStorage.setItem("SeniorcareOrganisationName", '@ViewBag.orgname');
+        localStorage.setItem("SeniorcareOrganisationNPI", '@ViewBag.orgnpi');
+        localStorage.setItem("isSeniorCareUser", '1');
+
+        AddSeniorcareSubmenu();
+    });
+
+        function AddSeniorcareSubmenu() {
+        var SeniorOrgId = localStorage.getItem("SeniorcareOrganisationId");
+        var isSeniorCareUser = localStorage.getItem("isSeniorCareUser");
+
+            $('#aUserProfile').attr('href', '/SeniorCareProfile/' + SeniorOrgId + '/1/1');
+            var submenuHtml = '<ul class="nav nav-treeview  seniorcare-tree"><li class="nav-item"><a href="/SeniorCareProfile/' + SeniorOrgId + '/1/' + isSeniorCareUser + '" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Profile</p></a></li >';
+
+                if (@ViewBag.SeniorcareId> 0) {
+                    submenuHtml += '<li class="nav-item"><a href="/OrganizationAmenityOption/Index" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Amenities/Options</p></a></li>';
+                    @*if ('@User.IsInRole(UserRoles.Admin)' == 'True') {*@
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Booking" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Booking</p></a></li>';
+                        //}
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Cost" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Cost</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SiteImage" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Images</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Reviews" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Reviews</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/InsurancePlan" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Insurance Plan</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/OpeningHours" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Opening Hours</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Address" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Address</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/SocialMedia" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Social Media</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/StateLicense" class="nav-link"><i class="far fa-circle nav-icon"></i><p>State License</p></a></li>';
+                        submenuHtml += '<li class="nav-item"><a href="/SeniorCare/Taxonomy" class="nav-link"><i class="far fa-circle nav-icon"></i><p>Taxonomy</p></a></li>';
+                       
+            }
+            submenuHtml += '</ul>'
+            $('.seniorcare-tree-parent').addClass("active");
+            $('.seniorcare-tree-parent').addClass("open");
+            $('.seniorcare-tree-parent').addClass("menu-open");
+            $('.seniorcare-tree-parent').append(submenuHtml);
+            }
+
+            $('#seniordashboard').removeClass('fa-circle');
+            $('#seniordashboard').addClass('fa-dot-circle-o');
+</script>
+    }

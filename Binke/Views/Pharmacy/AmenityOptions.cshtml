@@ -1,0 +1,253 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Amenity/Options";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<style>
+    label.switch {
+        position: relative;
+        display: inline-block;
+        height: 23px;
+        padding-left: 2.8em !important;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+@section pageheader{
+<h3><i class="fa fa-user-md"></i>  Amenity/Options </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Pharmacy/"> Pharmacy </a></li>
+            <li class="active"> Amenity/Options </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="TopFormBlock" class="box-primary"></div>
+        <div class="tab-base">
+            
+            <!--Tabs Content-->
+            <div class="tab-content">
+                <div id="pharmacyAmenityOptions" class="tab-pane fade active in">
+                    <table id="dtPharmacyAmenityOptions" class="table table-striped table-bordered table-hover" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Amenity/Option Name</th>
+                                <th>Description</th>
+                                <th>Date Modified</th>
+                                <th>Is Option</th>
+                                <th>Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $("#MnuPharmacy").addClass('menu-open');
+        $("#MnuPharmacy ul li a p").each(function () {
+            var text = $(this).text();
+            if (text == "Amenity/Options") {
+                $(this).parent().addClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-circle');
+                $(this).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }
+        });
+
+        $.validator.setDefaults({ ignore: null });
+        $('#TopFormBlock').load('@Url.Action("PharmacyAmenityOptions", "Pharmacy")');
+
+        $(document).ready(function () {
+            bindPharmacyAmenityOptionsList(true,0);
+        });
+
+         $(document).on('click', '.editInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+             $('#TopFormBlock').load('@Url.Action("PharmacyAmenityOptions/", "Pharmacy")' + ItemId);
+        });
+
+        $(document).on('click', '.viewInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $('#TopFormBlock').load('@Url.Action("PharmacyViewAmenityOptions/", "Pharmacy")' + ItemId , function () {
+                $("#TopFormBlock").find('input, textarea, button, select').attr("disabled", true);
+         
+            });
+
+        });
+
+        $("#OrganizationID").val("@ViewBag.PharmacyID");
+
+        $(document).on('click', '.removeInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            DeleteAmenityOptions(ItemId);
+        });
+
+
+        function bindPharmacyAmenityOptionsList(flag, start) {
+            if ($.fn.DataTable.isDataTable("#dtPharmacyAmenityOptions")) {
+                $('#dtPharmacyAmenityOptions').DataTable().destroy();
+            }
+
+            var table = $('#dtPharmacyAmenityOptions')
+                .DataTable({
+                    "displayStart":start,
+                    "processing": true,
+                    "serverSide": true,
+                    "sAjaxSource": "/GetPharmacyAmenityOptionsList/" + flag + "/@ViewBag.PharmacyID",
+                    "columns": [
+                        {
+                            "data": "ImagePath",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                var content = '<img src="/Uploads/AmenityOptions/' + data + '" style="max-width:50px;" alt="Amenity-icon">&nbsp;';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "UpdatedDateAsString",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsOption",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<label class="switch" style="pointer-events:none">';
+                                content += '<input type="checkbox" ' + value + ' data-Id= "IsOption" />';
+                                content += '<span class="slider round"style="width:35px;"></span> ';
+                                content += ' ';
+                                content += '</label >';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<label class="switch" style="pointer-events:none" >';
+                                content += '<input type="checkbox" ' + value + ' data-Id= "IsActive" />';
+                                content += '<span class="slider round"style="width:35px;"></span> ';
+                                content += ' ';
+                                content += '</label >';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "OrganizationAmenityOptionID",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<div style="white-space:nowrap"><a href="JavaScript:" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action editInfo"><i class="fa fa-edit"></i></a> &nbsp; ';
+                                content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action viewInfo"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="JavaScript:" data-toggle="tooltip" data-original-title="Delete" data-flag="DeActivate" data-Id="' + data + '" class="btn btn-danger btn-sm action removeInfo"><i class="fa fa-times"></i></a> &nbsp;</div>';
+                                
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+
+        function CurrentPageStart() {
+            var table = $('#dtPharmacyAmenityOptions').DataTable();
+            var info = table.page.info();
+            return info.start;
+        }
+         function DeleteAmenityOptions(id) {
+            var title = "Delete ?";
+            var message = "Are you sure you want to <b> " + title + " </b> this Amenity Option";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/DeletePharmacyAmenityOptions/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindPharmacyAmenityOptionsList(true, CurrentPageStart());
+                        closeModal();
+                        $('#TopFormBlock').load('@Url.Action("PharmacyAmenityOptions", "Pharmacy")');
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+
+        function DeactivatePharmacyAmenityOptions(id) {
+            var title = "Delete ?";
+            var message = "Are you sure you want to <b> " + title + " </b> this Amenity Option";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/DeletePharmacyAmenityOptions/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindPharmacyAmenityOptionsList(true, CurrentPageStart());
+                        closeModal();
+                        $('#TopFormBlock').load('@Url.Action("PharmacyAmenityOptions", "Pharmacy")');
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+
+    </script>
+}

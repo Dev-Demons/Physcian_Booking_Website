@@ -1,0 +1,182 @@
+﻿@model Binke.ViewModels.PatientProfile
+@{
+    ViewBag.Title = "Patient Profile";
+
+    var userType = "Patient";
+    if (User.IsInRole("Admin"))
+    {
+        userType = "Admin";
+    }
+}
+
+@if (ViewBag.PatientID != null && ViewBag.PatientID > 0)
+{
+    <h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Model.FirstName @Model.LastName</h4>
+}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.Id == 0 ? "Add Patient Profile" : "Edit Patient Profile")
+    </h4>
+    @*<button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="AddPharmacy" style="margin-top:-48px; margin-right:10px;">Add Pharmacy</button>*@
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("EditPatient", "Patient", FormMethod.Post, new { id = "frmPharmacyProfile", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        if (ViewBag.ID != null && ViewBag.ID > 0)
+        {
+            @Html.HiddenFor(model => model.CreatedDate)
+        }
+        @Html.HiddenFor(model => model.ProfilePicture)
+
+        @Html.HiddenFor(model => model.IsActive)
+        <div class="row">
+            <div class="col-md-3 mar-btm">
+                <label class="control-label"><b>Logo</b></label>
+                <input type="file" id="Image1" name="Image1" class="form-control" />
+
+                @Html.ValidationMessageFor(model => model.ProfilePicture, "", new { @class = "text-danger" })
+            </div>
+            @if (Model.ProfilePicture != null)
+            {
+                <div class="col-md-9 mar-btm">
+                    <img src="~/Uploads/PatientSiteImages/@Model.ProfilePicture" alt="Patient-icon" title="@Model.ProfilePicture" class="img img-responsive" style="width:100px;height:100px" />
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>First Name</b></label>
+                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control txt", placeholder = "Enter First Name" })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Middle Name</b></label>
+                        @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control txt", placeholder = "Enter Middle Name" })
+                    </div>
+
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Last Name</b></label>
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control txt", placeholder = "Enter Last Name" })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-2 mar-btm">
+                        <label class="control-label"><b>DOB</b></label>
+                        @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control txt datepicker", placeholder = "Enter Date Of Birth" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Telephone Number</b></label>
+                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control txt", placeholder = "Enter Telephone #" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Password</b></label>
+                        @Html.TextBoxFor(model => model.Password, new { @class = "form-control txt", placeholder = "Enter Fax #" })
+                    </div>
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Confirm Password</b></label>
+                        @Html.TextBoxFor(model => model.ConfirmPassword, new { @class = "form-control txt", placeholder = "Enter Fax #" })
+                    </div>
+                    <div class="col-md-5 mar-btm" style="text-align:right;">
+                        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+
+    $('input[type="file"]').change(function (e) {
+        var imageX = e.target.files[0];
+        var imgesize = imageX.size;
+        var fileName = e.target.files[0].name;
+
+        if (imgesize < 5242880) {
+            let img = new Image()
+            img.src = window.URL.createObjectURL(imageX)
+
+            img.onload = () => {
+                $("#ProfilePicture").val(fileName);
+                //w = img.width;
+                //h = img.height;
+                //if (w <= 50 && h <= 50) {
+                //    $("#ProfilePicture").val(fileName);
+                //}
+                //else {
+                //    alert("Image width and height should be less than or equal 50px");
+                //    $("#Image1").val('');
+                //}
+            }
+        }
+        else {
+            alert("Image size should be less than 5MB");
+            $("#Image1").val('');
+        }
+
+    });
+    $(document).ready(function () {
+
+            $('.datepicker').datepicker({
+                format: 'mm/dd/yyyy',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+        var ID = "@ViewBag.PatientID";
+
+        if (ID > 0) {
+
+        if ("@Model.IsActive" == 'True') {
+            $("#IsActive").prop('checked', true);
+            $("#IsActive").val(true);
+        }
+        else {
+            $("#IsActive").prop('checked', false);
+            $("#IsActive").val(false);
+            }
+    }
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmPharmacyProfile'));
+                if ($("#frmPharmacyProfile").valid()) {
+                    var form = $('#frmPharmacyProfile')[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: '@Url.Action("EditPatient")',
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+
+                            window.location.reload();
+
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+
+                }
+            });
+
+    });
+</script>

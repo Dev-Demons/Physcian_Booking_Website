@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "Advertising Solutions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<head>
+        <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+        <link rel='icon' href='favicon.ico' type='image/x-icon' />
+    </head>*@
+@{
+    ViewBag.Title = "Advertising Solutions";
+    List<Doctyme.Model.ViewModels.Meta> meta = new List<Doctyme.Model.ViewModels.Meta>();
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "description",
+        Content = "Millions of patients are looking for you. Make sure you get found on the world&#39;s fastest growing healthcare search directory."
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "keywords",
+        Content = "Physician reviews, patient reviews of Physician, doctor ratings, Physician reviews near me, website for doctor reviews, find a Physician, Physician reviews by patients, trusted Physician, primary care physicians"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:site",
+        Content = "@DocTymeInc"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:card",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:description",
+        Content = "Compare and review Physician and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "twitter:image",
+        Content = "https://www.doctyme.com/Content/client/images/logo/logo-secondary-dark.png"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:url",
+        Content = "https://www.doctyme.com/advertise"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:site_name",
+        Content = "DocTyme"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:title",
+        Content = "Advertising Solutions"
+    });
+
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:description",
+        Content = "Millions of patients are looking for you. Make sure you get found on the world&#39;s fastest growing healthcare search directory."
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Property = "og:type",
+        Content = "website"
+    });
+    meta.Add(new Doctyme.Model.ViewModels.Meta
+    {
+        Name = "image",
+        Content = "https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg"
+    });
+
+
+    TempData["metaInfo"] = meta;
+}
+
+<style>
+    .stripborderspecialities {
+        margin: 0 !important;
+    }
+
+    /*.stats-label {
+        float: left;
+        width: 100%;
+        text-align: center;
+        font-family: 'Open Sans';
+        font-size: 26px;
+        color: #076285;
+        letter-spacing: 1px;
+    }*/
+</style>
+<!-- About Page Content -->
+<section class="pg-about-content-area section-padding-top-lg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="pg-about-content text-center">
+                    <h2>Advertise With Us</h2>
+                    <div class="doctorstrip marginbtm40">
+                        <img class="stripborderspecialities" src="~/Content/client/images/logo/borderstrip-grey.png"  alt="logo"/>
+                    </div>
+                    <p>
+                        <b>
+                            Healthcare Professionals
+                        </b>
+                        <br />
+                        Healthcare professionals are able to advertise on Doctyme to reach a new group of patients through our streamlined online platform. Grow your patient base through advertising with us and build on your reputation through patient reviews. Through featured profiles, in which you appear at the top of local search results, you can establish a greater presence and expand your practice or organisation. Patients will also be able to search and discover local, registered pharmacies, medical facilities, senior care specialists and more.
+                        <br />
+                        Clear advertisements allow engagement with your business or practice, targeting those seeking professional and local healthcare services.
+                        <br />
+                        Utilize email marketing solutions, which can be accessed through Doctyme, to provide your business with a reliable method of marketing.  Target potential clients, either patients or practitioners, most likely to engage with your business, keeping them informed and aware of your organisation.
+                        <br /><br />
+                        <b>Marketing to the healthcare sector</b>
+                        <br />
+                        Agencies, consultancies and other businesses can advertise with Doctyme to position their organisation in front of a new market of practitioners and patients seeking reliable healthcare professionals. Doctyme encourages its users to accurately review healthcare professionals based on their experiences, and conduct searches for such organisations in the local area. This results in higher web engagement leading to our client’s advertisements achieving their maximum impact.
+                        <br /><br />
+                        <b>Technology and data solutions</b>
+                        <br />
+                        Advertise with Doctyme to gain access to extensive data that can help you market to the groups you choose. Determine the market you want to target and work with us place your business on the cutting edge of data utilization. In providing a range of solutions including marketing to specific patients, professionals and organisations, increasing the traffic to your website, expanding the awareness of your brand and constructing a solid marketing strategy, Doctyme can assist in bringing your marketing to the next level.
+                        <br /><br />
+                        <b>Media and Communications</b>
+                        <br />
+                        Utilize the extensive data available from Doctyme to assist with providing robust and trustworthy news pieces. With wide ranging, high quality data for patients and healthcare organisations alike, produce news work with and edge and sculpt press releases that go above and beyond. With the US healthcare sector already receiving significant coverage, Doctyme can help you stay two steps ahead
+                        <br /><br />
+                        <b>Social Media</b>
+                        <br />
+                        Doctyme brings together patients and healthcare professionals, allowing patients greater flexibility and ownership of their healthcare. Based on a dependable and transparent review process, Doctyme users can be confident they are receiving high quality care or reliable product. Health, diet, exercise and wellbeing are at the forefront of public thinking, with patients looking for greater control over their health. The Doctyme review process allows patients to do just this, reviewing medical professionals based on their experiences and choosing the most appropriate local professionals. Healthcare professionals, medical organisations and other businesses can advertise with Doctyme to reach the target markets best suited to them. Through advertisement and data use, Doctyme enables businesses to be at the forefront of healthcare marketing.
+                    </p>
+                    <img src="~/Content/client/images/others/pg-about-image.jpg" alt="pg about">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--// About Page Content -->

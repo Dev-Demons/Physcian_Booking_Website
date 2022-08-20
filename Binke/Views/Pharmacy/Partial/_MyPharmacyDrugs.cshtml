@@ -1,0 +1,110 @@
+﻿
+@model Binke.ViewModels.DrugViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.Id == 0 ? "Add Drugs" : "Edit Drugs")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditDrugs", "Doctor", FormMethod.Post, new { id = "frmDrugs" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.PharmacyId)
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label"><b>Drug Name</b></label>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.DrugName, new { @class = "form-control", placeholder = "Enter drug name" })
+                @Html.ValidationMessageFor(m => m.DrugName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label class="control-label"><b>Manufacture Name</b></label>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.ManufactureName, new { @class = "form-control", placeholder = "Enter manufacture name" })
+                @Html.ValidationMessageFor(m => m.ManufactureName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label class="control-label"><b>Unitory Price</b></label>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.UnitoryPrice, new { @class = "form-control", placeholder = "Enter unitory price" })
+                @Html.ValidationMessageFor(m => m.UnitoryPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label class="control-label"><b>Selling Price</b></label>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.SellingPrice, new { @class = "form-control", placeholder = "Enter selling price" })
+                @Html.ValidationMessageFor(m => m.SellingPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label class="control-label"><b>Expiry Date</b></label>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.ExpiryDate, new { @class = "form-control", placeholder = "Enter expiry price" })
+                <input type="hidden" id="hdnExpiryDate" value="@Model.ExpiryDate" />
+                @Html.ValidationMessageFor(m => m.ExpiryDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label class="control-label"><b>Description</b></label>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+@Scripts.Render("~/scripts/full-calendar")
+
+<script type="text/javascript">
+    $('#ExpiryDate').datepicker({
+        format: 'dd-MM-yy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    $(document).ready(function () {
+        @if (Model.Id != 0)
+        {
+            <text>
+                startDate = window.moment(startDate, 'DD-MM-YYYY').toDate();
+        $("#ExpiryDate").datepicker("setDate", startDate);
+            </text>
+        }
+    });
+
+
+    $("#btnSave").click(function () {
+        $.validator.unobtrusive.parse($('#frmDrugs'));
+        if ($("#frmDrugs").valid()) {
+            $.post("@Url.Action("AddEditDrugs")", $("#frmDrugs").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "Pharmacy") {
+                        window.location.reload();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+</script>

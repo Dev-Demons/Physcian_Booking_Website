@@ -1,0 +1,354 @@
+﻿.widgets:not(.footer-widgets) .single-widget {
+    margin-bottom: 15px !important
+}
+
+.widgets:not(.footer-widgets) .widget-title {
+    margin-bottom: 10px !important
+}
+
+.filter-card {
+    display: inline-block;
+    background: #eee;
+    padding: 15px;
+    border-radius: 4px;
+    width: 100%
+}
+
+    .filter-card input[type=checkbox] {
+        margin: 0;
+        width: 26px
+    }
+
+    .filter-card span {
+        color: #aaa;
+        margin-left: 3%
+    }
+
+    .filter-card p label {
+        margin-top: -1%
+    }
+
+.widget-title small {
+    float: right
+}
+
+    .widget-title small a {
+        font-size: 15px;
+    }
+
+        .widget-title small a.active {
+            display: inline-block
+        }
+
+.input-set {
+    width: 85%;
+    height: 40px
+}
+
+.btn-set {
+    border-radius: 0 !important;
+    float: right;
+    margin-top: -15%;
+    line-height: 1.65
+}
+
+input[type=checkbox] {
+    margin-left: inherit !important
+}
+
+.section_top {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    width: 100%;
+    background: #eee;
+    padding: 25px 0 24px 0
+}
+
+.section_bottom {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    width: 100%;
+    background: #eee;
+    padding: 21px 6px;
+    float: left;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px #eee
+}
+
+.section_top h3 {
+    margin: 0;
+    font-size: 28px;
+    color: #2e6da4;
+    border-right: 2px solid;
+    font-weight: 700
+}
+
+.section_top nav.navbar {
+    min-height: 1px;
+    margin: 0
+}
+
+.section_top li {
+    margin: 0 26px;
+    margin-top: 4px
+}
+
+    .section_top li a {
+        text-decoration: none;
+        cursor: pointer;
+        color: #222
+    }
+
+.profile img {
+    width: 100%;
+    border-radius: 50%;
+    width: 120px
+}
+
+.profile p {
+    margin-top: 9px;
+    font-size: 16px
+}
+
+.sec_2 h4 {
+    font-weight: 700;
+    font-size: 25px
+}
+
+.sec_2 a {
+    font-weight: 700;
+    text-decoration: none
+}
+
+ul.star_rate li {
+    list-style: none;
+    display: inline;
+    margin: 0 1px
+}
+
+    ul.star_rate li i {
+        /*color: #efa51e;*/
+        font-size: 13px;
+        position: relative;
+        top: 2px
+    }
+
+.star_rate p {
+    margin: 13px 0
+}
+
+ul.star_rate i.fa.fa-map-marker {
+    margin-right: 10px;
+    font-size: 18px
+}
+
+.star_rate p {
+    margin: 13px 0;
+    line-height: 35px
+}
+
+.last_s p {
+    margin: 20px 0;
+    line-height: 22px
+}
+
+    .last_s p input[type=checkbox] {
+        position: relative;
+        top: 2px;
+        margin-right: 7px
+    }
+
+.book_appointment {
+    position: fixed;
+    right: 18px;
+    transform: rotate(270deg);
+    top: 193px;
+    font-weight: 700;
+    transform-origin: right;
+    font-size: 16px;
+    border-radius: 0;
+    z-index: 99
+}
+
+.last_s p b {
+    width: calc(100% - 20px);
+    float: right
+}
+
+.section_bottom input[type=date] {
+    line-height: 22px
+}
+
+.section1 h4 {
+    width: 74%;
+    float: left;
+    font-size: 16px
+}
+
+a {
+    text-decoration: none
+}
+
+.section1 a {
+    text-align: right;
+    float: right;
+    padding: 10px 0;
+    font-size: 12px;
+    opacity: 0;
+    trasition: .5s
+}
+
+    .section1 a:hover {
+        opacity: 1
+    }
+
+.section1 input {
+    padding: 6px 10px;
+    position: relative;
+    top: 1px;
+    width: calc(100% - 42px);
+    margin-top: 17px;
+    border-radius: 0
+}
+
+.Checkboxes p {
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 5px
+}
+
+.section2 h4 {
+    width: auto;
+    float: left;
+    font-size: 16px
+}
+
+.section2 a {
+    width: auto;
+    float: left;
+    margin-top: 11px;
+    font-size: 13px;
+    margin-left: 11px
+}
+
+.section2 {
+    width: 100%;
+    float: left
+}
+
+    .section2 .navbar-nav > li > a {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 9px;
+        margin-left: 0;
+        border-right: 1px solid #aaa
+    }
+
+    .section2 .navbar-nav {
+        float: left;
+        margin: 0;
+        display: flex;
+        justify-content: right;
+        float: right
+    }
+
+.select_type {
+    width: 100%;
+    padding: 8px 7px
+}
+
+.filter-card label {
+    width: calc(100% - 27px);
+    float: right;
+    font-weight: 400
+}
+
+.Checkboxes p {
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 5px;
+    width: 100%;
+    float: left
+}
+
+.sec_3 button {
+    font-size: 12px;
+    margin-top: 12px
+}
+
+ul.listdata {
+    padding: 0;
+    font-size: 12px;
+    line-height: 20px
+}
+
+    ul.listdata li {
+        list-style: none;
+        position: relative;
+        color: #007bff;
+    }
+
+        ul.listdata li:before {
+            content: "\f00c";
+            font-family: FontAwesome;
+            color: #000;
+            font-size: 18px;
+            padding-right: .5em;
+            position: absolute;
+            top: 0;
+            left: -16px;
+            font-size: 13px;
+            color: #ff1a1a;
+        }
+
+.hea h5 {
+    width: 100%;
+    font-weight: 700;
+    font-size: 13px;
+    height: 13px;
+    margin: 0 0 4px 0
+}
+
+.last_s button {
+    width: 100%
+}
+
+.last_s ul {
+    width: 100%;
+    padding: 5px 3px;
+    margin-top: 9px;
+    line-height: 27px;
+    font-size: 11px;
+}
+
+    .last_s ul li {
+        list-style: none
+    }
+
+        .last_s ul li i {
+            color: #5cb85c;
+            margin-right: 5px
+        }
+
+.section_bottom a {
+    color: black !important;
+}
+
+.doctorElement {
+}
+
+.doctorName {
+    margin-left: -6%;
+}
+
+.doctorService {
+    margin-bottom: 6px !important;
+}
+
+.addr{
+    font-size:11px;
+}
+
+.doctor-desc{
+    font-size:small;
+}

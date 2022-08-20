@@ -1,0 +1,352 @@
+﻿@using Doctyme.Repository.Enumerable;
+@{
+    /**/
+
+    ViewBag.Title = "Opening Hours";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<script src="~/Scripts/Facility/FacilityMenu.js" type="text/javascript"></script>
+
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 style="display:inline"><i class="fa fa-user-md"></i>Opening Hours</h3>
+        </div>
+        <div class="col-lg-7 text-center">
+            <h4 id="header" style="text-align:center; background-color:#f4f6f9; color:#54abd9;display:inline;"></h4>
+        </div>
+        <div class="col-lg-3">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Facility/"> Facility</a></li>
+                    <li class="active"> Opening Hours </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .error {
+    border-color:red !important;
+    }
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+
+    #dtOpeningHours_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtOpeningHours_length {
+        float: left;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">Add/Edit Facility Opening Hours</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="frmOpeningHour">
+                    <fieldset id="ohFieldSet">
+                        <input type="hidden" name="OpeningHourID" id="OpeningHourID" />
+                        <input type="hidden" name="OrganizationID" id="OrganizationID" />
+                        <table class="table table-borderless text-center" width="100%">
+                            <thead>
+                                <tr>
+                                    <th width="10%">Day</th>
+                                    <th width="15%">Start Time</th>
+                                    <th width="15%">End Time</th>
+                                    <th width="15%">Slot Duration</th>
+                                    <th width="29%">Comments</th>
+                                    <th width="8%">Holiday</th>
+                                    <th width="8%">Active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var days = new string[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thuraday", "Friday", "Saturday" };}
+                                @for (var i = 0; i < 7; i++)
+                                {
+                                    int RowId = i + 1;
+                                    <tr style="vertical-align:middle">
+                                        <td>
+                                            <label class="control-label">@days[i]</label>
+                                            <input type="hidden" name="DayNo[@i]" value="@RowId" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="StartTime[@i]" name="StartTime[@i]" class="form-control timepicker" placeholder="Select start time" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="EndTime[@i]" name="EndTime[@i]" class="form-control timepicker" placeholder="Select end time" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="SlotDuration[@i]" name="SlotDuration[@i]" class="form-control intOnly" placeholder="Enter slot duration" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="Comments[@i]" name="Comments[@i]" class="form-control" placeholder="Enter comments" />
+                                        </td>
+                                        <td>
+                                            <label class="switch mar-lft">
+                                                @{
+                                                    bool check1 = true;
+                                                    var Checked1 = "";
+                                                    if (check1 == true)
+                                                    {
+                                                        Checked1 = "checked=checked";
+                                                    }
+                                                }
+                                                <input type="checkbox" id="IsHoliday[@i]" onchange="UpdateValue(this)" name="IsHolidayString[@i]" checked data-Id="IsHoliday[@i]" />&nbsp;
+                                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                                                <input type="hidden" name="IsHoliday[@i]" value="true" />
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="switch mar-lft">
+                                                @{
+                                                    bool check2 = true;
+                                                    var Checked2 = "";
+                                                    if (check2 == true)
+                                                    {
+                                                        Checked2 = "checked=checked";
+                                                    }
+                                                }
+                                                <input type="checkbox" id="IsActive[@i]" onchange="UpdateValue(this)" name="IsActiveString[@i]" checked data-Id="IsActive[@i]" />&nbsp;
+                                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                                                <input type="hidden" name="IsActive[@i]" value="true" />
+                                            </label>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="col-lg-12">
+                            <button type="button" id="btnSubmit" class="btn btn-primary pull-right mr-2">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        var isDashboardAdd = false;
+        if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+            isDashboardAdd = true;
+        var id = localStorage.getItem("organisationId");
+        var dataList = [];
+        var weekDay = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+        $(document).ready(function () {
+             if ('@User.IsInRole(UserRoles.Facility)' == 'True')
+                AddIndividualSubmenuItems("OpeningHours");
+            else
+            AddSubmenuItems("OpeningHours", isDashboardAdd);
+            $("#header").text(localStorage.getItem("SelectedOrgName"))
+            $('.timepicker').timepicker({
+                change: checkDates
+            });
+            $("#OrganizationID").val(id);
+            LoadAllFieldForFacilityUser();
+        });
+
+        function minFromMidnight(tm) {
+            if (tm) {
+                var ampm = tm.substr(-2)
+                var clk = tm.substr(0, 5);
+                var m = parseInt(clk.match(/\d+/g)[1])
+                var h = parseInt(clk.match(/\d+/g)[0])
+                h += (ampm.match(/pm/i)) ? 12 : 0;
+                return h * 60 + m;
+            }
+        }
+
+        function checkDates() {
+            var isValidate = true;
+            for (var i = 0; i < 7; i++) {
+                if ($('input[name = "StartTime[' + i + ']').val() && $('input[name = "EndTime[' + i + ']').val()) {
+                    var st = minFromMidnight($('input[name = "StartTime[' + i + ']').val())
+                    var et = minFromMidnight($('input[name = "EndTime[' + i + ']').val())
+                    if (st > et) {
+                        isValidate = false;
+                        $('input[name = "StartTime[' + i + ']').addClass("error")
+                        $('input[name = "EndTime[' + i + ']').addClass("error")
+                    }
+                    else {
+                        $('input[name = "StartTime[' + i + ']').removeClass("error")
+                        $('input[name = "EndTime[' + i + ']').removeClass("error")
+                    }
+                }
+            }
+
+            if (!isValidate) {
+                alert("End time must be greater than start time")
+            }
+
+            return isValidate;
+        }
+
+        function LoadAllFieldForFacilityUser() {
+            $.ajax({
+                url: "/GetOpeningHours/" + id,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data.aaData && data.aaData.length > 0) {
+                        console.log(data.aaData);
+                        $.each(data.aaData, function (index, value) {
+                            $("#OpeningHourID").val(value.OpeningHourID);
+                            $('input[name = "StartTime[' + (value.WeekDay - 1) + ']"').val(value.StartDateTime);
+                            $('input[name = "EndTime[' + (value.WeekDay - 1) + ']"').val(value.EndDateTime);
+                            $('input[name = "SlotDuration[' + (value.WeekDay - 1) + ']"').val(value.SlotDuration);
+                            $('input[name = "Comments[' + (value.WeekDay - 1) + ']"').val(value.Comments);
+                            $('input[name = "DayNo[' + (value.WeekDay - 1) + ']"').val(value.WeekDay);
+                            $('input[name = "IsHoliday[' + (value.WeekDay - 1) + ']"').val(value.IsHoliday)
+                            $('input[name = "IsActive[' + (value.WeekDay - 1) + ']"').val(value.IsActive)
+                            if (value.IsHoliday == true) {
+                                $('input[name = "IsHolidayString[' + (value.WeekDay - 1) + ']"').attr("checked", "checked")
+                            }
+                            else {
+                                $('input[name = "IsHolidayString[' + (value.WeekDay - 1) + ']"').removeAttr("checked")
+                            }
+                            if (value.IsActive == true)
+                                $('input[name = "IsActiveString[' + (value.WeekDay - 1) + ']"').attr("checked", "checked")
+                            else
+                                $('input[name = "IsActiveString[' + (value.WeekDay - 1) + ']"').removeAttr("checked")
+                        });
+                    }
+                }
+            });
+        }
+
+        $(document).on('keyup', '.intOnly', function (e) {
+            var keyCode = e.which ? e.which : e.keyCode
+            var val1 = $(this).val();
+            if ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105)) {
+                if (parseInt(val1) > 59) {
+                    alert("Slot duration value is should be less than or equal 59");
+                    $(this).val('');
+                }
+            }
+            else {
+                $(this).val('');
+            }
+        });
+        
+        var ResetForm = function () {
+            $('#frmOpeningHour').each(function () {
+                this.reset();
+            });
+            $(".single-input input:checkbox").prop("checked", true);
+            $("#OrganizationID").val(id);
+            for (var i = 0; i < 7; i++) {
+                $('input[name = "IsHoliday[' + i + ']"').val(true)
+                $('input[name = "IsActive[' + i + ']"').val(true)
+                $('input[name = "IsHolidayString[' + i + ']"').attr("checked", "checked")
+                $('input[name = "IsActiveString[' + i + ']"').attr("checked", "checked")
+            }
+        }
+
+        var UpdateValue = function (ctrl) {
+            var flag = $(ctrl).is(":checked");
+            $('input[name = "' + $(ctrl).data("id") + '"').val(flag);
+        }
+        
+        $("#btnSubmit").click(function () {
+            var slot = false;
+            var result = new Object();
+            for (var j = 0; j < 7; j++) {
+                if (($('#EndTime_' + j + '_').val() != null || $('#EndTime_' + j + '_').val() != "") && $('#SlotDuration_' + j + '_').val() == "") {
+                    switch ('#EndTime_' + j + '_') {
+                        case '#EndTime_0_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Sunday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_0_').focus();
+                            break;
+                        case '#EndTime_1_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Monday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_1_').focus();
+                            break;
+                        case '#EndTime_2_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Tuesday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_2_').focus();
+                            break;
+                        case '#EndTime_3_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Wednesday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_3_').focus();
+                            break;
+                        case '#EndTime_4_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Thursday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_4_').focus();
+                            break;
+                        case '#EndTime_5_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Friday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_5_').focus();
+                            break;
+                        case '#EndTime_6_':
+                            result.Status = 0;
+                            result.Message = "SlotDuration need to enter for Saturday week";
+                            HandleResponse(result);
+                            slot = true;
+                            $('#SlotDuration_6_').focus();
+                            break;
+                    }
+                    if (slot == true)
+                        break;
+                }
+            }
+            if (slot == true)
+                return false;
+
+            if (!checkDates()) return;
+            var data = $("#frmOpeningHour").serialize();
+            $.post("@Url.Action("AddEditOpeningHours", "Facility")",
+                data,
+                function (response) {
+                    HandleResponse(response);
+                    if (response.Status == 1) {
+                        $("#OrganizationID").val(id)
+                        LoadAllFieldForFacilityUser();
+                        for (var i = 0; i < 7; i++) {
+                            $('input[name = "IsHoliday[' + i + ']"').val(true)
+                            $('input[name = "IsActive[' + i + ']"').val(true)
+                            $('input[name = "IsHolidayString[' + i + ']"').attr("checked", "checked")
+                            $('input[name = "IsActiveString[' + i + ']"').attr("checked", "checked")
+                        }
+                    }
+                });
+         });
+    </script>
+}
+

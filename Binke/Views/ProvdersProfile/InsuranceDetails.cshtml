@@ -1,0 +1,330 @@
+﻿@using Binke.ViewModels
+
+@model PatientPrescription
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "InsuranceDetails";
+
+
+}
+<style type="text/css">
+    .label:after {
+        content: '\A';
+        white-space: pre;
+    }
+</style>
+<div class="modal-body">
+    @using (Html.BeginForm("InsuranceDetails", "ProvdersProfile", FormMethod.Post, new { id = "frmInsuranceInfo", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        <p class="form-message">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </p>
+        <div class="container border">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <!--No Label Form-->
+                        <!--===================================================-->
+
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <input type="checkbox" id="primaryHolder" name="primaryHolder" value="I am Primary Card Holder" /> I am Primary Card Holder
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="RelationShipWithCardHolder">RelationShip With CardHolder : </label>
+                                @Html.TextBox("txtRelationShipWithCardHolder", Model.RelationShipWithCardHolder, new { @class = "col-xs-1 control-label form-control", placeholder = "RelationShip With CardHolder" })
+                                @Html.ValidationMessage("txtRelationShipWithCardHolder", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="DateOfBirth">Date of Birth : </label>
+                                @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "datefield form-control", placeholder = "Enter Order Date", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="form-group ">
+                                <label class="col-xs-1 control-label doger-color" for="HealthInsurance">Insurance Provider Name : (<span class="text-red" style="color:red;">*</span>) </label>
+                                @Html.TextBox("txtProviderName", null, new { @class = "col-xs-1 form-control", placeholder = "Enter Provider Name" })
+                                <input type="hidden" name="ProviderIdx" id="ProviderIdx" value="0" />
+                                @Html.ValidationMessage("txtProviderName", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color">Insurance Type : (<span class="text-red" style="color:red;">*</span>)</label>
+                                @Html.DropDownListFor(model => model.InsuranceTypeId, ViewBag.typeList as SelectList, "Select Insurance Type", new { @class = "form-control chosen-select" })
+                                @Html.ValidationMessageFor(model => model.InsuranceTypeId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color">Insurance Plan : (<span class="text-red" style="color:red;">*</span>)</label>
+                                @Html.DropDownListFor(model => model.InsurancePlanId, ViewBag.planList as SelectList, "Select Insurance Plan", new { @class = "form-control chosen-select", disabled = "true" })
+                                @Html.ValidationMessageFor(model => model.InsurancePlanId, "", new { @class = "text-danger" })
+                            </div>
+                        </form>
+
+                        <!--===================================================-->
+                        <!--End No Label Form-->
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <!--No Label Form-->
+                        <!--===================================================-->
+
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <span><br /></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color">Primary Card Holder Name : </label>
+                                @Html.TextBox("txtCardHolderName", @Model.FirstName, new { @class = "col-xs-1 control-label form-control", placeholder = "Primary Card Holder Name" })
+                                @Html.ValidationMessage("txtCardHolderName", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color">PhoneNumber : </label>
+                                @Html.TextBox("txtPhoneNumber", @Model.PhoneNumber, new { @class = "col-xs-1 control-label form-control", placeholder = "Phone Number" })
+                                @Html.ValidationMessage("txtPhoneNumber", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <textarea class="col-xs-1 form-control" style="display:none; margin-top: 0px; margin-bottom: 0px; height: 242px;" id="insuranceInfo"> </textarea>
+                            </div>
+                        </form>
+
+                        <!--===================================================-->
+                        <!--End No Label Form-->
+                    </div>
+                </div>
+            </div>
+            <div class="row border-top">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <span><br /></span>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <!--No Label Form-->
+                        <!--===================================================-->
+
+                        <form class="form-horizontal">
+
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="MemberNumber">Member Number : </label>
+                                @Html.TextBox("txtMemberNumber", @Model.MemberNumber, new { @class = "col-xs-1 control-label form-control numeric" })
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="BinNumber">Bin Number : </label>
+                                @Html.TextBox("txtBinNumber", @Model.BinNumber, new { @class = "col-xs-1 control-label form-control numeric" })
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <!--No Label Form-->
+                        <!--===================================================-->
+
+                        <form class="form-horizontal">
+
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="GroupNumber">Group Number : </label>
+                                @Html.TextBox("txtGroupNumber", @Model.GroupNumber, new { @class = "col-xs-1 control-label form-control numeric" })
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="PcnNumber">Pcn Number : </label>
+                                @Html.TextBox("txtPcnNumber", @Model.PcnNumber, new { @class = "col-xs-1 control-label form-control numeric" })
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <form class="form-horizontal">
+                    <span> Please do not forget to bring your Insurance card to the Pharmacy. In case to verify your Information</span>
+                </form>
+            </div>
+            <div class="row">
+
+                <div class="col-md-12 text-right ">
+                    <button type="button" id="btnSubmit" class="btn btn-primary" style="margin-bottom: 5px;" disabled="true">Continue</button>&nbsp;&nbsp;
+                    <button type="button" id="btnBack" class="btn btn-primary" style="margin-bottom: 6px;" onclick="history.go(-1); return false;">Back</button>
+                </div>
+
+            </div>
+
+        </div>
+        <br />
+    }
+    <div id="dialog" title="Required*">
+        <span id="popup"></span>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+        function init() {             
+            var isPrimary =@Html.Raw(Json.Encode(Model.IsPrimary));
+            if (isPrimary==1)
+            {
+                $("#txtRelationShipWithCardHolder").prop('disabled', true);
+                $("#primaryHolder").prop("checked", "checked");
+            }  
+
+            $('#InsuranceTypeId').val("");
+            $("#InsuranceTypeId").trigger("chosen:updated");
+        }
+        window.onload = init;
+
+        jQuery(document).ready(function ($) {
+
+            function Popup(msg) {
+                $("#popup").text(msg);
+                $("#dialog").dialog();
+            };
+
+            $('#primaryHolder').on('change', function () {
+                this.value = this.checked ? 1 : 0;
+                if (this.value == 1) {
+                    $("#txtRelationShipWithCardHolder").prop('disabled', true);
+                    $("#txtRelationShipWithCardHolder").val('');
+                } else {
+                    $("#txtRelationShipWithCardHolder").prop('disabled', false);
+                }
+            }).change();
+
+            $(".numeric").on('input', function (event) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            $("#txtRelationShipWithCardHolder").on('input', function (event) {
+                this.value = this.value.replace(/[^A-Za-z0-9_-]/g, '');
+            });
+        $("#btnSubmit").click(function () {
+            var PrescriptionType =@Html.Raw(Json.Encode(Model.PrescriptionType));
+            var PresIns = {};
+            PresIns.PatientId = @Model.PatientId;
+            PresIns.OrgId = @Model.Pharmacy.OrgId;
+
+            PresIns.IsPrimary = $("input[name='primaryHolder']").val() == 1 ? true : false;
+            PresIns.RelationShipWithCardHolder = $("#txtRelationShipWithCardHolder").val();
+            PresIns.CardHolderDateOfBirth = $('#DateOfBirth').val();
+            PresIns.InsuranceProviderID = $("#ProviderIdx").val();
+            PresIns.InsuranceTypeId = $('#InsuranceTypeId').val();
+            PresIns.InsurancePlanId = $('#InsurancePlanId').val();
+            PresIns.InsuranceType = $('#InsuranceTypeId').find('option:selected').text();
+            PresIns.InsurancePlan = $('#InsurancePlanId').find('option:selected').text();
+            PresIns.InsuranceProvider = $('#txtProviderName').val();
+            PresIns.PrimaryCardHolderName = $("#txtCardHolderName").val();
+            PresIns.PhoneNumber = $("#txtPhoneNumber").val();
+            PresIns.MemberNumber = $("#txtMemberNumber").val();
+            PresIns.BinNumber = $("#txtBinNumber").val();
+            PresIns.GroupNumber = $("#txtGroupNumber").val();
+            PresIns.PcnNumber = $("#txtPcnNumber").val();
+            PresIns.PrescriptionType = PrescriptionType;
+
+            $.ajax({
+                type: 'POST',
+                url: "/ProvdersProfile/SubmitConfirm",
+                data: { patientInsuranceDetails: PresIns},
+                dataType: 'json',
+                async: true,
+                success: function (response) {
+                        window.location.href = "@Url.Action("ConfirmRefillPrescription", "ProvdersProfile")";
+                },
+                failure: function (response) {
+                    console.log(response.responseText);
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        $("#txtProviderName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/ProvdersProfile/GetInsProvider",
+                    type: "GET",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.InsCompanyName, value: item.InsCompanyName, dataId: item.InsProviderId };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                $(this).val(ui.item.label);
+                $("#ProviderIdx").val(ui.item.dataId);
+            }
+        });
+
+        $('#InsuranceTypeId').change(function () {
+            $('#InsurancePlanId option').remove();
+            $('#InsurancePlanId').html('<option value="">Select Plan</option>');
+            $("#InsurancePlanId").trigger("chosen:updated");
+            $.ajax({
+                url: "/ProvdersProfile/GetInsurancePlanByInsProviderandInsTypeId",
+                type: "GET",
+                dataType: "json",
+                data: { providerId: $("#ProviderIdx").val(), insTypeId: $(this).val() },
+                success: function (data) {
+                    if (data.length > 0) {
+                        $('#InsurancePlanId').prop('disabled', false);
+                        $('#InsurancePlanId option').remove();
+                        var options = '';
+                        options += '<option value="">Select Plan</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                        }
+                        $('#InsurancePlanId').html(options);
+                    }
+                    else {
+                        $('#InsurancePlanId').prop('disabled', true);
+                    }
+                },
+                error: function (data) {
+                    $('#InsurancePlanId').prop('disabled', true);
+                }
+            });
+            DisplayTextArea();
+        });
+
+        $('#InsurancePlanId').change(function () {
+            DisplayTextArea();
+            });
+
+        function DisplayTextArea() {
+            if ($('#InsurancePlanId').val() != "" && $('#InsurancePlanId').val() != "Select Plan") {
+                var insType = "Insurance Type : " + $('#InsuranceTypeId').find('option:selected').text();
+                var insProvider = "Insurance Provider : " + $('#txtProviderName').val();;
+                var res = insProvider + "\n\n" + insType;
+                $('#insuranceInfo').val(res);
+                $('#insuranceInfo').show();
+                $("#btnSubmit").prop('disabled', false);
+            }
+            else {
+                $('#insuranceInfo').hide();
+                $("#btnSubmit").prop('disabled', true);
+            }
+        };
+    });
+
+</script>
+

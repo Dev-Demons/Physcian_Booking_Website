@@ -1,0 +1,1064 @@
+﻿@{
+
+    var searchBox = ViewBag.SearchBox;
+    var DrugName = Model != null && Model.DrugInfo != null ? Model.DrugInfo.DrugName : "[Not Data Found]";
+    var DrugLogo = Model != null && Model.DrugInfo != null ? "Set Logo Here" : "";
+    var DrugDesc_100 = Model != null && Model.DrugInfo != null && Model.DrugInfo.Description != null ? (Model.DrugInfo.Description.Length > 100 ? Model.DrugInfo.Description.Substring(0, 100) : Model.DrugInfo.Description) : "[Not Data Found]";
+    var DrugDesc_200 = Model != null && Model.DrugInfo != null && Model.DrugInfo.Description != null ? (Model.DrugInfo.Description.Length > 200 ? Model.DrugInfo.Description.Substring(0, 100) : Model.DrugInfo.Description) : "[Not Data Found]";
+    //ViewBag.Title = DrugName + " Generic : " + DrugName + " Discount Coupon " + DateTime.Now.Year;
+    ViewBag.Title = DrugName + " Discount Price and Coupon for " + DateTime.Now.Year;
+}
+@model  Binke.ViewModels.DrugDetailsViewModel
+
+@section head{
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+    <title>@DrugName Generic: @DrugName [Discount Coupon @DateTime.Now.Year - Doctyme</title>
+    <meta name="description" content="Find best price for @DrugName. Find local pharmacy and discount coupons." />
+    <meta property="og:title" content="@DrugName @DrugDesc_100" />
+    <meta property="og:description" content="@DrugName @DrugDesc_100" />
+    <meta property="keywords" content="@DrugName - Generic: @DrugName" />
+    <meta property="twitter:image" content="logo image url @DrugLogo" />
+    <meta property="og:url" content="https://www.doctyme.com/" />
+    <meta property="og:site_name" content="DocTyme" />
+    <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:title" content="Search &amp; Review Doctors, Hospital, Senior Care, Pharmacy and Book an appointment online, Cheap discount Drugs" />
+
+    <link data-react-helmet="true" rel="amphtml" href="https://www.doctyme.com/SearchDrug/@DrugName" />
+    <link data-react-helmet="true" rel="canonical" href="https://www.DocTyme.com/SearchDrug/@DrugName" />
+    <link data-react-helmet="true" rel="alternate" href="https://www.DocTyme.com/SearchDrug/@DrugName" hreflang="en-us" />
+    <link data-react-helmet="true" rel="alternate" href="https://www.DocTyme.com/SearchDrug/@DrugName" hreflang="es-us" />
+}
+
+<link href="~/Content/client/css/index.css" rel="stylesheet" />
+<link href="~/Content/client/css/search.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+<style>
+    Featured Pharmacy .align-left {
+        text-align: left;
+    }
+
+    .alphabates-color {
+        color: blue !important;
+        font-size: large;
+    }
+
+    div a:hover {
+        cursor: pointer;
+    }
+
+    .pagesize-dropdown {
+        float: right;
+        margin: 4px;
+        border-radius: 10px;
+        border-color: deepskyblue;
+    }
+
+    .recentDrugsPadding {
+        padding: 2px 4px 2px 2px;
+    }
+
+    .fontSize14 {
+        font-size: 14px;
+    }
+
+    .fontSize13 {
+        font-size: 13px;
+    }
+
+    .colorblue {
+        color: #30aedf !important
+    }
+
+    .colorBG {
+        background-color: #30aedf !important
+    }
+
+    .navachPaddig {
+        padding: 3px 5px 4px 2px;
+        border-radius: 4px;
+    }
+
+    .padding10 {
+        padding-top: 10px;
+    }
+
+    .nav > li {
+        padding: 1px;
+        padding-top: 2px
+    }
+
+    .nav-tabs {
+        border-bottom: none;
+    }
+
+    .owl-carousel.owl-rtl {
+        direction: rtl;
+    }
+
+        .owl-carousel.owl-rtl .owl-item {
+            float: right;
+        }
+
+    .ulockd-testimonials {
+        background-color: #ffffff;
+        border: 1px solid #eeeeee;
+        border-radius: 0 45px 0;
+        padding: 10px 20px;
+        position: relative;
+        -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.2);
+        -webkit-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .ulockd-mrgn620 {
+        margin-bottom: 20px;
+    }
+
+    .ulockd-mrgn1250 {
+        margin-top: 50px;
+    }
+
+    .ulockd-testimonials .testi-thumb img {
+        border: 1px solid #eeeeee;
+        border-radius: 0 20px;
+        height: 150px;
+        margin: -50px auto 0;
+        width: 300px;
+    }
+
+    .owl-carousel .owl-item img {
+        display: block;
+        width: 100%;
+    }
+
+    .thumbnail {
+        display: block;
+        padding: 4px;
+        margin-bottom: 20px;
+        line-height: 1.42857143;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        -webkit-transition: border .2s ease-in-out;
+        -o-transition: border .2s ease-in-out;
+        transition: border .2s ease-in-out;
+    }
+
+    .ulockd-mrgn1220 {
+        margin-top: 20px;
+    }
+
+    .list-inline {
+        padding-left: 0;
+        margin-left: -5px;
+        list-style: none;
+    }
+
+    .fz16 {
+        font-size: 16px;
+    }
+
+    .ulockd-testimonials p {
+        margin-bottom: 20px;
+        text-transform: capitalize;
+    }
+
+    .owl-carousel.owl-rtl {
+        direction: rtl;
+    }
+
+    .ulockd-testimonials .testi-thumb img {
+        border: 1px solid #eeeeee;
+        border-radius: 0 20px;
+        height: 100px;
+        margin: -50px auto 0;
+        width: 400px;
+    }
+
+    .ulockd-testimonials .testi-thumb ul li {
+        padding: 0;
+    }
+
+    .list-inline > li {
+        display: inline-block;
+    }
+
+    .text-thm2 {
+        color: #00b3ff !important;
+    }
+
+    .fontSize12 {
+        font-size: 12px !important;
+    }
+
+    .boderColorFv {
+        border-color: #30aedf !important
+    }
+
+    .nav > li > a, .nav > li > a {
+        background-color: rgb(243, 237, 237)
+    }
+</style>
+
+<div class="container-fluid row mb-3" style="padding:0;margin:0;">
+    <div class="col-sm-3 p-2">
+        <div class="container bg-primary p-2 text-center colorBG" style="border-radius:2px;background-color:#30aedf !important">
+            <h4 class="p-0 m-0 d-inline" style="color:white;font-size:20px;">Filters</h4>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter1').slideToggle()">
+                    <i class="fa fa-hand-point-right colorblue"></i> Strength
+                </p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter1').slideToggle()"></i>
+                <div id="filter1" class="display_none pl-4">
+                    @if (Model != null && Model.DrugStrengthFilter != null)
+                    {
+                        foreach (var value in Model.DrugStrengthFilter)
+                        {
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input id='@value.DrugStrengthID' title='@value.Name' onchange='updateFilter(this, "Strength")'
+                                           type="radio" class="form-check-input filter-strength checkmark" name="filterStrength"
+                                           @(value.Name == Model.DrugFilter.Strength ? "checked" : "") />
+                                    @value.Name
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
+            </li>
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter2').slideToggle()">
+                    <i class="fa fa-hand-point-right colorblue"></i> Type
+                </p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter2').slideToggle()"></i>
+                <div id="filter2" class="display_none pl-4">
+                    @if (Model != null && Model.DrugTypeTabletFilter != null)
+                    {
+                        foreach (var value in Model.DrugTypeTabletFilter)
+                        {
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input id='@value.Name' title="@value.Name" onchange='updateFilter(this, "Type")'
+                                           type="radio" class="form-check-input filter-type checkmark" name="filterType"
+                                           @(value.Name.ToString() == Model.DrugFilter.Type ? "checked" : "") />
+                                    @value.Name
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
+            </li>
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter3').slideToggle()"><i class="fa fa-hand-point-right colorblue"></i> Quantity</p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter3').slideToggle()"></i>
+                <div class="display_none pl-4" id="filter3">
+                    @if (Model != null && Model.DrugQuantityPriceFilter != null)
+                    {
+                        foreach (var value in Model.DrugQuantityPriceFilter)
+                        {
+
+                            <div class="form-check AllID @value.DrugStrengthID" style="@(value.IsChecked? "display:block" : "display:none")">
+                                <label class="form-check-label">
+                                    <input id='@value.Quantity' title="@value.Quantity" onchange='updateFilter(this, "Quantity")'
+                                           type="radio" class="form-check-input filter-quantity checkmark" name="filterQuantity"
+                                           @(value.Quantity.ToString() == Model.DrugFilter.Quantity ? "checked" : "") />
+                                    @value.Quantity
+                                </label>
+                            </div>
+
+
+
+                        }
+                    }
+                    @*<label class="form-check-label">
+                            <input id='txtQuantity' title="Quantity"
+                                   type="number" class="form-input" name="txtQuantity" min="0" onchange='updateFilter(this, "Quantity")' />
+                        </label>*@
+
+                </div>
+            </li>
+            <li class="list-group-item">
+                <p class="text-primary m-0 mb-1 p-0 d-inline" style="cursor:pointer;" onclick="$('#filter4').slideToggle()"><i class="fa fa-hand-point-right colorblue"></i> Manufacturer</p>
+                <i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="$('#filter4').slideToggle()"></i>
+                <div id="filter4" class="display_none pl-4">
+                    @if (Model != null && Model.DrugManufacturerFilter != null)
+                    {
+                        foreach (var value in Model.DrugManufacturerFilter)
+                        {
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input id='@value.CompanyName' title="@value.CompanyName" onchange='updateFilter(this, "Manufacturer")'
+                                           type="radio" class="form-check-input filter-manufacturer" name="filterManufacturer"
+                                           @(value.DrugManufacturer_LookUpId.ToString() == Model.DrugFilter.Maunfacturer ? "checked" : "") />
+                                    @value.CompanyName
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="text-right mt-2">
+                    <button onclick="clearsearchDrug()" class="btn" style="background-color:white;color:#30aedf;border:1px solid #30aedf;font-size:16px;padding:4px 10px;">Clear</button>
+                    <button id="applyFilter" class="btn" style="background-color:#30aedf;color:white;font-size:16px;padding:4px 10px;">Apply</button>
+                </div>
+
+            </li>
+        </ul>
+        <fieldset id="mostlySearchDrug" class="container mt-2 pb-2" style="border:1px solid lightgray;border-radius:2px;">
+            <legend class="text-primary text-center" style="font-size:15px;width:auto">Mostly Searched Medicine</legend>
+
+        </fieldset>
+
+        <div class="left-side-ad mt-3 mb-2"><br />Advertisement Block <hr /></div>
+
+
+    </div>
+
+    <div class="col-sm-9 pt-2">
+        <div class="input-group mb-1 ">
+            <input type="text" class="form-control autocomplete" placeholder="Search" id="searchDrugText" value="@ViewBag.SearchBox">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="searchDrug()" style="background-color: #30aedf !important;"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+        <ul class="nav nav-tabs padding10" role="tablist" id="navListItem">
+            @if (Model != null && Model.DrugTabsInfo != null)
+            {
+                foreach (var item in Model.DrugTabsInfo)
+                {
+                    <li class="nav-item mx-1 mb-0" role="presentation">
+                        <a role="tab" data-bs-toggle="tab" id="tab_@item.DrugTabsId" class="nav-link navs-color navachPaddig" data-toggle="tab" href="#@item.DrugTabsId"
+                           onclick="openTab('@item.DrugTabsId','#tab_@item.DrugTabsId');">@item.Name</a>
+                    </li>
+                }
+            }
+        </ul>
+        @*<div style="border-bottom: 2px solid dodgerblue; position: relative; transition-duration: .5s;">
+                <a href="#" id="more_less" onclick="more(navListItem)" style="bottom:-3px"> <i class="fa fa-plus-square colorblue"></i></a>
+            </div>*@
+
+
+        @*<select id="pageSelector" name="pageSelector" class="pagesize-dropdown">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>*@
+
+        <div id="DrugData" class="tab-pane fade in show p-3" style="border-bottom:2px solid dodgerblue;">
+            <h3 class="d-inline" style="color:#1E90FF">@(Model != null && Model.DrugInfo != null ? Model.DrugInfo.DrugName : "" )</h3>
+            <p>
+                @if (Model != null && Model.DrugInfo != null)
+                {
+                    @Html.Raw(Model.DrugInfo.Description);
+                }
+            </p>
+        </div>
+
+
+        <script>
+            function openTab(tabName, tabLink, dontScroll = false) {
+                $("#tabLoader").show();
+                $(tabLink).append('<i class="fa fa-spinner fa-spin ml-1"></i>');
+                $("#navListItem").find(".tab-active").removeClass("tab-active");
+                $(tabLink).addClass('tab-active');
+                $('.drugTab').hide();
+                $('#' + tabName).show();
+
+
+                if (!dontScroll) {
+                    $('html, body').animate({
+                        scrollTop: $('#' + tabName).offset().top - 300
+                    }, 500);
+                }
+                $(tabLink).find(".fa-spinner").remove();
+
+                setTimeout(function () { $("#tabLoader").hide(); }, 1000);
+            }
+        </script>
+        <div id="">
+            <nav aria-label="Page navigation">
+                <div id="page-selection" style="border-bottom:2px solid dodgerblue;">
+                    @if (Model != null && Model.DrugFilter != null && @Model.DrugFilter.DrugName != null)
+                    {
+                        <div class="row p-3">
+                            <div class="col-md-12">
+                                <p class="pb-0 mb-0 text-danger" style="font-size: 18px;">
+                                    Estimated price for <strong style="color:dodgerblue;">@Model.DrugFilter.DrugName.ToUpper()</strong>
+                                    @(String.IsNullOrEmpty(Model.DrugFilter.Strength) ? "" : Model.DrugFilter.Strength)
+                                    @(String.IsNullOrEmpty(Model.DrugFilter.Type) ? "" : ", " + Model.DrugFilter.Type)
+                                    @(String.IsNullOrEmpty(Model.DrugFilter.Quantity) ? "" : ", " + Model.DrugFilter.Quantity + " counts")
+                                    @(String.IsNullOrEmpty(Model.DrugFilter.Maunfacturer) ? "" : ", manufactured by:" + Model.DrugFilter.Maunfacturer) is:
+                                    <strong style="color:dodgerblue;"> @(string.IsNullOrEmpty(Model.DrugFilter.Price) ? "[Not Available]" : "$" + Model.DrugFilter.Price)</strong>
+                                </p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row p-3">
+                            <div class="col-md-10">
+                                <p class="pb-0 mb-0">
+                                    Estimated price not available for filtered data of <strong style="color:dodgerblue;">@(Model != null && Model.DrugInfo != null ? Model.DrugInfo.DrugName : "").</strong>
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </nav>
+        </div>
+
+
+
+        <!-- coupon -->
+        <!-- The Modal -->
+        <div class="modal" id="couponModal">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header position-relative p-0">
+                        <h1 class="modal-title mx-auto" style="color:dodgerblue">Coupons</h1>
+                        <!-- <i class="fas fa-times-circle" class="close" data-dismiss="modal" style="position:absolute;z-index:16;right:2px;top:2px;border-radius:50%;font-size:20px;background-color:white;cursor:pointer;overflow:visible"></!-->
+
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" alt="offer" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" alt="offer" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" alt="offer" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="margin-bottom:5px;border:1px solid dodgerblue;padding:5px 10px 5px 5px;">
+                            <img src="~/Content/client/images/offer.jpg" alt="offer" width="20%" height="20%">
+                            <div class="p-3">
+                                <h3>40% Discount on Air conditioner</h3>
+                                <span style="color:rgb(160, 156, 156)"><i class="fa fa-clock"></i> End on 20.10.19</span>
+                            </div>
+                            <button class="btn btn-success" style="white-space: nowrap;">Apply</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Image Map Generated by http://www.image-map.net/ -->
+        <div class="container-fluid px-0 mt-4">
+            <div class="container-fluid text-center " style="background-color:white;">
+                <p style="color:rgb(99, 93, 93);font-size:14px">START SAVING ON PRESCRIPTION DRUGS</p>
+                @*<div class="container-fluid">
+                        <img src='~/Content/client/images/logo1.jpg' class="logo" alt="logo1">
+                        <img src='~/Content/client/images/logo2.jpg' class="logo" alt="logo2">
+                        <img src='~/Content/client/images/logo3.webp' class="logo" alt="logo3">
+                        <img src='~/Content/client/images/logo4.png' class="logo" alt="logo4">
+                        <img src='~/Content/client/images/logo3.png' class="logo" alt="logo3">
+                    </div>*@
+            </div>
+            <div class="row m-4">
+                <div class="col-sm-6 p-4">
+                    <div class="img-background" style="background-image: url('/Content/client/images/DoctorsImg.jpg');"></div>
+                    <div class="content-img">
+                        Works with doctors, hospitals and clinics<br>
+                        <div class="" style="width:50%;font-size:15px">
+                            Cost is one of the primary reasons Americans don't take their medication.
+                        </div>
+                        @*<a href="#"></a>*@
+                        <br>
+                        <br>
+                        <div class="" style="width:50%;font-size:15px">
+                            Thousand of doctors and hospitals use to help their patients afford their drugs.<br><br>
+                        </div>
+                        <button id="btnBlog" class="btn">Learn More</button>
+                    </div>
+                </div>
+                <div class="col-sm-6 p-4">
+                    <div class="img-background" style="background-image: url('/Content/client/images/DrugImage.jpg');"></div>
+                    <div class="content-img">
+                        <h6>Put savings in your pocket</h6>
+                        <br>
+
+                        <p style="width:60%;font-size:14px;">
+                            @*Doctyme will send you a drug
+                                saving card that can be used for
+                                discount of up to 80% on most
+                                prescription drugs at virtually every
+                                U.S. pharmacy*@
+                            Search and compare drug prices in your area and place a refill or transfer prescription
+                            and start saving today.
+                        </p>
+                        <br><br />
+                        <button id="btnLogin" class="btn">GET A FREE DISCOUNT CARD</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <map name="image-map">
+            <area target="_self" id="cost" title="cost" href="#" coords="" shape="rect" style="z-index: 2">
+            <area target="_self" id="learn_more" title="learn_more" href="#" coords="" shape="rect" style="z-index: 2">
+            <area target="_self" id="discount" title="discount" href="#" coords="" shape="rect" style="z-index: 2">
+        </map>
+
+        <table id="example" class="table">
+            <thead class="hidden">
+                <tr><th>Subscriber</th></tr>
+            </thead>
+            <tbody id="drugTabContentOters">
+                <tr id="drugTabContent" class="tab-content align-left">
+                    <td>
+                        @if (Model != null && Model.DrugTabsInfo != null)
+                        {
+                            foreach (var item in Model.DrugTabsInfo)
+                            {
+                                <div role="tabpanel" id="@item.DrugTabsId" class="tab-pane drugTab show p-2 active" style="text-align: left;border-bottom:2px solid dodgerblue;display:none">
+                                    <br><h3 class="d-inline" style="color:#1E90FF">@item.Name </h3>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @Html.Raw(item.Description)
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="m-0" style="color:dodgerblue">Featured Pharmacy</p>
+
+        @*owl-carousel1 begins*@
+        @Html.Partial("_Advertisement", new ViewDataDictionary { { "AddTypeId", "1" }, { "OrgTypeId", "1006" }, { "UserTypeIds", "2" } })
+        @*owl-carousel1 ends*@
+        <a id="moreLink" href="#">Search more pharmacies in <b><span id="linkText">near by</span></b></a>
+
+        <div class="bottom-side-ad mt-3"><br />Advertisement Block <hr /></div>
+
+    </div>
+
+
+</div>
+
+
+<div id="tabLoader" class="loader" style="display:none;"></div>
+
+
+@section scripts {
+    <script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript">
+        //alert('SearchDrug');
+
+
+        /* Object model to store request and response data */
+        var Type = [];
+        var Tablet = []
+        var Quantity = [];
+        var Manufacturer = [];
+        var responseData = [];
+        var searchParameter = {
+            "MedicineName": "",
+            "PageNumber": 1,
+            "PageSize": $("#pageSelector option:selected").val() ? $("#pageSelector option:selected").val() : 10,
+            "DrugTypeId": [],
+            "TabletId": [],
+            "StrengthId": [],
+            "DrugQuantityId": [],
+            "DrugManufacturerId": [],
+            "StartWithAlphabetically": ""
+        };
+        var i = 1;
+
+        /* Calling Methods to get data on page load */
+        $(document).ready(function () {
+            //$("#drugTabContentOters").append('<tr class="no-data"><td colspan="4">No data found</td></tr>');
+            GetDrugFliterDroplist();
+            //GetDrugPharmacyDetails();
+            GetMostlySearchedDrug();
+
+            @if (Model != null && Model.OpenDefaultTabId > 0)
+            {
+                <text>openTab('@Model.OpenDefaultTabId', '#tab_@Model.OpenDefaultTabId', true)</text>
+            }
+        });
+
+        $("#btnBlog").click(function () {
+            location.href = "/Blog/BlogItem/Drugmakers-to-hike-prices-for-2021";
+        });
+        $("#btnLogin").click(function () {
+            location.href = "/Account/Login";
+        });
+        $("#pageSelector").change(function () {
+            //searchParameter.PageSize = $("#pageSelector option:selected").val();
+            //GetDrugPharmacyDetails();
+        });
+
+        function LoadPagination(totalPage) {
+            console.log(totalPage);
+            if (totalPage == 0) {
+                $("#page-selection").empty();
+            };
+            $('#page-selection').bootpag({
+                total: totalPage > 0 ? totalPage : 0,
+                maxVisible: 5,
+                firstLastUse: true,
+                first: 'FIRST',
+                last: 'LAST'
+            }).on("page", function (event, num) {
+                $("#content").html("Insert content");
+                searchParameter.PageNumber = num;
+                //GetDrugPharmacyDetails();
+            });
+            $('#page-selection li').addClass('page-item');
+            $('#page-selection a').addClass('page-link');
+        }
+
+        function GetDrugFliterDroplist() {
+            $.ajax({
+                url: "/SearchDrug/GetDrugFliterDroplist",
+                type: "Get",
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        bindFilterData(response.Data);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+        function GetDrugPharmacyDetails() {
+            $.ajax({
+                url: "/SearchDrug/GetDrugDetails",
+                type: "Post",
+                data: searchParameter,
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        responseData = response.Data;
+                        drugContentCreate(response.Data);
+                        //LoadPagination(parseInt(response.Message));
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+        function GetMostlySearchedDrug() {
+            $.ajax({
+                url: "/SearchDrug/MostlySearchedDrug",
+                type: "Get",
+                success: function (response) {
+                    if (response.Status == 200 && response.Data) {
+                        BindMostlySearchedDrug(response.Data);
+                    }
+                },
+                error: function (data) {
+                    unblockPage();
+                    HandleResponse(data);
+                }
+            });
+        }
+
+
+
+        /* Binding API data to the UI */
+        function BindMostlySearchedDrug(searchedDrug) {
+            var splitDrugByComma = searchedDrug ? (searchedDrug.MostlySearchedDrug ? searchedDrug.MostlySearchedDrug.split(',') : []) : [];
+            splitDrugByComma.forEach(function (value, index) {
+                var element = '<button style="cursor:pointer" class="btn btn-outline-primary m-2 recentDrugsPadding boderColorFv" onclick="searchMostlySearched(this)">' + value + '</button>'
+                $("#mostlySearchDrug").append(element);
+            });
+        }
+
+        function bindFilterData(responseData) {
+
+            Type = responseData.DrugType;
+            Manufacturer = responseData.DrugManufacturer;
+            Quantity = responseData.DrugQuantity;
+            Tablet = responseData.Tablet;
+
+            //createItemsType(Type, 1, 'Type');
+            //createItemsTablet(Tablet, 2, 'Tablet');
+            //createItemsQuantity(Quantity, 3, 'Quantity');
+            //createItemsManufacturer(Manufacturer, 4, 'Manufacturer');
+        }
+
+        function btnFunction(obj) {
+            obj.style.backgroundColor = 'rgb(40, 165, 40)';
+            obj.innerHTML += '&nbsp;<i class="fa fa-check-circle"></i>';
+            $('.btn-size').attr('onclick', '');
+        }
+        function enlarge(obj) {
+            if (window.innerWidth > 576)
+                $(obj).css({ 'transform': 'scale(1.5)', 'z-index': '10', 'transition-duration': '.3s' });
+        }
+
+        /* Create elements dynamically based on API response data.
+         * Creating Filter option like Quantity, Type, Manufaturer */
+
+        function createItemsType(values, id, header) {
+
+            if (values.length > 0) {
+
+                values.forEach(function (value, i) {
+                    if (value.Type) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.DrugTypeId + ' title="' + value.Type + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.Type + '">' + value.Type + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+        function createItemsTablet(values, id, header) {
+            if (values.length > 0) {
+                values.forEach(function (value, i) {
+                    if (value.DrugPower) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.TabletId + ' title="' + value.DrugPower + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.DrugPower + '">' + value.DrugPower + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+        function createItemsQuantity(values, id, header) {
+            if (values.length > 0) {
+
+                values.forEach(function (value, i) {
+                    if (value.Quantity) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.DrugQuantityId + ' title="' + value.Quantity + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.Quantity + '">' + value.Quantity + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+        function createItemsManufacturer(values, id, header) {
+            if (values.length > 0) {
+                values.forEach(function (value, i) {
+                    if (value.Manufacturer) {
+                        var element = '<div class="form-check"><label class="form-check-label"><input id=' + value.DrugManufacturerId + ' title="' + value.Manufacturer + '" onchange=updateFilter(this,"' + header + '") type="checkbox" class="form-check-input" name="' + value.Manufacturer + '">' + value.Manufacturer + '</label></div>'
+                        $("#filter" + id).append(element);
+                    }
+                });
+            }
+            else {
+                $("#filter" + id).append("");
+            }
+        }
+
+        /* Creating request object before sending to searching data
+         * Remove duplicate record from the object if filter is getting updated multiple time.*/
+        function updateFilter(name, header) {
+            var isChecked = name.checked;
+            var id = (name ? name.id : 0);
+            if (header == "Type") {
+                searchParameter.TabletId = filterDuplicate(searchParameter.TabletId, id);
+                isChecked ? searchParameter.TabletId.push(id) : null;
+            }
+            else if (header == "Strength") {
+                debugger;
+                searchParameter.StrengthId = filterDuplicate(searchParameter.StrengthId, id);
+                isChecked ? searchParameter.StrengthId.push(id) : null;
+                $('.AllID').hide();
+                $('.' + id + '').show();
+                
+
+            }
+            else if (header == "Quantity") {
+                searchParameter.DrugQuantityId = filterDuplicate(searchParameter.DrugQuantityId, id);
+                isChecked ? searchParameter.DrugQuantityId.push(id) : null;
+            }
+            else if (header == "Manufacturer") {
+                searchParameter.DrugManufacturerId = filterDuplicate(searchParameter.DrugManufacturerId, id);
+                isChecked ? searchParameter.DrugManufacturerId.push(id) : null;
+            }
+        }
+
+        function filterDuplicate(arrayList, removeItem) {
+            if (arrayList)
+                return arrayList.filter(x => x != removeItem);
+        }
+
+        function searchDrug(alphabhates) {
+            searchParameter.MedicineName = $("#searchDrugText").val();
+            searchParameter.StartWithAlphabetically = alphabhates ? alphabhates : null;
+            //GetDrugPharmacyDetails();
+            if (!alphabhates) {
+                $("#alphbatesFilter a").removeClass('alphabates-color');
+            }
+        }
+
+        function searchMostlySearched(mostlySearcheddrugName) {
+            $("#searchDrugText").val(mostlySearcheddrugName.textContent);
+            searchDrug();
+        }
+
+
+        let isFiltered = false;
+        /* Catch events before filter the data */
+        $("#applyFilter").click(function () {
+            isFiltered = true;
+            searchDrug();
+        })
+
+        $('#searchDrugText').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                searchDrug();
+            }
+        });
+
+        $("#searchDrugText").blur(function () {
+            //searchDrug();
+        });
+
+        $("#alphbatesFilter a").click(function (event) {
+            $("#alphbatesFilter a").removeClass('alphabates-color');
+            $(this).addClass('alphabates-color');
+            $("#searchDrugText").val('');
+            searchDrug(this.innerText);
+        })
+
+        $('.nav-link.navs-color').click(function (event) {
+            //drugContentCreate(responseData, this.innerText);
+        });
+
+        function action(text) {
+            //drugContentCreate(responseData, text);
+        }
+
+        function drugContentCreate(responseData, actionText = 'Overview') {
+            $("#drugTabContentOters").empty();
+            console.log(responseData);
+            if (responseData.length == 0) {
+                $("#drugTabContentOters").append('<tr class="no-data"><td colspan="4">No data found</td></tr>');
+            }
+
+            if (actionText == 'Overview') {
+                responseData.forEach(function (drug, i) {
+                    var createModule = '<tr id="drugTabContent' + i + '" class="tab-content align-left"></tr>';
+                    $("#drugTabContentOters").append(createModule);
+
+                    var element = '<div id="' + actionText + i + '" class="tab-pane fade in show p-3 active" style="border-bottom:2px solid dodgerblue;"><h3 class="d-inline" style="color:#1E90FF">' + drug.MedicineName + ' </h3><p class="d-inline-block text-secondary"> ' + drug.ShortDescription + '</p><p>' + drug.LongDescription + '</p></div>'
+                    $("#drugTabContent" + i).append(element);
+                    createTableHeaderAndBody(i, drug.PharmacyDetail);
+                });
+            }
+            else {
+                responseData.forEach(function (drug, i) {
+                    var drugDetails = '';
+                    var createModule = '<tr id="drugTabContent' + i + '" class="tab-content align-left"></tr>';
+                    $("#drugTabContentOters").append(createModule);
+                    switch (actionText) {
+                        case "Side Effects":
+                            drugDetails = drug.SideEffects;
+                            drug.drugName = "Side Effects";
+                            break;
+                        case "Dosage":
+                            drugDetails = drug.DosageformsandStrengths;
+                            drug.drugName = "Dosage";
+                            break;
+                        case "Drug Interactions":
+                            drugDetails = drug.DrugInteractions;
+                            drug.drugName = "Drug Interactions";
+                            break;
+                        case "Symptoms":
+                            drugDetails = drug.Symptoms;
+                            drug.drugName = "Symptoms";
+                            break;
+                        case "Indication and Usage":
+                            drugDetails = drug.IndicationandUsage;
+                            drug.drugName = "Indication and Usage";
+                            break;
+                        case "Dosage and Administration":
+                            drugDetails = drug.DosageandAdministration;
+                            drug.drugName = "Dosage and Administration";
+                            break;
+                        case "Contradictions":
+                            drugDetails = drug.Contradictions;
+                            drug.drugName = "Contradictions";
+                            break;
+                        default:
+                        // code block
+                    }
+
+                    var element = '<div id="' + actionText + i + '" class="tab-pane show p-2 active" style="border-bottom:2px solid dodgerblue;"><br><h3 class="d-inline" style="color:#1E90FF">' + drug.drugName + ' </h3><p>' + drugDetails + '</p></div>'
+                    $("#drugTabContent" + i).append(element);
+                    createTableHeaderAndBody(i, drug.PharmacyDetail);
+                });
+            }
+        }
+
+        //Create Pharmacy each rows dynamically.
+        function createTableHeaderAndBody(parentIdIndex, PharmacyDetail) {
+            var table1 = "pharmacyTable" + parentIdIndex;
+
+            var element = '<i class="fa fa-plus-square" style="cursor:pointer;float:right;color:dodgerblue;" onclick="toggleElement(' + table1 + ')"></i><div class="table-responsive pharmacy mt-4" style="border:1px solid" id=' + table1 + '><table class="table table-borderless"><tbody>' + createRow(PharmacyDetail) + '</tbody></table>';
+
+            $("#drugTabContent" + parentIdIndex).append(element);
+        }
+        function createRow(PharmacyDetails) {
+            var element = '';
+            PharmacyDetails.forEach(function (PharmacyDetail, i) {
+                element += '<tr>' + createCellWithImg() + createCellOnly(PharmacyDetail.PharmacyName) + createCellOnly(PharmacyDetail.PharmacyAddress) + createCellOnly("2.1 MI") + createCellOnly("$" + PharmacyDetail.Price) + createCellWithOrderBtn() + createCellWithCoupon() + '</tr>';
+            });
+            return element;
+        }
+        function createCellOnly(data) {
+            data = data ? data : '';
+            var element = '<td class="text-left p-1 pl-0" style="font-size:12px;white-space: nowrap;">' + data + '</td>';
+            return element;
+        }
+        function createCellWithImg() {
+            var element = '<td class="text-left p-1 pr-0" style="font-size:12px;color:dodgerblue;"><img class="p-0" src="/Content/client/images/logo3.jpg" alt="logo" width="20px"></td>';
+            return element;
+        }
+        function createCellWithCoupon() {
+            var element = '<td class="text-left p-1 px-1"><button class="btn btn-success p-1" style="font-size:12px;" data-toggle="modal" data-target="#couponModal">Coupon</button></td>';
+            return element;
+        }
+        function createCellWithOrderBtn() {
+            var element = '<td class="text-left p-1 px-1"><button class="btn btn-primary p-1" style="white-space: nowrap;font-size:12px;">Order Now</button></td>';
+            return element;
+        }
+
+        //Toggle Div
+        function toggleElement(id) {
+            $("#" + id.id).slideToggle().toggleClass();
+        }
+
+        $(document).ready(function () {
+            $jq("#searchDrugText").autocomplete({
+            source: function (request, response) {
+                    var redirectUrl = '@Url.Action("GetAllDrugName", "Home")';
+                    $jq.ajax({
+                        url: redirectUrl,
+                        type: "POST",
+                        cache: false,
+                        data: { 'drugname': encodeURI(request.term) },
+                        success: function (result) {
+                            if (JSON.stringify(result.length) > 0) {
+                                response(result);
+                            } else {
+                                response(["Data not found"]);
+                            }
+                        },
+                        error: function (result) {
+                            //alert('Error');
+                            console.log(result);
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    if (ui.item.value.trim() !== "Data not found") {
+                        //alert(ui.item.value);
+                        $jq("#searchDrugText").val(ui.item.value);
+                    }
+                    else {
+                        ui.item.value = '';
+                        $jq("#searchDrugText").empty();
+                    }
+                    //console.log("Selected value: " + ui.item.value );
+                }
+            });
+        })
+
+        function clearsearchDrug() {
+            debugger;
+            let drug = $("#searchDrugText").val('');
+            $("input[type='radio'][name='filterStrength']:checked").checked = false;
+            $("input[type='radio'][name='filterType']:checked").checked = false;
+            $("input[type='radio'][name='filterQuantity']:checked").checked = false;
+            $("input[type='radio'][name='filterManufacturer']:checked").checked = false;
+            //let search = "?search=" + drug;
+            searchDrug();
+        }
+
+        function searchDrug() {
+            let drug = $("#searchDrugText").val().trim();
+            let search = "?search=" + drug;
+            debugger;
+            if (isFiltered) {
+                let strength = $("input[type='radio'][name='filterStrength']:checked").length > 0 ? $("input[type='radio'][name='filterStrength']:checked").attr("id") : "";
+                let type = $("input[type='radio'][name='filterType']:checked").length > 0 ? $("input[type='radio'][name='filterType']:checked").attr("id") : "";
+                let quantity = $("input[type='radio'][name='filterQuantity']:checked").length > 0 ? $("input[type='radio'][name='filterQuantity']:checked").attr("id") : "";
+                let manufacturer = $("input[type='radio'][name='filterManufacturer']:checked").length > 0 ? $("input[type='radio'][name='filterManufacturer']:checked").attr("id") : "";
+
+                if (strength !== "") search += "&strength=" + strength;
+                if (type !== "") search += "&type=" + type;
+                if (quantity !== "") search += "&quantity=" + quantity;
+                if (manufacturer !== "") search += "&manufacturer=" + manufacturer;
+            }
+            window.location.href = '@Url.Content("~/SearchDrug/")' + search;
+        }
+
+
+        $("#txtQuantity").on('keypress', function (evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        });
+
+    </script>
+    <script src="~/Scripts/client/search.js"></script>
+}
+
+
+
+

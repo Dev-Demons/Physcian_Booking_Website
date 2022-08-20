@@ -1,0 +1,57 @@
+﻿@model  List<Doctyme.Model.ViewModels.Category>
+
+@if (Model != null)
+{
+    var homeCategory = Model.Where(x => x.CategoryName == "Home").FirstOrDefault();
+    if (homeCategory != null)
+    {
+        Model.Remove(homeCategory);
+        Model.Insert(0, homeCategory);
+    }
+
+    foreach (var item in Model.Where(i => i.ParentCategoryId == 0))
+    {
+        if (!string.IsNullOrEmpty(item.CategoryName))
+        {
+
+
+            <li class="nav-item dropdown position-static">
+                <a href="/Blog/Category/@item.CategoryNameReplace" class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="#">@item.CategoryName</a>
+                @{var lstsub = Model.Where(i => i.ParentCategoryId == item.CategoryId);
+                    if (lstsub.Count() > 0)
+                    {
+                        <div class="dropdown-menu w-100 top-auto" style="background: var(--light); overflow-y : scroll;height:400px">
+                            <div class="row w-100 mt-4">
+
+                                @foreach (var subitem in Model.Where(i => i.ParentCategoryId == item.CategoryId))
+                                {
+                                    if (!string.IsNullOrEmpty(subitem.CategoryName))
+                                    {
+                                        var secondSubCategory = Model.Where(i => i.ParentCategoryId == subitem.CategoryId).Count();
+                                       
+                                <div class="col-sm-3 pr-0">
+                                    <h5 class="text-primary ml-3">@subitem.CategoryNameReplace.Replace("-", " ")</h5>
+                                    @if (secondSubCategory > 0)
+                                    {
+                                    foreach (var secondSsubItem in Model.Where(i => i.ParentCategoryId == subitem.CategoryId))
+                                    {
+                                        if (!string.IsNullOrEmpty(secondSsubItem.CategoryName))
+                                        {
+                                            <a href="/Blog/SubCategory/@secondSsubItem.CategoryNameReplace" class="text-dark " style="font-weight : 700">@secondSsubItem.CategoryNameReplace.Replace("-", " ")</a>
+                                            <br />
+                                        }
+                                    }
+                                    }
+                                </div>
+                                        }
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </li>
+        }
+    }
+
+
+}

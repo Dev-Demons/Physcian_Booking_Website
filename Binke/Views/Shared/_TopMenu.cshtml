@@ -1,0 +1,26 @@
+﻿@using Binke.App_Helpers
+@using Doctyme.Repository.Enumerable
+@{
+    string userRole = string.Format("_{0}Menu", User.Identity.GetClaimValue(UserClaims.UserRole));
+}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="@Url.Action("Index","Home")" class="brand-link">
+        @*<img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">*@
+        <span class="brand-text font-weight-light">DocTyme</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @Html.Partial(string.Format("Menus/{0}", userRole))
+                <!-- end nav navbar-nav -->
+     </nav>
+    <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

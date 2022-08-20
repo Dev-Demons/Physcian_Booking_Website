@@ -1,0 +1,499 @@
+﻿@model  Binke.ViewModels.OrgBookingUpdateViewModel
+@{
+    ViewBag.Title = "Patient Booking";
+    ViewBag.PatientID = Session["PatientID"];
+    int doctorId = Convert.ToInt32(Model.DoctorId);
+}
+<style>
+    .no-padding {
+        padding: 0px !important;
+    }
+</style>
+@if (ViewBag.PatientID != null && ViewBag.PatientID > 0)
+{<h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Session["PatientName"]</h4>}
+
+<div class="box-header">
+    <h4 class="title">
+        @(Model.SlotId == 0 ? "Add Patient Booking" : "Edit Patient Booking")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditPatientBooking", "Patient", FormMethod.Post, new { id = "frmPatientBooking", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.SlotId)
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizatonTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+            @*@Html.HiddenFor(model => model.BookedFor)*@
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-12 row">
+                        <div class="col-md-3 mar-btm text-center">
+                            <input type="radio" name="doctor-radio" checked="checked" value="Doctor" data-val="2" class="form-control doctor-radio ">
+                            <label class="radio-inline no-padding">
+                                @*@Html.RadioButton("Doctor", new { @class = "form-control doctor-radio" })*@
+                                Doctor
+                            </label>
+                        </div>
+                        <div class="col-md-3 mar-btm text-center">
+                            <input type="radio" name="doctor-radio" value="1005" data-val="3" class="form-control doctor-radio">
+                            <label class="radio-inline no-padding">
+                                @*@Html.RadioButton("Pharmacy", new { @class = "form-control doctor-radio" })*@
+                                Pharmacy
+                            </label>
+                        </div>
+                        <div class="col-md-3 mar-btm text-center">
+                            <input type="radio" name="doctor-radio" value="1006" data-val="4" class="form-control doctor-radio">
+                            <label class="radio-inline no-padding">
+                                @*@Html.RadioButton("Facility", new { @class = "form-control doctor-radio" })*@
+                                Facility
+                            </label>
+                        </div>
+                        <div class="col-md-3 mar-btm text-center">
+                            <input type="radio" name="doctor-radio" value="1007" data-val="5" class="form-control doctor-radio">
+                            <label class="radio-inline no-padding">
+                                @*@Html.RadioButton("Senior Care", new { @class = "form-control doctor-radio" })*@
+                                Senior Care
+                            </label>
+                            @Html.ValidationMessageFor(model => model.OrganizatonTypeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>Name</b></label>
+                            @Html.TextBoxFor(model => model.OrganisationName, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>Address</b></label>
+                            @Html.DropDownListFor(model => model.AddressId, ViewBag.addressList as SelectList, "Select Address", new { @class = "form-control  chosen-select" })
+                            @Html.ValidationMessageFor(model => model.AddressId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Booking Date</b></label>
+                            @Html.TextBoxFor(model => model.SlotDate, new { @class = "datefield form-control", @id = "bookingDate", placeholder = "Enter Booking Date" , autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.SlotDate, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm">
+                            <label class="control-label"><b>Booking Time</b></label>
+                            @Html.TextBoxFor(model => model.SlotTime,  new { @class = "form-control", @id = "bookingTime" , autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.SlotTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 mar-btm">
+                        <label class="control-label"><b>Reason</b></label>
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control", placeholder = "Enter Booking Description" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>Insurance Type</b></label>
+                            @Html.DropDownListFor(model => model.InsuranceTypeId, ViewBag.typeList as SelectList, "Select Insurance Type", new { @class = "form-control  chosen-select" })
+                            @Html.ValidationMessageFor(model => model.InsuranceTypeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6 mar-btm">
+                            <label class="control-label"><b>Insurance Plan</b></label>
+                            @Html.DropDownListFor(model => model.InsurancePlanId, ViewBag.planList as SelectList, "Select Insurance Plan", new { @class = "form-control  chosen-select" })
+                            @Html.ValidationMessageFor(model => model.InsurancePlanId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        @*<div class="col-md-3 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Is Booked</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsBooked" name="IsBooked" dataId="IsBooked" value="IsBooked" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsBooked, "", new { @class = "text-danger" })
+                        </div>*@
+
+                        <div class="col-md-4 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Email Reminder</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsEmailReminder" name="IsEmailReminder" dataId="IsEmailReminder" value="IsEmailReminder" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsEmailReminder, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Text Reminder</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsTextReminder" name="IsTextReminder" dataId="IsTextReminder" value="IsTextReminder" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsTextReminder, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Insurance Changed</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsInsuranceChanged" name="IsInsuranceChanged" dataId="IsInsuranceChanged" value="IsInsuranceChanged" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsInsuranceChanged, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 row">
+                        @*<div class="col-md-3 mar-btm" style="margin-top:30px;">
+                            <label class="control-label"><b>Is Active</b></label>
+                            <label class="switch">
+                                <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                                <span class="slider round" style="width:35px;"></span> &nbsp;
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>*@
+
+                        <div class="col-md-12 mar-btm" style="text-align:right; margin-top:30px;">
+                            <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@*@Scripts.Render("~/bundles/jqueryval")*@
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+
+    $(function () {
+        $('.datefield').datepicker({
+            format: 'mm/dd/yyyy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            autoclose: true,
+            todayHighlight: false,
+
+        });
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        $('.datefield').datepicker('setStartDate', date);
+    });
+
+
+    $(document).ready(function () {
+
+        //$("#OrganisationId").val('@ViewBag.PatientID');
+        //$("#OrganizatonTypeID").val('1005');
+        //$("#UserTypeID").val('3');
+
+        $("#InsuranceTypeId").chosen();
+        $("#InsuranceTypeId_chosen").css("width", "100%");
+
+        $("#InsurancePlanId").chosen();
+        $("#InsurancePlanId_chosen").css("width", "100%");
+
+        $("#DoctorId").chosen();
+        $("#DoctorId_chosen").css("width", "100%");
+
+        $("#AddressId").chosen();
+        $("#AddressId_chosen").css("width", "100%");
+
+        $(function () {
+            $('#bookingTime').timepicker({ startDate: "dateToday" });
+        });
+
+        var ID = "@ViewBag.ID";
+        if (@ViewBag.ID != null && parseInt(@ViewBag.ID) > 0) {
+            $('input[type=radio][name=doctor-radio]').each(function () {
+                var value = $(this).val();
+                if ((@Model.OrganizatonTypeID != 0 && @Model.OrganizatonTypeID.ToString() == value) || (@doctorId > 0 && value == "Doctor")) {
+                    $(this).prop('checked', true);
+                }
+            });
+            @*$('#AddressId option').filter(function () {
+                return this.id === @Model.AddressId
+            }).prop('selected', true);*@
+
+            if ("@Model.IsBooked" == 'True') {
+                $("#IsBooked").prop('checked', true);
+                $("#IsBooked").val(true);
+            }
+            else {
+                $("#IsBooked").prop('checked', false);
+                $("#IsBooked").val(false);
+            }
+
+            if ("@Model.IsEmailReminder" == 'True') {
+                $("#IsEmailReminder").prop('checked', true);
+                $("#IsEmailReminder").val(true);
+            }
+            else {
+                $("#IsEmailReminder").prop('checked', false);
+                $("#IsEmailReminder").val(false);
+            }
+
+            if ("@Model.IsTextReminder" == 'True') {
+                $("#IsTextReminder").prop('checked', true);
+                $("#IsTextReminder").val(true);
+            }
+            else {
+                $("#IsTextReminder").prop('checked', false);
+                $("#IsTextReminder").val(false);
+            }
+
+            if ("@Model.IsInsuranceChanged" == 'True') {
+                $("#IsInsuranceChanged").prop('checked', true);
+                $("#IsInsuranceChanged").val(true);
+            }
+            else {
+                $("#IsInsuranceChanged").prop('checked', false);
+                $("#IsInsuranceChanged").val(false);
+            }
+
+            if ("@Model.IsActive" == 'True') {
+                $("#IsActive").prop('checked', true);
+                $("#IsActive").val(true);
+            }
+            else {
+                $("#IsActive").prop('checked', false);
+                $("#IsActive").val(false);
+            }
+
+            if (@doctorId > 0) {
+                $("#OrganisationName").val("@Model.OrganisationName");
+            }
+            else {
+                $("#OrganisationName").val("@Model.OrganisationName");
+            }
+            $("#OrganisationName").trigger("chosen:updated");
+
+            $("#AddressId").val("@Model.AddressId");
+            $("#AddressId").trigger("chosen:updated");
+
+            $("#InsuranceTypeId").val("@Model.InsuranceTypeId")
+            $("#InsuranceTypeId").trigger("chosen:updated");
+
+            getInsurancePlanByType("@Model.InsuranceTypeId", "@Model.InsurancePlanId");
+        }
+
+        $(document).on('click', '.slider', function () {
+            var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+            if (chekedstatus == false)
+                $(this).parent().find(":checkbox").val(true);
+            else
+                $(this).parent().find(":checkbox").val(false);
+        });
+
+        $(".disable").prop("disabled", true);
+
+        //$("#OrganisationName").change(function () {
+        //    $("#AddressId option").remove();
+        //    $('#AddressId').html('<option value="">Select Address</option>');
+        //    $("#AddressId").trigger("chosen:updated");
+        //    $.ajax({
+        //        url: "/Pharmacy/GetOrgAddressById",
+        //        type: "POST",
+        //        dataType: "json",
+        //        data: { ReferenceId: $("#OrganisationName").val(), TypeId: $(this).val() },
+        //        success: function (data) {
+        //            $("#AddressId option").remove();
+        //            var options = '';
+        //            options += '<option value="">Select Address</option>';
+        //            for (var i = 0; i < data.length; i++) {
+        //                options += '<option value="' + data[i].AddressId + '">' + data[i].OrganizationAddress + '</option>';
+        //            }
+        //            $('#AddressId').html(options);
+        //            $("#AddressId").trigger("chosen:updated");
+        //        }
+        //    });
+        //});
+
+        $("#InsuranceTypeId").change(function () {
+                $("#InsurancePlanId option").remove();
+                $('#InsurancePlanId').html('<option value="">Select Plan</option>');
+                $("#InsurancePlanId").trigger("chosen:updated");
+            $.ajax({
+                url: "/Patient/GetPatientInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { ReferenceId:"@ViewBag.PatientID", TypeId: $(this).val() },
+                success: function (data) {
+
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        });
+
+        function getInsurancePlanByType(TypeId, PlanId) {
+            $.ajax({
+                url: "/Patient/GetPatientInsurancePlanByTypeId",
+                type: "POST",
+                dataType: "json",
+                data: { TypeId: TypeId },
+                success: function (data) {
+
+                    $("#InsurancePlanId option").remove();
+                    var options = '';
+                    options += '<option value="">Select Plan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].InsurancePlanId + '">' + data[i].Name + '</option>';
+                    }
+                    $('#InsurancePlanId').html(options);
+
+                    if (PlanId != "") {
+                        $('#InsurancePlanId').val(PlanId);
+                    }
+
+                    $("#InsurancePlanId").trigger("chosen:updated");
+                }
+            });
+        }
+
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmPatientBooking'));
+                if ($("#frmPatientBooking").valid()) {
+                    $.post('@Url.Action("AddEditPatientBooking")', $("#frmPatientBooking").serialize(), function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            if (response.Status == 1) {
+                               window.location.reload();
+                            } else {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+
+        var urlpath = "/Patient/GetDoctorList";
+        $("#OrganisationName").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: urlpath,
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term, OrganizationTypeId: parseInt($("#OrganizatonTypeID").val())},
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.OrganisationName, value: item.OrganisationName, dataId: item.OrganisationId };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                //ClearAll();
+                $(this).val(ui.item.label);
+                $("#OrganisationId").val(ui.item.dataId);
+                $("#UserTypeID").val($("input:radio[name=doctor-radio]:checked").attr('data-val'));
+                //SetTopBlockInfo(ui.item.dataId);
+                $("#AddressId option").remove();
+                $('#AddressId').html('<option value="">Select Address</option>');
+                $("#AddressId").trigger("chosen:updated");
+                $.ajax({
+                    url: "/Pharmacy/GetOrgAddressById",
+                    type: "POST",
+                    dataType: "json",
+                    data: { ReferenceId: ui.item.dataId, TypeId: parseInt($("input:radio[name=doctor-radio]:checked").attr('data-val')) },
+                    success: function (data) {
+                        $("#AddressId option").remove();
+                        var options = '';
+                        options += '<option value="">Select Address</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].AddressId + '">' + data[i].OrganizationAddress + '</option>';
+                        }
+                        $('#AddressId').html(options);
+                        $("#AddressId").trigger("chosen:updated");
+                    }
+                });
+            }
+        });
+
+        $("#OrganisationName").keyup(function () {
+            if ($.trim($(this).val()) == "")
+                $("#OrganisationId").val('');
+        });
+
+
+
+        $('input[type=radio][name=doctor-radio]').click(function () {
+            
+            var typeid = $(this).attr('data-val');
+            if (@ViewBag.ID != null && parseInt(@ViewBag.ID) > 0) {
+                $("#SlotId").val('0');
+                $('#AddressId').empty();
+                var options = '<option value="">Select Address</option>';
+                $('#AddressId').html(options);
+            }
+            $("#OrganizatonTypeID").val('');
+            if ($(this).val() == 'Doctor') {
+                $("#OrganisationName").val('');
+                $("#OrganizatonTypeID").val(typeid);
+                $("#UserTypeID").val("2");
+                urlpath = "/Patient/GetDoctorList";
+                $(this).prop('checked', true);
+            }
+            else {
+                //$("#OrganisationId").val('@ViewBag.PatientID');
+                $("#OrganisationName").val('');
+                urlpath = "/Patient/GetPharmacyList";
+                $("#OrganizatonTypeID").val($(this).val());
+                $("#UserTypeID").val(typeid);
+                $(this).prop('checked', true);
+            }
+            
+        });
+
+    });
+
+    $("#bookingDate").change(function () {
+        $("#bookingTime option").remove();
+        $("#bookingTime").trigger("chosen:updated");
+            $.ajax({
+                url: "/Search/GetSlotTimes",
+                type: "GET",
+                dataType: "json",
+                data: { DoctorId: parseInt($("#OrganisationId").val()), startDate: $(this).val(), usertypeId: parseInt($("#UserTypeID").val()) },
+                success: function (data) {
+                    $("#bookingTime option").remove();
+                    var options = '';
+                    for (var i = 0; i < data.Data.length; i++) {
+                        options += '<option value="' + data.Data[i] + '">' + data.Data[i] + '</option>';
+                    }
+                    $('#bookingTime').html(options);
+                    $("#bookingTime").trigger("chosen:updated");
+                    $("#bookingDate").datepicker();
+                },
+                error: function (textStatus, errorThrown) {
+                    alert('error');
+                }
+            });
+        });
+</script>

@@ -1,0 +1,340 @@
+﻿@using Doctyme.Model.ViewModels
+@using Binke.Utility
+@model SearchDoctorResult
+
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="~/Scripts/client/ASPSnippets_Pager.min.js"></script>*@
+
+@{ var remainder = Model.TotalRecord % 10;
+    var TotalPages = (Model.TotalRecord / 10) + (remainder == 0 ? 0 : 1);
+}
+
+
+<style>
+    .no-padding {
+        padding: 0px;
+    }
+
+    .pagination {
+        padding-left: 0;
+        display: block;
+        position: relative;
+        float: right;
+    }
+
+        .pagination li {
+            text-align: center;
+            display: inline-block;
+            width: auto;
+            /*background-color: #ccc;*/
+            color: #333;
+            border: 1px solid #ccc;
+            margin-right: 3px;
+            line-height: 150%;
+            text-decoration: none;
+            padding: 0px 10px;
+        }
+
+        .pagination .active {
+            background-color: #f7f7f7 !important;
+            color: #0e0d0d !important;
+            border: 1px solid #007bff !important;
+        }
+
+    .profile {
+        background-color: #fff;
+        border-radius: 50%;
+        height: 120px;
+        width: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: auto;
+        border: 1px solid #007bff;
+    }
+
+        .profile img {
+            height: 120px;
+            width: 120px;
+            border-radius: inherit !important;
+        }
+
+    .company-details {
+        line-height: 14px;
+    }
+
+        .company-details p, .user-listdata > li {
+            font-size: 14px;
+            color: #000;
+        }
+</style>
+@*<head>
+        <title>DocTyme Physician Directory - Find a Doctor in Your Area | DocTyme</title>
+        <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+        <meta name="description" content="Find a doctor with the DocTyme Physician Directory and get information including the physician&#39;s education/training, practice information, health insurance affiliations and contact information. Finding a doctor has never been easier." />
+        <meta name="keywords" content="physician directory, doctor search, find a physician, locate, find, physicians, doctor, DocTyme" />
+        <meta property="og:title" content="DocTyme Physician Directory - Find a Doctor in Your Area">
+        <meta property="og:description" content="Find a doctor with the DocTyme Physician Directory and get information including the physician&#39;s education/training, practice information, health insurance affiliations and contact information. Finding a doctor has never been easier.">
+
+
+        <meta name="twitter:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+        <meta property="og:url" content="https://www.doctyme.com/">
+        <meta property="og:site_name" content="DocTyme">
+        <meta property="og:title" content="Read Doctor Reviews, Compare Doctors &amp; Book Appointments">
+        <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+        <meta property="og:description" content="Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme.">
+        <meta property="og:type" content="website">
+        <link rel='icon' href='favicon.ico' type='image/x-icon' />
+    </head>*@
+<div id="result">
+
+    @if (Model.listDoctors.Any())
+    {
+        <input type="hidden" value="@Model.CountOfAllowNewPatients" id="CountOfAllowNewPatients" />
+        <input type="hidden" value="@Model.CountOfNtPcp" id="CountOfNtPcp" />
+        <input type="hidden" value="@Model.CountOfPrimaryCare" id="CountOfPrimaryCare" />
+        <input type="hidden" value="@Model.TotalRecord" id="CountOfTotaalrecord" />
+
+        foreach (var item in Model.listDoctors)
+        {
+            var ratingCount = (int)Math.Floor(item.ReviewStars);
+            string reviewStr = item.ReviewStars.ToString("0.0");
+            <div class="section_bottom">
+                <div class="row doctorElement" data-doctorId="@item.DoctorId" data-fullName="@item.FullName" data-isAllowNewPatient="@item.IsAllowNewPatient"
+                     data-fullAddress="@item.FullAddress" data-latitude="@item.Latitude" data-longitude="@item.Longitude"
+                     data-reviewCount="@item.ReviewCount" data-rating="@reviewStr" data-npi="@item.Npi">
+                    <div class="col-sm-2 text-center">
+                        <div class="profile">
+                            <a href="/Profile/Doctor/@item.FullName.Replace("&","-").Replace(" ","-").Replace("--","-")-@item.Npi">
+                                <img src="@Common.GetValidProfileImagePath(item.ProfilePicture)" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="col-sm-12 pl-0">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    @{
+                                        var spec = string.Empty;
+                                        if (item.Specities != null)
+                                        {
+                                            spec = String.Join(", ", item.Specities);
+                                        }
+                                    }
+                                    <h5 class="doctorName" style="margin-bottom:0">
+                                        <a href="/Profile/Doctor/@item.FullName.Replace("&","-").Replace(" ","-").Replace("--","-")-@item.Npi" title="@spec">@item.FullName @item.Credential</a>
+                                    </h5>
+                                    <ul class="listdata" style="margin-left:-15px">
+                                        @spec
+                                    </ul>
+                                </div>
+                                <div class="col-sm-4 no-padding">
+                                    <div class="star-section visible-lg-inline-block">
+                                        <ul class="star_rate pl-3 mb-2">
+                                            <li class="review-string" style="font-size:13px">@reviewStr</li>
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                if (ratingCount == 0)
+                                                {
+                                                    <li><i class="fa fa-star text-white"></i></li>
+                                                }
+                                                else if (i < ratingCount)
+                                                {
+                                                    <li><i class="fa fa-star text-orange"></i></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><i class="fa fa-star text-white"></i></li>
+                                                }
+                                            }
+                                            @*<li class="org-review-no" style="font-size:13px">(@ratingCount Reviews)</li>*@
+                                        </ul>
+                                    </div>
+                                    <p class="org-review-no">
+                                        (@ratingCount Reviews)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-block company-details">
+                                <p class="mb-0 addr">@item.Address1</p>
+                                @*<p class="mb-0 addr">@item.Address2</p>*@
+                                <br />
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-8 pull-left" style="padding:0">
+                                <h5 class="doctorService" style="margin-left:-15px">Hospital Affiliates </h5>
+                                @if (item.Facility != null)
+                                {
+                                    <ul class="listdata">
+                                        @foreach (var OrgItem in item.Facility)
+                                        {
+                                            <li>
+                                                <a href="@OrgItem.OrgTypeUrl">
+                                                    @OrgItem.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                            <div class="col-sm-4 pull-right">
+                                <ul class="listdata">
+                                    @if (!string.IsNullOrEmpty(item.PracticeStartDateStr))
+                                    {
+                                        <li>@item.PracticeStartDateStr</li>
+                                    }
+                                    @if (item.OfficeCount != 0)
+                                    {
+                                        <li>@item.OfficeCount Office Locations</li>
+                                    }
+                                    @if (item.InsuranceCount != 0)
+                                    {
+                                        <li>@item.InsuranceCount Insurance Carriers</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 last_s">
+                        <div class="sec_3">
+                            @if (item.IsAllowNewPatient == 1)
+                            {
+                                <button type="button" class="btn btn-primary action" data-npi="@item.FullName.Replace("&","").Replace(" ","")-@item.Npi" data-flag="AllowNewPatient">ACCEPTING NEW PATIENTS</button>
+                            }
+                            @if (item.EnabledBooking == 1)
+                            {
+
+                                <button type="button" class="btn btn-success action" data-npi="@item.FullName.Replace("&","").Replace(" ","")-@item.Npi" data-flag="RequestAppointment">REQUEST APPOINTMENT</button>
+                                <ul class="listdat">
+                                    <li><i class="fa fa-calendar"></i> <a>Online Booking</a></li>
+                                    <li><i class="fa fa-clock-o"></i> <a>Availiable Today</a></li>
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+
+        if (Model.PageIndex > 0 && TotalPages > 0)
+        {
+            <div class="text-center">
+                <ul class="pagination">
+                    @if (Model.PageIndex == 1)
+                    {
+                        <li class="disabled"><a class="disabled">Previous</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="#" onclick="PageClicked('@(Model.PageIndex-1)');">Previous</a></li>
+                    }
+
+                    @if (Model.PageIndex < 5)
+                    {
+                        <li @(Model.PageIndex == 1 ? "class=active" : "")><a href="#" onclick="PageClicked('1');">1</a></li>
+                        if (TotalPages > 2)
+                        {
+                            <li @(Model.PageIndex == 2 ? "class=active" : "")><a href="#" onclick="PageClicked('2');">2</a></li>
+                        }
+                        if (TotalPages > 3)
+                        {
+                            <li @(Model.PageIndex == 3 ? "class=active" : "")><a href="#" onclick="PageClicked('3');">3</a></li>
+                        }
+                        if (TotalPages > 4)
+                        {
+                            <li @(Model.PageIndex == 4 ? "class=active" : "")><a href="#" onclick="PageClicked('4');">4</a></li>
+                        }
+                        if (TotalPages > 5)
+                        {
+                            <li @(Model.PageIndex == 5 ? "class=active" : "")><a href="#" onclick="PageClicked('5');">5</a></li>
+                        }
+                        if (TotalPages > 5)
+                        {
+                            <li class="disabled"><a href="#">...</a></li>
+                            <li><a href="#" onclick="PageClicked('@(TotalPages)');">@(TotalPages)</a></li>
+                        }
+                    }
+                    else if (Model.PageIndex >= 5 && Model.PageIndex <= TotalPages - 4)
+                    {
+                        <li><a href="#" onclick="PageClicked('1');">1</a></li>
+                        if (TotalPages > 5)
+                        {
+                            <li class="disabled"><a href="#">...</a></li>
+                        }
+                        <li><a href="#" onclick="PageClicked('@(Model.PageIndex-1)');">@(Model.PageIndex - 1)</a></li>
+                        <li class="active"><a href="#" onclick="PageClicked('@(Model.PageIndex)');">@(Model.PageIndex)</a></li>
+                        <li><a href="#" onclick="PageClicked('@(Model.PageIndex+1)');">@(Model.PageIndex + 1)</a></li>
+                        <li class="disabled"><a href="#">...</a></li>
+                        <li><a href="#" onclick="PageClicked('@(TotalPages)');">@(TotalPages)</a></li>
+                    }
+
+                    else if (Model.PageIndex > TotalPages - 4)
+                    {
+                        <li><a href="#" onclick="PageClicked('1');">1</a></li>
+                        <li class="disabled"><a href="#">...</a></li>
+                        if ((TotalPages - 4) > 2)
+                        {
+                            <li><a href="#" onclick="PageClicked('@(TotalPages-4)');">@(TotalPages - 4)</a></li>
+                        }
+                        <li @(TotalPages - 3 == Model.PageIndex ? "class=active" : "")><a href="#" onclick="PageClicked('@(TotalPages-3)');">@(TotalPages - 3)</a></li>
+                        <li @(TotalPages - 2 == Model.PageIndex ? "class=active" : "")><a href="#" onclick="PageClicked('@(TotalPages-2)');">@(TotalPages - 2)</a></li>
+                        <li @(TotalPages - 1 == Model.PageIndex ? "class=active" : "")><a href="#" onclick="PageClicked('@(TotalPages-1)');">@(TotalPages - 1)</a></li>
+                        <li @(TotalPages == Model.PageIndex ? "class=active" : "")><a href="javascript:void(0)" onclick="PageClicked('@(TotalPages)');">@(TotalPages)</a></li>
+                    }
+
+                    @if (Model.PageIndex == TotalPages)
+                    {
+                        <li class="disabled"><a href="javascript:void(0);">Next</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="javascript:void(0);" onclick="PageClicked('@(Model.PageIndex+1)');">Next</a></li>
+                    }
+                </ul>
+                <div style="display:none;">
+                    <input type="submit" id="btnSavepaging" />
+                </div>
+                @Html.Hidden("PageNumber", "1")
+
+                <script type="text/javascript">
+                    function PageClicked(id) {
+                        pageIndex = parseInt(id);
+                        model = UpdateSearchModel();
+                        model.PageIndex = pageIndex;
+                        loadResultArea(model);
+                    }
+                </script>
+            </div>
+        }
+    }
+</div>
+
+<script>
+        $(document).ready(function () {
+            @*$(".Pager").ASPSnippets_Pager({
+                ActiveCssClass: "current",
+                PagerCssClass: "pager",
+                PageIndex: '@Model.PageIndex',
+                PageSize: '@Model.PageSize',
+                RecordCount: '@Model.TotalRecord'
+            });*@
+            $("#doctorPager .page").on("click", function () {
+                pageIndex = parseInt($(this).attr('page'));
+                model = UpdateSearchModel();
+                loadResultArea(model);
+
+            });
+
+            initializePageSizeDropDown();
+            $("#PageSelection").val("@Model.PageSize");
+        });
+
+    // Save list of doctors in variable to be accessed in Index.cshtml for displaying its addresses or locations
+    @*var doctorsResult = @Html.Raw(Json.Encode(Model.mapListDoctors));*@
+</script>
+

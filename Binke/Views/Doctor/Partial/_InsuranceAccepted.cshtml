@@ -1,0 +1,57 @@
+﻿@model Binke.ViewModels.InsuranceAcceptedViewModel
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            @(Model.InsuranceAcceptedId == 0 ? "Add Insurance Accepted" : "Edit Insurance Accepted")
+        </h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("AddEditInsuranceAccepted", "Doctor", FormMethod.Post, new { id = "frmInsuranceAccepted" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.InsuranceAcceptedId)
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="control-label"><b>Insurance Name</b></label>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Insurance Name" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    @Html.LabelFor(m => m.IsEnable)
+                    @Html.CheckBoxFor(m => m.IsEnable)
+
+                   
+                </div>
+            </div>
+
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+    </div>
+    <script type="text/javascript">
+
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmInsuranceAccepted'));
+        if ($("#frmInsuranceAccepted").valid()) {
+            $.post("@Url.Action("AddEditInsuranceAccepted")", $("#frmInsuranceAccepted").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindInsuranceAcceptedList();
+                    closeModal();
+                }
+            });
+        }
+    });
+    </script>

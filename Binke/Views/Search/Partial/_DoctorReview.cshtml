@@ -1,0 +1,59 @@
+﻿
+@model Binke.ViewModels.ReviewViewModel
+
+<div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel">Add Review</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddReview", "Search", FormMethod.Post, new { id = "frmReview" , @class = "appointment-form mt-3", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label"><b>Subject</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Subject)
+                    @Html.ValidationMessageFor(m => m.Subject, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Review</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Review)
+                    @Html.ValidationMessageFor(m => m.Review, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label class="control-label"><b>Rating</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Rating)
+                    @Html.ValidationMessageFor(m => m.Rating, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+
+
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+            $.validator.unobtrusive.parse($('#frmReview'));
+            if ($("#frmReview").valid()) {
+                $.post("@Url.Action("AddReview")", $("#frmReview").serialize(), function (response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+                        closeModal();
+                        document.location.reload()
+                    }
+                });
+            }
+        });
+</script>

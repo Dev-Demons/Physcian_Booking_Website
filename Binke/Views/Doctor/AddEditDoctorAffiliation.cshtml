@@ -1,0 +1,208 @@
+﻿@using Binke.Utility
+@using Binke.App_Helpers
+@model Doctyme.Model.DoctorAffiliationViewModel
+@{
+    ViewBag.Title = "Affiliation";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var isDoctor = User.Identity.GetClaimValue("UserRole") == "Doctor";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<style type="text/css">
+    .ui-autocomplete {
+        cursor: default;
+        z-index: 300000 !important;
+    }
+
+    .mr-10px {
+        margin-right: 10px;
+    }
+
+    .header-title {
+        padding: 6px;
+        margin-left: 6px;
+    }
+</style>
+<!-- Latest compiled JavaScript -->
+@*<h4 style='margin-top:10px;margin-bottom:15px; text-align:center;@(User.Identity.GetClaimValue("UserRole").ToString()=="Doctor"?"display:none":"")'>@Model.DoctorName</h4>*@
+@section pageheader{
+    <div class="col-md-12" style="margin-bottom:25px;">
+        <div class="col-md-3">
+            <h3><i class="fa fa-user-md"></i>Affiliation </h3>
+        </div>
+        <div class="col-md-5 text-center" style="top:10px">
+            <h3>@Convert.ToString(Session["DoctorName"])</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="breadcrumb-wrapper" style="top:15px;">
+                <span class="label">You are here:</span>
+
+                <ol class="breadcrumb">
+                    <li> <a href='@("/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]))'> Doctor </a></li>
+                    <li class="active"> Affiliation </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-heading box-header" style="display:flex">
+                <h4 class="title header-title" style="width:50%">
+                    @(Model.DoctorAffiliationId == 0 ? "Add Affiliation" : Model.IsViewMode ? "View Affiliation" : "Edit Affiliation")
+                </h4>
+
+            </div>
+            @using (Html.BeginForm("AddEditBoardCertification", "Doctor", FormMethod.Post, new { id = "frmAffiliation" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.DoctorAffiliationId)
+                @Html.HiddenFor(m => m.DoctorId)
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+
+                            <div class="col-md-6 mar-btm">
+                                <label class="control-label"><b>Select Affiliation</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.TextBoxFor(x => x.OrganisationName, new { @class = "form-control", @readonly = "true", @style = "pointer-events:none" })
+                                }
+                                else
+                                { @Html.TextBoxFor(x => x.OrganisationName, new { @class = "form-control", @autocomplete = "true" })
+
+                            }
+                                @Html.HiddenFor(x => x.OrganisationId)
+
+                            </div>
+
+                            <div class="col-md-6 mar-btm">
+                                <label class="control-label"><b>Organisation Address</b></label>
+                                @if (Model.IsViewMode)
+                                {
+                                    @Html.DropDownListFor(x => x.AddressId, ViewBag.AddressList as IEnumerable<SelectListItem>, "Select Address",
+                                                         new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.AddressId, ViewBag.AddressList as IEnumerable<SelectListItem>, "Select Address",
+                                                         new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.AddressId, "", new { @class = "text-danger" })
+                                }
+                            </div>
+
+                            <div class="col-md-12 mar-btm" style="margin-top:30px;">
+                                <label class="control-label" style="width:250px" for="IsActive">Is Nt Pcp</label>
+                                <label id="switchNtPcp" class="switch" for="IsActive">
+                                    <input type="checkbox" id="IsActive" name="IsActive" @( Model.IsActive == true ? "checked" : string.Empty) data-Id="IsActive" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-right">
+                    <button type="button" id="btnSave" style='@(Model.IsViewMode?"display:none":"")' class="btn btn-primary">Save</button> <a href="/DoctorAffiliations/@Model.DoctorId" style="color:white" class="btn btn-primary">Back</a>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#OrganisationName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/GetDoctorAffiliationAutocomplete/" + request.term,
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else if (data.length > 100) {
+                            var result = [
+                                {
+                                    label: 'Too Many Search Results Found Please Refine your search',
+                                    value: response.term
+                                }
+                            ];
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.Value, value: item.Value,key:item.Key };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 3,
+            select: function (event, ui) {
+
+                $('#OrganisationId').val(ui.item.key);
+
+                $("#AddressId option").remove();
+                $('#AddressId').html('<option value="">Select Address</option>');
+                $("#AddressId").trigger("chosen:updated");
+                $.ajax({
+                    url: "/GetAddressByAffiliationName/" + $('#DoctorId').val(),
+                    type: "POST",
+                    data: { organisationName: ui.item.value },
+                    success: function (response) {
+                        var data = response.Data;
+                        $("#AddressId option").remove();
+                        var options = '';
+                        options += '<option value="">Select Address</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].AddressId + '">' + data[i].FullAddress + '</option>';
+                        }
+                        $('#AddressId').html(options);
+                        $("#AddressId").trigger("chosen:updated");
+                    }
+                });
+            }
+        });
+    })
+
+
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmAffiliation'));
+        if ($("#frmAffiliation").valid()) {
+            $.post("@Url.Action("AddEditDoctorAffiliation")", $("#frmAffiliation").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    window.location.href = "/DoctorAffiliations/"+@Model.DoctorId;
+                }
+            });
+        }
+    });
+
+</script>
+

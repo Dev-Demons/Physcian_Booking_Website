@@ -1,0 +1,103 @@
+﻿@model Doctyme.Model.ViewModels.OrganizationAmenityOptionViewModel
+
+<div class="modal-header">
+    @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>*@
+    
+    <h4 class="modal-title" id="myModalLabel" style="font-weight:400;">
+        @(Model.OrganizationAmenityOptionID == 0 ? "Add Amenities/Options" : "Edit Amenities/Options")
+    </h4>
+
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditOrganizationAmenityAmenityOption", "OrganizationAmenityOption", FormMethod.Post, new { id = "frmAmenityOption" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.OrganizationAmenityOptionID)
+        @Html.HiddenFor(m => m.OrganizationID)
+        <div class="row">
+            <div class="col-md-6">
+                @*<div class="form-group ">
+                    <label class="control-label"><b>Organisation Name</b></label>
+                    <input type="text" id="lblSeniorcareOrganisationName" class="form-control" readonly="readonly" />
+                </div>*@
+                <div class="form-group">
+                    <label class="control-label"><b>Name</b></label>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Name" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                @*<div class="form-group">
+                    <label class="control-label"><b>NPI</b></label>
+                    <input type="text" id="lblSeniorcareNPI" class="form-control" readonly="readonly" />
+                </div>*@                
+                <div class="form-group">
+                    <label class="control-label"><b>Description</b></label>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Enter Description" })
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 single-input">
+                <label for="IsOption">Is Option</label>
+                <label class="switch">
+                    <input type="checkbox" id="IsOption" name="IsOption" @(Model.OrganizationAmenityOptionID > 0 ? Model.IsOption == true ? "checked" : string.Empty : "checked") data-Id="IsOption" />&nbsp;
+                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                </label>
+            </div>
+
+            <div class="col-lg-6 col-md-6 single-input">
+                <label for="IsActive">Is Active</label>
+                <label class="switch">
+                    <input type="checkbox" id="IsActive" name="IsActive" @(Model.OrganizationAmenityOptionID > 0 ? Model.IsActive == true ? "checked" : string.Empty : "checked") data-Id="IsActive" />&nbsp;
+                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                </label>
+            </div>
+        </div>        
+    }
+    <div class="modal-footer" style="width:50%;">
+        <div class="row ">
+            <div class="col-md-12">
+                <button type="button" id="btnCancel" class="btn btn-default">Cancel</button>
+                <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+</div>
+
+<script type="text/javascript">
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmAmenityOption'));
+        if ($("#frmAmenityOption").valid()) {
+
+            if ($('#IsActive').is(':checked')) {
+                $('#IsActive').val('true');
+            }
+            else {
+                $('#IsActive').val('false');
+            }
+
+            if ($('#IsOption').is(':checked')) {
+                $('#IsOption').val('true');
+            }
+            else {
+                $('#IsOption').val('false');
+            }
+
+
+            $.post("@Url.Action("AddEditOrganizationAmenityAmenityOption")", $("#frmAmenityOption").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    bindAmenityOptionList(true);
+                    AddEditAmenityOption(0)
+                }
+            });
+        }
+    });
+    $("#btnCancel").click(function () {
+        AddEditAmenityOption(0);
+    });
+
+</script>

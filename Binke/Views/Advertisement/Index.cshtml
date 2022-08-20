@@ -1,0 +1,527 @@
+﻿@model Binke.ViewModels.AdvertisementViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Advertisement Directory";
+}
+
+
+@section pageheader{
+    <div class="row">
+        <div class="col-lg-6">
+            <h3 style="display:inline"><i class="fa fa-ad"></i>Advertisement Directory</h3>
+        </div>
+        <div class="col-lg-6">
+            <div class="breadcrumb-wrapper">
+                <span class="label">You are here:</span>
+                <ol class="breadcrumb">
+                    <li> <a href="/Advertisement/"> Advertisement </a></li>
+                    <li class="active"> Advertisement Directory </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<style>
+    .breadcrumb-wrapper {
+        top: 0 !important
+    }
+
+    #dtAllAdvertisements_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtAllAdvertisements_length {
+        float: left;
+    }
+
+    label.error {
+        color: red;
+        font-weight: normal !important;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">Add/Edit Advertisement</h4>
+        
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="frmAdvertisement">
+                    
+
+                        <fieldset id="advFieldSet">
+                            <input type="hidden" name="AdvertisementId" id="AdvertisementId" />
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="InsuranceTypeId">Advertisement Type</label>
+                                <select class="form-control chosen-select" id="AdvertisementTypeId" name="AdvertisementTypeId" required title="Advertisement type is required">
+                                    <option>Select Advertisement Type</option>
+                                </select>
+                                <span class="text-danger" style="display:none" id="AdvertisementTypeError">Advertisment type is required!</span>
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="UserTypeId" class="control-label"><b>Advertiser Type</b></label>
+                                <select name="UserTypeId" id="UserTypeId" class="form-control">
+                                    <option>Select Advertiser Type</option>
+                                    <option value="2">Doctor</option>
+                                    <option value="1005">Pharmacy</option>
+                                    <option value="1006">Facility</option>
+                                    <option value="1007">Senior Care</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="AdvertiserName" class="control-label"><b>Advertiser Name</b></label>
+                                <input class="form-control" id="AdvertiserName" required title="Advertiser name is required!" name="AdvertiserName" placeholder="Advertiser Name" type="text">
+                                <input type="hidden" id="ReferenceId" name="ReferenceId" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="Title" class="control-label"><b>Title</b></label>
+                                <input class="form-control" id="Title" required title="Title is required!" name="Title" placeholder="Title" type="text">
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="ZipCode">Zip Code</label>
+                                <input type="text" class="form-control" id="ZipCode" name="ZipCode" placeholder="Zip Code" required title="Zipcode is required!" />
+                                <input type="hidden" id="CityStateZipCodeId" name="CityStateZipCodeId" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="StartDate">Start Date</label>
+                                <input type="text" class="form-control" id="StartDate" name="StartDate" required title="Start date is required!" placeholder="Select Start Date" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="EndDate">End Date</label>
+                                <input type="text" class="form-control" disabled id="EndDate" name="EndDate" required title="End date is required!" placeholder="Select End Date" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="image1" class="control-label"><b>Image</b></label>
+                                <input type="file" id="image1" name="image1" class="form-control" />
+                                <img id="advImg" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 single-input">
+                                <label for="PaymentTypeId">Payment Type</label>
+                                <select class="form-control chosen-select" id="PaymentTypeId" name="PaymentTypeId" required title="Payment type is required">
+                                    <option>Select Payment Type</option>
+                                </select>
+                                <span class="text-danger" style="display:none" id="PaymentTypeError">Payment type is required!</span>
+                            </div>
+                            <div class="col-lg-2 col-md-2 single-input">
+                                <label for="IsActive">Active</label><br />
+                                <label class="switch">
+                                    <input type="checkbox" id="IsActive" name="IsActiveString" checked data-Id="IsActive" />&nbsp;
+                                    <span class="slider round" style="width:35px;"></span> &nbsp;
+                                </label>
+                            </div>
+                            <div class="col-lg-12 mt-4">
+                                <button type="button" id="btnSubmit" class="btn btn-primary pull-right mr-2">Submit</button>
+                            </div>
+                        </fieldset>
+                    
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <div class="tab-content">
+                <div id="activeAdvertisement" class="tab-pane fade active in">
+                    <table id="dtAllAdvertisements" class="table table-striped table-bordered table-hover small" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" style="width:12%">Advertisement Type</th>
+                                <th onclick="sortTable(1)" style="width:23%">Advertiser Name</th>
+                                <th onclick="sortTable(2)" style="width:12%">Advertiser Type</th>
+                                <th onclick="sortTable(3)" style="width:8%">Title</th>
+                                <th style="width:15%">Image</th>
+                                <th onclick="sortTable(5)" style="width:12%">Start Date</th>
+                                <th onclick="sortTable(6)" style="width:12%">End Date</th>
+                                <th style="width:8%">Active</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    @Scripts.Render("~/scripts/full-calendar")
+    <script type="text/javascript">
+        var dataList = [];
+        var dateToday = new Date();
+        $('#StartDate').datepicker({
+            format: 'dd-MM-yy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: true,
+            startDate: dateToday
+        });
+
+        $('#EndDate').datepicker({
+            format: 'dd-MM-yy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            todayBtn: "linked",
+            autoclose: true,
+            todayHighlight: true,
+            startDate: $('#StartDate').val()
+        });
+
+
+        $('#StartDate').on('changeDate', function (ev) {
+            if ($('#StartDate').val()) {
+                $('#EndDate').val('');
+                $('#EndDate').removeAttr("disabled");
+                $('#EndDate').datepicker('setStartDate', $('#StartDate').val());
+            }
+            else {
+                $('#EndDate').attr("disabled", "disabled");
+            }
+        });
+
+
+        $(document).ready(function () {
+            $(".form-control").attr("autocomplete", "off");
+
+            $("#AdvertiserName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "GetReference",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term, Rtype: parseInt($("#UserTypeId").val()) },
+                        success: function (data) {
+                            if (!data.length) {
+                                var result = [
+                                    {
+                                        label: 'No matches found',
+                                        value: response.term
+                                    }
+                                ];
+                                response(result);
+                            }
+                            else {
+                                response($.map(data, function (item) {
+                                    return { label: item.ReferenceName, value: item.ReferenceName, title: item.ID };
+                                }))
+                            }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                        }
+                    })
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    $("#ReferenceId").val(ui.item.title); // save selected id to hidden input
+                }
+            });
+
+            $("#AdvertiserName").keyup(function () {
+                if ($.trim($(this).val()) == "")
+                    $("#ReferenceId").val('');
+            });
+
+            $("#UserTypeId").change(function () {
+                $("#AdvertiserName").val('');
+                $("#ReferenceId").val('');
+            });
+
+           bindAdvertisementList(true);
+            
+        });
+        var table = null;
+        var dir = "asc";
+        function sortTable(n) {
+            //if (dir == "asc") {
+            //    table.order([[n, 'asc']]).draw(false);
+            //    dir = "desc";
+            //}
+            //else if (dir == "desc") {
+            //    table.order([[n, 'desc']]).draw(false);
+            //    dir = "asc";
+            //}
+        }
+        function bindAdvertisementList(flag) {
+            if ($.fn.DataTable.isDataTable("#dtAllAdvertisements")) {
+                $('#dtAllAdvertisements').DataTable().destroy();
+            }
+
+            dataList = [];
+            table = $('#dtAllAdvertisements')
+                .DataTable({
+                    "bstateSave": true,
+                    "sAjaxSource": "/Advertisement/GetAdvertisementList?flag=" + flag,
+                    "columns": [
+                        //{
+                        //    render: function (data, type, row, meta) {
+                        //        return meta.row + meta.settings._iDisplayStart + 1;
+                        //    }
+                        //},
+                        {
+                            "data": "AdvertisementTypeName",
+                            "autoWidth": false,
+                            "searchable": true,
+                           
+                        },
+                        {
+                            "data": "AdvertiserName",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "AdvertiserType",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Title",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "ImagePath",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var imgPath = "Uploads/Advertisement/" + row.ImagePath;
+                                var content = '<img src="' + imgPath + '" style="width:80px;"/>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "StartDate",
+                            "searchable": true
+                        },
+                        {
+                            "data": "EndDate",
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked='checked'";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> &nbsp;';
+                                content += '<label class="switch" style="padding-left:1.8em !important">&nbsp;';
+                                content += '<input data-name="IsActive" data-id="' + row.AdvertisementId + '" onchange="UpdateSwitch(this)" type="checkbox" ' + value + ' data-Id= "IsActive" />&nbsp;';
+                                content += '<span class="slider round" style="width:35px;" data-id="' + row.AdvertisementId + '"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "AdvertisementId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                dataList.push(row)
+                                var content = '<div style="display:flex"><a href="javascript:;" onclick="EditAdvertisement(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" onclick="ViewAdvertisement(' + data + ')" data-toggle="tooltip" data-original-title="View" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-name="IsDeleted" data-id="' + data + '" onclick="UpdateSwitch(this)" data-toggle="tooltip" data-original-title="Delete" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+
+                                //var content = '<a href="/AdvertisementEdit/' + data + '" data-original-title="Edit Ad" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                //if (row.IsDeleted == false) {
+                                //    content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action remove"><i class="fa fa-close"></i></a> &nbsp;';
+                                //}
+                                return content;
+                            }
+                        }
+                    ]
+                });
+            
+            table.columns().each(function () {
+                var cell = $(this.header());
+                //cell.off('click');
+            });
+           
+        };
+        $.get("@Url.Action("GetDrpAdvertisementType", "Advertisement")", function (response) {
+            $.each(response, function (data, value) {
+                $("#AdvertisementTypeId").append($("<option></option>").val(value.AdvertisementTypeId).html(value.AdvertisementTypeName));
+            })
+        });
+        $.get("@Url.Action("GetDrpPaymentType", "Advertisement")", function (response) {
+            $.each(response, function (data, value) {
+                $("#PaymentTypeId").append($("<option></option>").val(value.PaymentTypeId).html(value.Name));
+            })
+        });
+        $("#ZipCode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Facility/GetZipCode",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        if (!data.length) {
+                            var result = [
+                                {
+                                    label: 'No matches found',
+                                    value: response.term
+                                }
+                            ];
+                            response(result);
+                        }
+                        else {
+                            response($.map(data, function (item) {
+                                return { label: item.FullCityStateZipCode, value: item.FullCityStateZipCode, codeId : item.CityStateZipCodeID };
+                            }))
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                })
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                $(this).val(ui.item.label);
+                $("#CityStateZipCodeId").val(ui.item.codeId);
+            }
+        });
+        var ResetForm = function () {
+            $("#advFieldSet").removeAttr("disabled")
+            $('#frmAdvertisement').each(function () {
+                this.reset();
+            });
+            $(".single-input input:checkbox").prop("checked", true);
+            $(".panel-title").text("Add/Edit Advertisement")
+        }
+        var ViewAdvertisement = function (advertisementId) {
+            $("#advFieldSet").attr("disabled", "disabled")
+            $(".panel-title").text("View Advertisement")
+            EditAdvertisement(advertisementId, true);
+        }
+        var UpdateSwitch = function (ctrl) {
+            var tableName = "Advertisement";
+            var primaryKeyName = "AdvertisementId";
+            var flag = $(ctrl).is(":checked");
+            var fieldName = $(ctrl).data("name");
+            if (fieldName == "IsDeleted")
+                flag = true;
+            var primaryKeyValue = $(ctrl).data("id");
+            $.ajax({
+                url: "/Facility/UpdateSwitch/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    TableName: tableName, PrimaryKeyName: primaryKeyName, PrimaryKeyValue: primaryKeyValue, FieldToUpdateName: fieldName,
+                    FieldToUpdateValue: flag
+                },
+                success: function (data) {
+                    ResetForm();
+                    bindAdvertisementList(true);
+                    HandleResponse(data);
+                }
+            });
+        }
+        var EditAdvertisement = function (advertisementId, isView) {
+            if (!isView) {
+                $(".panel-title").text("Add/Edit Advertisement")
+                $("#advFieldSet").removeAttr("disabled")
+            }
+            var advertisementObj = $.grep(dataList, function (a) {
+                return a.AdvertisementId == advertisementId;
+            });
+
+            $("#AdvertisementId").val(advertisementObj[0].AdvertisementId)
+            $("#AdvertisementTypeId").val(advertisementObj[0].AdvertisementTypeId)
+            $("#CityStateZipCodeId").val(advertisementObj[0].CityStateZipCodeId)
+            $("#PaymentTypeId").val(advertisementObj[0].PaymentTypeId)
+            $("#ZipCode").val(advertisementObj[0].ZipCode);
+            $("#AdvertiserName").val(advertisementObj[0].AdvertiserName)
+            $("#UserTypeId").val(advertisementObj[0].UserTypeId)
+            $("#ReferenceId").val(advertisementObj[0].ReferenceId)
+            $("#StartDate").val(moment(advertisementObj[0].StartDate).format('DD-MMM-YY'))
+            $("#EndDate").val(moment(advertisementObj[0].EndDate).format('DD-MMM-YY'))
+            $("#Title").val(advertisementObj[0].Title)
+            $("#advImg").prop("src", "Uploads/Advertisement/" + advertisementObj[0].ImagePath)
+            if (advertisementObj[0].IsActive == true)
+                $("#IsActive").attr("checked", "checked")
+            else
+                $("#IsActive").removeAttr("checked")
+        }
+        var form = $("#frmAdvertisement");
+        form.validate();
+        $("#btnSubmit").click(function () {
+            if (!form.valid())
+                return;
+            var formData = new FormData(form[0]);
+            $.ajax({
+                url: "@Url.Action("AddEditAdvertisement")",
+                type: "post",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    HandleResponse(response);
+                    if (response.Status == 1) {
+                        ResetForm();
+                        bindAdvertisementList(true);
+                    }
+                    else {
+
+                    }
+                }
+            });
+        });
+
+        $('input[type="file"]').change(function (e) {
+            var imageX = e.target.files[0];
+            var imgesize = imageX.size;
+            var fileName = e.target.files[0].name;
+
+            if (imgesize <= 5242880) {
+                $("#ImagePath").val(fileName);
+
+                //var w = 0;
+                //var h = 0;
+                //let img = new Image()
+                //img.src = window.URL.createObjectURL(imageX)
+
+                //img.onload = () => {
+                //    w = img.width;
+                //    h = img.height;
+                //    if (w <= 50 && h <= 50) {
+                //        $("#ImagePath").val(fileName);
+                //    }
+                //    else {
+                //        alert("Image width and height should be less than or equal 50px !");
+                //        $("#ImagePath").val('');
+                //        $("#Image1").val('');
+                //    }
+                //}
+            }
+            else {
+                alert("Invalid size cannot be more than 5 MB !");
+                $("#ImagePath").val('');
+                $("#Image1").val('');
+            }
+
+        });
+
+    </script>
+    @Scripts.Render("~/scripts/vector-map")
+}

@@ -1,0 +1,385 @@
+﻿@model  Doctyme.Model.ViewModels.BlogItem
+@{
+    ViewBag.Title = "Create Blog";
+    var mode = "Create";
+    if (Model.CategoryId > 0)
+    {
+        ViewBag.Title = "Edit Blog";
+        mode = "Edit";
+    }
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+<style>
+    .width100 {
+        width: 100%;
+    }
+
+    .error {
+        color: red;
+    }
+</style>
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> @ViewBag.Title </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            @*@if (User.IsInRole(UserRoles.Admin))
+                {
+                    <li> <a href="/Doctor/"> Doctor Directory </a></li>
+                    <li> <a href="/DoctorProfile/@Model.Npi"> Profile </a></li>
+                }*@
+
+            <li> <a href="~/Blog/Index/"> Blog List </a></li>
+
+            <li class="active"> @ViewBag.Title </li>
+        </ol>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                @mode Articles
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "Blog", FormMethod.Post, new { id = "frmCreateBlog", @class = "form-horizontal form-bordered", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="control-label"><b>Category Name</b></label>
+                                @Html.DropDownListFor(model => model.CategoryId, ViewBag.Categories as IEnumerable<SelectListItem>, "-- Select Category --", new { @id = "ddlCategory", @class = "form-control" })
+                                @Html.ValidationMessageFor(i => i.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label"><b>SubCategory Name</b></label>
+                                @Html.DropDownListFor(model => model.SubCategoryIdstring, ViewBag.SubCategories as IEnumerable<SelectListItem>, "-- Select SubCategory --", new { @id = "ddlSubCategory", @class = "form-control" })
+
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label"><b>Image</b></label>
+
+                                @*<input type="file" class="form-control" id="uFiles" />*@
+                                @Html.TextBoxFor(model => model.files, new { @id = "Imgfile", @class = "form-control", @type = "file" })
+                                @if (Model != null && !string.IsNullOrEmpty(Model.FileName))
+                                {
+                                    @Html.LabelForModel(Model.FileName, new { @id = "lblImgFileName", @class = "font-weight-normal" })
+                                }
+                                @Html.HiddenFor(model => model.ImagePath)
+                                @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.files, "", new { @id = "Validatorfiles", @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label class="control-label"><b>Show in Main site</b></label>
+                                <div class="radio pt-6px">
+                                    <!-- Inline Icon Radios Buttons -->
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(x => x.MainSite, "true", new { @class = "radiobox" }) Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(x => x.MainSite, "false", new { @class = "radiobox" }) No
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                             
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Article Title</b></label>
+                                @Html.TextAreaFor(i => i.ArticleName, new { @id = "txtArticleName", @class = "form-control width100 " })
+                                @Html.ValidationMessageFor(i => i.ArticleName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Summary</b></label>
+                                @Html.TextAreaFor(i => i.ArticleSummary, new { @id = "txtArctileSummary", @class = "form-control width100" })
+                                @Html.ValidationMessageFor(i => i.ArticleSummary, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Content</b></label>
+                                @*<div id="summernote"></div>*@
+                                @Html.TextAreaFor(i => i.Content, new { @id = "summernote", @class = "form-control width100", @onupdated = "$('#Content').summernote('code', this.data.value);" })
+                                @*<textarea id="Content" name="Content" class="form-control editor" onupdated="$('#Content').summernote('code', this.data.value);"></textarea>*@
+                                @*<input type="text" multiple id="summernote" />*@
+                                @*@Html.HiddenFor(i => i.Content)*@
+                                @Html.ValidationMessageFor(i => i.Content, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Facebook URL</b></label>
+                                @Html.TextBoxFor(i => i.FaceBookLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.FaceBookLink, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Instagram URL</b></label>
+                                @Html.TextBoxFor(i => i.InstagramLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.InstagramLink, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Linkedin URL</b></label>
+                                @Html.TextBoxFor(i => i.LinkedInLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.LinkedInLink, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Twitter URL</b></label>
+                                @Html.TextBoxFor(i => i.TwitterLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.TwitterLink, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Pinterest URL</b></label>
+                                @Html.TextBoxFor(i => i.Plink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.Plink, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Youtube View URL</b></label>
+                                @Html.TextBoxFor(i => i.YoutubeLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.YoutubeLink, "", new { @class = "text-danger" })
+                                @*<label class="control-label"><b>Google Plus URL</b></label>
+                                @Html.TextBoxFor(i => i.GooglePlusLink, new { @class = "form-control", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.GooglePlusLink, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Keywords</b></label>
+                                @Html.TextAreaFor(i => i.Keywords, new { @id = "txtKeywords", @class = "form-control width100 " })
+                                @Html.ValidationMessageFor(i => i.Keywords, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="row pull-right">
+                            <div class="col-md-6 col-xs-6">
+                                <input type="submit" value="Submit" id="btnSave" class="btn btn-primary btn-sm" />
+
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <input type="reset" value="Reset" id="btnReset" class="btn btn-danger btn-sm" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                    @Html.HiddenFor(I => I.ArticleId)
+                    <input type="hidden" id="hdnContent" value="@Model.Content" />
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+@*<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.validator.setDefaults({
+            ignore: ['SubCategoryId','ddlSubCategory']
+
+        });
+
+        $('#btnReset').click(function () {
+            //$("#frmTestimonial").trigger("reset");
+            $("#summernote").summernote('code', $('#hdnContent').val());
+        });
+        //$('#frmCreateBlog').validate({
+        //    rules: {
+        //        SubCategoryId: {
+        //            required: false
+        //        },
+        //        CategoryId: {
+        //            required: true
+        //        },
+        //        ImagePath: {
+        //            required: true
+        //        },
+        //        ArticleName: {
+        //            required: true
+        //        },
+        //        ArticleSummary: {
+        //            required: true
+        //        },
+        //        Content: {
+        //            required: true
+        //        }
+
+
+
+        //    }
+        //});
+        //$.validator.setDefaults({ ignore: null });
+        $('#summernote').summernote({
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+
+            codemirror: {
+                theme: 'united'
+            }
+        });
+
+        $("#btnSave").click(function () {
+            $('#Content').val(encodeURIComponent($("#Content").summernote('code')));
+            $.validator.unobtrusive.parse($('#frmCreateBlog'));
+
+
+            if (!$("#frmCreateBlog").valid()) {
+                return;
+                @*var form = $('#frmBasicInfo')[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    url: "@Url.Action("SaveBlogitems")",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                        success: function (response) {
+
+
+                        },
+                        error: function (result) {
+                            console.log(result);
+                        }
+                });
+
+                  $.post("@Url.Action("SaveBlogitems", "Blog")",
+                      $("#frmCreateBlog").serialize(),
+                function(response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+
+                        setTimeout(function () {
+                            location.href = "/";
+                        },
+                            2000);
+
+                    }
+                });*@
+            }
+        });
+        $('#Imgfile').on('change', function (e) {
+            //$("#ImagePath-error").html("");
+            var imageX = e.target.files[0];
+            if ($('#Imgfile')[0].files.length> 0) {
+                var imgesize = $('#Imgfile')[0].files[0].size;
+                //alert(imgesize);
+                if (imgesize > 5242880) {
+                    ResetImage();
+                    $('#Validatorfiles').text('Image file should be less than 5MB').show();
+                    return false;
+                }
+                var fileName = $('#Imgfile')[0].files[0].name;
+                $("#ImagePath").val(fileName);
+                if (imgesize <= 5242880) {
+                    let img = new Image()
+                    img.src = window.URL.createObjectURL(imageX)
+                    return true;
+                }
+            }
+        });
+        function ResetImage() {
+             $("#ImagePath").val('');
+             $("#lblImgFileName").hide();
+             $("#Imgfile").val(null);
+
+        }
+        $("#ddlCategory").change(function () {
+            var Id = $("#ddlCategory").val();
+            if (Id == "" && Id == null) {
+                Id = 0;
+            }
+                bindSubCategory(Id);
+
+        })
+
+       function bindSubCategory(CateogryId) {
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetSubCategory", "Blog")",
+                data: { cId: CateogryId},
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#ddlSubCategory option").remove();
+                    $("#ddlSubCategory").append("<option val='0'>-- Select SubCategory --</option>");
+                    var options = "";
+                    $.each(response.Data, function (key, value) {
+
+                        options = options + "<option value='" + value.Value + "'> " + value.Text + "</option>";
+                    });
+                    $("#ddlSubCategory").append(options);
+                },
+                error: function (response) {
+                    $("#ddlSubCategory option").remove();
+                    $("#ddlSubCategory").append("<option val='0'> -- Select SubCategory -- </option>");
+                }
+            });
+        }
+
+
+    });
+
+    jQuery.validator.unobtrusive.adapters.add(
+        'filesize', ['maxsize'], function (options) {
+            options.rules['filesize'] = options.params;
+            if (options.message) {
+                options.messages['filesize'] = options.message;
+            }
+        }
+    );
+
+    jQuery.validator.addMethod('filesize', function (value, element, params) {
+        if (element.files.length < 1) {
+            // No files selected
+            return true;
+        }
+
+        if (!element.files || !element.files[0].size) {
+            // This browser doesn't support the HTML5 API
+            return true;
+        }
+
+        return element.files[0].size < params.maxsize;
+    }, '');
+
+</script>
+

@@ -1,0 +1,285 @@
+﻿@using Doctyme.Repository.Enumerable;
+@model Binke.Models.RegisterViewModel
+
+<style>
+
+    .single-input {
+        margin-top: 0px !important;
+    }
+    .tooltip-inner {
+        max-width: 100%;
+        text-align:justify;
+    }
+ </style>
+
+<div class="modal-header border-bottom">
+    <label class="mb-0" style="margin-left:-20px;">
+        <h4 class="modal-title text-lg font-weight-bold float-left" id="myModalLabel"></h4>&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Register From Here">
+            <i class="fa fa-question-circle text-blue"></i>  <span>
+                Fields with (<span class="text-red" style="color:red;">*</span>) are required.
+            </span>
+        </a>
+    </label>
+
+</div>
+<div class="modal-body pt-0">
+    
+   
+    @if (!User.IsInRole(UserRoles.Admin))
+    {
+    <div class="appointment-box pg-appointment-box">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "frmReg", @class = "appointment-form mt-3", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.GroupTypeId)
+            <p class="form-message">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </p>
+            <diV class="row">
+                @if (Model.UserType != UserRoles.Patient)
+                {
+                    <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                        <label for="Uniquekey" style="width:100%">NPI(<span class="text-red" style="color:red;">*</span>)</label>
+                        @Html.TextBoxFor(m => m.Uniquekey, new { onkeypress = "return isNumeric(event, this);", maxlength = 10, @readonly="readonly" })
+                        @Html.ValidationMessageFor(m => m.Uniquekey, "", new { @class = "text-danger" })
+                    </div>
+                }
+            </diV>
+            <div class="row">
+
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                    <label for="FirstName" style="margin-bottom:10px;width:100%">First Name (<span class="text-red" style="color:red;">*</span>)</label>
+                    @Html.TextBoxFor(m => m.FirstName)
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                    <label for="MiddleName" style="width:100%">Middle Name</label>
+                    @Html.TextBoxFor(m => m.MiddleName)
+                    @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                    <label for="LastName" style="width:100%">Last Name (<span class="text-red" style="color:red;">*</span>) </label>
+                    @Html.TextBoxFor(m => m.LastName)
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                    <label for="Email" style="width:100%">Email (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Need valid Email"><i class="fa fa-question-circle text-blue"></i></a></label>
+                    @Html.TextBoxFor(m => m.Email)
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                    <label for="Password" style="width:100%">
+                        Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="
+
+&#8226;Passwords must be at least eight characters in length.
+&#8226;Passwords must contain at least one lowercase letter, one uppercase letter, and one number.
+&#8226;The word 'Doctyme' cannot be used.
+&#8226;The name appearing before the@in your login email cannot be used. For example
+&#8226;No more than three consecutive numbers or characters can be used (123 can be used, but not 1234; abc can be used, but not abcd).
+&#8226;No number or letter can be used 4 or more times in a row (5555 cannot be used).
+
+
+
+                                                                                                                      "><i class="fa fa-question-circle text-blue"></i></a>
+                    </label>
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                    <label for="ConfirmPassword" style="width:100%">Confirm Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Need To Be Same As Password "><i class="fa fa-question-circle text-blue"></i></a></label>
+                    @Html.PasswordFor(m => m.ConfirmPassword)
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+                @if (Model.UserType == UserRoles.Facility)
+                {
+                    <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px">
+                        <label for="FacilityTypeId" style="width:100%">Facility Type</label>
+                        @Html.DropDownListFor(x => x.FacilityTypeId, ViewBag.FacilityTypeList as IEnumerable<SelectListItem>, "Select Facility Type")
+                        @Html.ValidationMessageFor(m => m.FacilityTypeId, "", new { @class = "text-danger" })
+                    </div>
+                }
+
+            </div>
+            <br />
+            
+        }
+    </div>
+    }
+    else
+    {
+        <!-- Register Form -->
+        using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "frmReg", @class = "appointment-form mt-3", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.GroupTypeId)
+            <p class="form-message">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </p>
+
+            <div class="row">
+                @if (Model != null && Model.UserType != UserRoles.Patient)
+                {
+                    <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px;">
+                        <label style="width:100%" for="Uniquekey">NPI &nbsp;(<span class="text-red" style="color:red;">*</span>)&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Need NPI Unique key"><i class="fa fa-question-circle text-blue"></i></a></label>
+                        @Html.TextBoxFor(m => m.Uniquekey, new { @class = "form-control", placeholder = "NPI" })
+                        @Html.ValidationMessageFor(m => m.Uniquekey, "", new { @class = "text-danger" })
+                    </div>
+                }
+            </div>
+            <div class="row">               
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px;">
+                    <label for="FirstName" >First Name (<span class="text-red" style="color:red;">*</span>)</label>
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter FirstName" })
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px;">
+                    <label for="MiddleName">Middle Name</label>
+                    @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", placeholder = "Enter MiddleName" })
+                    @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px;">
+                    <label for="LastName">Last Name (<span class="text-red" style="color:red;">*</span>)</label>
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter LastName" })
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px;">
+                    <label style="width:100%" for="Email">E-mail (Username) (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Need valid Email"><i class="fa fa-question-circle text-blue"></i></a></label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter Email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px;">
+                    <label for="Password">Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="
+                                                                                                                       
+                                                                                                                      &#8226; Passwords must be at least eight characters in length.
+&#8226;Passwords must contain at least one lowercase letter, one uppercase letter, and one number.
+&#8226;The word 'Doctyme' cannot be used.
+&#8226;The name appearing before the '' in your login email cannot be used. For example, if your login name is jsmith@mstar.com, your password cannot contain 'jsmith'.
+&#8226;No more than three consecutive numbers or characters can be used (123 can be used, but not 1234; abc can be used, but not abcd).
+&#8226;No number or letter can be used 4 or more times in a row (5555 cannot be used).
+
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       "><i class="fa fa-question-circle text-blue"></i></a></label>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 single-input" style="margin-bottom:10px;">
+                    <label for="ConfirmPassword">Confirm Password (<span class="text-red" style="color:red;">*</span>) &nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="tooltip" title="Need To Be Same As Password"><i class="fa fa-question-circle text-blue"></i></a></label>
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Enter Confirm Password" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+                @*@if (Model.UserType == UserRoles.Facility)
+                    {
+                        <div class="col-lg-4 col-md-4 single-input">
+                            <label for="FacilityTypeId">Facility Type</label>
+                            @Html.DropDownListFor(x => x.FacilityTypeId, ViewBag.FacilityTypeList as IEnumerable<SelectListItem>, "Select Facility Type", new { @class = "form-control select" })
+                            @Html.ValidationMessageFor(m => m.FacilityTypeId, "", new { @class = "text-danger " })
+                        </div>
+                    }*@
+
+            </div>
+            @*<br />
+            <div class="row">
+                <div class="col-lg-12 col-md-9 single-input">
+                    <input type="checkbox" style="width:18px;margin-top:10px;float: left;margin-right: 5px" id="chkTermsPrivacyPolicy" />
+                    <p>By signing up, I affirm that I have read the <a href="javascript:void(0)" style="color:#3498db">Terms of Use</a> and <a href="javascript:void(0)" style="color:#3498db">Privacy Policy</a> and agree to receive email notifications from DocTyme.</p>
+                </div>
+            </div>*@
+            <!--// Register Form -->
+        }
+    }
+</div>
+<div class="modal-footer">
+    @*<input type="text" name="randomPassword" id="randomPassword" class="form-control">
+    <button id="generatePassword" class="btn btn-warning">Generate_Password</button>*@
+    @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+    <button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>
+</div>
+<script type="text/javascript">
+
+    $("#btnSubmit").click(function () {
+        //if (!$('#chkTermsPrivacyPolicy').is(':checked')) {
+        //}
+
+        $.validator.unobtrusive.parse($('#frmReg'));
+        if ($("#frmReg").valid()) {
+            var email = $('#Email').val();
+            var userName = email.substring(0, email.indexOf("@@"));
+            var password = $('#Password').val();
+            if (password.includes(userName)) {
+                alert("Password Cannot be email!")
+                return;
+            }
+            $.post("@Url.Action("AddEditPharmacyAccount", "Pharmacy")",
+                $("#frmReg").serialize(),
+                function(response) {
+                    HandleResponse(response);
+                    if (response.Status) {
+
+                        window.location.reload();
+                    }
+                });
+        } else {
+            openModal();
+        }
+    });
+    
+    $(document).on("change", "#Uniquekey", function () {        
+        var npi = $(this).val();
+        npi = parseInt(npi === "" ? 0 : npi);
+        if (npi === 0) {
+            return false;
+        } else {
+            var userRole = @(Model != null ? Model.UserType : "");
+            $.ajax({
+                url: "/Account/CheckNPINumberExist?npi=" + npi + "&userRole=" + userRole,
+                type: "GET",
+                async: false,
+                dataType: "json",
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response.Status === 0) {
+                        HandleResponse(response);  
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+    });
+
+    // Tooltips Initialization
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    function random_password_generate(max,min)
+{
+    var passwordChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#!%&()/";
+    var randPwLen = Math.floor(Math.random() * (max - min + 1)) + min;
+    var randPassword = Array(randPwLen).fill(passwordChars).map(function(x) { return x[Math.floor(Math.random() * x.length)] }).join('');
+    return randPassword;
+}
+document.getElementById("generatePassword").addEventListener("click", function(){
+    random_password = random_password_generate(16,8);
+    document.getElementById("randomPassword").value = random_password;
+});
+
+
+</script>
+
+@*Allow Only Digit On NPI Field*@
+<script type="text/javascript">
+    function isNumeric(evt, element) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (
+            (charCode !== 45 || $(element).val().indexOf('-') !== -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
+            (charCode !== 46 || $(element).val().indexOf('.') !== -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+            (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+</script>

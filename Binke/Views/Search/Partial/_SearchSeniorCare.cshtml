@@ -1,0 +1,541 @@
+﻿@model  Doctyme.Model.ViewModels.OrganizationProviderListModel
+@using Binke.Utility
+@using Doctyme.Repository.Enumerable;
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+<style type="text/css">
+    .no-padding {
+        padding: 0px;
+    }
+
+    .owl-theme .owl-controls {
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        cursor: e-resize
+    }
+
+        .owl-theme .owl-controls .owl-nav [class*=owl-] {
+            color: #fff;
+            font-size: 14px;
+            font-family: 'KeplerStd-Regular';
+            display: block;
+            cursor: e-resize;
+        }
+
+    .owl-prev {
+        left: 0;
+        text-align: left;
+        position: absolute;
+        z-index: 999999;
+        cursor: e-resize;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-next {
+        text-align: right;
+        position: absolute;
+        z-index: 999999;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: e-resize;
+        right: 0;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-theme .owl-controls .owl-nav [class*=owl-]:hover {
+        background-color: #1f1f1f;
+        transition: 0.5s all;
+        cursor: e-resize
+    }
+
+    .owl-theme .owl-controls .owl-nav .disabled {
+        opacity: .5;
+        cursor: e-resize
+    }
+
+    #owl-demo .owl-item > div img {
+        display: block;
+        width: 100%;
+        height: auto;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin-bottom: 4px;
+    }
+
+    #owl-demo .owl-item > div {
+        padding: 0px 2px
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-prev {
+        opacity: 1 !important;
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-next {
+        opacity: 1 !important;
+    }
+
+    .pagination {
+        padding-left: 0;
+        display: block;
+        position: relative;
+        float: right;
+    }
+
+        .pagination li {
+            text-align: center;
+            display: inline-block;
+            width: auto;
+            /*background-color: #ccc;*/
+            color: #333;
+            border: 1px solid #ccc;
+            margin-right: 3px;
+            line-height: 150%;
+            text-decoration: none;
+            padding: 0px 10px;
+        }
+
+        .pagination .active {
+            background-color: #f7f7f7 !important;
+            color: #0e0d0d !important;
+            border: 1px solid #007bff !important;
+        }
+
+    .search-category {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+        .search-category > label {
+            float: left;
+        }
+
+    /*#masterSearch {
+        float: left;
+        width: 55%;
+        margin: 15px 25px;
+        position: relative;
+        margin-top: 0px;
+    }
+
+        #masterSearch:after {
+            font-family: FontAwesome;
+            content: "\f053";
+            position: absolute;
+            color: #444;
+        }*/
+
+    .profile {
+        background-color: #fff;
+        border-radius: 50%;
+        height: 120px;
+        width: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: auto;
+        border: 1px solid #007bff;
+    }
+
+        .profile img {
+            height: 120px;
+            width: 120px;
+            border-radius: inherit !important;
+        }
+
+    ul.star_rate li i {
+        font-size: 13px;
+    }
+
+    address {
+        font-style: normal !important;
+    }
+
+    .section_bottom .text-link {
+        color: #007bff !important;
+        font-weight: 500;
+    }
+
+    .company-details p, .user-listdata > li {
+        font-size: 14px;
+        color: #000;
+    }
+
+    .section_bottom .special-list a {
+        padding-left: 0px !important;
+        font-size: 14px;
+    }
+
+    .last_s ul li i {
+        color: #007bff;
+        margin-right: 5px;
+    }
+
+    .seach-input-icon {
+        position: absolute;
+        right: 23%;
+        top: 5px;
+    }
+
+    .last_s button {
+        width: auto;
+    }
+</style>
+@*<head>
+
+        <title>DocTyme Senior Care Directory - Find a Senior Care in Your Area | DocTyme</title>
+
+        <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+        <link href='//maps.googleapis.com' rel='dns-prefetch'>
+        <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+        <meta name="description" content="Find Independent living, Assisted living, Skilled Nursing Facility, Continuous Care, Retierment Community with DocTyme senior care directory and get information including reviews, ratings, photos and pricing. Finding and compare nearby senior care living at DocTyme.com" />
+        <meta name="keywords" content="pharmacy directory, find a pharmacy, pharmacy search, locate, find, drug store, pharmacy, medicine, DocTyme" />
+        <meta property="og:title" content="DocTyme Facility Directory - Find a Facility in Your Area">
+        <meta property="og:description" content="Find Independent living, Assisted living, Skilled Nursing Facility, Continuous Care, Retierment Community with DocTyme senior care directory and get information including reviews, ratings, photos and pricing. Finding and compare nearby senior care living at DocTyme.com" ">
+
+        <meta name="keywords" content="Senior Care Name - City Name, Senior Care Name - City Name Senior Care Name - City Name in City Name, State Name" />
+
+
+
+        <meta name="description" content="Compare and review doctors, hospitals, pharmacy and senior care on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme.">
+        <meta name="keywords" content="doctor reviews, patient reviews of doctors, doctor ratings, doctor reviews near me, website for doctor reviews, find a doctor,pharmacy, hospital,  doctor reviews by patients, trusted doctors, primary care physicians">
+        <meta name="twitter:site_name" content="DocTYme">
+        <meta name="twitter:site" content="https://www.doctyme.com/">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:description" content="Compare and review doctors, pharmacy, senior care and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme.">
+        <meta name="twitter:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+        <meta property="og:url" content="https://www.doctyme.com/">
+        <meta property="og:site_name" content="DocTyme">
+        <meta property="og:title" content="Read Doctor Reviews, Compare Doctors &amp; Book Appointments">
+        <meta property="og:image" content="https://assets.doctyme.com/doctyme/site/doctyme-default-image.jpg">
+        <meta property="og:description" content="Compare and review doctors and hospitals on the fastest growing healthcare search directory. Get transparent information, ratings, and reviews on DocTyme.">
+        <meta property="og:type" content="website">
+        <link rel='icon' href='favicon.ico' type='image/x-icon' />
+    </head>*@
+@{ var remainder = Model.TotalRecord % Model.PageSize;
+    var TotalPages = (Model.TotalRecord / Model.PageSize) + (remainder == 0 ? 0 : 1);
+}
+
+
+@foreach (var item in Model.OrganizationProviderList)
+{
+    var ratingCount = (int)Math.Floor(item.ReviewStars);
+    string reviewStr = item.ReviewStars.ToString("0.0");
+<div class="section -bottom-list" data-organisationId="@item.OrganisationId" data-organisationName="@item.OrganisationName"
+     data-fullAddress="@item.FullAddress" data-latitude="@item.Latitude" data-longitude="@item.Longitude"
+     data-reviewCount="@item.ReviewCount" data-rating="@reviewStr">
+    <input type="hidden" value="@item.Npi" name="npi" class="npi" />
+    <div class="section_bottom p-3">
+        <div class="row doctorElement">
+            <div class="col-sm-2 text-center">
+                <div class="profile">
+                    <a href="/Profile/SeniorCare/@item.OrganisationName.Replace("&","-").Replace(" ","-").Replace("--","-")-@item.Npi">
+                        <img src="@Common.GetValidProfileImagePath(item.ProfilePicture)" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="column-center">
+                    <div class="d-flex">
+                        <div class="col-sm-8 pl-0">
+                            <h5 style="margin-bottom: 0px;margin-left: -6px;"><a href="/Profile/SeniorCare/@item.OrganisationName.Replace("&","-").Replace(" ","-").Replace("--","-")-@item.Npi">@item.OrganisationName</a></h5>
+                            @if (!string.IsNullOrEmpty(item.TaxonomyName))
+                            {
+                                <ul class="listdata" style="margin-left:-15px">
+                                    &ensp;  @item.TaxonomyName
+                                </ul>
+                            }
+
+                            @*<ul class="listdata">
+                                    @if (!string.IsNullOrEmpty(item.TaxonomyName))
+                                    {
+                                        @item.TaxonomyName
+                                    }
+                                </ul>*@
+                        </div>
+                        <div class="col-sm-4 no-padding">
+                            <div class="star-section visible-lg-inline-block">
+                                <ul class="star_rate pl-3 mb-2">
+                                    <li class="review-string" style="font-size:13px">@reviewStr</li>
+                                    @for (int i = 0; i < 5; i++)
+                                    {
+                                        if (ratingCount == 0)
+                                        {
+                                            <li><i class="fa fa-star text-white"></i></li>
+                                        }
+                                        else if (i < ratingCount)
+                                        {
+                                            <li><i class="fa fa-star text-orange"></i></li>
+                                        }
+                                        else
+                                        {
+                                            <li><i class="fa fa-star text-white"></i></li>
+                                        }
+                                    }
+                                    @*<li class="org-review-no" style="font-size:13px">(@ratingCount Reviews)</li>*@
+                                    @*<li>@(item.ReviewStars == 0 ? "0 Reviews" : item.ReviewStars.ToString("0.0") + " Reviews")</li>*@
+                                </ul>
+                            </div>
+                            <p class="org-review-no">
+                                (@ratingCount Reviews)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-block company-details">
+                        <p class="mb-0">@item.FullAddress</p>
+                        @*<span><a href="#" class="text-link pl-5">Driving Directions</a></span>*@
+                    </div>
+                    @if (item.AmenitiesList != null)
+                    {
+                        <table>
+                            @{
+                                int col1 = 0;
+                                int col2 = 0;
+                                <tr style="vertical-align: top;">
+                                    <td>
+                                        @foreach (var value in item.AmenitiesList)
+                                        {
+                                            if (@col1 % 2 == 0)
+                                            {
+                                                <ul class="listdata" style="line-height:1em">
+                                                    <li> @value</li>
+                                                </ul>
+                                            }
+                                            col1 = col1 + 1;
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (var value in item.AmenitiesList)
+                                        {
+                                            if (@col2 % 2 != 0)
+                                            {
+
+                                                @*<div class="d-block company-details">*@
+                                                <ul class="listdata" style="line-height:1em">
+                                                    <li>  @value</li>
+                                                </ul>
+                                                @*</div>*@
+                                            }
+                                            col2 = col2 + 1;
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+                        </table>
+                    }
+                    @*<div class="special-list">
+                            <a href="javascript:;" class="text-link pr-2">Drug Store</a>
+                            <a href="javascript:;" class="text-link pr-2">Convence Store</a>
+                            <a href="javascript:;" class="text-link pr-2">Costmetic & Beauty Supply</a>
+                        </div>*@
+                    @*<p>Special Promotion Text</p>*@
+
+                </div>
+            </div>
+            <div class="col-sm-3 last_s">
+                <div class="sec_3">
+                    <p class="text-link m-0">
+                        @Common.GetOpenUntilTimeString(item.OpenUntil)
+                    </p>
+                    <ul class="user-listdata">
+                        @foreach (var strItem in item.AmenityOptionList)
+                        {
+                            <li class="text-uppercase"><i class="fa fa-circle"></i> <a>@strItem</a></li>
+                        }
+                    </ul>
+                    @*<button type="button" class="btn btn-primary action text-uppercase mt-0" data-flag="AllowNewPatient">Drug Price Check</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@*Added by Reena*@
+@if (ViewBag.AdvList != null && ViewBag.AdvList.Count > 0)
+{
+    <div class="row" style="margin-top:100px">
+        <div class="col-md-12">
+            <div id="owl-carousel2" class="three-grid-slider owl-carousel owl-theme owl-rtl owl-loaded">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(1533.33px, 0px, 0px); transition: all 1.2s ease 0s; width: 4600px;">
+                        @foreach (var items in ViewBag.AdvList)
+                        {
+                            <div class="owl-item" style="width:373.333px !important; margin-left: 10px !important;padding-right:10px">
+                                <div class="item">
+                                    <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                        <div class="testi-thumb">
+                                            <img class="img-responsive thumbnail" src="@(FilePathList.Advertisement + items.ImagePath)" alt="@items.Title">
+
+                                        </div>
+                                        <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                        <div class="testi-details">
+
+                                            <h4><small>@items.PaymentTypeName</small></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="owl-controls">
+                    <div class="owl-nav">
+                        <div class="owl-prev" style="display: none;">
+                            <i class="fa fa-long-arrow-left"></i>
+                        </div>
+                        <div class="owl-next" style="display: none;">
+                            <i class="fa fa-long-arrow-left-right"></i>
+                        </div>
+                    </div>
+                    <div class="owl-dots" style="">
+                        <div class="owl-dot active">
+                            <span></span>
+                        </div>
+                        <div class="owl-dot">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<input type="hidden" id="Seniorcaretotalcount" name="custId" value=@Model.TotalRecord>
+@if (Model.PageIndex > 0 && TotalPages > 0)
+{
+    <div class="text-center">
+        <ul class="pagination">
+            @if (Model.PageIndex == 1)
+            {
+                <li class="disabled"><a class="disabled">Previous</a></li>
+            }
+            else
+            {
+                <li><a href="#" onclick="PageClicked('@(Model.PageIndex-1)');">Previous</a></li>
+            }
+
+            @if (Model.PageIndex < 5)
+            {
+                <li @(Model.PageIndex == 1 ? "class=active" : "")><a href="#" onclick="PageClicked('1');">1</a></li>
+                if (TotalPages > 2)
+                {
+                    <li @(Model.PageIndex == 2 ? "class=active" : "")><a href="#" onclick="PageClicked('2');">2</a></li>
+                }
+                if (TotalPages > 3)
+                {
+                    <li @(Model.PageIndex == 3 ? "class=active" : "")><a href="#" onclick="PageClicked('3');">3</a></li>
+                }
+                if (TotalPages > 4)
+                {
+                    <li @(Model.PageIndex == 4 ? "class=active" : "")><a href="#" onclick="PageClicked('4');">4</a></li>
+                }
+                if (TotalPages > 5)
+                {
+                    <li @(Model.PageIndex == 5 ? "class=active" : "")><a href="#" onclick="PageClicked('5');">5</a></li>
+                }
+                if (TotalPages > 5)
+                {
+                    <li class="disabled"><a href="#">...</a></li>
+                    <li><a href="#" onclick="PageClicked('@(TotalPages)');">@(TotalPages)</a></li>
+                }
+            }
+            else if (Model.PageIndex >= 5 && Model.PageIndex <= TotalPages - 4)
+            {
+                <li><a href="#" onclick="PageClicked('1');">1</a></li>
+                if (TotalPages > 5)
+                {
+                    <li class="disabled"><a href="#">...</a></li>
+                }
+                <li><a href="#" onclick="PageClicked('@(Model.PageIndex-1)');">@(Model.PageIndex - 1)</a></li>
+                <li class="active"><a href="#" onclick="PageClicked('@(Model.PageIndex)');">@(Model.PageIndex)</a></li>
+                <li><a href="#" onclick="PageClicked('@(Model.PageIndex+1)');">@(Model.PageIndex + 1)</a></li>
+                <li class="disabled"><a href="#">...</a></li>
+                <li><a href="#" onclick="PageClicked('@(TotalPages)');">@(TotalPages)</a></li>
+            }
+
+            else if (Model.PageIndex > TotalPages - 4)
+            {
+                <li><a href="#" onclick="PageClicked('1');">1</a></li>
+                <li class="disabled"><a href="#">...</a></li>
+                if ((TotalPages - 4) > 2)
+                {
+                    <li><a href="#" onclick="PageClicked('@(TotalPages-4)');">@(TotalPages - 4)</a></li>
+                }
+                <li @(TotalPages - 3 == Model.PageIndex ? "class=active" : "")><a href="#" onclick="PageClicked('@(TotalPages-3)');">@(TotalPages - 3)</a></li>
+                <li @(TotalPages - 2 == Model.PageIndex ? "class=active" : "")><a href="#" onclick="PageClicked('@(TotalPages-2)');">@(TotalPages - 2)</a></li>
+                <li @(TotalPages - 1 == Model.PageIndex ? "class=active" : "")><a href="#" onclick="PageClicked('@(TotalPages-1)');">@(TotalPages - 1)</a></li>
+                <li @(TotalPages == Model.PageIndex ? "class=active" : "")><a href="javascript:void(0)" onclick="PageClicked('@(TotalPages)');">@(TotalPages)</a></li>
+            }
+
+            @if (Model.PageIndex == TotalPages)
+            {
+                <li class="disabled"><a href="javascript:void(0);">Next</a></li>
+            }
+            else
+            {
+                <li><a href="javascript:void(0);" onclick="PageClicked('@(Model.PageIndex+1)');">Next</a></li>
+            }
+        </ul>
+        <div style="display:none;">
+            <input type="submit" id="btnSavepaging" />
+        </div>
+    </div>
+}
+@Html.Hidden("PageNumber", "1")
+<script src="~/Scripts/client/carousel/owl.carousel.min.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            @* $(".Pager").ASPSnippets_Pager({
+                ActiveCssClass: "current",
+                PagerCssClass: "pager",
+                PageIndex: '@Model.PageIndex',
+                PageSize: '@Model.PageSize',
+                RecordCount: '@Model.TotalRecord'
+            });*@
+            $("#doctorPager .page").on("click", function () {
+                pageIndex = parseInt($(this).attr('page'));
+                model = UpdateSearchModel();
+                loadResultArea(model);
+            });
+
+            initializePageSizeDropDown();
+            $("#PageSelection").val("@Model.PageSize");
+        });
+
+        function PageClicked(id) {
+            pageIndex = parseInt(id);
+            model = UpdateSearchModel();
+            model.PageIndex = pageIndex;
+            loadResultArea(model);
+            }
+
+            var owl = $('#owl-carousel2'); //Added by Reena
+            owl.owlCarousel({
+                animateOut: 'slideOutDown',
+                animateIn: 'flipInX',
+                //autoHeight: true,
+                dots: true,
+                items: 3,
+                loop: true,
+                nav: true,
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 5000
+                //,
+                //adaptiveHeight: true,
+            });
+</script>
+

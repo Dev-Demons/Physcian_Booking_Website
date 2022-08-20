@@ -1,0 +1,333 @@
+﻿@using Binke.Models;
+@using Doctyme.Repository.Enumerable;
+@model LoginViewModel
+@{
+    ViewBag.PageDescription = "Login and start finding best available healthcare provider information including doctor, pharmacy, facility, senior care and more. Finding a health care provider has never been easier.";
+    Layout = "~/Views/Shared/_LoginRegisterLayout.cshtml";
+    List<string> AdvList = ViewBag.AdvList as List<string>;
+    var imageUrl = "loginad1.jpg";
+    int size = AdvList != null ? AdvList.Count : 0;
+    int start2 = new Random().Next(0, size);
+    imageUrl = AdvList != null ? AdvList[start2] : imageUrl;
+}
+<link href="~/Scripts/client/carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Scripts/client/carousel/assets/owl.theme.default.min.css" rel="stylesheet" />
+
+<style type="text/css">
+    /*Added by Reena*/
+    .owl-theme .owl-controls {
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        cursor: e-resize
+    }
+
+        .owl-theme .owl-controls .owl-nav [class*=owl-] {
+            color: #fff;
+            font-size: 14px;
+            font-family: 'KeplerStd-Regular';
+            display: block;
+            cursor: e-resize;
+        }
+
+    .input-group-addon {
+        padding: 1rem 0.2rem;
+        margin-bottom: -29px;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.25;
+        color: #495057;
+        text-align: center;
+        background-color: #fff;
+        border: 0;
+        border-radius: .25rem;
+    }
+
+    .input-group-addon, .input-group-btn {
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .input-group {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .owl-prev {
+        left: 0;
+        text-align: left;
+        position: absolute;
+        z-index: 999999;
+        cursor: e-resize;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-next {
+        text-align: right;
+        position: absolute;
+        z-index: 999999;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: e-resize;
+        right: 0;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+        background-color: #E7E7E7;
+        transition: 0.5s all;
+    }
+
+    .owl-theme .owl-controls .owl-nav [class*=owl-]:hover {
+        background-color: #1f1f1f;
+        transition: 0.5s all;
+        cursor: e-resize
+    }
+
+    .owl-theme .owl-controls .owl-nav .disabled {
+        opacity: .5;
+        cursor: e-resize
+    }
+
+    #owl-demo .owl-item > div img {
+        display: block;
+        width: 100%;
+        height: auto;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin-bottom: 4px;
+    }
+
+    #owl-demo .owl-item > div {
+        padding: 0px 2px
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-prev {
+        opacity: 1 !important;
+    }
+
+    .owl-carousel:hover .owl-controls .owl-buttons .owl-next {
+        opacity: 1 !important;
+    }
+
+    button.owl-prev, button.owl-next span {
+        height: 40px;
+        width: 10px;
+    }
+
+        button.owl-prev span, button.owl-next span {
+            font-size: 35px;
+        }
+
+    .owl-carousel .item img {
+        height: 200px;
+        width: 400px;
+    }
+    /*Added by Reena*/
+    .contact-form input {
+        padding: 0px 20px;
+        background: #fff !important;
+        border: 1px solid #f5f5f5;
+        font-size: 14px;
+        color: #333333;
+    }
+
+    .fullBackground {
+        background-position: left;
+        background-attachment: fixed;
+        background-size: cover;
+        /*position: absolute;*/
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        /* background-size: 300px 100px;
+        background-image: url("/Uploads/Advertisement/loginad2.jpeg");*/
+        background-size:55% 100%;
+    }
+</style>
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+<div class="bk-section contact-area section-padding-lg fullBackground">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6">
+                
+            </div>
+            <div class="col-lg-4">
+                <h3>Login </h3>
+                <div class="contact-leftside">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact-form", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        if (ViewBag.msgForgotPassword != null)
+                        {
+                            <p id="pmsgForgotPassword" class="form-message" style="color:red">@ViewBag.msgForgotPassword</p>
+                        }
+                        <p class="form-message">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </p>
+                        <div class="form-group">
+                            <div class="row">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Your Email", Value = ViewBag.Email })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                <div class="input-group" id="show_hide_password">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Your Password", Value = ViewBag.Password })
+                                    <div class="input-group-addon">
+                                        <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                    </div>
+
+                                </div>
+
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.LabelFor(m => m.RememberMe, new { style = "margin-top:5px;" })
+                                    @*@Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-control" })*@
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "text-danger", style = "width:18px;margin-top:10px;float: left;margin-right: 14px" })
+                                </div>
+                                <button type="submit" class="btn btn-primary">Log In <i class="fa fa-angle-right"></i></button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a class="pull-left" href="/Account/ForgotPassword">Forgot your password?</a>
+                            </div>
+                            <div class="col-lg-6">
+                                <a class="pull-right" href="/Account/Register">Register</a>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+
+                @*@if (ViewBag.AdvList != null && ViewBag.AdvList.Count > 0)
+                    {
+                        <div class="row" style="margin-top:100px">
+                            <div class="col-md-12">
+                                <div id="owl-carousel2" class="three-grid-slider owl-carousel owl-theme owl-rtl owl-loaded">
+                                    <div class="owl-stage-outer">
+                                        <div class="owl-stage" style="transform: translate3d(1533.33px, 0px, 0px); transition: all 1.2s ease 0s; width: 4600px;">
+                                            @foreach (var items in ViewBag.AdvList)
+                                            {
+                                                <div class="owl-item" style="width:373.333px !important; margin-left: 10px !important;padding-right:10px">
+                                                    <div class="item">
+                                                        <div class="ulockd-testimonials text-center ulockd-mrgn1250 ulockd-mrgn620">
+                                                            <div class="testi-thumb">
+                                                                <img class="img-responsive thumbnail" src="@(FilePathList.Advertisement + items.ImagePath)" alt="@items.Title">
+
+                                                            </div>
+                                                            <div><i class="flaticon-right-quotes-symbol fz30 text-thm2"></i></div>
+                                                            <div class="testi-details">
+
+                                                                <h4><small>@items.PaymentTypeName</small></h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="owl-controls">
+                                        <div class="owl-nav">
+                                            <div class="owl-prev" style="display: none;">
+                                                <i class="fa fa-long-arrow-left"></i>
+                                            </div>
+                                            <div class="owl-next" style="display: none;">
+                                                <i class="fa fa-long-arrow-left-right"></i>
+                                            </div>
+                                        </div>
+                                        <div class="owl-dots" style="">
+                                            <div class="owl-dot active">
+                                                <span></span>
+                                            </div>
+                                            <div class="owl-dot">
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }*@
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<script src="//code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="~/Scripts/system/fullclip.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+         $('.fullBackground').css('background-image', 'url(/Uploads/Advertisement/' + '@imageUrl' + ')');
+        getBanner();
+
+
+        $("#show_hide_password a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        })
+    });
+
+    function getBanner() {
+        $.ajax({
+            url: "GetBanner",
+            type: "GET",
+            dataType: "json",
+            data: {},
+            success: function (response) {
+                if (response.JsonStatus == 1) {
+                    var arrBanner = response.JsonResponse;
+                    console.log(arrBanner);
+                    var indx = 0;
+                    setInterval(function () {
+                        if (arrBanner.length == indx) {
+                            indx = 0;
+                        }
+                        else {
+                            $('.fullBackground').css('background-image', 'url(/Uploads/Advertisement/' + arrBanner[indx].ImagePath + ')');
+                            indx++;
+
+                        }
+                    }, 5000);
+
+                }
+                else {
+                    console.log(response.JsonMessage, "Error");
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+

@@ -1,0 +1,338 @@
+﻿@using Binke.ViewModels
+@model PatientPrescription
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "ConfirmPrescription";
+    var storeAddress = @TempData["storeAddress"];
+    //var DeliveryType = @ViewBag.DeliveryType;
+}
+<style type="text/css">
+    .label:after {
+        content: '\A';
+        white-space: pre;
+    }
+</style>
+<div class="container mt-4 mb-5">
+    @using (Html.BeginForm("ConfirmRefillPrescription", "ProvdersProfile", FormMethod.Post, new { id = "frmConfirmInfo", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.PatientId)
+        @*@Html.HiddenFor(x => x.AddressView.PatientId)
+          @Html.HiddenFor(x => x.AddressView.AddressId)*@
+       
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="doger-color">Prescription Information</h4>
+                            <div id="transferFrom" style="display:block" >
+                                <h4 class="doger-color">Transfer Prescription from</h4>
+                            </div>
+                        </div>
+                        <!--No Label Form-->
+                        <!--===================================================-->
+
+                        <form class="form-horizontal">
+                            <div class="col-md-12 col-lg-12" id="divstorePickup">
+                                <strong>
+                                    <span class="label">
+                                        <i aria-hidden="true" class="fa fa-map-marker" style="color: #3498db;margin-right:6px"></i><label>@Model.Pharmacy.OrgName</label>
+                                    </span>
+                                    <span class="label">
+                                        <i aria-hidden="true" style="color: #3498db;margin-right:10px"></i> <label>@Model.Pharmacy.FullAddress</label>
+                                    </span>
+                                    <span class="label">
+                                        <i aria-hidden="true" class="fa fa-phone" style="color: #3498db;margin-right:6px"></i><label>@Model.Pharmacy.PhoneNumber</label>
+                                    </span>
+                                </strong>
+                            </div>
+                        </form>
+
+                        <!--===================================================-->
+                        <!--End No Label Form-->
+                    </div>
+                </div>
+                <div class="col-lg-6" id="transferTo" style="display:none">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="doger-color"><br /></h4>
+                            <h4 class="doger-color">Transfering To:</h4>
+                        </div>
+                        <div class="col-md-12 col-lg-12" id="divstorePickup">
+                            <strong>
+                                <span class="label">
+                                    <i aria-hidden="true" class="fa fa-map-marker" style="color: #3498db;margin-right:6px"></i><label>@Model.TransferPharmacy.OrgName</label>
+                                </span>
+                                <span class="label">
+                                    <i aria-hidden="true" style="color: #3498db;margin-right:10px"></i> <label>@Model.TransferPharmacy.FullAddress</label>
+                                </span>
+                                <span class="label">
+                                    <i aria-hidden="true" class="fa fa-phone" style="color: #3498db;margin-right:6px"></i><label>@Model.TransferPharmacy.PhoneNumber</label>
+                                </span>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="doger-color">Patient Information</h4>
+                        </div>
+                        <!--No Label Form-->
+                        <!--===================================================-->
+
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="FirstName">First Name: &nbsp;</label>
+                                <label for="FirstName" class="col-xs-3 control-label">@Model.FirstName</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="LastName">Last Name:</label>
+                                <label for="LastName" class="col-xs-3 control-label">@Model.LastName</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="Gender">Gender:</label>
+                                <label for="Gender" class="col-xs-3 control-label">@Model.Gender</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="DateOfBirth">Date Of Birth:</label>
+                                <label for="DateOfBirth" class="col-xs-3 control-label">@Model.DateOfBirth</label>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="PhoneNumber">Phone Number:</label>
+                                <label for="PhoneNumber" class="col-xs-3 control-label">@Model.PhoneNumber</label>
+                            </div>
+                        </form>
+
+                        <!--===================================================-->
+                        <!--End No Label Form-->
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="doger-color">Insurance Information</h4>
+                        </div>
+                        <!--No Label Form-->
+                        <!--===================================================-->
+
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="InsuranceProvider">Insurance Provider:</label>
+                                <label for="InsuranceProvider" class="col-xs-3 control-label">@Model.InsuranceProvider</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="InsuranceType">Insurance Type:</label>
+                                <label for="InsuranceType" class="col-xs-3 control-label">@Model.InsuranceType</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-1 control-label doger-color" for="InsurancePlan">Insurance Plan:</label>
+                                <label for="InsurancePlan" class="col-xs-3 control-label">@Model.InsurancePlan</label>
+
+                            </div>
+                            <div class="form-horizontal">
+                                <table>
+                                    <tr>
+
+                                        <td>
+                                            <label class="col-xs-1 control-label doger-color" for="MemberNumber">Member Number:</label>
+                                        </td>
+                                        <td>
+                                            <label for="InsuranceType" class="col-xs-5 control-label">@Model.MemberNumber</label>
+                                        </td>
+                                        <td>
+                                            <label class="col-xs-1 control-label doger-color" for="MemberNumber">Group Number:</label>
+                                        </td>
+                                        <td>
+                                            <label for="InsuranceType" class="col-xs-5 control-label">@Model.GroupNumber</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="col-xs-1 control-label doger-color" for="BinNumber">Bin Number:</label>
+                                        </td>
+                                        <td>
+                                            <label for="InsuranceProvider" class="col-xs-5 control-label">@Model.BinNumber</label>
+                                        </td>
+                                        <td>
+                                            <label class="col-xs-1 control-label doger-color" for="BinNumber">Pcn Number:</label>
+                                        </td>
+                                        <td>
+                                            <label for="InsuranceProvider" class="col-xs-5 control-label">@Model.PcnNumber</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </form>
+
+                        <!--===================================================-->
+                        <!--End No Label Form-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12" id="confirmRefill" style="display:none;">
+                <div class="panel">
+                    @*<div class="panel-heading">
+                            <h4 class="doger-color">Prescription Info</h4>
+                        </div>*@
+                    <div class="table-responsive">
+                        <table class="table table-hover table-vcenter" id="data" style="border:1px solid lightgray !important">
+                            <thead>
+                                <tr>
+                                    <th class="doger-color">RX Number</th>
+                                    <th class="doger-color">Drug Name</th>
+                                    <th class="doger-color">Drug Strength Name</th>
+                                    <th class="doger-color">Quantity</th>
+                                    <th class="doger-color">Insurance Provider</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @if (Model != null && Model != null)
+                                {
+                                    foreach (var pres in Model.confirmPrescription)
+                                    {
+                                        if (pres != null)
+                                        {
+                                <tr>
+                                    <td id="rxnum">@pres.RXNumber</td>
+                                    <td id="drugname">@pres.DrugName</td>
+                                    <td id="drugStrengthname">@pres.DrugStrengthName</td>
+                                    <td>@pres.Quantity</td>
+                                    <td>@pres.InsuranceProvider</td>
+
+                                </tr>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            No existing prescription found.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+        <br />
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h5 class="doger-color">Delivery Type</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+
+                                <label class="ml-1">
+                                    <input name="deliveryType" type="radio" id="homeDelivery" value="homeDelivery" disabled="disabled" />&nbsp;<label>Home Delivery</label>
+                                </label>
+
+                                <label class="ml-4">
+                                    <input name="deliveryType" type="radio" id="storePickup" value="storePickup" disabled="disabled" />&nbsp;&nbsp;&nbsp;<label>Pickup from store</label>
+                                </label>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-lg-12 mt-2 border-top float-right">
+                <button type="button" id="btnSubmit" class="btn btn-primary btn-lg mt-3">Submit Order</button>&nbsp;&nbsp;
+                <button type="button" id="btnBack" class="btn btn-primary btn-lg mt-3" onclick="history.go(-1); return false;">Back</button>
+            </div>
+        </div>
+        <br />
+    }
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+        //var cnt = @Model;
+
+        //var DeliveryType = @Model.IsDeliveryType;
+    var myModel = @Html.Raw(Json.Encode(Model.IsDeliveryType));
+    var model = @Html.Raw(Json.Encode(Model));
+    var modeltype = @Html.Raw(Json.Encode(@Model.PrescriptionType));
+    
+    if (modeltype == 0 || modeltype == 1) {
+        $("#transferFrom").remove();
+        $("#transferTo").hide();
+    }
+    if (modeltype == 2) {
+        $("#transferFrom").add();
+        $("#transferTo").show();
+    }
+
+    $("#btnSubmit").prop("disabled", false);
+        $(document).ready(function () {
+
+            if (model != null) {
+                $("#confirmRefill").show();
+            }
+
+            if (myModel == 0)
+            {
+                $("#homeDelivery").attr("checked", true);
+             }
+            if (myModel == 1)
+             {
+                $("#storePickup").attr("checked", true);
+            }
+
+            $("#btnSubmit").click(function () {               
+                var PType = @Html.Raw(Json.Encode(Model.PrescriptionType));
+                 
+                $.ajax({
+                    type: 'POST',
+                    url: "/ProvdersProfile/SavePrescription",
+                    data: { presType: PType },
+                    dataType: 'json',
+                    async: true,
+                    success: function (response) {                       
+                        window.location.href = "/Profile/Pharmacy/" + response.orgName + "-" + response.npiValue;
+                            $("#btnSubmit").prop("disabled", true);
+                },
+                       failure: function (response) {
+                           console.log(response.responseText);
+                },
+                       error: function (response) {
+                           console.log(response.responseText);
+                }
+            });
+            });
+        });
+</script>
+
+
+
+

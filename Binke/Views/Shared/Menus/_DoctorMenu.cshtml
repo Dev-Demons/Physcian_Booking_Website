@@ -1,0 +1,201 @@
+﻿@using Binke.App_Helpers
+@{
+    var IsDoctorSelected = false;
+    var IsNewDoctor = false;
+    if (!string.IsNullOrEmpty(Convert.ToString(Session["DoctorSearch"])))
+    {
+        if (Convert.ToString(Session["DoctorSearch"]) == "0")
+        {
+            IsNewDoctor = true;
+        }
+        else
+        {
+            IsDoctorSelected = true;
+        }
+    }
+
+}
+<style>
+    .hid {
+        display: none !important;
+    }
+</style>
+<script type="text/javascript">
+    window.onload = function () {
+          if (@ViewBag.DoctorId == 0)
+          {
+              alert('Please complete the profile first, before accessing the other features of the site');
+          }
+     }
+</script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<li class="nav-item has-treeview @(IsDoctorSelected? "open active menu-open":"open active menu-open")">
+   
+    <ul class='nav nav-treeview DoctorMenu @(IsDoctorSelected? "open active menu-open":"open  menu-open")'>
+        <li class="nav-item">
+            <a href="/Dashboard/Doctor" class='nav-link' data-url="/Dashboard/Doctor">
+                <i class="far fa-circle nav-icon"></"></i>
+                <p>DashBoard</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@(IsDoctorSelected?"/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]):"/DoctorProfile/")" class='nav-link' data-url="/DoctorProfile/">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+        @if (ViewBag.DoctorId > 0)
+        {           
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorBoardCertification/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorBoardCertification/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Board Certification</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorExperience/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorExperience/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Experience</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/SocialMedia/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/SocialMedia/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Social Media</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorInsurances/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorInsurances/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Insurances</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorAgeGroup/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorAgeGroup/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Age Group</p>
+                </a>
+            </li>
+            @*<li class="nav-item">
+                <a href="@(IsDoctorSelected?"/DoctorGender/"+Convert.ToString(Session["DoctorSearch"]):"")" class='nav-link @(IsDoctorSelected?"":"hid")' data-url="/DoctorGender/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Gender</p>
+                </a>
+            </li>*@
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorLanguage/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorLanguage/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Language</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorAffiliations/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorAffiliations/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Affiliation</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorQualification/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorQualification/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Qualification</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/Images/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/MyImages/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Images</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/OpeningHours/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/OpeningHours/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Opening Hours</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorAddress/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorAddress/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Address</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorStateLicense/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorStateLicense/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>State License</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/DoctorTaxonomy/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/DoctorTaxonomy/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Taxonomy</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/Booking/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/Booking/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Booking</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@(IsDoctorSelected ? "/Reviews/" + Convert.ToString(Session["DoctorSearch"]) : "")" class='nav-link @(IsDoctorSelected ? "" : "hid")' data-url="/Reviews/">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Reviews</p>
+                </a>
+            </li>
+        }
+        </ul>
+</li>
+
+<script>
+    $(document).ready(function () {
+        $(".DoctorMenu").find("a").each(function () {
+            var ctrl = $(this);
+            var windowLocationHref = window.location.href;
+            if (window.location.href.indexOf("AddEditDoctorAffiliation") != -1) {
+                windowLocationHref = window.location.href.replace("AddEditDoctorAffiliation", "DoctorAffiliations")
+            } else if (window.location.href.indexOf("AddEditDoctorInsurances") != -1) {
+                windowLocationHref = window.location.href.replace("AddEditDoctorInsurances", "DoctorInsurances")
+            } else if (window.location.href.indexOf("AddEditDoctorAgeGroup") != -1) {
+                windowLocationHref = window.location.href.replace("AddEditDoctorAgeGroup", "DoctorAgeGroup")
+            } else if (window.location.href.indexOf("AddEditDoctorLanguage") != -1) {
+                windowLocationHref = window.location.href.replace("AddEditDoctorLanguage", "DoctorLanguage")
+            } else if (window.location.href.indexOf("AddEditDoctorQualification") != -1) {
+                windowLocationHref = window.location.href.replace("AddEditDoctorQualification", "DoctorQualification")
+            } else if (window.location.href.indexOf("AddEditDoctorExperience") != -1) {
+                windowLocationHref = window.location.href.replace("AddEditDoctorExperience", "DoctorExperience")
+            } else if (window.location.href.indexOf("AddEditDoctorBoardCertification") != -1) {
+                windowLocationHref = window.location.href.replace("AddEditDoctorBoardCertification", "DoctorBoardCertification")
+            }
+
+            if (windowLocationHref.indexOf($(this).attr("data-url") + '/') != -1) {
+                $(ctrl).addClass("active");
+                $(ctrl).parent().find('i').removeClass('far fa-circle');
+                $(ctrl).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }
+            if (windowLocationHref.indexOf($(this).attr("data-url")) != -1) {
+                console.log($(this).attr("data-url"));  
+                $(ctrl).parent().find('i').removeClass('far fa-circle');
+                $(ctrl).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }           
+        });
+        $("#DashBoard").on("click", function () {
+            window.location.href = "/DashBoard/index";
+        });
+    });
+   
+</script>
+
+<!-- end standard drop down -->
+<!-- standard drop down -->
+<!-- end standard drop down -->
+<!-- standard drop down -->

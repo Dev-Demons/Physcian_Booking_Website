@@ -1,0 +1,80 @@
+﻿@model Binke.ViewModels.QualificationViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        @(Model.QualificationId == 0 ? "Add Qualification" : "Edit Qualification")
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("AddEditQualification", "Doctor", FormMethod.Post, new { id = "frmQualification" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.QualificationId)
+        @Html.HiddenFor(m => m.DoctorId)
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label"><b>Institute</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Institute, new { @class = "form-control", placeholder = "Enter Institute" })
+                    @Html.ValidationMessageFor(m => m.Institute, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b>Degree</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Degree, new { @class = "form-control", placeholder = "Enter Degree" })
+                    @Html.ValidationMessageFor(m => m.Degree, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <label class="control-label"><b>Passing Year</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.PassingYear, new { @class = "form-control", data_mask = "9999", placeholder = "Enter PassingYear" })
+                    @Html.ValidationMessageFor(m => m.PassingYear, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><b>Notes</b></label>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", placeholder = "Enter Notes" })
+                    @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var passingYear = @Model.PassingYear;
+        passingYear = (passingYear === 0 ? "" : passingYear);
+        $('#PassingYear').val(passingYear);
+
+        $('#PassingYear').trigger('input');
+    });
+    $("#btnSave").click(function() {
+        $.validator.unobtrusive.parse($('#frmQualification'));
+        if ($("#frmQualification").valid()) {
+            $.post("@Url.Action("AddEditQualification")", $("#frmQualification").serialize(), function (response) {
+                HandleResponse(response);
+                if (response.Status) {
+                    if (response.Data == "Doctor") {
+                        bindQualificationList();
+                        closeModal();
+                    } else {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+</script>

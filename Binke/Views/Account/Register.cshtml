@@ -1,0 +1,153 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_LoginRegisterLayout.cshtml";
+    ViewBag.PageDescription = "Register to the top healthcare directory to find best available healthcare provider information including doctor, pharmacy, facility, senior care and more. Finding a health care provider has never been easier.";
+}
+<style type="text/css">
+</style>
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+    <link rel='canonical' href='https://www.doctyme.com/Account/Register'>
+</head>
+<div class="bk-section appointment-area section-padding-lg">
+    <h3 class="text-center">SELECT USER TYPE</h3>
+    <div class="container">
+        <div class="row" id="selectionType">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <p>
+                    <span class="spnWebDocBody">
+                        <label id="SubText"></label>
+                </span>
+                </p>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-2">
+                <a href="javascript:;" data-flag="Doctor">
+                    <div class="box text-center">
+                        <img src="~/Content/client/images/icons/doctor.png" alt="doctor-icon">
+                        <h4 id="Doctor">Doctor</h4>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:;" data-flag="Pharmacy">
+                    <div class="box text-center">
+                        <img src="~/Content/client/images/icons/pharmacy.png" alt="pharmacy-icon">
+                        <h4 id="Pharmacy">Pharmacy</h4>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:;" data-flag="Facility">
+                    <div class="box text-center">
+                        <img src="~/Content/client/images/icons/medical-center.png" alt="medical-icon">
+                        <h4 id="Facility">Facility</h4>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:;" data-flag="Seniorcare">
+                    <div class="box text-center">
+                        <img src="~/Content/client/images/icons/senior-care.png" alt="seniorcare-icon">
+                        <h4 id="Senior">Senior Care</h4>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:;" data-flag="Patient">
+                    <div class="box text-center">
+                        <img src="~/Content/client/images/icons/patient.png" alt="patient-icon">
+                        <h4 id="Patient">Patient</h4>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+
+            <div class="col-12 contact-form contact-form1 text-center">
+                <button type="button" onclick="loadRegisterForm();"> <span>Next <i class="fa fa-angle-right"></i></span> </button>
+            </div>
+    </div>
+
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        var selectedUser = "";
+        var flag = "";
+        $(document).on("click", "[data-flag]", function (e) {
+             flag = $(e.currentTarget).data("flag");
+            var message = "";
+            Clear();
+            switch (flag) {
+                case 'Doctor':
+                    $("#Doctor").css("background-color", "red");
+                    message = "Find best doctors in your area like Family Physician, Surgeon, Specialist etc.";
+                    break;
+                case 'Pharmacy':
+                    $("#Pharmacy").css("background-color", "red");
+                    message = "Pharmacy Search for nearest and best pharmacy in your area.";
+                    break;
+                case 'Facility':
+                    $("#Facility").css("background-color", "red");
+                    message = "Facility Hospitals, Urgent care, Imaging and Radiology centers, Ambulatory Surgical Centers, Blood banks, Clinics and medical offices, Dialysis Centers, Orthopedic and other rehabilitation centers and so much more...";
+                    break;
+                case 'Seniorcare':
+                    $("#Senior").css("background-color", "red");
+                    message = "Independent living, Assisted living, Skilled Nursing Facility, Continuous Care, Retirement Community";
+                    break;
+                case 'Patient':
+                    $("#Patient").css("background-color", "red");
+                    message = "Keep track of your appointments and medical record.";
+                    break;
+                default:
+                    message = "";
+                    break;
+            }
+            $("#SubText").text(message);
+          //loadRegisterForm(flag);
+
+        });
+        function Clear() {
+
+            $("#Doctor").css("background-color", "rgba(52, 152, 219, 0.8)");
+            $("#Pharmacy").css("background-color", "rgba(52, 152, 219, 0.8)");
+            $("#Facility").css("background-color", "rgba(52, 152, 219, 0.8)");
+            $("#Senior").css("background-color", "rgba(52, 152, 219, 0.8)");
+            $("#Patient").css("background-color", "rgba(52, 152, 219, 0.8)");
+
+            
+        }
+        function loadRegisterForm() {
+
+            if (flag == "") {
+
+                alert("please Select a user type");
+            }
+            else { userType = flag; 
+
+
+                var title = flag;
+                if (title == "Seniorcare") {
+                    title = "Senior Care";
+                }
+
+
+
+            $("#modalContent").load("@Url.Action("RegisterPartial", "Account")?userType=" + userType, function () {
+                $("#divModal .modal-dialog").addClass("modal-lg");
+                $("#myModalLabel").text("Register " + title);
+                $("#divModal").modal("show");
+                });
+
+            }
+        }
+    </script>
+}

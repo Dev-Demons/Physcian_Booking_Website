@@ -1,0 +1,39 @@
+﻿@model System.IO.FileInfo[]
+@{
+    int count = Model.Length;
+}
+<div id="activeFacility" class="tab-pane fade active in">
+    @{
+        if (count > 0)
+        {
+            var grid = new WebGrid(canPage: true, rowsPerPage: count, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model, rowCount: count, autoSortAndPage: false);
+            @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover", alternatingRowStyle: "alternateRow", htmlAttributes: new { id = "dtSiteMaps" },
+                                      mode: WebGridPagerModes.All, firstText: "First", lastText: "Last", previousText: "Previous", nextText: "Next", numericLinksCount: 10,
+                                      columns: grid.Columns(
+                                      grid.Column(header: "File Name", format: (item) =>
+                                      {
+                                          string filename = Path.GetFileName(item[5].ToString());
+
+                                          return new HtmlString(filename);
+                                      }),
+                                      grid.Column(header: "Created Date", format: (item) =>
+                                      {
+                                          DateTime createdDate = Convert.ToDateTime(item[1]).Date;
+
+                                          return new HtmlString(createdDate.ToString("dd/MM/yyyy"));
+                                      }),
+                                      grid.Column(header: "Download", format: (item) =>
+                                      {
+                                          string strFfilename = Path.GetFileName(item[5].ToString());
+                                          return new HtmlString(Html.ActionLink(" Download ", "FileDownload", new { filename = strFfilename }, new { @class = "label label-warning TdActionLink", @title = "Download site map" }).ToString());
+                                      })
+                              ));
+        }
+        else
+        {
+            <h5>Records not found!</h5>
+        }
+    }
+
+</div>

@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "User Account";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+<h3><i class="fa fa-user-md"></i>  User Account </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="~/Dashboard/Pharmacy"> Pharmacy </a></li>
+            <li class="active">  User Account </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="TopFormBlock" class="box-primary"></div>
+        <br />
+        <!--Tabs Content-->
+    </div>
+
+    </div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $("#MnuPharmacy").addClass('menu-open');
+        $("#MnuPharmacy ul li a p").each(function () {
+            var text = $(this).text();
+            if (text == "Social Media") {
+                $(this).parent().addClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-circle');
+                $(this).parent().find('i').addClass('far fa-dot-circle-o');
+            }
+            else {
+                $(this).parent().removeClass('active-sub-menu-item');
+                $(this).parent().find('i').removeClass('far fa-dot-circle-o');
+                $(this).parent().find('i').addClass('far fa-circle');
+            }
+        });
+
+        $('#TopFormBlock').load('@Url.Action("PharamcyAccount", "Pharmacy")');
+
+        $(document).ready(function () {
+          //  bindPharmacySocialMediaList(true, 0);
+        });
+
+
+        $(document).on('click', '.editInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $('#TopFormBlock').load('@Url.Action("PharamcyAccount/", "Pharmacy")' + ItemId);
+        });
+
+        $(document).on('click', '.viewInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            $('#TopFormBlock').load('@Url.Action("PharamcyAccount/", "Pharmacy")' + ItemId, function () {
+                $("#TopFormBlock").find('input, textarea, button, select').attr("disabled", true);
+          $('.title').text("View Pharmacy Account");
+            });
+
+        });
+
+        $(document).on('click', '.removeInfo', function () {
+            var ItemId = $(this).attr('data-Id');
+            var dataFlag = $(this).attr('data-flag');
+
+            if (dataFlag == "Activate")
+                DeactivatePharmacySocialMedia(ItemId, true);
+            else
+                DeactivatePharmacySocialMedia(ItemId, false);
+        });
+
+
+        //$("#AddPharmacy").click(function () {
+        //    window.loadRegisterForm("Pharmacy");
+        //});
+
+        //---
+        
+        function CurrentPageStart() {
+            var table = $('#dtPharmacySocialMedia').DataTable();
+            var info = table.page.info();
+            return info.start;
+        }
+
+        function DeactivatePharmacySocialMedia(id, flag) {
+            var title = flag ? "ReActivate" : "Delete";
+            var message = "Are you sure you want to <b> " + title + " </b> this Pharmacy Social Media Info";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeActivePharmacySocialMedia/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindPharmacySocialMediaList(true, CurrentPageStart());
+                        closeModal();
+                        $('#TopFormBlock').load('@Url.Action("PharmacySocialMedia", "Pharmacy")');
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+    </script>
+}

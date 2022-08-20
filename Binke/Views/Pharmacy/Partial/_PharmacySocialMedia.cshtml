@@ -1,0 +1,148 @@
+﻿@model  Binke.ViewModels.OrgSocialMediaUpdateViewModel
+@{
+    ViewBag.Title = "Pharmacy Social Media";
+}
+@if (ViewBag.PharmacyID > 0)
+{<h4 style="text-align:center;background-color:#f4f6f9;color:#54abd9;transform: translateY(-95px);width:50%;margin-left:20%;margin-bottom:-77px;">@Session["PharmacyName"]</h4>}
+<div class="box-header">
+    <h4 class="title">
+        @(Model.SocialMediaId == 0 ? "Add Pharmacy Social Media" : "Edit Pharmacy Social Media")
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm("AddEditPharmacySocialMedia", "Pharmacy", FormMethod.Post, new { id = "frmPharmacySocialMedia", @class = "form-horizontal form-bordered" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.SocialMediaId)
+        @Html.HiddenFor(model => model.OrganisationId)
+        @Html.HiddenFor(model => model.OrganizationTypeID)
+        @Html.HiddenFor(model => model.UserTypeID)
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Facebook</b></label>
+                        @Html.TextBoxFor(model => model.Facebook, new { @class = "form-control", placeholder = "Enter Facebook Account Name" })
+                        @Html.ValidationMessageFor(model => model.Facebook, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.OrganisationName, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Twitter</b></label>
+                        @Html.TextBoxFor(model => model.Twitter, new { @class = "form-control", placeholder = "Enter Twitter Account Name" })
+                        @Html.ValidationMessageFor(model => model.Twitter, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>LinkedIn</b></label>
+                        @Html.TextBoxFor(model => model.LinkedIn, new { @class = "form-control", placeholder = "Enter LinkedIn Account Name" })
+                        @Html.ValidationMessageFor(model => model.LinkedIn, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Instagram</b></label>
+                        @Html.TextBoxFor(model => model.Instagram, new { @class = "form-control", placeholder = "Enter Instagram Account Name" })
+                        @Html.ValidationMessageFor(model => model.Instagram, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Youtube</b></label>
+                        @Html.TextBoxFor(model => model.Youtube, new { @class = "form-control", placeholder = "Enter Youtube Account Name" })
+                        @Html.ValidationMessageFor(model => model.Youtube, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Pinterest</b></label>
+                        @Html.TextBoxFor(model => model.Pinterest, new { @class = "form-control", placeholder = "Enter Pinterest Account Name" })
+                        @Html.ValidationMessageFor(model => model.Pinterest, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mar-btm">
+                        <label class="control-label"><b>Tumblr</b></label>
+                        @Html.TextBoxFor(model => model.Tumblr, new { @class = "form-control", placeholder = "Enter Tumblr Account Name" })
+                        @Html.ValidationMessageFor(model => model.Tumblr, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="col-md-2 mar-btm" style="margin-top:30px;">
+                        <label class="control-label"><b>Is Active</b></label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsActive" name="IsActive" dataId="IsActive" value="IsActive" /> &nbsp;
+                            <span class="slider round" style="width:35px;"></span> &nbsp;
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-2 mar-btm" style="text-align:right; margin-top:30px;">
+                        <button type="button" id="btnSave" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $.validator.setDefaults({ ignore: null });
+    $(document).ready(function () {
+    $("#OrganisationId").val('@ViewBag.PharmacyID');
+    $("#OrganizationTypeID").val('1005');
+    $("#UserTypeID").val('3');
+
+        var ID = "@ViewBag.ID";
+
+        if (ID > 0) {
+        
+        if ("@Model.IsActive" == 'True') {
+            $("#IsActive").prop('checked', true);
+            $("#IsActive").val(true);
+        }
+        else {
+            $("#IsActive").prop('checked', false);
+            $("#IsActive").val(false);
+        }
+    }
+
+    $(document).on('click', '.slider',function () {
+        var chekedstatus = $(this).parent().find(":checkbox").is(":checked");
+        if (chekedstatus == false)
+            $(this).parent().find(":checkbox").val(true);
+        else
+            $(this).parent().find(":checkbox").val(false);
+    });
+
+
+
+            $("#btnSave").click(function () {
+                $.validator.unobtrusive.parse($('#frmPharmacySocialMedia'));
+                if ($("#frmPharmacySocialMedia").valid()) {
+                    $.post("@Url.Action("AddEditPharmacySocialMedia")", $("#frmPharmacySocialMedia").serialize(), function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            if (response.Status == 1) {
+                               
+                                window.location.reload();
+                            } else {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+
+    });
+</script>

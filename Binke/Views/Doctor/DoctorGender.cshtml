@@ -1,0 +1,234 @@
+﻿@model Binke.ViewModels.DoctorGenderViewModel
+@{
+                /**/
+
+                ViewBag.Title = "Gender";
+                Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+@section pageheader{
+    <div class="col-md-12" style="margin-bottom:25px;">
+        <div class="col-md-3">
+            <h3><i class="fa fa-user-md"></i> Gender </h3>
+        </div>
+        <div class="col-md-5 text-center" style="top:10px">
+            <h3>@Convert.ToString(Session["DoctorName"])</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="breadcrumb-wrapper" style="top:15px;">
+                <span class="label">You are here:</span>
+
+                <ol class="breadcrumb">
+                    <li> <a href='@("/DoctorProfile/"+Convert.ToString(Session["DoctorSearch"]))'> Doctor </a></li>
+                    <li class="active"> Gender </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    #dtGender_length select {
+        margin: 0px 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+
+    #dtGender_length {
+        float: left;
+    }
+</style>
+<style>
+    label.switch {
+        position: relative;
+        display: inline-block;
+        height: 23px;
+        padding-left: 2.8em !important;
+        cursor: pointer;
+        color: red;
+    }
+</style>
+<div class="panel" style="margin-top:20px;">
+
+    <div class="panel-body">
+        <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="addGender">Add Gender</button>
+        <table id="dtGender" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th> Name</th>
+                    <th>Description</th>
+                    <th>Active</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindGenderList();
+        });
+
+        $(document).on("click", "#addGender", function () {
+            window.location.href = '/AddEditDoctorGender/';
+            //AddEditGender(0);
+        });
+
+        function AddEditGender(id) {
+            window.location.href = '/AddEditDoctorGender/' + id;
+            //$("#modalContent").load("/AddEditDoctorGender/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function AddEditViewGender(id) {
+            window.location.href = '/AddEditViewDoctorGender/' + id;
+            //$("#modalContent").load("/AddEditDoctorGender/" + id, function () {
+            //    $("#divModal").modal('show');
+            //});
+        }
+        function ViewGender(id) {
+            $("#modalContent").load("/_DoctorGenderView/" + id, function () {
+                $("#divModal").modal('show');
+            });
+        }
+
+        function bindGenderList() {
+            if ($.fn.DataTable.isDataTable("#dtGender")) {
+                $('#dtGender').DataTable().destroy();
+            }
+            var table = $('#dtGender')
+                .DataTable({
+                    "sAjaxSource": "/GetDoctorGenderList/",
+                    "columns": [
+                        {
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "Description",
+                            "autoWidth": false,
+                            "searchable": true
+                        },
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> ';
+                                content += '<label class="switch" style="pointer-events:none">';
+                                content += '<input onchange="ActiveDeactiveGender(this)"  type="checkbox" ' + value + ' data-DocId="' + row.GenderId + '" data-Id= "IsActive" />';
+                                content += '<span class="slider round"style="width:35px;"></span>';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "DoctorGenderTypeId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var content = '<a href="javascript:;" onclick="AddEditGender(' + data + ')" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="AddEditViewGender(' + data + ')" data-toggle="tooltip" data-original-title="View" data-flag="View" data-Id="' + data + '" class="btn btn-success btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                content += '<a href="javascript:;"  onclick="AddEditGender(' + data + ')" data-toggle="tooltip" data-original-title="Delete" data-flag="delete" data-Id="' + data + '" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;'
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+        var ActiveDeactiveGender = function (ctrl) {
+            var flag = $(ctrl).is(":checked");
+
+            var id = $(ctrl).data("docid");
+            switch (flag) {
+                case false:
+                    DeactivateGender(id, true);
+                    break;
+                case true:
+                    DeactivateGender(id, false);
+                default:
+            }
+        }
+        function DeactivateGender(id, flag) {
+            var title = flag ? "De Activate" : "Re Activate";
+            var message = "Are you sure you want to <b> " + title + " </b> this Gender";
+            BinkeDialog.Confirmation(title, message, function () {
+                $.ajax({
+                    url: "/ActiveDeGender/" + flag + "/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        HandleResponse(data);
+                        bindGenderList();
+
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+        $('#dtGender').on("click", ".action", function (e) {
+            var flag = $(e.currentTarget).data("flag");
+            var id = $(e.currentTarget).data("id");
+            switch (flag) {
+                case "edit":
+                    AddEditGender(id);
+                    break;
+                case "delete":
+                    RemoveGender(id);
+                    break;
+                case "View":
+                    ViewGender(id);
+                    break;
+            }
+        });
+
+        function RemoveGender(id) {
+            var message = "Are you sure you want to <b> Remove Gender </b> ";
+            BinkeDialog.Confirmation("Remove Gender", message, function () {
+                $.ajax({
+                    url: "/RemoveDoctorGender/" + parseInt(id),
+                    type: "POST",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        HandleResponse(response);
+                        if (response.Status) {
+                            bindGenderList();
+                        }
+                    },
+                    error: function (data) {
+                        HandleResponse(data);
+                    }
+                });
+            });
+        }
+    </script>
+}

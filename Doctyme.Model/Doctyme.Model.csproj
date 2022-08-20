@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98D13B2A-0D73-416B-9763-8D8268F4E1A3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Doctyme.Model</RootNamespace>
+    <AssemblyName>Doctyme.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="AddressType.cs" />
+    <Compile Include="Advertisement.cs" />
+    <Compile Include="AdvertisementLocation.cs" />
+    <Compile Include="AdvertisementType.cs" />
+    <Compile Include="AgeGroup.cs" />
+    <Compile Include="AmenityOption.cs" />
+    <Compile Include="AspNetUsers.cs" />
+    <Compile Include="Attachment.cs" />
+    <Compile Include="Attributes\MaxFileSizeAttribute.cs" />
+    <Compile Include="BaseModel.cs" />
+    <Compile Include="BoardCertifications.cs" />
+    <Compile Include="City.cs" />
+    <Compile Include="CityStateZip.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="ContactUs.cs" />
+    <Compile Include="Coupon.cs" />
+    <Compile Include="DataReaderExtensios.cs" />
+    <Compile Include="DocOrgInsurance.cs" />
+    <Compile Include="DocOrgPatient.cs" />
+    <Compile Include="DocOrgStateLicense.cs" />
+    <Compile Include="DocOrgTaxonomy.cs" />
+    <Compile Include="Doctor.cs" />
+    <Compile Include="DoctorAffiliation.cs" />
+    <Compile Include="DoctorAgeGroup.cs" />
+    <Compile Include="DoctorBoardCertification.cs" />
+    <Compile Include="DoctorFacilityAffiliation.cs" />
+    <Compile Include="DoctorGender.cs" />
+    <Compile Include="DoctorInsuranceAccepted.cs" />
+    <Compile Include="DoctorSpeciality.cs" />
+    <Compile Include="Doctyme.cs" />
+    <Compile Include="Drug.cs" />
+    <Compile Include="DrugDetail.cs" />
+    <Compile Include="DrugImage.cs" />
+    <Compile Include="DrugManufacturer.cs" />
+    <Compile Include="DrugManufacturer_LookUp.cs" />
+    <Compile Include="DrugOrder.cs" />
+    <Compile Include="DrugQuantity.cs" />
+    <Compile Include="DrugStatus_LookUp.cs" />
+    <Compile Include="DrugStrength.cs" />
+    <Compile Include="DrugStrength_LookUp.cs" />
+    <Compile Include="DrugSymptoms.cs" />
+    <Compile Include="DrugSymptoms_LookUp.cs" />
+    <Compile Include="DrugTabs.cs" />
+    <Compile Include="DrugTabs_LookUp.cs" />
+    <Compile Include="DrugType.cs" />
+    <Compile Include="DrugType_LookUp.cs" />
+    <Compile Include="Encrypt.cs" />
+    <Compile Include="ErrorLog.cs" />
+    <Compile Include="Experience.cs" />
+    <Compile Include="Featured.cs" />
+    <Compile Include="FeaturedDoctor.cs" />
+    <Compile Include="FeaturedSpeciality.cs" />
+    <Compile Include="GenderType.cs" />
+    <Compile Include="IdentityModel.cs" />
+    <Compile Include="InsurancePlan.cs" />
+    <Compile Include="InsuranceProvider.cs" />
+    <Compile Include="InsuranceType.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Migrations\202002130234149_Add DocOrgPatient.cs" />
+    <Compile Include="Migrations\202002130234149_Add DocOrgPatient.Designer.cs">
+      <DependentUpon>202002130234149_Add DocOrgPatient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002130237560_Add IsPrimary in DocOrgPatient.cs" />
+    <Compile Include="Migrations\202002130237560_Add IsPrimary in DocOrgPatient.Designer.cs">
+      <DependentUpon>202002130237560_Add IsPrimary in DocOrgPatient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002140448596_openin hour.cs" />
+    <Compile Include="Migrations\202002140448596_openin hour.Designer.cs">
+      <DependentUpon>202002140448596_openin hour.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002180358072_ContactUs.cs" />
+    <Compile Include="Migrations\202002180358072_ContactUs.Designer.cs">
+      <DependentUpon>202002180358072_ContactUs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="OpeningHour.cs" />
+    <Compile Include="OrganisationAddress.cs" />
+    <Compile Include="Organisation.cs" />
+    <Compile Include="OrganisationType.cs" />
+    <Compile Include="OrganizationAmenityOption.cs" />
+    <Compile Include="Pagination.cs" />
+    <Compile Include="Patient.cs" />
+    <Compile Include="PatientHealthCondition.cs" />
+    <Compile Include="PaymentType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Qualification.cs" />
+    <Compile Include="Review.cs" />
+    <Compile Include="SeedData\UserSeedData.cs" />
+    <Compile Include="SeniorCare.cs" />
+    <Compile Include="SiteImage.cs" />
+    <Compile Include="Slot.cs" />
+    <Compile Include="SocialMedia.cs" />
+    <Compile Include="Speciality.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="Taxonomy.cs" />
+    <Compile Include="TempSlotBooking.cs" />
+    <Compile Include="UserType.cs" />
+    <Compile Include="Utility\Base64FileJsonConverter.cs" />
+    <Compile Include="Utility\CompareHelper.cs" />
+    <Compile Include="Utility\DbContextExtensions.cs" />
+    <Compile Include="Utility\Extension.cs" />
+    <Compile Include="ViewModels\AdvertisementViewModel.cs" />
+    <Compile Include="ViewModels\AppointmentViewModel.cs" />
+    <Compile Include="ViewModels\BlogViewModel.cs" />
+    <Compile Include="ViewModels\CouponModel.cs" />
+    <Compile Include="ViewModels\DoctorBasicInformations.cs" />
+    <Compile Include="ViewModels\DoctorSearchList.cs" />
+    <Compile Include="ViewModels\FeaturedViewModel.cs" />
+    <Compile Include="ViewModels\DrugDetailViewModel.cs" />
+    <Compile Include="ViewModels\DrugSearchList.cs" />
+    <Compile Include="ViewModels\GraphViewModel.cs" />
+    <Compile Include="ViewModels\PageInfo.cs" />
+    <Compile Include="ViewModels\NewsletterSubscriber.cs" />
+    <Compile Include="ViewModels\DashboardItemCount.cs" />
+    <Compile Include="ViewModels\OrganizationAmenityOptionViewModel.cs" />
+    <Compile Include="ViewModels\OrganizationViewModel.cs" />
+    <Compile Include="ViewModels\PatientViewModel.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\Records.cs" />
+    <Compile Include="ViewModels\ReviewCalculationModel.cs" />
+    <Compile Include="ViewModels\SeniorCareModel.cs" />
+    <Compile Include="ViewModels\SpAllTypeViewModel.cs" />
+    <Compile Include="ViewModels\SpSlotViewModel.cs" />
+    <Compile Include="ViewModels\SP_GetUserAddressZipCodeModel.cs" />
+    <Compile Include="ViewModels\TestimonialViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202002130234149_Add DocOrgPatient.resx">
+      <DependentUpon>202002130234149_Add DocOrgPatient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002130237560_Add IsPrimary in DocOrgPatient.resx">
+      <DependentUpon>202002130237560_Add IsPrimary in DocOrgPatient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002140448596_openin hour.resx">
+      <DependentUpon>202002140448596_openin hour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002180358072_ContactUs.resx">
+      <DependentUpon>202002180358072_ContactUs.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

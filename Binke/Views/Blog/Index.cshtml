@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewBag.Title = "Blog List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section pageheader{
+    <h3><i class="fa fa-user-md"></i> Blog List </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li class="active"> Blog List </li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <div class="tab-content">
+                <div id="activeBlog" class="tab-pane fade active in">
+                    <button href="javascript:;" class="pull-right btn btn-sm btn-primary" id="btnAddNewBlog"> <i class="nav-icon fas fa-plus mr-1"></i>Add Blog</button>
+                    <table id="dtBloglIst" class="table table-striped table-bordered table-hover small" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:12%">MainSite</th>
+                                <th style="width:12%">Article Name</th>
+                                <th style="width:23%">Summary</th>
+                                <th style="width:12%">Category</th>
+                                <th style="width:15%">Image</th>
+                                @*<th style="width:12%">Start Date</th>*@
+                                <th style="width:8%">Active</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section pagespecific{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindBLogList(true);
+        })
+        function bindBLogList(flag) {
+            if ($.fn.DataTable.isDataTable("#dtBloglIst")) {
+                $('#dtBloglIst').DataTable().destroy();
+            }
+            dataList = [];
+            var table = $('#dtBloglIst')
+                .DataTable({
+                    "sAjaxSource": "/GetBlogSearchList/" + flag,
+                    "columns": [
+                        //{
+                        //    render: function (data, type, row, meta) {
+                        //        return meta.row + meta.settings._iDisplayStart + 1;
+                        //    }
+                        //},
+                        //{
+                        //    "data": "MainSite",
+                        //    "autoWidth": false,
+                        //    "searchable": false,
+                        //    "orderable": true
+                        //}
+                        {
+                            "data": "MainSite",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked='checked'";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> &nbsp;';
+                                content += '<label class="switch" style="padding-left:1.8em !important">&nbsp;';
+                                content += '<input data-name="MainSite" data-id="' + row.ArticleId + '" onchange="UpdateMainSiteSwitch(this)" type="checkbox" ' + value + ' data-Id= "MainSite" />&nbsp;';
+                                content += '<span class="slider round" style="width:35px;" data-id="' + row.ArticleId + '"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        }
+                        ,
+                        {
+                            "data": "ArticleName",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "orderable": true
+                        }
+                        ,
+                        {
+                            "data": "ArticleSummary",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "orderable": false
+                        },
+                        {
+                            "data": "CategoryName",
+                            "autoWidth": false,
+                            "searchable": true,
+                            "orderable": false
+                        },
+                        {
+                            "data": "ImagePath",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "render": function (data, type, row) {
+                                var imgPath = row.ImagePath;
+                                var content = '<img src="' + imgPath + '" style="width:80px;"/>';
+                                return content;
+                            }
+                        },
+                        //{
+                        //    "data": "DateString",
+                        //    "searchable": true
+                        //},
+                        {
+                            "data": "IsActive",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                var value = "";
+                                if (data) {
+                                    value = "checked='checked'";
+                                }
+                                var content = '<div class="input-group mg-b-pro-edt"> &nbsp;';
+                                content += '<label class="switch" style="padding-left:1.8em !important">&nbsp;';
+                                content += '<input data-name="IsActive" data-id="' + row.ArticleId + '" onchange="UpdateSwitch(this)" type="checkbox" ' + value + ' data-Id= "IsActive" />&nbsp;';
+                                content += '<span class="slider round" style="width:35px;" data-id="' + row.ArticleId + '"></span> &nbsp;';
+                                content += ' ';
+                                content += '</label >  </div>';
+                                return content;
+                            }
+                        },
+                        {
+                            "data": "ArticleId",
+                            "autoWidth": false,
+                            "searchable": false,
+                            "orderable": false,
+                            "render": function (data, type, row) {
+                                dataList.push(row)
+                                var content = '<div style="display:flex"><a href="/Blog/Create/' + row.ArticleId + '" data-toggle="tooltip" data-original-title="Edit" data-flag="edit" data-Id="' + data + '" class="btn btn-primary btn-sm action"><i class="fa fa-edit"></i></a> &nbsp;';
+                                content += '<a href="javascript:;" data-name="Deleted" data-id="' + data + '" onclick="UpdateSwitch(this)" data-toggle="tooltip" data-original-title="Delete" class="btn btn-danger btn-sm action"><i class="fa fa-trash"></i></a> &nbsp;';
+
+                                //var content = '<a href="/AdvertisementEdit/' + data + '" data-original-title="Edit Ad" class="btn btn-primary btn-sm action"><i class="fa fa-eye"></i></a> &nbsp;';
+                                //if (row.Deleted == false) {
+                                //    content += '<a href="javascript:;" data-toggle="tooltip" data-original-title="De Activate" data-flag="deactivate" data-Id="' + data + '" class="btn btn-danger btn-sm action remove"><i class="fa fa-close"></i></a> &nbsp;';
+                                //}
+                                return content;
+                            }
+                        }
+                    ]
+                });
+        };
+
+        var UpdateSwitch = function (ctrl) {
+            var tableName = "Articles";
+            var primaryKeyName = "Id";
+
+            var flag = $(ctrl).is(":checked");
+
+            var fieldName = $(ctrl).data("name");
+            var primaryKeyValue = $(ctrl).data("id");
+            if (fieldName == "Deleted") {
+                flag = "true";
+            }
+            $.ajax({
+                url: "/Blog/UpdateSwitch/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    TableName: tableName, PrimaryKeyName: primaryKeyName, PrimaryKeyValue: primaryKeyValue, FieldToUpdateName: fieldName,
+                    FieldToUpdateValue: flag
+                },
+                success: function (data) {
+                    HandleResponse(data);
+                    bindBLogList(flag);
+                    //window.location.href = '/Blog/Index/';
+                }
+            });
+        }
+        var UpdateMainSiteSwitch = function (ctrl) {
+            var tableName = "Articles";
+            var primaryKeyName = "Id";
+
+            var flag = $(ctrl).is(":checked");
+            var isMainSite = 0;
+            var fieldName = $(ctrl).data("name");
+            var primaryKeyValue = $(ctrl).data("id");
+            //alert(fieldName);
+            //alert(flag);
+            if (fieldName == "MainSite") {
+                if (flag) {
+                    isMainSite = true;
+                } else {
+                    isMainSite = false;
+                }
+            }
+            
+            $.ajax({
+                url: "/Blog/UpdateMainSite/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    TableName: tableName, PrimaryKeyName: primaryKeyName, PrimaryKeyValue: primaryKeyValue, FieldToUpdateName: fieldName,
+                    FieldToUpdateValue: isMainSite
+                },
+                success: function (data) {
+                    HandleResponse(data);
+                    bindBLogList(flag);
+                    //window.location.href = '/Blog/Index/';
+                }
+            });
+        }
+       
+        //use for redirect create new blog page
+        $(document).on("click", "#btnAddNewBlog", function () {
+            window.location.href = '/Blog/Create/';
+        });
+
+    </script>
+}
+

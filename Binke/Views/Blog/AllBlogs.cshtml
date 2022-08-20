@@ -1,0 +1,850 @@
+﻿@model  Doctyme.Model.ViewModels.BlogViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .section-padding-top-sm {
+        padding-top: 20px !important
+    }
+
+    .owl-theme .owl-controls .owl-page {
+        display: inline-block !important;
+    }
+
+        .owl-theme .owl-controls .owl-page span {
+            background: none repeat scroll 0 0 #869791;
+            border-radius: 20px;
+            display: block;
+            height: 12px;
+            margin: 5px 7px;
+            opacity: 0.5;
+            width: 12px;
+        }
+
+
+    .imageClass {
+        width: 300px;
+        height: 100px;
+    }
+
+    .slidertextLineHeight {
+        line-height: 17px;
+    }
+
+    a.entry-thumb:hover:before {
+        opacity: 0
+    }
+
+    .entry-thumb::before, .x-recent-posts-img::after {
+        /*background-color: #128bed;*/
+        background-color: #fff;
+    }
+
+    a.entry-thumb:hover img {
+        opacity: 0.50;
+    }
+
+    /*owl-nav*/
+    .owl-carousel .owl-nav {
+        overflow: hidden;
+        height: 0px;
+    }
+
+    .owl-theme .owl-dots .owl-dot.active span,
+    .owl-theme .owl-dots .owl-dot:hover span {
+        background: #2caae1;
+    }
+
+
+    .owl-carousel .item {
+        text-align: center;
+    }
+
+    .owl-carousel .nav-btn {
+        height: 47px;
+        position: absolute;
+        width: 26px;
+        cursor: pointer;
+        top: 100px !important;
+    }
+
+    .owl-carousel .owl-prev.disabled,
+    .owl-carousel .owl-next.disabled {
+        pointer-events: none;
+        opacity: 0.2;
+    }
+
+    .owl-carousel .prev-slide {
+        background: url(nav-icon.png) no-repeat scroll 0 0;
+        left: 33px;
+    }
+
+    .owl-carousel .next-slide {
+        background: url(nav-icon.png) no-repeat scroll -24px 0px;
+        right: 33px;
+    }
+
+    .owl-carousel .prev-slide:hover {
+        background-position: 0px -53px;
+    }
+
+    .owl-carousel .next-slide:hover {
+        background-position: -24px -53px;
+    }
+
+    .owl-nav {
+        display: block !important;
+    }
+    /*.navPrev {
+            background: #F4D5D5 !important;
+            line-height: 26px !important;
+            font-size: 25px !important;
+            border-radius: 4px;
+            padding: 2px 5px 5px 5px;
+        }*/
+    .navPrev {
+        line-height: 26px !important;
+        font-size: 25px !important;
+        border-radius: 4px;
+        padding: 2px 5px 5px 5px;
+        color: #fff;
+        cursor: pointer;
+        background: #000;
+        background: rgba(0,0,0,0.5) !important;
+        width: 40px !important;
+        height: 40px !important;
+        position: absolute;
+        display: block;
+        z-index: 1000;
+    }
+
+    .owl-carousel .nav-btn {
+        /*height: 34px !important;*/
+        top: 50% !important;
+    }
+
+        .owl-carousel .nav-btn .navPrev:after {
+            background-color: black;
+        }
+
+    .catItem {
+        position: relative;
+        display: block;
+        width: 100%;
+        /*width: 31.3333% !important;*/
+        margin: 0 2% 2em 0 !important;
+        background: #ffffff;
+        padding: 5px 5px 5px 5px;
+        border-width: 1px 1px 1px 1px;
+        -webkit-border-radius: 5px 5px 5px 5px;
+        -moz-border-radius: 5px 5px 5px 5px;
+        border-radius: 5px 5px 5px 5px;
+        border-color: #dddddd;
+        border-style: solid;
+        box-shadow: 0px 1px 0px 0px #cccccc;
+        float: left !important;
+    }
+
+    .esg-media-cover-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .esg-entry-media-wrapper {
+        z-index: 0;
+    }
+
+    .esg-entry-media {
+        width: 100%;
+    }
+
+    .esg-entry-media {
+        position: relative;
+        border: 0 solid transparent;
+        outline: 0 solid transparent;
+        overflow: hidden;
+    }
+
+    .esg-grid .mainul li.eg-petcentral-grid2-wrapper .esg-media-poster {
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .esg-media-poster {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .esg-entry-cover {
+        /*box-sizing: border-box;*/
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        border: 0 solid transparent;
+        outline: 0 solid transparent;
+    }
+
+    .esg-grid a {
+        border: none;
+        text-decoration: none;
+    }
+
+    .eg-invisiblebutton {
+        box-shadow: none !important;
+        height: inherit !important;
+        display: block;
+    }
+
+    .esg-entry-cover .esg-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0 solid transparent;
+        outline: 0 solid transparent;
+    }
+
+    .eg-petcentral-grid2-container {
+        background: rgba(255,255,255,0.75);
+    }
+
+    .esg-tc {
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    /*.eec {
+            display: block;
+            width: auto;
+            height: auto;
+            position: absolute !important;
+            font-size: 20px;
+            text-align: center;
+        }*/
+    .eg-petcentral-grid2-element-0-a {
+        font-size: 12px;
+        line-height: 20px;
+        color: #ffffff;
+        font-family: "Roboto";
+        font-weight: 900;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: normal;
+        display: inline-block;
+        float: left;
+        clear: none;
+        margin: 2px 8px 0px 0px;
+        position: relative;
+    }
+
+    .eg-petcentral-grid2-element-0 {
+        font-size: 12px;
+        line-height: 20px;
+        color: #ffffff;
+        font-weight: 900;
+        padding: 5px 8px 5px 8px;
+        border-radius: 0px 0px 0px 0px;
+        background: #128bed;
+        z-index: 2 !important;
+        font-family: "Roboto";
+        text-transform: uppercase;
+    }
+
+    .esg-grid a {
+        border: none;
+        text-decoration: none;
+    }
+
+    .esg-cc {
+        top: 0;
+        left: 0;
+        width: 100%;
+        vertical-align: middle;
+    }
+
+    .eec {
+        display: block;
+        /*width: auto;*/
+        height: auto;
+        position: absolute !important;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .eg-petcentral-grid2-element-4-a {
+        font-size: 14px !important;
+        line-height: 14px !important;
+        color: #000000 !important;
+        font-family: "Roboto" !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        display: inline-block !important;
+        float: none !important;
+        clear: none !important;
+        margin: 0px 0px 0px 0px !important;
+        position: relative !important;
+    }
+
+    .eg-petcentral-grid2-element-4 {
+        font-size: 14px !important;
+        line-height: 14px !important;
+        color: #000000 !important;
+        font-weight: 600 !important;
+        /*padding: 0px 10px 0px 10px !important;*/
+        border-radius: 0px 0px 0px 0px !important;
+        background: transparent !important;
+        z-index: 2 !important;
+        font-family: "Roboto" !important;
+    }
+
+    .eg-petcentral-grid2-element-5 {
+        font-size: 16px;
+        line-height: 18px;
+        color: #0a0a0a;
+        font-weight: 400;
+        display: block;
+        text-align: center;
+        clear: none;
+        margin: 7px 0px 0px 0px;
+        padding: 15px 20px 15px 20px;
+        border-radius: 0px 0px 0px 0px;
+        background: transparent;
+        position: relative;
+        z-index: 2 !important;
+        font-family: "Roboto";
+        border-top-width: 1px;
+        border-right-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-color: #128bed;
+        border-style: solid;
+    }
+    /*.eec {
+            display: block;
+            width: auto;
+            height: auto;
+            position: absolute !important;
+            font-size: 20px;
+            text-align: center;
+        }*/
+    .eg-petcentral-grid2-element-1-a {
+        display: block;
+        text-align: center;
+        clear: none;
+        margin: 0px 0px 0px 0px;
+        position: relative;
+    }
+
+    .eg-petcentral-grid2-element-1 {
+        font-size: 22px;
+        line-height: 22px;
+        color: #000000;
+        font-weight: 600;
+        padding: 15px 20px 15px 20px;
+        border-radius: 0px 0px 0px 0px;
+        background: rgba(255,255,255,0.7);
+        z-index: 2 !important;
+        display: block;
+        font-family: "Roboto";
+        text-transform: capitalize;
+    }
+
+    .esg-bc {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .esg-grid a:focus,
+    .esg-grid a:hover {
+        text-decoration: none;
+        border: none
+    }
+
+    /*.catItem:hover .esg-bottom {
+            transform: scaleY(0);
+        }*/
+    .tp-esg-item {
+        z-index: 5
+    }
+
+    .esg-revealed .esg-itm-anime .tp-esg-item:hover {
+        z-index: 9999 !important;
+        transform: none !important
+    }
+
+    .esg-cover-overflow {
+        overflow: hidden
+    }
+
+    /*imgCover:before {
+            z-index: 1;
+            visibility: inherit;
+            opacity: 1;
+            transform: translate3d(0px, 0px, 0px);
+        }*/
+    /*a.imgCover:hover img {
+            opacity: 0.15;
+        }*/
+
+    /*.esg-media-poster:hover .imgCover {
+            opacity: 0.15;
+        }*/
+    .esg-media-cover-wrapper:hover {
+        /*opacity:0.15 !important*/
+        background-color: white !important
+    }
+
+    .esg-entry-media-wrapper:hover {
+        opacity: 0.1 !important
+    }
+
+    .esgHideOposity {
+        visibility: hidden !important;
+        opacity: 0 !important;
+        transform-origin: 50% 50% 0px;
+        transform-style: flat;
+        transform: translate(-50%) translate3d(0px, 0px, 0px);
+    }
+
+    .esg-entry-media-wrapper:hover img {
+        opacity: 0.15 !important;
+    }
+
+    .esg-media-poste:hover img {
+        opacity: 0.15 !important;
+    }
+
+    .esg-media-poster:hover {
+        opacity: 0.15 !important;
+    }
+    /*.catItem:hover .esg-overlay[style] {
+           visibility:inherit;
+           opacity:1 !important;
+        }
+
+        .catItem:after .esg-overlay[style] {
+            visibility: inherit;
+            opacity: 1 !important;
+        }*/
+    image:hover .esg-overlay {
+        visibility: inherit;
+        opacity: 1 !important;
+    }
+
+    .con:hover .esgHideOposity {
+        transform: scaleY(1) !important;
+        visibility: inherit !important;
+    }
+
+    .con a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(255,255,255,0.75);
+        z-index: 1;
+        visibility: hidden;
+        opacity: 0;
+        -webkit-transition: all 0.4s ease-in-out 0s;
+        -o-transition: all 0.4s ease-in-out 0s;
+        transition: all 0.4s ease-in-out 0s;
+    }
+
+    .con a img {
+        -webkit-transition-timing-function: ease-in-out;
+        -o-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+        width: 100%;
+    }
+
+    .con:hover a::before {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .con:hover .esgHideOposity {
+        visibility: visible !important;
+        opacity: 1 !important;
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+    }
+    /*.con:hover .esg-cc eec .esgHideOposity, .con:hover .team-member-3-content h6 {
+            -webkit-transform: translateY(0);
+            -ms-transform: translateY(0);
+            transform: translateY(0);
+            visibility: visible;
+            opacity: 1;
+        }*/
+    .overLayImage {
+        visibility: hidden;
+        opacity: 0;
+        transform-style: flat;
+        transform: translate3d(0px, 0px, 0px);
+    }
+
+    .catsubOverlay {
+        visibility: hidden;
+        opacity: 0;
+        transform-origin: 50% 50% 0px;
+        transform-style: flat;
+        transform: translate(-50%) translate3d(0px, 0px, 0px);
+    }
+
+    .esg-media-cover-wrapper:hover .overLayImage {
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform-style: flat;
+        transform: translate3d(0px, 0px, 0px);
+    }
+
+    .esg-media-cover-wrapper:hover .overLayImage {
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform-style: flat;
+        transform: translate3d(0px, 0px, 0px);
+    }
+
+    .esg-media-cover-wrapper:hover .catsubOverlay {
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform-style: flat;
+        transform: translate3d(0px, 0px, 0px);
+    }
+
+    .belowOverlay {
+        opacity: 1;
+        transform-style: flat;
+        transform-origin: 50% 50% 0px;
+        visibility: inherit;
+        transform: translate3d(0px, 0px, 0px);
+    }
+
+    .esg-media-cover-wrapper:hover .belowOverlay {
+        opacity: 0;
+        transform-style: flat;
+        transform-origin: 50% 50% 0px;
+        visibility: hidden;
+        transform: translate3d(0px,30px,0px);
+        transition: opacity .5s ease-out;
+        -moz-transition: opacity .5s ease-out;
+        -webkit-transition: opacity .5s ease-out;
+        -o-transition: opacity .10s ease-out;
+    }
+
+    /*Most Recent*/
+
+    .b-page-title::after {
+        content: '';
+        position: relative;
+        left: 0;
+        bottom: 0;
+        display: block;
+        width: 40px;
+        height: 3px;
+        background: #F8C91C;
+    }
+
+    e362-17.x-text {
+        margin: 0em 0em 1.25em 0em;
+        margin-top: 0em;
+        border-width: 0px 0px 1px 0px;
+        border-style: none none solid none;
+        border-color: transparent transparent rgb(219,219,219) transparent;
+        padding: 0em;
+        font-size: 1rem;
+        background-color: transparent;
+    }
+
+    .entry-content p, .x-text {
+        font-size: 1.6rem !important;
+        line-height: 2.4rem !important;
+        color: #555 !important;
+    }
+
+    .b-page-title {
+        margin-top: 45px !important;
+    }
+
+    .x-text-headline {
+        position: relative;
+    }
+
+    .x-text {
+        min-width: 1px;
+    }
+
+    .x-text-content {
+        /*display: -webkit-flex;*/
+        display: flex;
+    }
+
+    x-text-content-text, .x-text-content-text-primary, .x-text-content-text-subheadline {
+        display: block;
+    }
+
+    .x-text-content-text {
+        /*-webkit-flex-grow: 1;*/
+        flex-grow: 1;
+        min-width: 1px;
+        max-width: 100%;
+    }
+
+    .e362-17.x-text .x-text-content-text-primary {
+        margin: 0 calc(0em * -1) 0 0;
+        font-family: "Roboto",sans-serif;
+        font-size: inherit;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: 0em;
+        text-transform: none;
+        color: rgb(22,56,119);
+    }
+
+    .e362-17.x-text {
+        margin: 0em 0em 1.25em 0em;
+        border-width: 0px 0px 1px 0px;
+        border-style: none none solid none;
+        border-color: transparent transparent rgb(219,219,219) transparent;
+        padding: 0em;
+        font-size: 1rem;
+        background-color: transparent;
+    }
+
+    .bk-navigation ul li.bk-dropdown ul {
+        width: 300px !important;
+    }
+
+    .addSlashbefore::before {
+        content: '\002F';
+    }
+    /*.container {
+            color: rgb(85,85,85) !important;
+            background-color: rgb(244,244,244) !important;
+        }*/
+
+
+
+
+
+
+    /* Navigation Sub
+    ------------------------------------- */
+    nav.sub {
+        border-bottom: 1px solid #ebebeb;
+        padding: 10px 0;
+    }
+
+    /* Navigation Main
+    ------------------------------------- */
+    nav.main {
+    }
+
+        nav.main .nav-logo {
+            max-width: 200px;
+            width: 100%;
+        }
+
+        nav.main ul {
+            padding-left: 0;
+            list-style-type: none;
+        }
+        /* ------ Mega Menu ------ */
+        nav.main .megamenu {
+            padding: 20px 20px;
+            position: absolute;
+            top: auto;
+            left: 0;
+            right: 0;
+            max-width: 1500px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* ------ Mid Menu ------ */
+        nav.main .midmenu {
+            position: absolute;
+            padding: 20px 20px;
+            float: left;
+            top: auto;
+            left: auto;
+            right: auto;
+            max-width: 650px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    .dropdown-menu.megamenu.midmenu.show {
+        right: 0;
+    }
+
+    .dropdown-menu.show {
+        right: 0;
+    }
+
+    .esg-bc {
+        bottom: 70px !important;
+    }
+</style>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<div class="bk-section doctors-profile-area section-padding-top-sm section-padding-bottom-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div id="carousel-example-generic" class="owl-carousel owl-theme" data-ride="owl">
+
+                    @foreach (var item in Model.lstbundles)
+                    {
+                        <div class="item active">
+                            <a href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem","Blog",new { id=item.ArticleId})"*@>
+                                <img src="@item.ImagePath" alt="first image" data-val="@item.ArticleId" class="sliderImage" id="@item.ArticleId">
+                            </a>
+                            <div class="carousel-caption">
+                                <div class="item">
+                                    <p>@item.ArticleName</p>
+                                    @*<p>@item.Content </p>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                @foreach (var item in Model.RelatedTopArticles)
+                {
+                    <div class="box row" style="margin-bottom:10px">
+                        <div class="image col-md-6 col-xs-6">
+                            <a href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem","Blog",new { id=item.ArticleId})"*@ class="entry-thumb">
+                                <img src="@item.ImagePath" alt="images" data-val="@item.ArticleId" class="sliderImage imageClass" id="@item.ArticleId">
+                            </a>
+
+                        </div>
+                        <div class="text col-md-6 col-xs-6">
+                            <div class="center" style="margin-top: 20px;">
+                                <h4 class="slidertextLineHeight">
+                                    <a>@item.ArticleName  </a>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div><!-- row -->
+
+        <div class="e362-17 x-text b-page-title x-text-headline">
+            <div class="x-text-content">
+                <div class="x-text-content-text">
+                    <div class="x-text-content-text-primary">Most Recent</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 5px 5px 5px 5px;">
+            @foreach (var item in Model.OtherRelatedArticles)
+            {
+                <div class="col-md-4">
+                    <div class="catItem tp-esg-item">
+                        <div class="esg-media-cover-wrapper">
+                            <div class="esg-entry-media-wrapper" style="width:100%;height:100%;overflow:hidden;position:relative;">
+                                <div class="esg-entry-media" style="padding-bottom: 80%;">
+
+                                    <div class="esg-media-poster coverremoved" data-lazythumb="undefined" style="
+                       z-index: 1; visibility: inherit; opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                                        <a href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem","Blog",new {Id=item.ArticleId })"*@>
+                                            <img class="imgCover esg-media-poster" src="@item.ImagePath" />
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="esg-entry-cover" data-clickable="on" style="cursor: pointer; height: 342px; transform-style: flat;">
+
+                                <a class="eg-invisiblebutton" href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem","Blog",new {Id=item.ArticleId })"*@ target="_self">
+                                    <div class="esg-overlay esg-transition eg-petcentral-grid2-container overLayImage" data-delay="0" data-duration="default" data-transition="esg-fade"></div>
+                                </a>
+
+
+                                <div class="esg-cc eec" style="top: 107px;">
+                                    <div class="esg-center eg-post-63443 eg-petcentral-grid2-element-4-a esg-transition catsubOverlay" data-delay="0.34" data-duration="default" data-transition="esg-slideright">
+
+                                        <a class="eg-petcentral-grid2-element-4 eg-post-63443" href="/Blog/Category/@item.CategoryNameReplace" @*href="@Url.Action("Category","Blog",new {CategoryId=item.CategoryId })"*@ title="View all posts in @item.CategoryName" rel="category tag">@item.CategoryName&nbsp;</a>
+                                        @if (!string.IsNullOrEmpty(item.SubCategoryName))
+                                        {
+
+                                            <a class="eg-petcentral-grid2-element-4 addSlashbefore" href="/Blog/SubCategory/@item.SubCategoryNameReplace" @*href="@Url.Action("SubCategory","Blog",new {SubCategoryId=item.SubCategoryId })"*@ title="View all posts in @item.SubCategoryName" rel="category tag"> &nbsp;@item.SubCategoryName</a>
+                                        }
+                                    </div>
+                                    <div class="esg-center eg-post-63443 eg-petcentral-grid2-element-5 esg-transition catsubOverlay" data-delay="0.34" data-duration="default" data-transition="esg-slideright">
+                                        @item.ArticleSummary
+                                    </div>
+
+                                </div>
+                                <div class="esg-bc eec">
+                                    <div class="esg-bottom eg-post-63443 eg-petcentral-grid2-element-1-a esg-transition belowOverlay" data-delay="0" data-duration="default" data-transition="esg-slideshortdownout">
+                                        <a class="eg-petcentral-grid2-element-1 eg-post-63443" href="/Blog/BlogItem/@item.ArticleNameReplace" @*href="@Url.Action("BlogItem","Blog",new {Id=item.ArticleId })"*@ target="_self">@item.ArticleName</a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div><!-- continer-fluid -->
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+        animateOut: 'slideOutDown',
+        animateIn: 'flipInX',
+        //autoHeight: true,
+        dots: true,
+        items: 1,
+        loop: true,
+        nav: true,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        navText: ["<div class='nav-btn prev-slide navPrev'><i class='fa fa-angle-left'></i></div>", "<div class='nav-btn next-slide navPrev'><i class='fa fa-angle-right'></i></div>"],
+        dotClass: 'owl-dot',
+        dotsClass: 'owl-dots'
+
+        //adaptiveHeight: true,
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+
+    })
+</script>

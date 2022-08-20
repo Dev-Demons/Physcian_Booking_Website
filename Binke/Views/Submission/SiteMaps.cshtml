@@ -1,0 +1,143 @@
+﻿
+@{
+                /**/
+
+                Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+                ViewBag.Title = "Site Maps";
+}
+
+<head>
+    <link href='https://assets.doctyme.com' rel='dns-prefetch preconnect'>
+    <link href='//maps.googleapis.com' rel='dns-prefetch'>
+    <link href='//maps.gstatic.com' rel='dns-prefetch'>
+
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+@section pageheader{
+    <h3><i class="fa fa-paper-plane"></i> Site Maps </h3>
+    <div class="breadcrumb-wrapper">
+        <span class="label">You are here:</span>
+        <ol class="breadcrumb">
+            <li> <a href="/Submission/"> Submission </a></li>
+            <li class="active"> Site Maps </li>
+        </ol>
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tab-base">
+            <div class="panel-heading">
+                @*@using (Html.BeginForm("DownloadAllFiles", "Submission", FormMethod.Post))
+            {
+                <div class="panel-control py-10px">
+                    <input type="submit" class="pull-right btn btn-sm btn-primary" id="allFileDownload" value="Download All" />
+                </div>
+            }
+
+            @using (Html.BeginForm("GenerateSiteMaps", "Submission", FormMethod.Post))
+                {
+            <div class="panel-control py-10px">
+                <input type="button" class="pull-right btn btn-sm btn-primary" id="AddFacility" value="Generate Site Maps" />
+            </div>*@
+                @if (!ViewBag.InProgress)
+                {
+                    <div class="row contentdiv">
+                        @*<div class="col-md-4 col-sm-12">
+                            <input type="text" class="form-control datetimepicker" id="lastchangeddate" name="lastchangeddate" />
+                        </div>*@
+                        <div class="col-md-6 col-sm-12">
+                            <input type="button" class="pull-left btn btn-sm btn-primary addsitemap" id="AddFacility" value="Generate Site Maps" />
+                            @using (Html.BeginForm("DownloadAllFiles", "Submission", FormMethod.Post))
+                            {
+                                <input type="submit" class="pull-left btn btn-sm btn-primary addsitemap ml-2" id="allFileDownload" value="Download All" />
+                            }
+
+                        </div>
+                    </div>
+                }
+                <div id="inprogresslbl">@ViewBag.Message</div>
+                @* } *@
+            </div>
+            <!--Tabs Content-->
+                <div class="tab-content contentdiv" id="sitemaplist">
+                </div>
+        </div>
+        <!--===================================================-->
+        <!--End Default Tabs (Left Aligned)-->
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var inprogress = '@ViewBag.InProgress' == 'True' ? true : false;
+    $(document).ready(function () {
+        $('#lastchangeddate').datepicker({
+            dateFormat: "yy-mm-dd",
+            autoclose: true
+        });
+        GetSiteMapList();
+        setIntervalForStatusCheck();
+    })
+
+    function setIntervalForStatusCheck() {
+        if (inprogress) {
+            setInterval(function () { checkStatus(); }, 10000);
+        }
+    }
+
+    function checkStatus() {
+        //blockPage();
+        $.ajax({
+            type: "GET",
+            url: "GetSitemapStatus",
+            success: function (res) {
+              
+                GetSiteMapList();
+                if (!res) {
+                    location.reload();
+                }
+               
+            },
+            error: function () {
+                //alert("error");
+                // $("#allFileDownload").attr("disabled", false);
+                //unblockPage();
+            }
+        });
+    }
+
+    function GetSiteMapList() {
+        $.ajax({
+            type: "GET",
+            url: "GetSiteMapList",
+            success: function (res) {
+                $('#sitemaplist').html(res);
+            },
+            error: function () {
+            }
+        });
+    }
+
+    $('#AddFacility').click(function () { //Added by Reena
+        $("#allFileDownload").attr("disabled", false);
+        //blockPage();
+        $.ajax({
+            type: "POST",
+            url: "GenerateSiteMaps",
+            success: function () {  
+                location.reload();
+            },
+            error: function () {
+                //alert("error");
+                $("#allFileDownload").attr("disabled", false);
+                //unblockPage();
+            }
+        });
+
+     });
+</script>
+
+

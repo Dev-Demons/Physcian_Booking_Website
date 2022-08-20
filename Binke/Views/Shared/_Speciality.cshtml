@@ -1,0 +1,11 @@
+﻿@model List<Binke.ViewModels.FeaturedSpecialityViewModel>
+
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <li>@*<a href="@Url.Action("index", "Search", new { type = "Doctor", search="Specialties_" + @item.SpecialityName.Replace(" ", "").Replace("/", "").Trim() })">@item.SpecialityName</a>*@</li>
+        <li><a href="@Url.Action("index", "Search", new { type = "Doctor", search= @item.SpecialityName.Replace(" ", "").Replace("/", "").Trim() })">@item.SpecialityName</a></li>
+    }
+}

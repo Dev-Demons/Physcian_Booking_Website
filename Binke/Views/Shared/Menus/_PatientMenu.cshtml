@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.PatientID = Session["PatientID"];
+}
+<style>
+    .nav > li > a:focus, .nav > li > a:hover {
+        background-color: #444;
+        color: #fff;
+    }
+</style>
+<li id="MnuPatient" class="nav-item has-treeview active menu-open">
+    <ul id="PatientSubMenu" class="nav nav-treeview" style="display:block;">
+        <li class="nav-item">
+            <a href="/DashBoard/Patient" class='nav-link'>
+                <i class="far fa-circle nav-icon"></i>
+                <p>DashBoard</p>
+            </a>
+        </li>
+        @if (ViewBag.PatientID != null && ViewBag.PatientID > 0)
+        {
+            <li class="nav-item">
+                <a href="/Patient/Profile/@ViewBag.PatientID/true" class='nav-link'>
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Profile</p>
+                </a>
+            </li>
+            <li class="nav-item profilecomplete">
+                <a href="/Patient/Booking" class='nav-link'>
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Booking</p>
+                </a>
+            </li>
+            <li class="nav-item profilecomplete">
+                <a href="/Patient/Orders" class='nav-link'>
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Orders</p>
+                </a>
+            </li>
+            <li class="nav-item profilecomplete">
+                <a href="/Patient/Address" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Addresses</p>
+                </a>
+            </li>
+        }
+    </ul>
+</li>
+<script>
+    //Changes made against Issue#25
+    $(function () {
+        var a = $("#hdAddress");
+        if (a.val() != undefined && a.val() == "") {
+            alert('Please complete the profile first, before accessing the other features of the site');
+            $(".profilecomplete").hide();
+        }
+    });
+</script>
